@@ -1,0 +1,100 @@
+<!--
+  ~ Copyright (c) 2018-2019 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+
+<resources>
+    <string name="dji_ux_sample_app_name">DJI UX Sample App</string>
+    <string name="dji_ux_sample_app_name_long">DJI UXSDK Beta Sample App</string>
+    <string name="wsbridge_ip">WSBridge IP</string>
+    <string name="sdk_version">Version: %1$s</string>
+    <string name="product_name">Product Name: %1$s</string>
+    <string name="no_product">No Product Connected</string>
+    <string name="widgets">Widgets</string>
+    <string name="map">Map</string>
+    <string name="unregistered">Unregistered</string>
+    <string name="registered">Registered</string>
+    <string name="logs">Logs</string>
+    <string name="designed_aspect_ratio">Designed Aspect Ratio: </string>
+    <string name="current_widget_size">Current Widget Size: </string>
+    <string name="pinch_to_resize">* Pinch to resize widget</string>
+
+    <string name="altitude_widget_title">Altitude Widget</string>
+    <string name="compass_widget_title">Compass Widget</string>
+    <string name="dashboard_widget_title">Dashboard Widget</string>
+    <string name="distance_home_widget_title">Distance Home Widget</string>
+    <string name="distance_rc_widget_title">Distance RC Widget</string>
+    <string name="horizontal_velocity_widget_title">Horizontal Velocity Widget</string>
+    <string name="map_widget_title">Map Widget</string>
+    <string name="pre_flight_status_widget_title">Pre Flight Status Widget</string>
+    <string name="remote_control_signal_widget_title">Remote Control Signal Widget</string>
+    <string name="simulator_indicator_control_widgets_title">Simulator Indicator and Control Widgets</string>
+    <string name="user_account_login_widget_title">User Account Login Widget</string>
+    <string name="vertical_velocity_widget_title">Vertical Velocity Widget</string>
+    <string name="vision_widget_title">Vision Widget</string>
+    <string name="vps_widget_title">VPS Widget</string>
+
+    <!--Map Widget-->
+    <string name="provider_google_maps">Google Maps</string>
+    <string name="provider_here_maps">Here Maps</string>
+    <string name="provider_amaps">AMaps</string>
+    <string name="provider_mapbox">Mapbox</string>
+    <string name="error_map_not_initialized">The map has not been initialized yet</string>
+    <string name="home_direction">Home Direction</string>
+    <string name="auto_frame">Auto Frame</string>
+    <string name="unlock_flyzones">Unlock Fly Zones</string>
+    <string name="show_flight_path">Show Flight Path</string>
+    <string name="show_home_point">Show Home Point</string>
+    <string name="show_gimbal_yaw">Show Gimbal Yaw</string>
+    <string name="clear_flight_path">Clear Flight Path</string>
+    <string name="replace_icon">Replace Icon</string>
+    <string name="fly_zone">Fly Zone</string>
+    <string name="fly_zone_legend">Fly Zone Legend</string>
+    <string name="dji_account_indicator">DJI Account Login Indicator</string>
+    <string name="all">All</string>
+    <string name="auth">Authorization</string>
+    <string name="warning">Warning</string>
+    <string name="enhanced_warning">Enhanced Warning</string>
+    <string name="restricted">Restricted</string>
+    <string name="maximum_height">Maximum Height</string>
+    <string name="self_unlocked">Self-Unlocked</string>
+    <string name="custom_unlocked">Custom Unlocked</string>
+    <string name="new_color">New Color</string>
+    <string name="sync">Sync</string>
+    <string name="map_settings">Map Settings</string>
+    <string name="center_map">Center Map</string>
+    <string-array name="iconArray">
+        <item>Aircraft</item>
+        <item>Home</item>
+        <item>Gimbal Yaw</item>
+        <item>Locked Zone</item>
+        <item>Unlocked Zone</item>
+    </string-array>
+    <string-array name="mapTypeArray">
+        <item>Standard</item>
+        <item>Satellite</item>
+        <item>Hybrid</item>
+    </string-array>
+    <string-array name="lineTypeArray">
+        <item>Home Direction</item>
+        <item>Flight Path</item>
+        <item>Fly Zone Border</item>
+    </string-array>
+</resources>
