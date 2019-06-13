@@ -25,6 +25,7 @@ package dji.ux.beta.widget.vision;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
+import dji.sdk.sdkmanager.DJISDKManager;
 import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,13 +67,11 @@ public class VisionWidgetModel extends WidgetModel {
     private final DataProcessor<Boolean> isRightRadarOpenProcessor;
     private final DataProcessor<VisionSystemStatus> visionSystemStatusProcessor;
     private final DataProcessor<AvoidanceSensorStatus> avoidanceSensorStatusProcessor;
-    private final MissionControl missionControl;
     //endregion
 
     //region Constructor
     public VisionWidgetModel(@NonNull DJISDKModel djiSdkModel,
-                             @NonNull ObservableInMemoryKeyedStore keyedStore,
-                             MissionControl missionControl) {
+                             @NonNull ObservableInMemoryKeyedStore keyedStore) {
         super(djiSdkModel, keyedStore);
         statusMap = new HashMap<>();
         visionDetectionStateProcessor = DataProcessor.create(VisionDetectionState.createInstance(false,
@@ -92,7 +91,6 @@ public class VisionWidgetModel extends WidgetModel {
         isRightRadarOpenProcessor = DataProcessor.create(false);
         avoidanceSensorStatusProcessor = DataProcessor.create(AvoidanceSensorStatus.DISABLED);
         visionSystemStatusProcessor = DataProcessor.create(VisionSystemStatus.DISABLED);
-        this.missionControl = missionControl;
     }
     //endregion
 
@@ -192,6 +190,17 @@ public class VisionWidgetModel extends WidgetModel {
         return ProductUtil.isMavic2Enterprise();
     }
 
+    /**
+     * A wrapper for the {@link DJISDKManager#getMissionControl()} method so it can be mocked in
+     * unit tests.
+     *
+     * @return An instance of {@link MissionControl}.
+     */
+    @VisibleForTesting
+    protected MissionControl getMissionControl() {
+        return DJISDKManager.getInstance().getMissionControl();
+    }
+
     private void addSingleVisionStatus(VisionDetectionState state) {
         statusMap.put(state.getPosition(), getSingleVisionSystemStatus(state));
     }
@@ -287,8 +296,8 @@ public class VisionWidgetModel extends WidgetModel {
      */
     private boolean isVisionSystemEnabled() {
         TapFlyMode tapMode = TapFlyMode.UNKNOWN;
-        if (missionControl != null) {
-            tapMode = missionControl.getTapFlyMissionOperator().getTapFlyMode();
+        if (getMissionControl() != null) {
+            tapMode = getMissionControl().getTapFlyMissionOperator().getTapFlyMode();
         }
 
         return !isAttiMode(flightModeProcessor.getValue())
