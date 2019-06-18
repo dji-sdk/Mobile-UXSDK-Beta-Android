@@ -37,7 +37,6 @@ import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import java.util.HashMap;
 import java.util.Map;
 
-import dji.sdk.sdkmanager.DJISDKManager;
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.R;
 import dji.ux.beta.base.DJISDKModel;
@@ -83,8 +82,7 @@ public class VisionWidget extends FrameLayoutWidget {
 
         if (!isInEditMode()) {
             widgetModel = new VisionWidgetModel(DJISDKModel.getInstance(),
-                                                ObservableInMemoryKeyedStore.getInstance(),
-                                                DJISDKManager.getInstance().getMissionControl());
+                                                ObservableInMemoryKeyedStore.getInstance());
         }
 
         initDefaultIcons();
