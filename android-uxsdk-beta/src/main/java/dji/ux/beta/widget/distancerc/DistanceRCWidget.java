@@ -26,15 +26,19 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.FloatRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+
+import java.text.DecimalFormat;
+
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.R;
 import dji.ux.beta.base.ConstraintLayoutWidget;
@@ -43,7 +47,6 @@ import dji.ux.beta.base.GlobalPreferencesManager;
 import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import dji.ux.beta.util.DisplayUtil;
 import dji.ux.beta.util.UnitConversionUtil;
-import java.text.DecimalFormat;
 
 /**
  * Shows the distance between the current location of the aircraft
@@ -67,9 +70,11 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     public DistanceRCWidget(Context context) {
         super(context);
     }
+
     public DistanceRCWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     public DistanceRCWidget(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -83,8 +88,8 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
 
         if (!isInEditMode()) {
             widgetModel = new DistanceRCWidgetModel(DJISDKModel.getInstance(),
-                                                    ObservableInMemoryKeyedStore.getInstance(),
-                                                    GlobalPreferencesManager.getInstance());
+                    ObservableInMemoryKeyedStore.getInstance(),
+                    GlobalPreferencesManager.getInstance());
             distanceRCTitleTextView.setText(getResources().getString(R.string.uxsdk_distance_rc_title));
             distanceRCValueTextView.setMinEms(EMS);
         }
@@ -115,11 +120,11 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getDistanceFromRC()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateValueText));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateValueText));
         addReaction(widgetModel.getUnitType()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateUnitText));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateUnitText));
     }
     //endregion
 
@@ -127,6 +132,7 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     private void updateValueText(@FloatRange(from = 0.0f) float distanceFromRC) {
         distanceRCValueTextView.setText(decimalFormat.format(distanceFromRC));
     }
+
     private void updateUnitText(UnitConversionUtil.UnitType unitType) {
         if (unitType == UnitConversionUtil.UnitType.IMPERIAL) {
             distanceRCUnitTextView.setText(getResources().getString(R.string.uxsdk_unit_feet));
@@ -213,7 +219,7 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the background for the distance from RC title text view
+     * Set the background of the distance from RC title text view
      *
      * @param drawable Drawable resource for the background
      */
@@ -432,76 +438,76 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DistanceRCWidget);
         int distanceRCTitleTextAppearanceId =
-            typedArray.getResourceId(R.styleable.DistanceRCWidget_uxsdk_distanceRCTitleTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.DistanceRCWidget_uxsdk_distanceRCTitleTextAppearance,
+                        INVALID_RESOURCE);
         if (distanceRCTitleTextAppearanceId != INVALID_RESOURCE) {
             setDistanceRCTitleTextAppearance(distanceRCTitleTextAppearanceId);
         }
 
         float distanceRCTitleTextSize =
-            typedArray.getDimension(R.styleable.DistanceRCWidget_uxsdk_distanceRCTitleTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.DistanceRCWidget_uxsdk_distanceRCTitleTextSize, INVALID_RESOURCE);
         if (distanceRCTitleTextSize != INVALID_RESOURCE) {
             setDistanceRCTitleTextSize(DisplayUtil.pxToSp(context, distanceRCTitleTextSize));
         }
 
         int distanceRCTitleTextColor =
-            typedArray.getColor(R.styleable.DistanceRCWidget_uxsdk_distanceRCTitleTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.DistanceRCWidget_uxsdk_distanceRCTitleTextColor, INVALID_COLOR);
         if (distanceRCTitleTextColor != INVALID_COLOR) {
             setDistanceRCTitleTextColor(distanceRCTitleTextColor);
         }
 
         Drawable distanceRCTitleTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.DistanceRCWidget_uxsdk_distanceRCTitleBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.DistanceRCWidget_uxsdk_distanceRCTitleBackgroundDrawable);
         if (distanceRCTitleTextBackgroundDrawable != null) {
             setDistanceRCTitleTextBackground(distanceRCTitleTextBackgroundDrawable);
         }
 
         int distanceRCValueTextAppearanceId =
-            typedArray.getResourceId(R.styleable.DistanceRCWidget_uxsdk_distanceRCValueTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.DistanceRCWidget_uxsdk_distanceRCValueTextAppearance,
+                        INVALID_RESOURCE);
         if (distanceRCValueTextAppearanceId != INVALID_RESOURCE) {
             setDistanceRCValueTextAppearance(distanceRCValueTextAppearanceId);
         }
 
         float distanceRCValueTextSize =
-            typedArray.getDimension(R.styleable.DistanceRCWidget_uxsdk_distanceRCValueTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.DistanceRCWidget_uxsdk_distanceRCValueTextSize, INVALID_RESOURCE);
         if (distanceRCValueTextSize != INVALID_RESOURCE) {
             setDistanceRCValueTextSize(DisplayUtil.pxToSp(context, distanceRCValueTextSize));
         }
 
         int distanceRCValueTextColor =
-            typedArray.getColor(R.styleable.DistanceRCWidget_uxsdk_distanceRCValueTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.DistanceRCWidget_uxsdk_distanceRCValueTextColor, INVALID_COLOR);
         if (distanceRCValueTextColor != INVALID_COLOR) {
             setDistanceRCValueTextColor(distanceRCValueTextColor);
         }
 
         Drawable distanceRCValueTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.DistanceRCWidget_uxsdk_distanceRCValueBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.DistanceRCWidget_uxsdk_distanceRCValueBackgroundDrawable);
         if (distanceRCValueTextBackgroundDrawable != null) {
             setDistanceRCValueTextBackground(distanceRCValueTextBackgroundDrawable);
         }
 
         int distanceRCUnitTextAppearanceId =
-            typedArray.getResourceId(R.styleable.DistanceRCWidget_uxsdk_distanceRCUnitTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.DistanceRCWidget_uxsdk_distanceRCUnitTextAppearance,
+                        INVALID_RESOURCE);
         if (distanceRCUnitTextAppearanceId != INVALID_RESOURCE) {
             setDistanceRCUnitTextAppearance(distanceRCUnitTextAppearanceId);
         }
 
         float distanceRCUnitTextSize =
-            typedArray.getDimension(R.styleable.DistanceRCWidget_uxsdk_distanceRCUnitTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.DistanceRCWidget_uxsdk_distanceRCUnitTextSize, INVALID_RESOURCE);
         if (distanceRCUnitTextSize != INVALID_RESOURCE) {
             setDistanceRCUnitTextSize(DisplayUtil.pxToSp(context, distanceRCUnitTextSize));
         }
 
         int distanceRCUnitTextColor =
-            typedArray.getColor(R.styleable.DistanceRCWidget_uxsdk_distanceRCUnitTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.DistanceRCWidget_uxsdk_distanceRCUnitTextColor, INVALID_COLOR);
         if (distanceRCUnitTextColor != INVALID_COLOR) {
             setDistanceRCUnitTextColor(distanceRCUnitTextColor);
         }
 
         Drawable distanceRCUnitTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.DistanceRCWidget_uxsdk_distanceRCUnitBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.DistanceRCWidget_uxsdk_distanceRCUnitBackgroundDrawable);
         if (distanceRCUnitTextBackgroundDrawable != null) {
             setDistanceRCUnitTextBackground(distanceRCUnitTextBackgroundDrawable);
         }

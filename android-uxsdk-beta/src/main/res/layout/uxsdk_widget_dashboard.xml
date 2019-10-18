@@ -22,76 +22,76 @@
   -->
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:app="http://schemas.android.com/apk/res-auto"
-       xmlns:tools="http://schemas.android.com/tools"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       tools:parentTag="dji.ux.beta.widget.dashboard.DashboardWidget">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="dji.ux.beta.widget.dashboard.DashboardWidget">
 
     <dji.ux.beta.widget.compass.CompassWidget
         android:id="@+id/widget_compass"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:background="@drawable/uxsdk_ic_dashboard_compass_background"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/widget_altitude"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/widget_altitude"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <dji.ux.beta.widget.altitude.AltitudeWidget
         android:id="@+id/widget_altitude"
+        style="@style/UXSDKDashboardWidgetDefault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/UXSDKDashboardWidgetDefault"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/widget_compass"
-        app:layout_constraintEnd_toStartOf="@id/widget_distance_home"/>
+        app:layout_constraintEnd_toStartOf="@id/widget_distance_home"
+        app:layout_constraintStart_toEndOf="@id/widget_compass" />
 
     <dji.ux.beta.widget.distancehome.DistanceHomeWidget
         android:id="@+id/widget_distance_home"
+        style="@style/UXSDKDashboardWidgetDefault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/UXSDKDashboardWidgetDefault"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/widget_altitude"
-        app:layout_constraintEnd_toStartOf="@id/widget_distance_rc"/>
+        app:layout_constraintEnd_toStartOf="@id/widget_distance_rc"
+        app:layout_constraintStart_toEndOf="@id/widget_altitude" />
 
     <dji.ux.beta.widget.distancerc.DistanceRCWidget
         android:id="@+id/widget_distance_rc"
+        style="@style/UXSDKDashboardWidgetDefault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/UXSDKDashboardWidgetDefault"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/widget_distance_home"
-        app:layout_constraintEnd_toStartOf="@id/widget_horizontal_velocity"/>
+        app:layout_constraintEnd_toStartOf="@id/widget_horizontal_velocity"
+        app:layout_constraintStart_toEndOf="@id/widget_distance_home" />
 
     <dji.ux.beta.widget.horizontalvelocity.HorizontalVelocityWidget
         android:id="@+id/widget_horizontal_velocity"
+        style="@style/UXSDKDashboardWidgetDefault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/UXSDKDashboardWidgetDefault"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/widget_distance_rc"
-        app:layout_constraintEnd_toStartOf="@id/widget_vertical_velocity"/>
+        app:layout_constraintEnd_toStartOf="@id/widget_vertical_velocity"
+        app:layout_constraintStart_toEndOf="@id/widget_distance_rc" />
 
     <dji.ux.beta.widget.verticalvelocity.VerticalVelocityWidget
         android:id="@+id/widget_vertical_velocity"
+        style="@style/UXSDKDashboardWidgetDefault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/UXSDKDashboardWidgetDefault"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/widget_horizontal_velocity"
-        app:layout_constraintEnd_toStartOf="@id/widget_vps"/>
+        app:layout_constraintEnd_toStartOf="@id/widget_vps"
+        app:layout_constraintStart_toEndOf="@id/widget_horizontal_velocity" />
 
     <dji.ux.beta.widget.vps.VPSWidget
         android:id="@+id/widget_vps"
+        style="@style/UXSDKDashboardWidgetDefault"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/UXSDKDashboardWidgetDefault"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@id/widget_vertical_velocity"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/widget_vertical_velocity" />
 
 </merge>

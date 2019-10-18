@@ -27,7 +27,7 @@ package dji.ux.beta.base.uxsdkkeys;
  */
 public final class CameraKeys extends UXKeys {
 
-    @UXParamKey(type = Integer.class)
+    @UXParamKey(type = Integer.class, updateType = UpdateType.ON_CHANGE)
     public static final String PEAK_THRESHOLD = "PeakThreshold";
 
     private CameraKeys() {

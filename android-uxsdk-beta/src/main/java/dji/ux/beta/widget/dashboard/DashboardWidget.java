@@ -24,10 +24,12 @@ package dji.ux.beta.widget.dashboard;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import dji.ux.beta.R;
 import dji.ux.beta.base.ConstraintLayoutWidget;
 import dji.ux.beta.widget.altitude.AltitudeWidget;
@@ -41,11 +43,11 @@ import dji.ux.beta.widget.vps.VPSWidget;
 /**
  * Compound widget that aggregates important physical state information
  * about the aircraft into a dashboard.
- *
+ * <p>
  * It includes the {@link CompassWidget}, {@link AltitudeWidget}, {@link DistanceHomeWidget}
  * {@link DistanceRCWidget}, {@link HorizontalVelocityWidget}, {@link VerticalVelocityWidget}
  * and the {@link VPSWidget}.
- *
+ * <p>
  * This widget can be customized to include or exclude any of these widgets
  * as required.
  */
@@ -264,7 +266,7 @@ public class DashboardWidget extends ConstraintLayoutWidget {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DashboardWidget);
 
         int hiddenWidgets =
-            typedArray.getInteger(R.styleable.DashboardWidget_uxsdk_hideWidgets, HideWidget.NONE.value());
+                typedArray.getInteger(R.styleable.DashboardWidget_uxsdk_hideWidgets, HideWidget.NONE.value());
         if (HideWidget.isWidgetHidden(hiddenWidgets, HideWidget.COMPASS)) {
             setCompassWidgetVisibility(false);
         }

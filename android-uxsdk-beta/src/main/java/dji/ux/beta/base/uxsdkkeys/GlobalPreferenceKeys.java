@@ -22,14 +22,21 @@
 
 package dji.ux.beta.base.uxsdkkeys;
 
+import dji.ux.beta.util.SettingDefinitions;
 import dji.ux.beta.util.UnitConversionUtil;
 
 /**
  * Class containing UXKeys related to global preferences
  */
 public final class GlobalPreferenceKeys extends UXKeys {
-    @UXParamKey(type = UnitConversionUtil.UnitType.class)
+    @UXParamKey(type = UnitConversionUtil.UnitType.class, updateType = UpdateType.ON_CHANGE)
     public static final String UNIT_TYPE = "UnitType";
+
+    @UXParamKey(type = Boolean.class, updateType = UpdateType.ON_CHANGE)
+    public static final String AFC_ENABLED = "AFCEnabled";
+
+    @UXParamKey(type = SettingDefinitions.ControlMode.class, updateType = UpdateType.ON_CHANGE)
+    public static final String CONTROL_MODE = "ControlMode";
 
     private GlobalPreferenceKeys() {
         super();

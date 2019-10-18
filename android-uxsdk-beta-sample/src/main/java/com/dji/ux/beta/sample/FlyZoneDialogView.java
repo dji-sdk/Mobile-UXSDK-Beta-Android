@@ -27,8 +27,6 @@ package com.dji.ux.beta.sample;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorInt;
-import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,11 +34,11 @@ import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.Switch;
 
+import androidx.annotation.ColorInt;
+import androidx.core.graphics.ColorUtils;
+
 import java.util.Random;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import dji.common.flightcontroller.flyzone.FlyZoneCategory;
 import dji.ux.beta.widget.map.MapWidget;
 
@@ -105,6 +103,7 @@ public class FlyZoneDialogView extends ScrollView {
                         restricted.setChecked(isChecked);
                         break;
                     case R.id.custom_unlock_switch:
+                        mapWidget.requestCustomUnlockZonesFromServer();
                         btnCustomUnlockColor.setEnabled(isChecked);
                         btnCustomUnlockSync.setEnabled(isChecked);
                         if (isChecked) {
@@ -218,6 +217,8 @@ public class FlyZoneDialogView extends ScrollView {
                 case R.id.custom_unlock_sync:
                     mapWidget.syncCustomUnlockZonesToAircraft();
                     return;
+                default:
+                    return;
             }
             view.setBackground(getBackground(randomColor, alpha, strokeWidth));
         };
@@ -264,7 +265,8 @@ public class FlyZoneDialogView extends ScrollView {
                 return enhancedWarning.isChecked();
             case RESTRICTED:
                 return restricted.isChecked();
+            default:
+                return false;
         }
-        return false;
     }
 }

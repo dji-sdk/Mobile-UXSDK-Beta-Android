@@ -22,6 +22,13 @@
 
 package dji.ux.beta.widget.simulator.preset;
 
+/**
+ * Simulator Preset Data
+ *
+ * The class represents the instance of values which
+ * can be used to run the simulator
+ *
+ */
 public class SimulatorPresetData {
 
     private double latitude;
@@ -36,18 +43,38 @@ public class SimulatorPresetData {
         this.updateFrequency = frequency;
     }
 
+    /**
+     * Get latitude value of simulated location
+     *
+     * @return Double value
+     */
     public double getLatitude() {
         return latitude;
     }
 
+    /**
+     * Get longitude value of simulated location
+     *
+     * @return Double value
+     */
     public double getLongitude() {
         return longitude;
     }
 
+    /**
+     * Get the satellite count to be simulated
+     *
+     * @return integer value representing satellites
+     */
     public int getSatelliteCount() {
         return satelliteCount;
     }
 
+    /**
+     * Get the frequency at which the aircraft should send data
+     *
+     * @return integer value
+     */
     public int getUpdateFrequency() {
         return updateFrequency;
     }

@@ -22,8 +22,9 @@
 
 package dji.ux.beta.widget.distancehome;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import dji.keysdk.FlightControllerKey;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.base.DJISDKModel;
@@ -72,6 +73,7 @@ public class DistanceHomeWidgetModel extends WidgetModel {
     //endregion
 
     //region Data
+
     /**
      * Get the distance of the aircraft from the home location
      *
@@ -95,9 +97,9 @@ public class DistanceHomeWidgetModel extends WidgetModel {
     @Override
     protected void inSetup() {
         FlightControllerKey aircraftLatitudeKey =
-            FlightControllerKey.create(FlightControllerKey.AIRCRAFT_LOCATION_LATITUDE);
+                FlightControllerKey.create(FlightControllerKey.AIRCRAFT_LOCATION_LATITUDE);
         FlightControllerKey aircraftLongitudeKey =
-            FlightControllerKey.create(FlightControllerKey.AIRCRAFT_LOCATION_LONGITUDE);
+                FlightControllerKey.create(FlightControllerKey.AIRCRAFT_LOCATION_LONGITUDE);
         FlightControllerKey homeLatitudeKey = FlightControllerKey.create(FlightControllerKey.HOME_LOCATION_LATITUDE);
         FlightControllerKey homeLongitudeKey = FlightControllerKey.create(FlightControllerKey.HOME_LOCATION_LONGITUDE);
 
@@ -125,13 +127,13 @@ public class DistanceHomeWidgetModel extends WidgetModel {
     protected void updateStates() {
         // Check if location coordinates are valid and update
         if (LocationUtil.checkLatitude(aircraftLatitudeProcessor.getValue())
-            && LocationUtil.checkLongitude(aircraftLongitudeProcessor.getValue())
-            && LocationUtil.checkLatitude(homeLatitudeProcessor.getValue())
-            && LocationUtil.checkLongitude(homeLongitudeProcessor.getValue())) {
+                && LocationUtil.checkLongitude(aircraftLongitudeProcessor.getValue())
+                && LocationUtil.checkLatitude(homeLatitudeProcessor.getValue())
+                && LocationUtil.checkLongitude(homeLongitudeProcessor.getValue())) {
             convertValueByUnit(LocationUtil.distanceBetween(homeLatitudeProcessor.getValue(),
-                                                            homeLongitudeProcessor.getValue(),
-                                                            aircraftLatitudeProcessor.getValue(),
-                                                            aircraftLongitudeProcessor.getValue()));
+                    homeLongitudeProcessor.getValue(),
+                    aircraftLatitudeProcessor.getValue(),
+                    aircraftLongitudeProcessor.getValue()));
         }
     }
     //endregion

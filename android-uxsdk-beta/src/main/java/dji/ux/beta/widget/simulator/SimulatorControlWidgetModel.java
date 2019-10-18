@@ -22,7 +22,7 @@
 
 package dji.ux.beta.widget.simulator;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import dji.common.flightcontroller.simulator.InitializationData;
 import dji.common.flightcontroller.simulator.SimulatorState;
@@ -35,9 +35,9 @@ import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.base.DJISDKModel;
 import dji.ux.beta.base.SchedulerProviderInterface;
 import dji.ux.beta.base.UXSDKError;
+import dji.ux.beta.base.UXSDKErrorDescription;
 import dji.ux.beta.base.WidgetModel;
 import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
-import dji.ux.beta.base.UXSDKErrorDescription;
 import dji.ux.beta.util.DataProcessor;
 
 /**
@@ -66,16 +66,16 @@ public class SimulatorControlWidgetModel extends WidgetModel {
         this.schedulerProvider = schedulerProvider;
         SimulatorState.Builder simulatorStateBuilder = new SimulatorState.Builder();
         simulatorStateDataProcessor =
-            DataProcessor.create(simulatorStateBuilder.location(new LocationCoordinate2D(0.0, 0.0))
-                                                      .areMotorsOn(false)
-                                                      .isFlying(false)
-                                                      .positionX(0f)
-                                                      .positionY(0f)
-                                                      .positionZ(0f)
-                                                      .pitch(0f)
-                                                      .yaw(0f)
-                                                      .roll(0f)
-                                                      .build());
+                DataProcessor.create(simulatorStateBuilder.location(new LocationCoordinate2D(0.0, 0.0))
+                        .areMotorsOn(false)
+                        .isFlying(false)
+                        .positionX(0f)
+                        .positionY(0f)
+                        .positionZ(0f)
+                        .pitch(0f)
+                        .yaw(0f)
+                        .roll(0f)
+                        .build());
         SimulatorWindData.Builder windBuilder = new SimulatorWindData.Builder();
         simulatorWindDataProcessor = DataProcessor.create(windBuilder.build());
         satelliteCountDataProcessor = DataProcessor.create(0);

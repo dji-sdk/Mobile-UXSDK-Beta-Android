@@ -25,12 +25,13 @@ package dji.ux.beta.widget.simulator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.R;
@@ -73,12 +74,11 @@ public class SimulatorIndicatorWidget extends FrameLayoutWidget implements View.
     @Override
     protected void initView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.uxsdk_widget_simulator_indicator, this);
-        setBackgroundResource(R.drawable.uxsdk_background_black_rectangle);
         foregroundImageView = findViewById(R.id.imageview_simulator_indicator);
         setOnClickListener(this);
         if (!isInEditMode()) {
             widgetModel = new SimulatorIndicatorWidgetModel(DJISDKModel.getInstance(),
-                                                            ObservableInMemoryKeyedStore.getInstance());
+                    ObservableInMemoryKeyedStore.getInstance());
         }
 
         initDefaults();
@@ -91,8 +91,8 @@ public class SimulatorIndicatorWidget extends FrameLayoutWidget implements View.
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.isSimulatorActive()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateUI));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateUI));
     }
 
     @NonNull
@@ -142,9 +142,9 @@ public class SimulatorIndicatorWidget extends FrameLayoutWidget implements View.
     private void checkAndUpdateUI() {
 
         addDisposable(widgetModel.isSimulatorActive()
-                                 .lastOrError()
-                                 .observeOn(AndroidSchedulers.mainThread())
-                                 .subscribe(this::updateUI));
+                .lastOrError()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateUI));
     }
 
     private void updateUI(Boolean isActive) {
@@ -176,14 +176,14 @@ public class SimulatorIndicatorWidget extends FrameLayoutWidget implements View.
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SimulatorIndicatorWidget);
         stateChangeResourceId =
-            typedArray.getResourceId(R.styleable.SimulatorIndicatorWidget_uxsdk_onStateChange, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.SimulatorIndicatorWidget_uxsdk_onStateChange, INVALID_RESOURCE);
         if (typedArray.getDrawable(R.styleable.SimulatorIndicatorWidget_uxsdk_simulatorActiveDrawable) != null) {
             simulatorActiveDrawable =
-                typedArray.getDrawable(R.styleable.SimulatorIndicatorWidget_uxsdk_simulatorActiveDrawable);
+                    typedArray.getDrawable(R.styleable.SimulatorIndicatorWidget_uxsdk_simulatorActiveDrawable);
         }
         if (typedArray.getDrawable(R.styleable.SimulatorIndicatorWidget_uxsdk_simulatorInactiveDrawable) != null) {
             simulatorInactiveDrawable =
-                typedArray.getDrawable(R.styleable.SimulatorIndicatorWidget_uxsdk_simulatorInactiveDrawable);
+                    typedArray.getDrawable(R.styleable.SimulatorIndicatorWidget_uxsdk_simulatorInactiveDrawable);
         }
         setIconBackground(typedArray.getDrawable(R.styleable.SimulatorIndicatorWidget_uxsdk_iconBackground));
         typedArray.recycle();
@@ -232,7 +232,7 @@ public class SimulatorIndicatorWidget extends FrameLayoutWidget implements View.
     /**
      * Set simulator inactive icon
      *
-     * @param drawable Object to be used as inactive icon
+     * @param drawable Drawable to be used as inactive icon
      */
     public void setSimulatorInactiveDrawable(@Nullable Drawable drawable) {
         simulatorInactiveDrawable = drawable;

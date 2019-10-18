@@ -22,8 +22,9 @@
 
 package dji.ux.beta.widget.distancerc;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import dji.common.remotecontroller.GPSData;
 import dji.keysdk.FlightControllerKey;
 import dji.keysdk.RemoteControllerKey;
@@ -73,6 +74,7 @@ public class DistanceRCWidgetModel extends WidgetModel {
     //endregion
 
     //region Data
+
     /**
      * Get the distance of the aircraft from the RC (pilot).
      *
@@ -96,9 +98,9 @@ public class DistanceRCWidgetModel extends WidgetModel {
     @Override
     protected void inSetup() {
         FlightControllerKey aircraftLatitudeKey =
-            FlightControllerKey.create(FlightControllerKey.AIRCRAFT_LOCATION_LATITUDE);
+                FlightControllerKey.create(FlightControllerKey.AIRCRAFT_LOCATION_LATITUDE);
         FlightControllerKey aircraftLongitudeKey =
-            FlightControllerKey.create(FlightControllerKey.AIRCRAFT_LOCATION_LONGITUDE);
+                FlightControllerKey.create(FlightControllerKey.AIRCRAFT_LOCATION_LONGITUDE);
         RemoteControllerKey rcGPSDataKey = RemoteControllerKey.create(RemoteControllerKey.GPS_DATA);
 
         bindDataProcessor(aircraftLatitudeKey, aircraftLatitudeProcessor);
@@ -128,13 +130,13 @@ public class DistanceRCWidgetModel extends WidgetModel {
             double rcLatitude = rcGPSDataProcessor.getValue().getLocation().getLatitude();
             double rcLongitude = rcGPSDataProcessor.getValue().getLocation().getLongitude();
             if (LocationUtil.checkLatitude(aircraftLatitudeProcessor.getValue())
-                && LocationUtil.checkLongitude(aircraftLongitudeProcessor.getValue())
-                && LocationUtil.checkLatitude(rcLatitude)
-                && LocationUtil.checkLongitude(rcLongitude)) {
+                    && LocationUtil.checkLongitude(aircraftLongitudeProcessor.getValue())
+                    && LocationUtil.checkLatitude(rcLatitude)
+                    && LocationUtil.checkLongitude(rcLongitude)) {
                 convertValueByUnit(LocationUtil.distanceBetween(rcLatitude,
-                                                                rcLongitude,
-                                                                aircraftLatitudeProcessor.getValue(),
-                                                                aircraftLongitudeProcessor.getValue()));
+                        rcLongitude,
+                        aircraftLatitudeProcessor.getValue(),
+                        aircraftLongitudeProcessor.getValue()));
             }
         }
     }

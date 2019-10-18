@@ -27,11 +27,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,9 +34,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+
 import dji.ux.beta.R;
 import dji.ux.beta.util.SimulatorPresetUtils;
+import dji.ux.beta.widget.simulator.SimulatorControlWidget;
 
+/**
+ * Save Preset Dialog
+ * <p>
+ * The values entered in {@link SimulatorControlWidget} can be saved for future simulation as preset.
+ * This dialog provides a user interface to enter the name to be used for saving the preset.
+ */
 public class SavePresetDialog extends Dialog implements View.OnClickListener {
 
     //region fields
@@ -70,7 +78,7 @@ public class SavePresetDialog extends Dialog implements View.OnClickListener {
         if (getWindow() != null) {
             getWindow().setBackgroundDrawableResource(R.drawable.uxsdk_background_dialog_rounded_corners);
             getWindow().setLayout((int) context.getResources().getDimension(R.dimen.uxsdk_simulator_dialog_width),
-                                  ViewGroup.LayoutParams.WRAP_CONTENT);
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
         }
         titleTextView = findViewById(R.id.textview_save_preset_header);
         presetEditText = findViewById(R.id.edit_text_preset_name);
@@ -93,8 +101,8 @@ public class SavePresetDialog extends Dialog implements View.OnClickListener {
     private void savePreset(String name) {
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(context,
-                           context.getResources().getString(R.string.uxsdk_simulator_preset_name_empty_error),
-                           Toast.LENGTH_SHORT).show();
+                    context.getResources().getString(R.string.uxsdk_simulator_preset_name_empty_error),
+                    Toast.LENGTH_SHORT).show();
         } else {
             SimulatorPresetUtils.getInstance().savePreset(name, simulatorPresetData);
             dismiss();
@@ -105,13 +113,21 @@ public class SavePresetDialog extends Dialog implements View.OnClickListener {
 
     //region customizations
 
+
     /**
      * Set text color state list to the widget title
+     *
+     * @param colorStateList to be used
      */
     public void setTitleTextColor(@Nullable ColorStateList colorStateList) {
         titleTextView.setTextColor(colorStateList);
     }
 
+    /**
+     * Set the color of title text
+     *
+     * @param color integer value
+     */
     public void setTitleTextColor(@ColorInt int color) {
         titleTextView.setTextColor(color);
     }
@@ -200,6 +216,11 @@ public class SavePresetDialog extends Dialog implements View.OnClickListener {
         return cancelTextView.getTextColors();
     }
 
+    /**
+     * Get the current text color of the button
+     *
+     * @return integer color value
+     */
     @ColorInt
     public int getButtonTextColor() {
         return cancelTextView.getCurrentTextColor();
@@ -212,6 +233,5 @@ public class SavePresetDialog extends Dialog implements View.OnClickListener {
         saveTextView.setTextAppearance(getContext(), textAppearance);
         cancelTextView.setTextAppearance(getContext(), textAppearance);
     }
-
     //endregion
 }

@@ -22,8 +22,9 @@
 
 package dji.ux.beta.widget.horizontalvelocity;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import dji.keysdk.FlightControllerKey;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.base.DJISDKModel;
@@ -66,6 +67,7 @@ public class HorizontalVelocityWidgetModel extends WidgetModel {
     //endregion
 
     //region Data
+
     /**
      * Get the value of the horizontal velocity of the aircraft.
      *

@@ -22,42 +22,42 @@
   -->
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:app="http://schemas.android.com/apk/res-auto"
-       xmlns:tools="http://schemas.android.com/tools"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       tools:parentTag="dji.ux.beta.widget.preflightstatus.PreFlightStatusWidget">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="dji.ux.beta.widget.preflightstatus.PreFlightStatusWidget">
 
     <ImageView
         android:id="@+id/imageview_preflight_status_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription"
-        tools:src="@color/uxsdk_background"/>
+        tools:src="@color/uxsdk_background" />
 
     <TextView
         android:id="@+id/textview_preflight_status"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:marqueeRepeatLimit="marquee_forever"
         android:paddingStart="4dp"
         android:paddingLeft="4dp"
+        android:paddingTop="2dp"
         android:paddingEnd="4dp"
         android:paddingRight="4dp"
-        android:paddingTop="2dp"
         android:paddingBottom="2dp"
+        android:singleLine="true"
         android:textColor="@color/uxsdk_white"
         android:textSize="@dimen/uxsdk_text_size_medium"
-        android:singleLine="true"
-        android:ellipsize="marquee"
-        android:marqueeRepeatLimit="marquee_forever"
-        android:gravity="center_vertical"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Pre-flight status"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Pre-flight status" />
 </merge>

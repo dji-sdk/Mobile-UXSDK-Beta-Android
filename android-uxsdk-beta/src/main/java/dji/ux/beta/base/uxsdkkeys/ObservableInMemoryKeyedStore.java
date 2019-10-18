@@ -22,8 +22,13 @@
 
 package dji.ux.beta.base.uxsdkkeys;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
@@ -31,12 +36,6 @@ import dji.thirdparty.io.reactivex.processors.PublishProcessor;
 import dji.thirdparty.io.reactivex.schedulers.Schedulers;
 import dji.ux.beta.base.UXSDKError;
 import dji.ux.beta.base.UXSDKErrorDescription;
-
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
-//Doc key: TODO
 
 /**
  * `ObservableInMemoryKeyedStore` provides access to the keyed interface using `UXKeys` and
@@ -65,13 +64,12 @@ public class ObservableInMemoryKeyedStore implements ObservableKeyedStore {
         UXKeys.addNewKeyClass(CameraKeys.class);
     }
 
-    //Doc key: TODO
     /**
      * Adds an observer object which will receive all changes of value for the given key.
      *
      * @param key A valid UXKey
      * @return A flowable that emits BroadcastValues based on the given key.
-     *         This flowable can be used to subscribe to the keys as required.
+     * This flowable can be used to subscribe to the keys as required.
      */
     @Override
     @NonNull
@@ -89,11 +87,11 @@ public class ObservableInMemoryKeyedStore implements ObservableKeyedStore {
         }
     }
 
-    //Doc key: TODO
     /**
      * Removes the observer object for the given key so it no longer receives updates
+     *
      * @param disposable Disposable used for observing key values
-     * @param key A valid UXKey
+     * @param key        A valid UXKey
      */
     @Override
     public void removeObserver(@NonNull Disposable disposable, @NonNull UXKey key) {
@@ -102,7 +100,6 @@ public class ObservableInMemoryKeyedStore implements ObservableKeyedStore {
         }
     }
 
-    //Doc key: TODO
     /**
      * Removes the subscription to updates for all observers of a specific key value.
      * Does not affect the observers of any other key.
@@ -120,11 +117,9 @@ public class ObservableInMemoryKeyedStore implements ObservableKeyedStore {
         }
     }
 
-    //Doc key: TODO
     /**
      * Stops the subscription to updates for all observers of all key values.
      * There will be no active observers on any key after this function is called.
-     *
      */
     @Override
     public void removeAllObservers() {
@@ -139,7 +134,6 @@ public class ObservableInMemoryKeyedStore implements ObservableKeyedStore {
         }
     }
 
-    //Doc key: TODO
     /**
      * Performs a get on a UXKey and returns the latest known value for the key
      * if available, null otherwise.
@@ -165,23 +159,24 @@ public class ObservableInMemoryKeyedStore implements ObservableKeyedStore {
         }
     }
 
-    //Doc key: TODO
     /**
      * Performs a set on a UXKey, changing the value for the key.
      *
+     * @param key   A valid settable key
      * @param value A value object relevant to the given key
-     * @param key A valid settable key
      * @return Completable which indicates success or error setting the value.
      */
     @Override
     @NonNull
-    public Completable setValue(Object value, @NonNull UXKey key) {
+    public Completable setValue(@NonNull UXKey key, @NonNull Object value) {
         lock.lock();
         try {
             return Completable.create(emitter -> {
                 if (value.getClass().equals(key.getValueType())) {
                     ModelValue previousValue = store.getModelValue(key.getKeyPath());
-                    if (previousValue == null || !previousValue.getData().equals(value)) {
+                    if (key.getUpdateType() == UXKeys.UpdateType.ON_EVENT ||
+                            (key.getUpdateType() == UXKeys.UpdateType.ON_CHANGE &&
+                                    (previousValue == null || !previousValue.getData().equals(value)))) {
                         ModelValue currentValue = new ModelValue(value);
                         store.setModelValue(currentValue, key.getKeyPath());
                         if (keyStringProcessorMap.containsKey(key.getKeyPath())) {

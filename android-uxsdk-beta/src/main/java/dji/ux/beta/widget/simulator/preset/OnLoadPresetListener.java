@@ -22,6 +22,15 @@
 
 package dji.ux.beta.widget.simulator.preset;
 
+/**
+ * Interface to be implemented when {@link SimulatorPresetData}
+ * is to be loaded
+ */
 public interface OnLoadPresetListener {
+    /**
+     * On Preset load event
+     *
+     * @param simulatorPresetData instance of {@link SimulatorPresetData}
+     */
     void onLoadPreset(SimulatorPresetData simulatorPresetData);
 }

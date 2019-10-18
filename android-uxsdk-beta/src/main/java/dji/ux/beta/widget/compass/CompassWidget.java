@@ -26,18 +26,20 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.hardware.SensorManager;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.FloatRange;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import dji.common.util.MobileGPSLocationUtil;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
@@ -72,7 +74,6 @@ public class CompassWidget extends ConstraintLayoutWidget {
     private static final int FULL_TURN = 360;
     private static final int HALF_TURN = 180;
     private static final int QUARTER_TURN = 90;
-
     //endregion
 
     //region Fields
@@ -125,9 +126,9 @@ public class CompassWidget extends ConstraintLayoutWidget {
 
         if (!isInEditMode()) {
             widgetModel = new CompassWidgetModel(DJISDKModel.getInstance(),
-                                                 ObservableInMemoryKeyedStore.getInstance(),
-                                                 (SensorManager) context.getSystemService(Context.SENSOR_SERVICE),
-                                                 (WindowManager) context.getSystemService(Context.WINDOW_SERVICE));
+                    ObservableInMemoryKeyedStore.getInstance(),
+                    (SensorManager) context.getSystemService(Context.SENSOR_SERVICE),
+                    (WindowManager) context.getSystemService(Context.WINDOW_SERVICE));
             widgetModel.setMobileGPSLocationUtil(new MobileGPSLocationUtil(context, widgetModel));
         }
 
@@ -171,11 +172,11 @@ public class CompassWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getAircraftAttitude()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateAircraftAttitudeUI));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateAircraftAttitudeUI));
         addReaction(widgetModel.getMobileDeviceAzimuth()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateNorthHeadingUI));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateNorthHeadingUI));
         addReaction(reactToUpdateAircraftHeading());
         addReaction(reactToUpdateAircraftLocation());
         addReaction(reactToUpdateGimbalHeading());
@@ -187,28 +188,28 @@ public class CompassWidget extends ConstraintLayoutWidget {
     private Disposable reactToUpdateAircraftHeading() {
         // Use the mobile device azimuth and the aircraft attitude to update the aircraft's heading
         return Flowable.combineLatest(widgetModel.getMobileDeviceAzimuth(),
-                                      widgetModel.getAircraftAttitude(),
-                                      Pair::new)
-                       .observeOn(AndroidSchedulers.mainThread())
-                       .subscribe(values -> updateAircraftHeadingUI(values.first, values.second),
-                                  logErrorConsumer(TAG, "reactToUpdateAircraftHeading: "));
+                widgetModel.getAircraftAttitude(),
+                Pair::new)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(values -> updateAircraftHeadingUI(values.first, values.second),
+                        logErrorConsumer(TAG, "reactToUpdateAircraftHeading: "));
     }
 
     private Disposable reactToUpdateAircraftLocation() {
         // Use the mobile device azimuth, and the aircraft and current location states to update the aircraft location UI
         return Flowable.combineLatest(widgetModel.getMobileDeviceAzimuth(),
-                                      widgetModel.getAircraftState(),
-                                      widgetModel.getCurrentLocationState(),
-                                      (Function3<Float, CompassWidgetModel.AircraftState, CompassWidgetModel.CurrentLocationState, Pair>) (phoneAzimuth, aircraftState, state) -> {
-                                          if (aircraftState != null && state != null) {
-                                              ViewCoordinates viewCoordinates =
-                                                  getAircraftLocationCoordinates(phoneAzimuth, aircraftState, state);
-                                              return Pair.create(Pair.create(getMaxDistance(aircraftState, state),
-                                                                             calculateScale(aircraftState.getDistance())),
-                                                                 viewCoordinates);
-                                          }
-                                          return null;
-                                      }).observeOn(AndroidSchedulers.mainThread()).subscribe(values -> {
+                widgetModel.getAircraftState(),
+                widgetModel.getCurrentLocationState(),
+                (Function3<Float, CompassWidgetModel.AircraftState, CompassWidgetModel.CurrentLocationState, Pair>) (phoneAzimuth, aircraftState, state) -> {
+                    if (aircraftState != null && state != null) {
+                        ViewCoordinates viewCoordinates =
+                                getAircraftLocationCoordinates(phoneAzimuth, aircraftState, state);
+                        return Pair.create(Pair.create(getMaxDistance(aircraftState, state),
+                                calculateScale(aircraftState.getDistance())),
+                                viewCoordinates);
+                    }
+                    return null;
+                }).observeOn(AndroidSchedulers.mainThread()).subscribe(values -> {
             if (values != null) {
                 Pair pair = (Pair) values.first;
                 updateAircraftLocationUI((float) pair.first, (float) pair.second, (ViewCoordinates) values.second);
@@ -219,15 +220,15 @@ public class CompassWidget extends ConstraintLayoutWidget {
     private Disposable reactToUpdateGimbalHeading() {
         // Use the mobile device azimuth, the aircraft attitude and the gimbal heading to update the gimbal heading UI
         return Flowable.combineLatest(widgetModel.getMobileDeviceAzimuth(),
-                                      widgetModel.getAircraftAttitude(),
-                                      widgetModel.getGimbalHeading(),
-                                      (phoneAzimuth, aircraftAttitude, gimbalHeading) -> {
-                                          if (aircraftAttitude != null) {
-                                              return Pair.create(gimbalHeading,
-                                                                 (float) aircraftAttitude.getYaw() - phoneAzimuth);
-                                          }
-                                          return null;
-                                      }).observeOn(AndroidSchedulers.mainThread()).subscribe(values -> {
+                widgetModel.getAircraftAttitude(),
+                widgetModel.getGimbalHeading(),
+                (phoneAzimuth, aircraftAttitude, gimbalHeading) -> {
+                    if (aircraftAttitude != null) {
+                        return Pair.create(gimbalHeading,
+                                (float) aircraftAttitude.getYaw() - phoneAzimuth);
+                    }
+                    return null;
+                }).observeOn(AndroidSchedulers.mainThread()).subscribe(values -> {
             if (values != null) {
                 updateGimbalHeadingUI(values.first, values.second);
             }
@@ -238,20 +239,20 @@ public class CompassWidget extends ConstraintLayoutWidget {
         // Use the center type, mobile device azimuth, and the aircraft and current location states
         // to update the home or RC/Mobile device location UI
         return Flowable.combineLatest(widgetModel.getCenterType(),
-                                      widgetModel.getMobileDeviceAzimuth(),
-                                      widgetModel.getCurrentLocationState(),
-                                      widgetModel.getAircraftState(),
-                                      (Function4<CompassWidgetModel.CenterType, Float, CompassWidgetModel.CurrentLocationState, CompassWidgetModel.AircraftState, Pair>) (centerType, phoneAzimuth, state, aircraftState) -> {
-                                          if (aircraftState != null && state != null) {
-                                              ViewCoordinates viewCoordinates =
-                                                  getSecondGPSLocationCoordinates(phoneAzimuth, state, aircraftState);
-                                              return Pair.create(centerType, viewCoordinates);
-                                          }
-                                          return null;
-                                      }).observeOn(AndroidSchedulers.mainThread()).subscribe(values -> {
+                widgetModel.getMobileDeviceAzimuth(),
+                widgetModel.getCurrentLocationState(),
+                widgetModel.getAircraftState(),
+                (Function4<CompassWidgetModel.CenterType, Float, CompassWidgetModel.CurrentLocationState, CompassWidgetModel.AircraftState, Pair>) (centerType, phoneAzimuth, state, aircraftState) -> {
+                    if (aircraftState != null && state != null) {
+                        ViewCoordinates viewCoordinates =
+                                getSecondGPSLocationCoordinates(phoneAzimuth, state, aircraftState);
+                        return Pair.create(centerType, viewCoordinates);
+                    }
+                    return null;
+                }).observeOn(AndroidSchedulers.mainThread()).subscribe(values -> {
             if (values != null) {
                 updateSecondGPSLocationUI((CompassWidgetModel.CenterType) values.first,
-                                          (ViewCoordinates) values.second);
+                        (ViewCoordinates) values.second);
             }
         }, logErrorConsumer(TAG, "reactToUpdateSecondGPSLocation: "));
     }
@@ -320,9 +321,9 @@ public class CompassWidget extends ConstraintLayoutWidget {
         // update north image
         double northRadian = Math.toRadians((FULL_TURN - phoneAzimuth) % FULL_TURN);
         final float moveX =
-            (float) (halfAttitudeBallWidth + paddingWidth / 2 + halfAttitudeBallWidth * Math.sin(northRadian));
+                (float) (halfAttitudeBallWidth + paddingWidth / 2 + halfAttitudeBallWidth * Math.sin(northRadian));
         final float moveY =
-            (float) (halfAttitudeBallWidth + paddingHeight / 2 - halfAttitudeBallWidth * Math.cos(northRadian));
+                (float) (halfAttitudeBallWidth + paddingHeight / 2 - halfAttitudeBallWidth * Math.cos(northRadian));
         northImageView.setX(moveX - halfNorthIconWidth);
         northImageView.setY(moveY - halfNorthIconWidth);
     }
@@ -366,9 +367,9 @@ public class CompassWidget extends ConstraintLayoutWidget {
 
         // Update the size and heading of the gimbal
         gimbalYawImageView.setX(aircraftImageView.getX() + aircraftImageView.getWidth() / 2f
-                                    - gimbalYawImageView.getWidth() / 2f);
+                - gimbalYawImageView.getWidth() / 2f);
         gimbalYawImageView.setY(aircraftImageView.getY() + aircraftImageView.getHeight() / 2f
-                                    - gimbalYawImageView.getHeight());
+                - gimbalYawImageView.getHeight());
         gimbalYawImageView.setScaleX(scale);
         gimbalYawImageView.setScaleY(scale);
 
@@ -401,7 +402,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
 
         centerGPSImage.setVisibility(VISIBLE);
         final ConstraintLayout.LayoutParams centerParam =
-            (ConstraintLayout.LayoutParams) centerGPSImage.getLayoutParams();
+                (ConstraintLayout.LayoutParams) centerGPSImage.getLayoutParams();
         centerParam.leftMargin = 0;
         centerParam.topMargin = 0;
         centerGPSImage.setLayoutParams(centerParam);
@@ -457,7 +458,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the resource ID for the home icon's background
      *
-     * @param resourceId Integer ID of the background resource
+     * @param resourceId Integer ID of the icon's background resource
      */
     public void setHomeIconBackground(@DrawableRes int resourceId) {
         homeImageView.setBackgroundResource(resourceId);
@@ -466,16 +467,16 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the drawable resource for the home icon's background
      *
-     * @param background Drawable resource for the background
+     * @param background Drawable resource for the icon's background
      */
     public void setHomeIconBackground(@Nullable Drawable background) {
         homeImageView.setBackground(background);
     }
 
     /**
-     * Get the background drawable resource for the home icon
+     * Get the drawable resource for the home icon's background
      *
-     * @return Drawable for the icon's background
+     * @return Drawable resource of the icon's background
      */
     public Drawable getHomeIconBackground() {
         return homeImageView.getBackground();
@@ -511,7 +512,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the resource ID for the RC location icon's background
      *
-     * @param resourceId Integer ID of the background resource
+     * @param resourceId Integer ID of the icon's background resource
      */
     public void setRCLocationIconBackground(@DrawableRes int resourceId) {
         rcImageView.setBackgroundResource(resourceId);
@@ -520,16 +521,16 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the drawable resource for the RC location icon's background
      *
-     * @param background Drawable resource for the background
+     * @param background Drawable resource for the icon's background
      */
     public void setRCLocationIconBackground(@Nullable Drawable background) {
         rcImageView.setBackground(background);
     }
 
     /**
-     * Get the background drawable resource for the RC location icon
+     * Get the drawable resource for the RC location icon's background
      *
-     * @return Drawable for the icon's background
+     * @return Drawable resource for the icon's background
      */
     public Drawable getRCLocationIconBackground() {
         return rcImageView.getBackground();
@@ -565,7 +566,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the resource ID for the aircraft icon's background
      *
-     * @param resourceId Integer ID of the background resource
+     * @param resourceId Integer ID of the icon's background resource
      */
     public void setAircraftIconBackground(@DrawableRes int resourceId) {
         aircraftImageView.setBackgroundResource(resourceId);
@@ -574,16 +575,16 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the drawable resource for the aircraft icon's background
      *
-     * @param background Drawable resource for the background
+     * @param background Drawable resource for the icon's background
      */
     public void setAircraftIconBackground(@Nullable Drawable background) {
         aircraftImageView.setBackground(background);
     }
 
     /**
-     * Get the background drawable resource for the aircraft icon
+     * Get the drawable resource for the aircraft icon's background
      *
-     * @return Drawable for the icon's background
+     * @return Drawable resource of the icon's background
      */
     public Drawable getAircraftIconBackground() {
         return aircraftImageView.getBackground();
@@ -619,7 +620,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the resource ID for the gimbal yaw icon's background
      *
-     * @param resourceId Integer ID of the background resource
+     * @param resourceId Integer ID of the icon's background resource
      */
     public void setGimbalYawIconBackground(@DrawableRes int resourceId) {
         gimbalYawImageView.setBackgroundResource(resourceId);
@@ -628,16 +629,16 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the drawable resource for the gimbal yaw icon's background
      *
-     * @param background Drawable resource for the background
+     * @param background Drawable resource for the icon's background
      */
     public void setGimbalYawIconBackground(@Nullable Drawable background) {
         gimbalYawImageView.setBackground(background);
     }
 
     /**
-     * Get the background drawable resource for the gimbal yaw icon
+     * Get the drawable resource for the gimbal yaw icon's background
      *
-     * @return Drawable for the icon's background
+     * @return Drawable resource of the icon's background
      */
     public Drawable getGimbalYawIconBackground() {
         return gimbalYawImageView.getBackground();
@@ -673,7 +674,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the resource ID for the north icon's background
      *
-     * @param resourceId Integer ID of the background resource
+     * @param resourceId Integer ID of the icon's background resource
      */
     public void setNorthIconBackground(@DrawableRes int resourceId) {
         northImageView.setBackgroundResource(resourceId);
@@ -682,16 +683,16 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the drawable resource for the north icon's background
      *
-     * @param background Drawable resource for the background
+     * @param background Drawable resource for the icon's background
      */
     public void setNorthIconBackground(@Nullable Drawable background) {
         northImageView.setBackground(background);
     }
 
     /**
-     * Get the background drawable resource for the north icon
+     * Get the drawable resource for the north icon's background
      *
-     * @return Drawable for the icon's background
+     * @return Drawable resource of the icon's background
      */
     public Drawable getNorthIconBackground() {
         return northImageView.getBackground();
@@ -727,7 +728,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the resource ID for the inner circles icon's background
      *
-     * @param resourceId Integer ID of the background resource
+     * @param resourceId Integer ID of the icon's background resource
      */
     public void setInnerCirclesIconBackground(@DrawableRes int resourceId) {
         innerCirclesImageView.setBackgroundResource(resourceId);
@@ -736,16 +737,16 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the drawable resource for the inner circles icon's background
      *
-     * @param background Drawable resource for the background
+     * @param background Drawable resource for the icon's background
      */
     public void setInnerCirclesIconBackground(@Nullable Drawable background) {
         innerCirclesImageView.setBackground(background);
     }
 
     /**
-     * Get the background drawable resource for the inner circles icon
+     * Get the drawable resource for the inner circles icon's background
      *
-     * @return Drawable for the icon's background
+     * @return Drawable resource of the icon's background
      */
     public Drawable getInnerCirclesIconBackground() {
         return innerCirclesImageView.getBackground();
@@ -781,7 +782,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the resource ID for the compass background icon's background
      *
-     * @param resourceId Integer ID of the background resource
+     * @param resourceId Integer ID of the icon's background resource
      */
     public void setCompassBackgroundIconBackground(@DrawableRes int resourceId) {
         compassBackgroundImageView.setBackgroundResource(resourceId);
@@ -790,16 +791,16 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the drawable resource for the compass background icon's background
      *
-     * @param background Drawable resource for the background
+     * @param background Drawable resource for the icon's background
      */
     public void setCompassBackgroundIconBackground(@Nullable Drawable background) {
         compassBackgroundImageView.setBackground(background);
     }
 
     /**
-     * Get the background drawable resource for the compass background icon
+     * Get the drawable resource for the compass background icon's background
      *
-     * @return Drawable for the icon's background
+     * @return Drawable resource of the icon's background
      */
     public Drawable getCompassBackgroundIconBackground() {
         return compassBackgroundImageView.getBackground();
@@ -826,7 +827,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the resource ID for the aircraft attitude icon's background
      *
-     * @param resourceId Integer ID of the background resource
+     * @param resourceId Integer ID of the icon's background resource
      */
     public void setAircraftAttitudeIconBackground(@DrawableRes int resourceId) {
         aircraftAttitudeProgressBar.setBackgroundResource(resourceId);
@@ -835,16 +836,16 @@ public class CompassWidget extends ConstraintLayoutWidget {
     /**
      * Set the drawable resource for the aircraft attitude icon's background
      *
-     * @param background Drawable resource for the background
+     * @param background Drawable resource for the icon's background
      */
     public void setAircraftAttitudeIconBackground(@Nullable Drawable background) {
         aircraftAttitudeProgressBar.setBackground(background);
     }
 
     /**
-     * Get the background drawable resource for the aircraft attitude icon
+     * Get the drawable resource for the aircraft attitude icon's background
      *
-     * @return Drawable for the icon's background
+     * @return Drawable resource of the icon's background
      */
     public Drawable getAircraftAttitudeIconBackground() {
         return aircraftAttitudeProgressBar.getBackground();
@@ -856,7 +857,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
      * @param strokeWidth Float value of stroke width in px
      */
     public void setVisualCompassViewStrokeWidth(
-        @FloatRange(from = 1.0, to = VisualCompassView.MAX_LINE_WIDTH) float strokeWidth) {
+            @FloatRange(from = 1.0, to = VisualCompassView.MAX_LINE_WIDTH) float strokeWidth) {
         visualCompassView.setStrokeWidth(strokeWidth);
     }
 
@@ -893,7 +894,7 @@ public class CompassWidget extends ConstraintLayoutWidget {
      * @param strokeWidth Float value of stroke width in px
      */
     public void setGimbalYawViewStrokeWidth(
-        @FloatRange(from = 1.0, to = GimbalYawView.MAX_LINE_WIDTH) float strokeWidth) {
+            @FloatRange(from = 1.0, to = GimbalYawView.MAX_LINE_WIDTH) float strokeWidth) {
         gimbalYawView.setStrokeWidth(strokeWidth);
     }
 
@@ -971,49 +972,49 @@ public class CompassWidget extends ConstraintLayoutWidget {
         }
 
         float visualCompassViewStrokeWidth =
-            typedArray.getDimension(R.styleable.CompassWidget_uxsdk_visualCompassViewStrokeWidth, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.CompassWidget_uxsdk_visualCompassViewStrokeWidth, INVALID_RESOURCE);
         if (visualCompassViewStrokeWidth != INVALID_RESOURCE) {
             setVisualCompassViewStrokeWidth(visualCompassViewStrokeWidth);
         }
 
         int visualCompassViewLineColor =
-            typedArray.getColor(R.styleable.CompassWidget_uxsdk_visualCompassViewLineColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.CompassWidget_uxsdk_visualCompassViewLineColor, INVALID_COLOR);
         if (visualCompassViewLineColor != INVALID_COLOR) {
             setVisualCompassViewLineColor(visualCompassViewLineColor);
         }
 
         int visualCompassViewLineInterval =
-            typedArray.getInteger(R.styleable.CompassWidget_uxsdk_visualCompassViewLineInterval, INVALID_RESOURCE);
+                typedArray.getInteger(R.styleable.CompassWidget_uxsdk_visualCompassViewLineInterval, INVALID_RESOURCE);
         if (visualCompassViewLineInterval != INVALID_RESOURCE) {
             setVisualCompassViewLineInterval(visualCompassViewLineInterval);
         }
 
         int visualCompassViewNumberOfLines =
-            typedArray.getInteger(R.styleable.CompassWidget_uxsdk_visualCompassViewNumberOfLines, INVALID_RESOURCE);
+                typedArray.getInteger(R.styleable.CompassWidget_uxsdk_visualCompassViewNumberOfLines, INVALID_RESOURCE);
         if (visualCompassViewNumberOfLines != INVALID_RESOURCE) {
             setVisualCompassViewNumberOfLines(visualCompassViewNumberOfLines);
         }
 
         float gimbalYawViewStrokeWidth =
-            typedArray.getDimension(R.styleable.CompassWidget_uxsdk_gimbalYawViewStrokeWidth, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.CompassWidget_uxsdk_gimbalYawViewStrokeWidth, INVALID_RESOURCE);
         if (gimbalYawViewStrokeWidth != INVALID_RESOURCE) {
             setGimbalYawViewStrokeWidth(gimbalYawViewStrokeWidth);
         }
 
         int gimbalYawViewYawColor =
-            typedArray.getColor(R.styleable.CompassWidget_uxsdk_gimbalYawViewYawColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.CompassWidget_uxsdk_gimbalYawViewYawColor, INVALID_COLOR);
         if (gimbalYawViewYawColor != INVALID_COLOR) {
             setGimbalYawViewYawColor(gimbalYawViewYawColor);
         }
 
         int gimbalYawViewInvalidColor =
-            typedArray.getColor(R.styleable.CompassWidget_uxsdk_gimbalYawViewInvalidColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.CompassWidget_uxsdk_gimbalYawViewInvalidColor, INVALID_COLOR);
         if (gimbalYawViewInvalidColor != INVALID_COLOR) {
             setGimbalYawViewInvalidColor(gimbalYawViewInvalidColor);
         }
 
         int gimbalYawViewBlinkColor =
-            typedArray.getColor(R.styleable.CompassWidget_uxsdk_gimbalYawViewBlinkColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.CompassWidget_uxsdk_gimbalYawViewBlinkColor, INVALID_COLOR);
         if (gimbalYawViewBlinkColor != INVALID_COLOR) {
             setGimbalYawViewBlinkColor(gimbalYawViewBlinkColor);
         }
@@ -1027,13 +1028,16 @@ public class CompassWidget extends ConstraintLayoutWidget {
      */
     private class ViewCoordinates {
         private float x, y;
+
         ViewCoordinates(float x, float y) {
             this.x = x;
             this.y = y;
         }
+
         private float getX() {
             return x;
         }
+
         private float getY() {
             return y;
         }

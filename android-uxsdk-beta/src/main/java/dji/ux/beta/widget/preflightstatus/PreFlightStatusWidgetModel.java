@@ -22,7 +22,8 @@
 
 package dji.ux.beta.widget.preflightstatus;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
 import dji.common.logics.warningstatuslogic.WarningStatusItem;
 import dji.keysdk.DJIKey;
 import dji.keysdk.DiagnosticsKey;
@@ -53,6 +54,7 @@ public class PreFlightStatusWidgetModel extends WidgetModel {
     //endregion
 
     //region Data
+
     /**
      * Get the pre-flight status of the aircraft as a WarningStatusItem.
      *

@@ -43,6 +43,7 @@ public final class LocationUtil {
     }
 
     //region Coordinate calculation.
+
     /**
      * Check to ensure longitude is between 1E-6 and 180.0d
      *
@@ -68,9 +69,9 @@ public final class LocationUtil {
     /**
      * Find the approximate distance in meters between two given GPS locations
      *
-     * @param latitude1 Latitude of the first location
+     * @param latitude1  Latitude of the first location
      * @param longitude1 Longitude of the first location
-     * @param latitude2 Latitude of the second location
+     * @param latitude2  Latitude of the second location
      * @param longitude2 Longitude of the second location
      * @return Distance between given locations in meters
      */
@@ -90,9 +91,9 @@ public final class LocationUtil {
     /**
      * Find the approximate distance and the angle between the two given GPS locations
      *
-     * @param latitude1 Latitude of the first location
+     * @param latitude1  Latitude of the first location
      * @param longitude1 Longitude of the first location
-     * @param latitude2 Latitude of the second location
+     * @param latitude2  Latitude of the second location
      * @param longitude2 Longitude of the second location
      * @return A float array containing the angle at index 0 and the distance at index 1
      */

@@ -26,14 +26,16 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.R;
 import dji.ux.beta.base.ConstraintLayoutWidget;
@@ -42,6 +44,7 @@ import dji.ux.beta.base.GlobalPreferencesManager;
 import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import dji.ux.beta.util.DisplayUtil;
 import dji.ux.beta.util.UnitConversionUtil;
+
 import java.text.DecimalFormat;
 
 /**
@@ -65,9 +68,11 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     public AltitudeWidget(Context context) {
         super(context);
     }
+
     public AltitudeWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     public AltitudeWidget(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -81,8 +86,8 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
 
         if (!isInEditMode()) {
             widgetModel = new AltitudeWidgetModel(DJISDKModel.getInstance(),
-                                                  ObservableInMemoryKeyedStore.getInstance(),
-                                                  GlobalPreferencesManager.getInstance());
+                    ObservableInMemoryKeyedStore.getInstance(),
+                    GlobalPreferencesManager.getInstance());
             altitudeTitleTextView.setText(getResources().getString(R.string.uxsdk_altitude_title));
             altitudeValueTextView.setMinEms(EMS);
         }
@@ -113,11 +118,11 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getAltitude()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateValueText));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateValueText));
         addReaction(widgetModel.getUnitType()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateUnitText));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateUnitText));
     }
     //endregion
 
@@ -212,7 +217,7 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the background for the altitude title text view
+     * Set the background of the altitude title text view
      *
      * @param drawable Drawable resource for the background
      */
@@ -431,73 +436,73 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AltitudeWidget);
         int altitudeTitleTextAppearanceId =
-            typedArray.getResourceId(R.styleable.AltitudeWidget_uxsdk_altitudeTitleTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.AltitudeWidget_uxsdk_altitudeTitleTextAppearance, INVALID_RESOURCE);
         if (altitudeTitleTextAppearanceId != INVALID_RESOURCE) {
             setAltitudeTitleTextAppearance(altitudeTitleTextAppearanceId);
         }
 
         float altitudeTitleTextSize =
-            typedArray.getDimension(R.styleable.AltitudeWidget_uxsdk_altitudeTitleTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.AltitudeWidget_uxsdk_altitudeTitleTextSize, INVALID_RESOURCE);
         if (altitudeTitleTextSize != INVALID_RESOURCE) {
             setAltitudeTitleTextSize(DisplayUtil.pxToSp(context, altitudeTitleTextSize));
         }
 
         int altitudeTitleTextColor =
-            typedArray.getColor(R.styleable.AltitudeWidget_uxsdk_altitudeTitleTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.AltitudeWidget_uxsdk_altitudeTitleTextColor, INVALID_COLOR);
         if (altitudeTitleTextColor != INVALID_COLOR) {
             setAltitudeTitleTextColor(altitudeTitleTextColor);
         }
 
         Drawable altitudeTitleTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.AltitudeWidget_uxsdk_altitudeTitleBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.AltitudeWidget_uxsdk_altitudeTitleBackgroundDrawable);
         if (altitudeTitleTextBackgroundDrawable != null) {
             setAltitudeTitleTextBackground(altitudeTitleTextBackgroundDrawable);
         }
 
         int altitudeValueTextAppearanceId =
-            typedArray.getResourceId(R.styleable.AltitudeWidget_uxsdk_altitudeValueTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.AltitudeWidget_uxsdk_altitudeValueTextAppearance, INVALID_RESOURCE);
         if (altitudeValueTextAppearanceId != INVALID_RESOURCE) {
             setAltitudeValueTextAppearance(altitudeValueTextAppearanceId);
         }
 
         float altitudeValueTextSize =
-            typedArray.getDimension(R.styleable.AltitudeWidget_uxsdk_altitudeValueTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.AltitudeWidget_uxsdk_altitudeValueTextSize, INVALID_RESOURCE);
         if (altitudeValueTextSize != INVALID_RESOURCE) {
             setAltitudeValueTextSize(DisplayUtil.pxToSp(context, altitudeValueTextSize));
         }
 
         int altitudeValueTextColor =
-            typedArray.getColor(R.styleable.AltitudeWidget_uxsdk_altitudeValueTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.AltitudeWidget_uxsdk_altitudeValueTextColor, INVALID_COLOR);
         if (altitudeValueTextColor != INVALID_COLOR) {
             setAltitudeValueTextColor(altitudeValueTextColor);
         }
 
         Drawable altitudeValueTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.AltitudeWidget_uxsdk_altitudeValueBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.AltitudeWidget_uxsdk_altitudeValueBackgroundDrawable);
         if (altitudeValueTextBackgroundDrawable != null) {
             setAltitudeValueTextBackground(altitudeValueTextBackgroundDrawable);
         }
 
         int altitudeUnitTextAppearanceId =
-            typedArray.getResourceId(R.styleable.AltitudeWidget_uxsdk_altitudeUnitTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.AltitudeWidget_uxsdk_altitudeUnitTextAppearance, INVALID_RESOURCE);
         if (altitudeUnitTextAppearanceId != INVALID_RESOURCE) {
             setAltitudeUnitTextAppearance(altitudeUnitTextAppearanceId);
         }
 
         float altitudeUnitTextSize =
-            typedArray.getDimension(R.styleable.AltitudeWidget_uxsdk_altitudeUnitTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.AltitudeWidget_uxsdk_altitudeUnitTextSize, INVALID_RESOURCE);
         if (altitudeUnitTextSize != INVALID_RESOURCE) {
             setAltitudeUnitTextSize(DisplayUtil.pxToSp(context, altitudeUnitTextSize));
         }
 
         int altitudeUnitTextColor =
-            typedArray.getColor(R.styleable.AltitudeWidget_uxsdk_altitudeUnitTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.AltitudeWidget_uxsdk_altitudeUnitTextColor, INVALID_COLOR);
         if (altitudeUnitTextColor != INVALID_COLOR) {
             setAltitudeUnitTextColor(altitudeUnitTextColor);
         }
 
         Drawable altitudeUnitTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.AltitudeWidget_uxsdk_altitudeUnitBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.AltitudeWidget_uxsdk_altitudeUnitBackgroundDrawable);
         if (altitudeUnitTextBackgroundDrawable != null) {
             setAltitudeUnitTextBackground(altitudeUnitTextBackgroundDrawable);
         }

@@ -22,8 +22,9 @@
 
 package dji.ux.beta.widget.vps;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import dji.keysdk.FlightControllerKey;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.base.DJISDKModel;
@@ -68,6 +69,7 @@ public class VPSWidgetModel extends WidgetModel {
     //endregion
 
     //region Data
+
     /**
      * Get the height of the aircraft as returned by the ultrasonic sensor.
      *
@@ -104,17 +106,17 @@ public class VPSWidgetModel extends WidgetModel {
     @Override
     protected void inSetup() {
         FlightControllerKey visionPositioningEnabledKey =
-            FlightControllerKey.createFlightAssistantKey(FlightControllerKey.VISION_ASSISTED_POSITIONING_ENABLED);
+                FlightControllerKey.createFlightAssistantKey(FlightControllerKey.VISION_ASSISTED_POSITIONING_ENABLED);
         FlightControllerKey isUltrasonicBeingUsedKey =
-            FlightControllerKey.create(FlightControllerKey.IS_ULTRASONIC_BEING_USED);
+                FlightControllerKey.create(FlightControllerKey.IS_ULTRASONIC_BEING_USED);
         FlightControllerKey ultrasonicHeightKey =
-            FlightControllerKey.create(FlightControllerKey.ULTRASONIC_HEIGHT_IN_METERS);
+                FlightControllerKey.create(FlightControllerKey.ULTRASONIC_HEIGHT_IN_METERS);
 
         bindDataProcessor(visionPositioningEnabledKey, visionPositioningEnabledProcessor);
         bindDataProcessor(isUltrasonicBeingUsedKey, ultrasonicBeingUsedProcessor);
         bindDataProcessor(ultrasonicHeightKey,
-                          rawUltrasonicHeightProcessor,
-                          ultrasonicHeight -> convertValueByUnit((float) ultrasonicHeight));
+                rawUltrasonicHeightProcessor,
+                ultrasonicHeight -> convertValueByUnit((float) ultrasonicHeight));
 
         UXKey unitKey = UXKeys.create(GlobalPreferenceKeys.UNIT_TYPE);
         bindDataProcessor(unitKey, unitTypeProcessor);

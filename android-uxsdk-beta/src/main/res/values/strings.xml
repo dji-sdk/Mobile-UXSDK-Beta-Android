@@ -20,7 +20,8 @@
   ~ SOFTWARE.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="uxsdk_app_name">DJIUXSDK Beta</string>
     <string name="uxsdk_app_yes">Yes</string>
     <string name="uxsdk_app_no">No</string>
@@ -39,6 +40,13 @@
 
     <string name="uxsdk_string_default_value">N/A</string>
 
+    <string name="uxsdk_auto_exposure_lock_widget_display_string">AE</string>
+
+    <string name="uxsdk_widget_focus_mode_manual">MF</string>
+    <string name="uxsdk_widget_focus_mode_auto">AF</string>
+    <string name="uxsdk_widget_focus_mode_afc">AFC</string>
+    <string name="uxsdk_widget_focus_mode_separator">/</string>
+
     <!-- Dashboard widgets -->
     <string name="uxsdk_not_a_number">NaN</string>
     <string name="uxsdk_unit_meters">m</string>
@@ -52,6 +60,41 @@
     <string name="uxsdk_vps_title">VPS:</string>
     <string name="uxsdk_horizontal_velocity_title">H.S:</string>
     <string name="uxsdk_vertical_velocity_title">V.S:</string>
+
+    <string name="uxsdk_video_time_hours">%1$02d:%2$02d:%3$02d</string>
+    <string name="uxsdk_video_time">%1$02d:%2$02d</string>
+
+    <!-- Camera Config Widgets -->
+    <string name="uxsdk_aperture_title">F</string>
+    <string name="uxsdk_aperture_integer">%1$d</string>
+    <string name="uxsdk_aperture_integer_with_decimal">%1$d.%2$d</string>
+    <string name="uxsdk_shutter_title">SHUTTER</string>
+    <string name="uxsdk_ev_title">EV</string>
+    <string name="uxsdk_ei_title">EI</string>
+    <string name="uxsdk_exposure_auto_iso_title">AUTO ISO</string>
+    <string name="uxsdk_exposure_locked_iso_title">LOCKED ISO</string>
+    <string name="uxsdk_exposure_iso_title">ISO</string>
+    <string name="uxsdk_white_balance_title">WB %1$s</string>
+    <string name="uxsdk_white_balance_temp">%1$dK</string>
+    <!-- white balance -->
+    <string name="uxsdk_camera_wb_auto">Auto</string>
+    <string name="uxsdk_camera_wb_outdoor">Sunny</string>
+    <string name="uxsdk_camera_wb_indoor">Cloudy</string>
+    <string name="uxsdk_camera_wb_water">Water</string>
+    <string name="uxsdk_camera_wb_tungsten">Incandescent</string>
+    <string name="uxsdk_camera_wb_neon">Neon</string>
+    <string name="uxsdk_camera_wb_custom">Custom</string>
+    <string name="uxsdk_camera_wb_neutral">Neutral</string>
+
+    <!-- picture format -->
+    <string name="uxsdk_camera_picture_format_raw">RAW</string>
+    <string name="uxsdk_camera_picture_format_jpeg">JPEG</string>
+    <string name="uxsdk_camera_picture_format_jpegraw">JPEG+RAW</string>
+    <string name="uxsdk_camera_picture_format_tiff">TIFF</string>
+    <string name="uxsdk_camera_picture_format_radiometic_jpeg">Radiometric JPEG</string>
+    <string name="uxsdk_camera_picture_format_low_tiff">TIFF Linear Low</string>
+    <string name="uxsdk_camera_picture_format_high_tiff">TIFF Linear High</string>
+    <string name="uxsdk_camera_picture_format_jr">J+R</string>
 
     <!-- Simulator Widget -->
     <string name="uxsdk_simulator_zero_string">0</string>
@@ -85,7 +128,8 @@
     <string name="uxsdk_simulator_wind_speed_x">Wind Speed X</string>
     <string name="uxsdk_simulator_wind_speed_y">Wind Speed Y</string>
     <string name="uxsdk_simulator_wind_speed_z">Wind Speed Z</string>
-    <string name="uxsdk_simulator_zero_value">0</string>
+
+    <string name="uxsdk_camera_setting_menu">MENU</string>
 
     <string name="uxsdk_fly_zone_error_unidentified">FlyZone ID not identified.</string>
     <string name="uxsdk_fly_zone_unlock">Unlock</string>
@@ -111,5 +155,145 @@
     <string name="uxsdk_custom_fly_zone_enable_failed">Enabling custom unlock zone failed.</string>
     <string name="uxsdk_custom_fly_zone_disable_failed">Disabling custom unlock zone failed.</string>
     <string name="uxsdk_custom_fly_zone_login_requirement">In order to retrieve custom unlock fly zones you must login with your DJI account. Please make sure the serial number of the aircraft you are connected to matches your custom unlock records. Tap Log in to continue logging in</string>
+
+    <!-- video resolution -->
+    <string name="uxsdk_camera_video_resolution_640_480p">640x480</string>
+    <string name="uxsdk_camera_video_resolution_640_512p">640x512</string>
+    <string name="uxsdk_camera_video_resolution_1280_720p">1280x720</string>
+    <string name="uxsdk_camera_video_resolution_1920_1080p">1920x1080</string>
+    <string name="uxsdk_camera_video_resolution_2704_1520p">2704x1520</string>
+    <string name="uxsdk_camera_video_resolution_2720_1530p">2720x1530</string>
+    <string name="uxsdk_camera_video_resolution_3840x1572p">3840x1572</string>
+    <string name="uxsdk_camera_video_resolution_3840_2160p">3840x2160</string>
+    <string name="uxsdk_camera_video_resolution_4096_2160p">4096x2160</string>
+    <string name="uxsdk_camera_video_resolution_4608x2160p">4608x2160</string>
+    <string name="uxsdk_camera_video_resolution_4608x2592p">4608x2592</string>
+    <string name="uxsdk_camera_video_resolution_5280x2160p">5280x2160</string>
+    <string name="uxsdk_camera_video_resolution_MaxResolution">Max</string>
+    <string name="uxsdk_camera_video_resolution_None">Not Recorded</string>
+    <string name="uxsdk_camera_video_resolution_5760x3240p">5760x3240</string>
+    <string name="uxsdk_camera_video_resolution_6016x3200p">6016x3200</string>
+    <string name="uxsdk_camera_video_resolution_2048x1080p">2048x1080</string>
+    <string name="uxsdk_camera_video_resolution_5280x2972p">5280x2972</string>
+    <string name="uxsdk_camera_video_resolution_336x256p">336x256</string>
+    <string name="uxsdk_camera_video_resolution_3712x2088p">3712x2088</string>
+    <string name="uxsdk_camera_video_resolution_3944x2088p">3944x2088</string>
+    <string name="uxsdk_camera_video_resolution_2688x1512p">2688x1512</string>
+    <string name="uxsdk_camera_video_resolution_hq">HQ</string>
+    <string name="uxsdk_camera_video_resolution_full_fov">Full FOV</string>
+    <string name="uxsdk_slow_tag">SLOW</string>
+
+    <!-- video frame rate value-->
+    <string name="uxsdk_camera_video_frame_rate_value_24">23.976</string>
+    <string name="uxsdk_camera_video_frame_rate_value_true_24">24.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_25">25.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_30">29.970</string>
+    <string name="uxsdk_camera_video_frame_rate_value_true_30">30.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_48">47.950</string>
+    <string name="uxsdk_camera_video_frame_rate_value_true_48">48.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_50">50.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_60">59.940</string>
+    <string name="uxsdk_camera_video_frame_rate_value_true_60">60.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_96">96.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_100">100.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_120">119.880</string>
+    <string name="uxsdk_camera_video_frame_rate_value_240">240.000</string>
+
+    <!-- SSD Color -->
+    <string name="uxsdk_camera_ssd_color_standard">Standard</string>
+    <string name="uxsdk_camera_ssd_color_dlog">DLog</string>
+    <string name="uxsdk_camera_ssd_color_rec709">Rec.709</string>
+    <string name="uxsdk_camera_ssd_color_cine_like">CineLike</string>
+    <string name="uxsdk_camera_ssd_color_raw_color">RAW</string>
+    <string name="uxsdk_camera_ssd_color_unknown">Unknown</string>
+
+    <!-- Storage -->
+    <string name="uxsdk_storage_title_time">TIME</string>
+    <string name="uxsdk_storage_title_capacity">CAPACITY</string>
+    <string name="uxsdk_storage_title_status">STATUS</string>
+    <string name="uxsdk_storage_value_full">Full</string>
+    <string name="uxsdk_storage_remaining_space">%1$d MB</string>
+
+    <!-- SD Status -->
+    <string name="uxsdk_sd_card_usb_connected">USB Connected</string>
+    <string name="uxsdk_sd_card_missing">No SD Card</string>
+    <string name="uxsdk_sd_card_full">SD Card Full</string>
+    <string name="uxsdk_sd_card_slow">Slow SD Card</string>
+    <string name="uxsdk_sd_card_write_protect">SD Card Write Protected</string>
+    <string name="uxsdk_sd_card_not_formatted">SD Card Not Formatted</string>
+    <string name="uxsdk_sd_card_formatting">SD Card is formatting&#8230;</string>
+    <string name="uxsdk_sd_card_invalid">SD Card Invalid</string>
+    <string name="uxsdk_sd_card_busy">SD Card Busy</string>
+    <string name="uxsdk_sd_card_unknown_error">SD Card Unknown Error</string>
+    <string name="uxsdk_sd_card_initial">SD Card Initializing</string>
+    <string name="uxsdk_sd_card_recover_file">Repairing Video Files</string>
+    <string name="uxsdk_sd_card_write_slow">Slow Write Speed</string>
+    <string name="uxsdk_sd_card_needs_formatting">SD Card Formatting is Recommended</string>
+
+    <!-- Internal Status -->
+    <string name="uxsdk_internal_storage_missing">No Internal Storage</string>
+    <string name="uxsdk_internal_storage_full">Internal Storage Full</string>
+    <string name="uxsdk_internal_storage_slow">Slow Internal Storage</string>
+    <string name="uxsdk_internal_storage_write_protect">Internal Storage Write Protected</string>
+    <string name="uxsdk_internal_storage_not_formatted">Internal Storage Not Formatted</string>
+    <string name="uxsdk_internal_storage_formatting">Internal Storage is Formatting&#8230;</string>
+    <string name="uxsdk_internal_storage_invalid">Internal Storage Invalid</string>
+    <string name="uxsdk_internal_storage_busy">Internal Storage Busy</string>
+    <string name="uxsdk_internal_storage_unknown_error">Internal Storage Unknown Error</string>
+    <string name="uxsdk_internal_storage_initial">Internal Storage Initializing</string>
+
+    <!-- SSD Status -->
+    <string name="uxsdk_ssd_status_error_nossd">No SSD Available</string>
+    <string name="uxsdk_camera_ssd_saving">Saving to SSD</string>
+    <string name="uxsdk_ssd_status_formatting">Formatting…</string>
+    <string name="uxsdk_ssd_status_init">SSD initializing…</string>
+    <string name="uxsdk_ssd_status_recognize_failed">SSD recognition failed.</string>
+    <string name="uxsdk_ssd_status_verify_failed">SSD Verification Failed</string>
+    <string name="uxsdk_ssd_status_full">SSD Full</string>
+    <string name="uxsdk_ssd_status_poor_connection">Connection Error</string>
+    <string name="uxsdk_ssd_status_switching_mode">Switching mode…</string>
+    <string name="uxsdk_ssd_status_need_format">Formatting is required.</string>
+
+    <!-- SSD License -->
+    <string name="uxsdk_camera_ssd_video_license_cdng">CinemaDNG</string>
+    <string name="uxsdk_camera_ssd_video_license_422hq">ProRes 422HQ</string>
+    <string name="uxsdk_camera_ssd_video_license_4444xq">ProRes 4444XQ</string>
+
+    <!-- SD Color -->
+    <string name="uxsdk_camera_filter_none">None</string>
+    <string name="uxsdk_camera_filter_art">Art</string>
+    <string name="uxsdk_camera_filter_reminiscence">Reminiscence</string>
+    <string name="uxsdk_camera_filter_inverse">Inverse</string>
+    <string name="uxsdk_camera_filter_blackandwhite">Black &amp; White</string>
+    <string name="uxsdk_camera_filter_bright">Bright</string>
+    <string name="uxsdk_camera_filter_dcinelike">D-CineLike</string>
+    <string name="uxsdk_camera_filter_Portrait">Portrait</string>
+    <string name="uxsdk_camera_filter_M31">M31</string>
+    <string name="uxsdk_camera_filter_delta">Delta</string>
+    <string name="uxsdk_camera_filter_kdx">Kdx</string>
+    <string name="uxsdk_camera_filter_dk79">DK79</string>
+    <string name="uxsdk_camera_filter_prismo">Prismo</string>
+    <string name="uxsdk_camera_filter_jugo">Jugo</string>
+    <string name="uxsdk_camera_filter_vision4">Vision4</string>
+    <string name="uxsdk_camera_filter_vision6">Vision6</string>
+    <string name="uxsdk_camera_filter_solarize">Solarize</string>
+    <string name="uxsdk_camera_filter_posterize">Posterize</string>
+    <string name="uxsdk_camera_filter_whiteboard">Whiteboard</string>
+    <string name="uxsdk_camera_filter_blackboard">Blackboard</string>>
+    <string name="uxsdk_camera_filter_aqua">Aqua</string>
+    <string name="uxsdk_camera_filter_truecolor">TrueColor</string>
+    <string name="uxsdk_camera_filter_dlog">D-Log</string>
+    <string name="uxsdk_camera_filter_hlg">HLG</string>
+    <string name="uxsdk_camera_filter_truecolor_ext">TrueColorExt</string>
+    <string name="uxsdk_camera_filter_film_a">Film A</string>
+    <string name="uxsdk_camera_filter_film_b">Film B</string>
+    <string name="uxsdk_camera_filter_film_c">Film C</string>
+    <string name="uxsdk_camera_filter_film_d">Film D</string>
+    <string name="uxsdk_camera_filter_film_e">Film E</string>
+    <string name="uxsdk_camera_filter_film_f">Film F</string>
+    <string name="uxsdk_camera_filter_film_g">Film G</string>
+    <string name="uxsdk_camera_filter_film_h">Film H</string>
+    <string name="uxsdk_camera_filter_film_i">Film I</string>
+    <string name="uxsdk_camera_filter_rec_709">Rec.709</string>
 
 </resources>

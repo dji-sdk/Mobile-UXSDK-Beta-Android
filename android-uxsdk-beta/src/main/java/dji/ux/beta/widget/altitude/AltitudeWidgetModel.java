@@ -22,8 +22,9 @@
 
 package dji.ux.beta.widget.altitude;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import dji.keysdk.FlightControllerKey;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.base.DJISDKModel;
@@ -65,6 +66,7 @@ public class AltitudeWidgetModel extends WidgetModel {
     //endregion
 
     //region Data
+
     /**
      * Get the altitude of the aircraft.
      *
@@ -97,12 +99,14 @@ public class AltitudeWidgetModel extends WidgetModel {
             preferencesManager.setUpListener();
         }
     }
+
     @Override
     protected void inCleanup() {
         if (preferencesManager != null) {
             preferencesManager.cleanup();
         }
     }
+
     @Override
     protected void updateStates() {
         //Nothing to update

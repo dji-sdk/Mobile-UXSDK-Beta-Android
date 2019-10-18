@@ -23,7 +23,8 @@
 package dji.ux.beta.widget.useraccount;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 import dji.common.error.DJIError;
 import dji.common.useraccount.UserAccountState;
@@ -47,7 +48,7 @@ import dji.ux.beta.util.DataProcessor;
  * underlying logic and communication
  */
 public class UserAccountLoginWidgetModel extends WidgetModel
-    implements UserAccountManager.UserAccountStateChangeListener {
+        implements UserAccountManager.UserAccountStateChangeListener {
 
     //region fields
     private static final String TAG = UserAccountLoginWidgetModel.class.getSimpleName();
@@ -142,20 +143,20 @@ public class UserAccountLoginWidgetModel extends WidgetModel
                 return;
             }
             userAccountManager.logIntoDJIUserAccount(context,
-                                                     new CommonCallbacks.CompletionCallbackWith<UserAccountState>() {
-                                                         @Override
-                                                         public void onSuccess(UserAccountState userAccountState) {
-                                                             emitter.onComplete();
-                                                         }
+                    new CommonCallbacks.CompletionCallbackWith<UserAccountState>() {
+                        @Override
+                        public void onSuccess(UserAccountState userAccountState) {
+                            emitter.onComplete();
+                        }
 
-                                                         @Override
-                                                         public void onFailure(DJIError error) {
-                                                             if (!emitter.isDisposed()) {
-                                                                 UXSDKError uxsdkError = new UXSDKError(error);
-                                                                 emitter.onError(uxsdkError);
-                                                             }
-                                                         }
-                                                     });
+                        @Override
+                        public void onFailure(DJIError error) {
+                            if (!emitter.isDisposed()) {
+                                UXSDKError uxsdkError = new UXSDKError(error);
+                                emitter.onError(uxsdkError);
+                            }
+                        }
+                    });
         });
     }
 

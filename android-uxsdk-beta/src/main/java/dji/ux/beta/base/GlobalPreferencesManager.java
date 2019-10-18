@@ -22,7 +22,7 @@
 
 package dji.ux.beta.base;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * Class used for initializing and getting an instance of the implementation

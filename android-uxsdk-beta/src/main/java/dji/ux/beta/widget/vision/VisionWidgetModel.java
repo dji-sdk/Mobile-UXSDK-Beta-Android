@@ -22,11 +22,9 @@
 
 package dji.ux.beta.widget.vision;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 
-import dji.sdk.sdkmanager.DJISDKManager;
-import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,11 +39,13 @@ import dji.common.mission.tapfly.TapFlyMode;
 import dji.keysdk.DJIKey;
 import dji.keysdk.FlightControllerKey;
 import dji.sdk.mission.MissionControl;
+import dji.sdk.sdkmanager.DJISDKManager;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.base.DJISDKModel;
 import dji.ux.beta.base.WidgetModel;
-import dji.ux.beta.util.ProductUtil;
+import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import dji.ux.beta.util.DataProcessor;
+import dji.ux.beta.util.ProductUtil;
 
 /**
  * Widget Model for the {@link VisionWidget} used to define
@@ -74,12 +74,9 @@ public class VisionWidgetModel extends WidgetModel {
                              @NonNull ObservableInMemoryKeyedStore keyedStore) {
         super(djiSdkModel, keyedStore);
         statusMap = new HashMap<>();
-        visionDetectionStateProcessor = DataProcessor.create(VisionDetectionState.createInstance(false,
-                                                                                                 0,
-                                                                                                 VisionSystemWarning.INVALID,
-                                                                                                 null,
-                                                                                                 VisionSensorPosition.UNKNOWN,
-                                                                                                 false));
+        visionDetectionStateProcessor = DataProcessor.create(
+                VisionDetectionState.createInstance(false, 0, VisionSystemWarning.INVALID, null,
+                        VisionSensorPosition.UNKNOWN, false));
         isUserAvoidEnabledProcessor = DataProcessor.create(false);
         flightModeProcessor = DataProcessor.create(FlightMode.GPS_ATTI);
         trackingModeProcessor = DataProcessor.create(ActiveTrackMode.TRACE);
@@ -97,7 +94,7 @@ public class VisionWidgetModel extends WidgetModel {
     //region Data
 
     /**
-     * Get the status of the vision system
+     * Get the status of the vision system.
      *
      * @return Flowable for the DataProcessor that user should subscribe to.
      */
@@ -106,7 +103,7 @@ public class VisionWidgetModel extends WidgetModel {
     }
 
     /**
-     * Get the status of the omnidirectional vision system
+     * Get the status of the omnidirectional vision system.
      *
      * @return Flowable for the DataProcessor that user should subscribe to.
      */
@@ -119,25 +116,25 @@ public class VisionWidgetModel extends WidgetModel {
     @Override
     protected void inSetup() {
         DJIKey visionDetectionStateKey =
-            FlightControllerKey.createFlightAssistantKey(FlightControllerKey.VISION_DETECTION_STATE);
+                FlightControllerKey.createFlightAssistantKey(FlightControllerKey.VISION_DETECTION_STATE);
         DJIKey isUserAvoidEnabledKey =
-            FlightControllerKey.createFlightAssistantKey(FlightControllerKey.INTELLIGENT_FLIGHT_ASSISTANT_IS_USERAVOID_ENABLE);
+                FlightControllerKey.createFlightAssistantKey(FlightControllerKey.INTELLIGENT_FLIGHT_ASSISTANT_IS_USERAVOID_ENABLE);
         DJIKey flightModeKey = FlightControllerKey.create(FlightControllerKey.FLIGHT_MODE);
         DJIKey trackingModeKey = FlightControllerKey.createFlightAssistantKey(FlightControllerKey.ACTIVE_TRACK_MODE);
         DJIKey drawStatusKey = FlightControllerKey.createFlightAssistantKey(FlightControllerKey.DRAW_STATUS);
         DJIKey drawHeadingModeKey = FlightControllerKey.createFlightAssistantKey(FlightControllerKey.DRAW_HEADING_MODE);
         DJIKey isFrontRadarOpenKey =
-            FlightControllerKey.createFlightAssistantKey(FlightControllerKey.IS_FRONT_RADAR_OPEN);
+                FlightControllerKey.createFlightAssistantKey(FlightControllerKey.IS_FRONT_RADAR_OPEN);
         DJIKey isBackRadarOpenKey =
-            FlightControllerKey.createFlightAssistantKey(FlightControllerKey.IS_BACK_RADAR_OPEN);
+                FlightControllerKey.createFlightAssistantKey(FlightControllerKey.IS_BACK_RADAR_OPEN);
         DJIKey isLeftRadarOpenKey =
-            FlightControllerKey.createFlightAssistantKey(FlightControllerKey.IS_LEFT_RADAR_OPEN);
+                FlightControllerKey.createFlightAssistantKey(FlightControllerKey.IS_LEFT_RADAR_OPEN);
         DJIKey isRightRadarOpenKey =
-            FlightControllerKey.createFlightAssistantKey(FlightControllerKey.IS_RIGHT_RADAR_OPEN);
+                FlightControllerKey.createFlightAssistantKey(FlightControllerKey.IS_RIGHT_RADAR_OPEN);
 
         bindDataProcessor(visionDetectionStateKey,
-                          visionDetectionStateProcessor,
-                          visionDetectionState -> addSingleVisionStatus((VisionDetectionState) visionDetectionState));
+                visionDetectionStateProcessor,
+                visionDetectionState -> addSingleVisionStatus((VisionDetectionState) visionDetectionState));
         bindDataProcessor(isUserAvoidEnabledKey, isUserAvoidEnabledProcessor);
         bindDataProcessor(flightModeKey, flightModeProcessor);
         bindDataProcessor(trackingModeKey, trackingModeProcessor);
@@ -274,9 +271,9 @@ public class VisionWidgetModel extends WidgetModel {
 
     private boolean isAllAvoidanceDataOpen() {
         return isFrontRadarOpenProcessor.getValue()
-            && isBackRadarOpenProcessor.getValue()
-            && isLeftRadarOpenProcessor.getValue()
-            && isRightRadarOpenProcessor.getValue();
+                && isBackRadarOpenProcessor.getValue()
+                && isLeftRadarOpenProcessor.getValue()
+                && isRightRadarOpenProcessor.getValue();
     }
 
     private boolean isNoseTailDataOpen() {
@@ -285,7 +282,7 @@ public class VisionWidgetModel extends WidgetModel {
 
     private boolean isNoseTailVisionNormal() {
         return statusMap.get(VisionSensorPosition.NOSE) == VisionSystemStatus.NORMAL
-            && statusMap.get(VisionSensorPosition.TAIL) == VisionSystemStatus.NORMAL;
+                && statusMap.get(VisionSensorPosition.TAIL) == VisionSystemStatus.NORMAL;
     }
 
     /**
@@ -301,25 +298,24 @@ public class VisionWidgetModel extends WidgetModel {
         }
 
         return !isAttiMode(flightModeProcessor.getValue())
-            && FlightMode.GPS_SPORT != flightModeProcessor.getValue()
-            && FlightMode.AUTO_LANDING != flightModeProcessor.getValue()
-            && (ActiveTrackMode.TRACE == trackingModeProcessor.getValue()
-            || ActiveTrackMode.QUICK_SHOT == trackingModeProcessor.getValue())
-            && TapFlyMode.FREE != tapMode
-            && isDrawAssistanceEnabled(drawStatusProcessor.getValue(), drawHeadingModeProcessor.getValue());
+                && FlightMode.GPS_SPORT != flightModeProcessor.getValue()
+                && FlightMode.AUTO_LANDING != flightModeProcessor.getValue()
+                && (ActiveTrackMode.TRACE == trackingModeProcessor.getValue()
+                || ActiveTrackMode.QUICK_SHOT == trackingModeProcessor.getValue())
+                && TapFlyMode.FREE != tapMode
+                && isDrawAssistanceEnabled(drawStatusProcessor.getValue(), drawHeadingModeProcessor.getValue());
     }
 
     /**
      * Whether draw assistance is enabled.
      *
      * @param status The vision draw status of the aircraft.
-     * @param mode The heading mode of the camera.
+     * @param mode   The heading mode of the camera.
      * @return `true` if draw assistance is enabled, `false` otherwise.
      */
     private boolean isDrawAssistanceEnabled(final VisionDrawStatus status, final VisionDrawHeadingMode mode) {
-        boolean running = (VisionDrawStatus.START_AUTO == status
-            || VisionDrawStatus.START_MANUAL == status
-            || VisionDrawStatus.PAUSE == status);
+        boolean running = (VisionDrawStatus.START_AUTO == status || VisionDrawStatus.START_MANUAL == status
+                || VisionDrawStatus.PAUSE == status);
         return (!running || VisionDrawHeadingMode.FORWARD == mode);
     }
 
@@ -332,10 +328,10 @@ public class VisionWidgetModel extends WidgetModel {
     private boolean isAttiMode(final FlightMode state) {
         boolean ret = false;
         if (state == FlightMode.ATTI
-            || state == FlightMode.ATTI_COURSE_LOCK
-            || state == FlightMode.ATTI_HOVER
-            || state == FlightMode.ATTI_LIMITED
-            || state == FlightMode.ATTI_LANDING) {
+                || state == FlightMode.ATTI_COURSE_LOCK
+                || state == FlightMode.ATTI_HOVER
+                || state == FlightMode.ATTI_LIMITED
+                || state == FlightMode.ATTI_LANDING) {
             ret = true;
         }
         return ret;

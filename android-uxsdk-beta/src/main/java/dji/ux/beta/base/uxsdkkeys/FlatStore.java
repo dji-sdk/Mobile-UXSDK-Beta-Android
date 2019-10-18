@@ -22,7 +22,8 @@
 
 package dji.ux.beta.base.uxsdkkeys;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -35,6 +36,7 @@ public class FlatStore {
     private static class SingletonHolder {
         private static FlatStore instance = new FlatStore();
     }
+
     public static FlatStore getInstance() {
         return FlatStore.SingletonHolder.instance;
     }
@@ -45,7 +47,8 @@ public class FlatStore {
 
     /**
      * Update and store the given value for the given key
-     * @param value ModelValue to be stored for key
+     *
+     * @param value   ModelValue to be stored for key
      * @param keyPath UXKey path to be used for storing this value
      */
     public void setModelValue(@NonNull ModelValue value, @NonNull String keyPath) {
@@ -54,6 +57,7 @@ public class FlatStore {
 
     /**
      * Get the current value for the given key
+     *
      * @param keyPath UXKey path to be used to retrieve value
      * @return ModelValue store for the given key
      */

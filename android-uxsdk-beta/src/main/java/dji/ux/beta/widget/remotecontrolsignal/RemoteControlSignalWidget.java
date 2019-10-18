@@ -25,13 +25,15 @@ package dji.ux.beta.widget.remotecontrolsignal;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.ImageView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.R;
 import dji.ux.beta.base.ConstraintLayoutWidget;
@@ -73,7 +75,7 @@ public class RemoteControlSignalWidget extends ConstraintLayoutWidget {
 
         if (!isInEditMode()) {
             widgetModel = new RemoteControlSignalWidgetModel(DJISDKModel.getInstance(),
-                                                             ObservableInMemoryKeyedStore.getInstance());
+                    ObservableInMemoryKeyedStore.getInstance());
         }
 
         if (attrs != null) {
@@ -102,11 +104,11 @@ public class RemoteControlSignalWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getRCSignalQuality()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateIcon));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateIcon));
         addReaction(widgetModel.getProductConnection()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateIcon));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateIcon));
     }
     //endregion
 
@@ -231,7 +233,7 @@ public class RemoteControlSignalWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the background drawable for the RC signal icon
+     * Get the drawable resource for the RC signal icon's background
      *
      * @return Drawable for the RC signal icon's background
      */
@@ -246,6 +248,16 @@ public class RemoteControlSignalWidget extends ConstraintLayoutWidget {
      */
     public void setConnectionStateIconColor(@ColorInt int color) {
         connectionStateIconColor = color;
+    }
+
+    /**
+     * Get the color of the RC icon in the disconnected state
+     *
+     * @return Color integer resource
+     */
+    @ColorInt
+    public int getConnectionStateIconColor() {
+        return connectionStateIconColor;
     }
 
     //Initialize all customizable attributes
@@ -263,8 +275,8 @@ public class RemoteControlSignalWidget extends ConstraintLayoutWidget {
         }
 
         connectionStateIconColor =
-            typedArray.getColor(R.styleable.RemoteControlSignalWidget_uxsdk_connectionStateIconColor,
-                                getResources().getColor(R.color.uxsdk_red_material_A700_67_percent));
+                typedArray.getColor(R.styleable.RemoteControlSignalWidget_uxsdk_connectionStateIconColor,
+                        getResources().getColor(R.color.uxsdk_red_material_A700_67_percent));
 
         typedArray.recycle();
     }

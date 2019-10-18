@@ -22,10 +22,10 @@
   -->
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:app="http://schemas.android.com/apk/res-auto"
-       xmlns:tools="http://schemas.android.com/tools"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/textview_simulator_title"
@@ -33,8 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:drawableLeft="@drawable/uxsdk_ic_simulator"
         android:drawableStart="@drawable/uxsdk_ic_simulator"
+        android:drawableLeft="@drawable/uxsdk_ic_simulator"
         android:drawablePadding="5dp"
         android:padding="@dimen/uxsdk_simulator_dialog_padding"
         android:text="@string/uxsdk_simulator_widget_title"
@@ -61,7 +61,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textview_simulator_title">
 
-        <android.support.constraint.ConstraintLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -256,7 +256,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_simulator_satellite_value" />
 
-            <android.support.constraint.Group
+            <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraint_group_real_world"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -366,7 +366,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textview_status_section_header"
                 app:layout_constraintTop_toBottomOf="@+id/textview_simulator_world_z_value" />
 
-            <android.support.constraint.Group
+            <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraint_group_aircraft_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -458,7 +458,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textview_attitude_section_header"
                 app:layout_constraintTop_toBottomOf="@+id/textview_simulator_aircraft_flying_label" />
 
-            <android.support.constraint.Group
+            <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraint_group_attitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -581,7 +581,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textview_wind_section_header"
                 app:layout_constraintTop_toBottomOf="@+id/textview_simulator_roll_label" />
 
-            <android.support.constraint.Group
+            <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraint_group_wind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -640,7 +640,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
                 android:gravity="center_vertical"
-                android:text="@string/uxsdk_simulator_zero_value"
+                android:text="@string/uxsdk_simulator_zero_string"
                 android:textColor="@color/uxsdk_blue"
                 app:layout_constraintBottom_toTopOf="@+id/textview_wind_y"
                 app:layout_constraintEnd_toStartOf="@+id/imageview_btn_plus_x"
@@ -697,7 +697,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
                 android:gravity="center_vertical"
-                android:text="@string/uxsdk_simulator_zero_value"
+                android:text="@string/uxsdk_simulator_zero_string"
                 android:textColor="@color/uxsdk_blue"
                 app:layout_constraintBottom_toTopOf="@+id/textview_wind_z"
                 app:layout_constraintEnd_toStartOf="@+id/imageview_btn_plus_y"
@@ -755,7 +755,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
                 android:gravity="center_vertical"
-                android:text="@string/uxsdk_simulator_zero_value"
+                android:text="@string/uxsdk_simulator_zero_string"
                 android:textColor="@color/uxsdk_blue"
                 app:layout_constraintBottom_toTopOf="@+id/wind_section_footer"
                 app:layout_constraintEnd_toStartOf="@+id/imageview_btn_plus_z"
@@ -786,7 +786,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textview_load_preset"
                 app:layout_constraintTop_toBottomOf="@+id/textview_wind_speed_z_label" />
 
-            <android.support.constraint.Group
+            <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraint_group_buttons"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -825,6 +825,6 @@
                 app:layout_constraintLeft_toRightOf="@+id/textview_load_preset"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/wind_section_footer" />
-        </android.support.constraint.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </merge>

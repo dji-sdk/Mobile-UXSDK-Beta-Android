@@ -26,13 +26,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
-import android.support.constraint.Group;
 import android.text.InputFilter;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -42,6 +35,14 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.constraintlayout.widget.Group;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -76,7 +77,7 @@ import dji.ux.beta.widget.simulator.preset.SimulatorPresetData;
  * configuration.
  */
 public class SimulatorControlWidget extends ConstraintLayoutWidget
-    implements OnClickListener, OnStateChangeCallback, OnLoadPresetListener {
+        implements OnClickListener, OnStateChangeCallback, OnLoadPresetListener {
 
     //region fields
     private static final int WIND_DIRECTION_X = 0;
@@ -170,8 +171,8 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
         initViewElements();
         if (!isInEditMode()) {
             widgetModel = new SimulatorControlWidgetModel(DJISDKModel.getInstance(),
-                                                          ObservableInMemoryKeyedStore.getInstance(),
-                                                          schedulerProvider);
+                    ObservableInMemoryKeyedStore.getInstance(),
+                    schedulerProvider);
         }
         if (attrs != null) {
             initAttributes(context, attrs);
@@ -181,21 +182,23 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getSatelliteCount()
-                               .observeOn(schedulerProvider.ui())
-                               .subscribe(this::updateSatelliteCount));
+                .observeOn(schedulerProvider.ui())
+                .subscribe(this::updateSatelliteCount));
         addReaction(widgetModel.getSimulatorWindData()
-                               .observeOn(schedulerProvider.ui())
-                               .subscribe(this::updateWindValues));
+                .observeOn(schedulerProvider.ui())
+                .subscribe(this::updateWindValues));
         addReaction(widgetModel.getSimulatorState()
-                               .observeOn(schedulerProvider.ui())
-                               .subscribe(this::updateWidgetValues));
-        addReaction(widgetModel.isSimulatorActive().observeOn(schedulerProvider.ui()).subscribe(this::updateUI));
+                .observeOn(schedulerProvider.ui())
+                .subscribe(this::updateWidgetValues));
+        addReaction(widgetModel.isSimulatorActive()
+                .observeOn(schedulerProvider.ui())
+                .subscribe(this::updateUI));
     }
 
     @NonNull
     @Override
     public String getIdealDimensionRatioString() {
-        return getResources().getString(R.string.uxsdk_widget_simulator_ratio);
+        return getResources().getString(R.string.uxsdk_widget_simulator_control_ratio);
     }
 
     @Override
@@ -267,12 +270,12 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
 
         if (typedArray.getDrawable(R.styleable.SimulatorControlWidget_uxsdk_simulatorActiveDrawable) != null) {
             activeSimulatorDrawable =
-                typedArray.getDrawable(R.styleable.SimulatorControlWidget_uxsdk_simulatorActiveDrawable);
+                    typedArray.getDrawable(R.styleable.SimulatorControlWidget_uxsdk_simulatorActiveDrawable);
         }
 
         if (typedArray.getDrawable(R.styleable.SimulatorControlWidget_uxsdk_simulatorInactiveDrawable) != null) {
             inActiveSimulatorDrawable =
-                typedArray.getDrawable(R.styleable.SimulatorControlWidget_uxsdk_simulatorInactiveDrawable);
+                    typedArray.getDrawable(R.styleable.SimulatorControlWidget_uxsdk_simulatorInactiveDrawable);
         }
 
         if (typedArray.getDrawable(R.styleable.SimulatorControlWidget_uxsdk_buttonBackground) != null) {
@@ -282,12 +285,12 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
             setButtonTextColor(typedArray.getColorStateList(R.styleable.SimulatorControlWidget_uxsdk_buttonTextColor));
         }
         float buttonTextSize =
-            typedArray.getDimension(R.styleable.SimulatorControlWidget_uxsdk_buttonTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.SimulatorControlWidget_uxsdk_buttonTextSize, INVALID_RESOURCE);
         if (buttonTextSize != INVALID_RESOURCE) {
             setButtonTextSize(DisplayUtil.pxToSp(context, buttonTextSize));
         }
         int textAppearance =
-            typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_buttonTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_buttonTextAppearance, INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
             setButtonTextAppearance(textAppearance);
         }
@@ -297,11 +300,11 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
         }
 
         setLabelTextColor(typedArray.getColor(R.styleable.SimulatorControlWidget_uxsdk_labelsTextColor,
-                                              getResources().getColor(R.color.uxsdk_white_85_percent)));
+                getResources().getColor(R.color.uxsdk_white_85_percent)));
 
         setLabelTextSize(typedArray.getInt(R.styleable.SimulatorControlWidget_uxsdk_labelsTextSize, 12));
         textAppearance =
-            typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_labelsTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_labelsTextAppearance, INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
             setLabelTextAppearance(textAppearance);
         }
@@ -311,15 +314,15 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
         }
 
         setValueTextColor(typedArray.getColor(R.styleable.SimulatorControlWidget_uxsdk_valueTextColor,
-                                              getResources().getColor(R.color.uxsdk_blue)));
+                getResources().getColor(R.color.uxsdk_blue)));
 
         float valueTextSize =
-            typedArray.getDimension(R.styleable.SimulatorControlWidget_uxsdk_valueTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.SimulatorControlWidget_uxsdk_valueTextSize, INVALID_RESOURCE);
         if (valueTextSize != INVALID_RESOURCE) {
             setValueTextSize(DisplayUtil.pxToSp(context, valueTextSize));
         }
         textAppearance =
-            typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_valueTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_valueTextAppearance, INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
             setValueTextAppearance(textAppearance);
         }
@@ -329,10 +332,10 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
         }
 
         setInputTextColor(typedArray.getColor(R.styleable.SimulatorControlWidget_uxsdk_inputTextColor,
-                                              getResources().getColor(R.color.uxsdk_black)));
+                getResources().getColor(R.color.uxsdk_black)));
         setInputTextSize(typedArray.getInt(R.styleable.SimulatorControlWidget_uxsdk_inputTextSize, 12));
         textAppearance =
-            typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_inputTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_inputTextAppearance, INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
             setInputTextAppearance(textAppearance);
         }
@@ -342,10 +345,10 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
         }
 
         setHeaderTextColor(typedArray.getColor(R.styleable.SimulatorControlWidget_uxsdk_headerTextColor,
-                                               getResources().getColor(R.color.uxsdk_white)));
+                getResources().getColor(R.color.uxsdk_white)));
         setHeaderTextSize(typedArray.getInt(R.styleable.SimulatorControlWidget_uxsdk_headerTextSize, 12));
         textAppearance =
-            typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_headerTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_headerTextAppearance, INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
             setHeaderTextAppearance(textAppearance);
         }
@@ -355,10 +358,10 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
         }
 
         setTitleTextColor(typedArray.getColor(R.styleable.SimulatorControlWidget_uxsdk_widgetTitleTextColor,
-                                              getResources().getColor(R.color.uxsdk_white)));
+                getResources().getColor(R.color.uxsdk_white)));
         setTitleTextSize(typedArray.getInt(R.styleable.SimulatorControlWidget_uxsdk_widgetTitleTextSize, 12));
         textAppearance = typedArray.getResourceId(R.styleable.SimulatorControlWidget_uxsdk_widgetTitleTextAppearance,
-                                                  INVALID_RESOURCE);
+                INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
             setTitleTextAppearance(textAppearance);
         }
@@ -389,30 +392,30 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
         }
         textView.setText(String.valueOf(val));
         addDisposable(widgetModel.setSimulatorWindData(new SimulatorWindData.Builder().windSpeedX(Integer.parseInt(
-            windXTextView.getText().toString()))
-                                                                                      .windSpeedY(Integer.parseInt(
-                                                                                          windYTextView.getText()
-                                                                                                       .toString()))
-                                                                                      .windSpeedZ(Integer.parseInt(
-                                                                                          windZTextView.getText()
-                                                                                                       .toString()))
-                                                                                      .build())
-                                 .subscribeOn(schedulerProvider.io())
-                                 .observeOn(schedulerProvider.ui())
-                                 .subscribe(() -> {
-                                 }, error -> {
-                                     if (error instanceof UXSDKError) {
-                                         DJILog.e(TAG, error.toString());
-                                         checkAndUpdateWind();
-                                     }
-                                 }));
+                windXTextView.getText().toString()))
+                .windSpeedY(Integer.parseInt(
+                        windYTextView.getText()
+                                .toString()))
+                .windSpeedZ(Integer.parseInt(
+                        windZTextView.getText()
+                                .toString()))
+                .build())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(() -> {
+                }, error -> {
+                    if (error instanceof UXSDKError) {
+                        DJILog.e(TAG, error.toString());
+                        checkAndUpdateWind();
+                    }
+                }));
     }
 
     private void checkAndUpdateWind() {
         addDisposable(widgetModel.getSimulatorWindData()
-                                 .lastOrError()
-                                 .observeOn(schedulerProvider.ui())
-                                 .subscribe(this::updateWindValues));
+                .lastOrError()
+                .observeOn(schedulerProvider.ui())
+                .subscribe(this::updateWindValues));
     }
 
     private void updateSatelliteCount(Integer integer) {
@@ -452,10 +455,10 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
         pitchTextView = findViewById(R.id.textview_simulator_aircraft_pitch_value);
         yawTextView = findViewById(R.id.textview_simulator_aircraft_yaw_value);
         rollTextView = findViewById(R.id.textview_simulator_aircraft_roll_value);
-        frequencyEditText.setFilters(new InputFilter[] { new EditTextNumberInputFilter("2", "150") });
-        latitudeEditText.setFilters(new InputFilter[] { new EditTextNumberInputFilter("-90", "90") });
-        longitudeEditText.setFilters(new InputFilter[] { new EditTextNumberInputFilter("-180", "180") });
-        satelliteCountEditText.setFilters(new InputFilter[] { new EditTextNumberInputFilter("1", "20") });
+        frequencyEditText.setFilters(new InputFilter[]{new EditTextNumberInputFilter("2", "150")});
+        latitudeEditText.setFilters(new InputFilter[]{new EditTextNumberInputFilter("-90", "90")});
+        longitudeEditText.setFilters(new InputFilter[]{new EditTextNumberInputFilter("-180", "180")});
+        satelliteCountEditText.setFilters(new InputFilter[]{new EditTextNumberInputFilter("1", "20")});
         loadPresetTextView = findViewById(R.id.textview_load_preset);
         savePresetTextView = findViewById(R.id.textview_save_preset);
         loadPresetTextView.setOnClickListener(this);
@@ -529,27 +532,27 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
             }
             int satelliteCount = DEFAULT_SATELLITE_COUNT;
             if (null != satelliteCountEditText.getText().toString() && !satelliteCountEditText.getText()
-                                                                                              .toString()
-                                                                                              .isEmpty()) {
+                    .toString()
+                    .isEmpty()) {
                 satelliteCount = Integer.parseInt(satelliteCountEditText.getText().toString());
             }
             InitializationData initializationData =
-                InitializationData.createInstance(locationCoordinate2D, updateFrequency, satelliteCount);
+                    InitializationData.createInstance(locationCoordinate2D, updateFrequency, satelliteCount);
             addDisposable(widgetModel.startSimulator(initializationData)
-                                     .subscribeOn(schedulerProvider.io())
-                                     .observeOn(schedulerProvider.ui())
-                                     .subscribe(() -> {
-                                     }, error -> {
-                                         if (error instanceof UXSDKError) {
-                                             DJILog.e(TAG, error.toString());
-                                             setSimulatorStatus(false);
-                                         }
-                                     }));
+                    .subscribeOn(schedulerProvider.io())
+                    .observeOn(schedulerProvider.ui())
+                    .subscribe(() -> {
+                    }, error -> {
+                        if (error instanceof UXSDKError) {
+                            DJILog.e(TAG, error.toString());
+                            setSimulatorStatus(false);
+                        }
+                    }));
         } else {
             setSimulatorStatus(false);
             Toast.makeText(getContext(),
-                           getResources().getString(R.string.uxsdk_simulator_input_val_error),
-                           Toast.LENGTH_SHORT).show();
+                    getResources().getString(R.string.uxsdk_simulator_input_val_error),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -624,11 +627,11 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
             yawTextView.setText(df.format(simulatorState.getYaw()));
             rollTextView.setText(df.format(simulatorState.getRoll()));
             motorsStartedTextView.setText(simulatorState.areMotorsOn()
-                                          ? R.string.uxsdk_app_yes
-                                          : R.string.uxsdk_app_no);
+                    ? R.string.uxsdk_app_yes
+                    : R.string.uxsdk_app_no);
             aircraftFlyingTextView.setText(simulatorState.isFlying()
-                                           ? R.string.uxsdk_app_yes
-                                           : R.string.uxsdk_app_no);
+                    ? R.string.uxsdk_app_yes
+                    : R.string.uxsdk_app_no);
         }
     }
 
@@ -653,18 +656,15 @@ public class SimulatorControlWidget extends ConstraintLayoutWidget
 
     private void showSavePresetDialog() {
         if (TextUtils.isEmpty(latitudeEditText.getText().toString())
-            || TextUtils.isEmpty(longitudeEditText.getText()
-                                                  .toString())
-            || TextUtils.isEmpty(frequencyEditText.getText().toString())
-            || TextUtils.isEmpty(satelliteCountEditText.getText().toString())) {
-            return;
-        }
+                || TextUtils.isEmpty(longitudeEditText.getText().toString())
+                || TextUtils.isEmpty(frequencyEditText.getText().toString())
+                || TextUtils.isEmpty(satelliteCountEditText.getText().toString())) return;
 
         SimulatorPresetData presetData =
-            new SimulatorPresetData(Double.parseDouble(latitudeEditText.getText().toString()),
-                                    Double.parseDouble(longitudeEditText.getText().toString()),
-                                    Integer.parseInt(satelliteCountEditText.getText().toString()),
-                                    Integer.parseInt(frequencyEditText.getText().toString()));
+                new SimulatorPresetData(Double.parseDouble(latitudeEditText.getText().toString()),
+                        Double.parseDouble(longitudeEditText.getText().toString()),
+                        Integer.parseInt(satelliteCountEditText.getText().toString()),
+                        Integer.parseInt(frequencyEditText.getText().toString()));
         new SavePresetDialog(getContext(), true, presetData).show();
     }
 

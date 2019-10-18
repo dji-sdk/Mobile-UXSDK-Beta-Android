@@ -29,10 +29,12 @@ import android.hardware.SensorManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.Surface;
 import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import dji.common.remotecontroller.GPSData;
 import dji.common.util.MobileGPSLocationUtil;
 import dji.keysdk.DJIKey;
@@ -43,8 +45,8 @@ import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.base.DJISDKModel;
 import dji.ux.beta.base.WidgetModel;
 import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
-import dji.ux.beta.util.LocationUtil;
 import dji.ux.beta.util.DataProcessor;
+import dji.ux.beta.util.LocationUtil;
 import dji.ux.beta.util.MathUtil;
 
 /**
@@ -124,6 +126,7 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
     //endregion
 
     //region Data
+
     /**
      * Get the center type for the compass widget
      *
@@ -194,11 +197,11 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
 
         // Set AircraftAttitude using roll, pitch and yaw keys
         bindDataProcessor(attitudePitchKey,
-                          attitudePitchProcessor,
-                          pitch -> latestAircraftAttitude.setPitch((double) pitch));
+                attitudePitchProcessor,
+                pitch -> latestAircraftAttitude.setPitch((double) pitch));
         bindDataProcessor(attitudeRollKey,
-                          attitudeRollProcessor,
-                          roll -> latestAircraftAttitude.setRoll((double) roll));
+                attitudeRollProcessor,
+                roll -> latestAircraftAttitude.setRoll((double) roll));
         bindDataProcessor(attitudeYawKey, attitudeYawProcessor, yaw -> latestAircraftAttitude.setYaw((double) yaw));
 
         // Set the home location when changed and update the various calculations
@@ -213,11 +216,11 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
 
         // Update the aircraft's location
         bindDataProcessor(aircraftLatitudeKey,
-                          aircraftLocationLatitudeProcessor,
-                          latitude -> updateAircraftLatitude((double) latitude));
+                aircraftLocationLatitudeProcessor,
+                latitude -> updateAircraftLatitude((double) latitude));
         bindDataProcessor(aircraftLongitudeKey,
-                          aircraftLocationLongitudeProcessor,
-                          longitude -> updateAircraftLongitude((double) longitude));
+                aircraftLocationLongitudeProcessor,
+                longitude -> updateAircraftLongitude((double) longitude));
 
         // Update the RC's location
         bindDataProcessor(rcGpsDataKey, rcGPSDataProcessor, gpsData -> updateGPSData((GPSData) gpsData));
@@ -304,14 +307,17 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
             updateCalculations();
         }
     }
+
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         // Do nothing
     }
+
     @Override
     public void onProviderEnabled(String provider) {
         // Do nothing
     }
+
     @Override
     public void onProviderDisabled(String provider) {
         // Do nothing
@@ -319,6 +325,7 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
     //endregion
 
     //region Helpers
+
     /**
      * Initialize the MobileGPSLocationUtil class that has the `startUpdateLocation()`
      * and `stopUpdateLocation()` functions for the mobile device's location
@@ -359,6 +366,7 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
             calculateAircraftAngleAndDistanceFromCenterLocation();
         }
     }
+
     private void updateCalculations() {
         calculateAircraftAngleAndDistanceFromCenterLocation();
         calculateAngleAndDistanceBetweenRCAndHome();
@@ -370,9 +378,9 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
         if (centerType == CenterType.HOME_GPS) {
             if (LocationUtil.checkLatitude(homeLatitude) && LocationUtil.checkLongitude(homeLongitude)) {
                 tempCalculatedLocation = LocationUtil.calculateAngleAndDistance(homeLatitude,
-                                                                                homeLongitude,
-                                                                                aircraftLatitude,
-                                                                                aircraftLongitude);
+                        homeLongitude,
+                        aircraftLatitude,
+                        aircraftLongitude);
                 latestAircraftState.setAngle(tempCalculatedLocation[0]);
                 latestAircraftState.setDistance(tempCalculatedLocation[1]);
                 aircraftStateProcessor.onNext(latestAircraftState);
@@ -380,9 +388,9 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
         } else if (centerType == CenterType.RC_MOBILE_GPS) {
             if (LocationUtil.checkLatitude(rcOrMobileLatitude) && LocationUtil.checkLongitude(rcOrMobileLongitude)) {
                 tempCalculatedLocation = LocationUtil.calculateAngleAndDistance(rcOrMobileLatitude,
-                                                                                rcOrMobileLongitude,
-                                                                                aircraftLatitude,
-                                                                                aircraftLongitude);
+                        rcOrMobileLongitude,
+                        aircraftLatitude,
+                        aircraftLongitude);
                 latestAircraftState.setAngle(tempCalculatedLocation[0]);
                 latestAircraftState.setDistance(tempCalculatedLocation[1]);
                 aircraftStateProcessor.onNext(latestAircraftState);
@@ -393,9 +401,9 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
     private void calculateAngleAndDistanceBetweenRCAndHome() {
         if (centerType != CenterType.HOME_GPS) {
             float[] tempCalculatedLocation = LocationUtil.calculateAngleAndDistance(rcOrMobileLatitude,
-                                                                                    rcOrMobileLongitude,
-                                                                                    homeLatitude,
-                                                                                    homeLongitude);
+                    rcOrMobileLongitude,
+                    homeLatitude,
+                    homeLongitude);
             CurrentLocationState latestCurrentLocationState = new CurrentLocationState(0.0f, 0.0f);
             latestCurrentLocationState.setAngle(tempCalculatedLocation[0]);
             latestCurrentLocationState.setDistance(tempCalculatedLocation[1]);
@@ -430,12 +438,15 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
         public double getYaw() {
             return yaw;
         }
+
         public void setRoll(double roll) {
             this.roll = roll;
         }
+
         public void setPitch(double pitch) {
             this.pitch = pitch;
         }
+
         public void setYaw(double yaw) {
             this.yaw = yaw;
         }
@@ -457,12 +468,15 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
         public float getAngle() {
             return angle;
         }
+
         public float getDistance() {
             return distance;
         }
+
         public void setAngle(float angle) {
             this.angle = angle;
         }
+
         public void setDistance(float distance) {
             this.distance = distance;
         }
@@ -484,12 +498,15 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
         public float getAngle() {
             return angle;
         }
+
         public float getDistance() {
             return distance;
         }
+
         public void setAngle(float angle) {
             this.angle = angle;
         }
+
         public void setDistance(float distance) {
             this.distance = distance;
         }

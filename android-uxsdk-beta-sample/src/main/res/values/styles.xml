@@ -18,6 +18,8 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
+  ~
   -->
 
 <resources>
@@ -34,6 +36,10 @@
         <item name="colorAccent">@color/blue</item>
         <item name="android:textColorSecondary">@color/blue</item>
         <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="DefaultLayoutTheme" parent="MapTheme">
+        <item name="android:windowBackground">@color/dark_theme_background</item>
     </style>
 
 </resources>

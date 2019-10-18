@@ -25,7 +25,6 @@ package dji.ux.beta.widget.simulator.preset;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,11 +33,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import java.util.Map;
 
 import dji.ux.beta.R;
 import dji.ux.beta.util.SimulatorPresetUtils;
+import dji.ux.beta.widget.simulator.SimulatorControlWidget;
 
+/**
+ * Preset List Dialog
+ * <p>
+ * Dialog shows a list of saved presets.
+ * Tapping on the preset name will load the values saved in the {@link SimulatorControlWidget}
+ */
 public class PresetListDialog extends Dialog implements View.OnClickListener {
 
     //region fields
@@ -51,7 +59,6 @@ public class PresetListDialog extends Dialog implements View.OnClickListener {
     private Context context;
     private OnLoadPresetListener loadPresetListener;
     private String keyToDelete;
-
     //endregion
 
     //region lifecycle
@@ -116,8 +123,10 @@ public class PresetListDialog extends Dialog implements View.OnClickListener {
             emptyPresetListTextView.setVisibility(View.VISIBLE);
             presetListContainerLinearLayout.setVisibility(View.GONE);
         }
-        getWindow().setLayout((int) context.getResources().getDimension(R.dimen.uxsdk_simulator_dialog_width),
-                              ViewGroup.LayoutParams.WRAP_CONTENT);
+        if (getWindow() != null) {
+            getWindow().setLayout((int) context.getResources().getDimension(R.dimen.uxsdk_simulator_dialog_width),
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
     }
 
     private void resetListUI() {
@@ -143,10 +152,10 @@ public class PresetListDialog extends Dialog implements View.OnClickListener {
         deletePresetNoTextView.setVisibility(View.VISIBLE);
         cancelDialogTextView.setVisibility(View.GONE);
         confirmDeleteTextView.setText(context.getResources()
-                                             .getString(R.string.uxsdk_simulator_save_preset_delete, key));
+                .getString(R.string.uxsdk_simulator_save_preset_delete, key));
         if (getWindow() != null) {
             getWindow().setLayout((int) context.getResources().getDimension(R.dimen.uxsdk_simulator_dialog_width),
-                                  ViewGroup.LayoutParams.WRAP_CONTENT);
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
         }
     }
 
@@ -160,14 +169,14 @@ public class PresetListDialog extends Dialog implements View.OnClickListener {
 
             if (loadPresetListener != null) {
                 loadPresetListener.onLoadPreset(new SimulatorPresetData(latitude,
-                                                                        longitude,
-                                                                        satelliteCount,
-                                                                        frequency));
+                        longitude,
+                        satelliteCount,
+                        frequency));
             }
         } else {
             Toast.makeText(context,
-                           context.getResources().getString(R.string.uxsdk_simulator_preset_error),
-                           Toast.LENGTH_SHORT).show();
+                    context.getResources().getString(R.string.uxsdk_simulator_preset_error),
+                    Toast.LENGTH_SHORT).show();
         }
         dismiss();
     }

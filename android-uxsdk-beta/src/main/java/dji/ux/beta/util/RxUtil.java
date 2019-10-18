@@ -22,7 +22,7 @@
 
 package dji.ux.beta.util;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import dji.log.DJILog;
 import dji.thirdparty.io.reactivex.functions.Consumer;
@@ -39,7 +39,7 @@ public final class RxUtil {
     /**
      * Get a throwable error consumer for the given error.
      *
-     * @param tag Tag for the log
+     * @param tag     Tag for the log
      * @param message Message to be logged
      * @return Throwable consumer
      */

@@ -26,18 +26,19 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,8 +113,8 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
 
         if (!isInEditMode()) {
             widgetModel = new UserAccountLoginWidgetModel(DJISDKModel.getInstance(),
-                                                          ObservableInMemoryKeyedStore.getInstance(),
-                                                          UserAccountManager.getInstance());
+                    ObservableInMemoryKeyedStore.getInstance(),
+                    UserAccountManager.getInstance());
         }
         setOnClickListener(this);
         initDefaults();
@@ -147,21 +148,21 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     @Override
     public void onClick(View v) {
         addDisposable(widgetModel.getUserAccountState()
-                                 .firstOrError()
-                                 .observeOn(SchedulerProvider.getInstance().ui())
-                                 .subscribe(userAccountState -> {
-                                     if (userAccountState == UserAccountState.AUTHORIZED) {
-                                         logoutUser();
-                                     } else {
-                                         loginUser();
-                                     }
-                                 }, error -> logErrorConsumer(TAG, "TAP LOGIN ")));
+                .firstOrError()
+                .observeOn(SchedulerProvider.getInstance().ui())
+                .subscribe(userAccountState -> {
+                    if (userAccountState == UserAccountState.AUTHORIZED) {
+                        logoutUser();
+                    } else {
+                        loginUser();
+                    }
+                }, error -> logErrorConsumer(TAG, "TAP LOGIN ")));
     }
 
     @NonNull
     @Override
     public String getIdealDimensionRatioString() {
-        return getResources().getString(R.string.uxsdk_widget_user_account_login);
+        return getResources().getString(R.string.uxsdk_widget_user_account_login_ratio);
     }
 
     public void setOnStateChangeCallback(OnStateChangeCallback onStateChangeCallback) {
@@ -173,23 +174,23 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     //region private methods
     private Disposable reactToAccountStateChange() {
         return Flowable.combineLatest(widgetModel.getUserAccountState(),
-                                      widgetModel.getUserAccountInformation(),
-                                      Pair::create)
-                       .observeOn(SchedulerProvider.getInstance().ui())
-                       .subscribe(values -> {
-                           updateUI(values.first, values.second);
-                       }, logErrorConsumer(TAG, "react to User Account "));
+                widgetModel.getUserAccountInformation(),
+                Pair::create)
+                .observeOn(SchedulerProvider.getInstance().ui())
+                .subscribe(values -> {
+                    updateUI(values.first, values.second);
+                }, logErrorConsumer(TAG, "react to User Account "));
     }
 
     private void loginUser() {
         addDisposable(widgetModel.loginUser(getContext())
-                                 .observeOn(SchedulerProvider.getInstance().ui())
-                                 .subscribe(() -> {
-                                 }, error -> {
-                                     if (error instanceof UXSDKError) {
-                                         DJILog.e(TAG, error.toString());
-                                     }
-                                 }));
+                .observeOn(SchedulerProvider.getInstance().ui())
+                .subscribe(() -> {
+                }, error -> {
+                    if (error instanceof UXSDKError) {
+                        DJILog.e(TAG, error.toString());
+                    }
+                }));
     }
 
     private void logoutUser() {
@@ -242,36 +243,36 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.UserAccountLoginWidget);
         int textAppearance =
-            typedArray.getResourceId(R.styleable.UserAccountLoginWidget_uxsdk_messageTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.UserAccountLoginWidget_uxsdk_messageTextAppearance, INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
             setWidgetMessageTextAppearance(textAppearance);
         }
         int color =
-            typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_messageTextColorAuthorized, INVALID_COLOR);
+                typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_messageTextColorAuthorized, INVALID_COLOR);
         if (color != INVALID_COLOR) {
             setWidgetMessageTextColor(UserAccountState.AUTHORIZED, color);
         }
         color =
-            typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_messageTextColorNotAuthorized, INVALID_COLOR);
+                typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_messageTextColorNotAuthorized, INVALID_COLOR);
         if (color != INVALID_COLOR) {
             setWidgetMessageTextColor(UserAccountState.NOT_AUTHORIZED, color);
         }
         color =
-            typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_messageTextColorNotLoggedIn, INVALID_COLOR);
+                typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_messageTextColorNotLoggedIn, INVALID_COLOR);
         if (color != INVALID_COLOR) {
             setWidgetMessageTextColor(UserAccountState.NOT_LOGGED_IN, color);
         }
         color = typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_messageTextColorTokenOutOfDate,
-                                    INVALID_COLOR);
+                INVALID_COLOR);
         if (color != INVALID_COLOR) {
             setWidgetMessageTextColor(UserAccountState.TOKEN_OUT_OF_DATE, color);
         }
         setWidgetMessageTextSize(typedArray.getDimension(R.styleable.UserAccountLoginWidget_uxsdk_messageTextSize,
-                                                         getResources().getDimension(R.dimen.uxsdk_user_account_message_text_size)));
+                getResources().getDimension(R.dimen.uxsdk_user_account_message_text_size)));
         setWidgetMessageBackground(typedArray.getDrawable(R.styleable.UserAccountLoginWidget_uxsdk_messageTextBackground));
 
         textAppearance =
-            typedArray.getResourceId(R.styleable.UserAccountLoginWidget_uxsdk_stateTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.UserAccountLoginWidget_uxsdk_stateTextAppearance, INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
             setWidgetStateTextAppearance(textAppearance);
         }
@@ -281,7 +282,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
             setWidgetStateTextColor(UserAccountState.AUTHORIZED, color);
         }
         color =
-            typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_stateTextColorNotAuthorized, INVALID_COLOR);
+                typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_stateTextColorNotAuthorized, INVALID_COLOR);
         if (color != INVALID_COLOR) {
             setWidgetStateTextColor(UserAccountState.NOT_AUTHORIZED, color);
         }
@@ -290,12 +291,12 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
             setWidgetStateTextColor(UserAccountState.NOT_LOGGED_IN, color);
         }
         color =
-            typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_stateTextColorTokenOutOfDate, INVALID_COLOR);
+                typedArray.getColor(R.styleable.UserAccountLoginWidget_uxsdk_stateTextColorTokenOutOfDate, INVALID_COLOR);
         if (color != INVALID_COLOR) {
             setWidgetStateTextColor(UserAccountState.TOKEN_OUT_OF_DATE, color);
         }
         setWidgetStateTextSize(typedArray.getDimension(R.styleable.UserAccountLoginWidget_uxsdk_messageTextSize,
-                                                       getResources().getDimension(R.dimen.uxsdk_user_account_state_text_size)));
+                getResources().getDimension(R.dimen.uxsdk_user_account_state_text_size)));
         if (typedArray.getDrawable(R.styleable.UserAccountLoginWidget_uxsdk_messageTextBackground) != null) {
             setWidgetStateBackground(typedArray.getDrawable(R.styleable.UserAccountLoginWidget_uxsdk_messageTextBackground));
         }
@@ -345,9 +346,9 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
             setActionIconBackground(typedArray.getDrawable(R.styleable.UserAccountLoginWidget_uxsdk_actionIconBackground));
         }
         setMessageTextEnabled(typedArray.getBoolean(R.styleable.UserAccountLoginWidget_uxsdk_messageTextEnabled,
-                                                    true));
+                true));
         setWidgetStateTextEnabled(typedArray.getBoolean(R.styleable.UserAccountLoginWidget_uxsdk_stateTextEnabled,
-                                                        true));
+                true));
         setUserIconEnabled(typedArray.getBoolean(R.styleable.UserAccountLoginWidget_uxsdk_userIconEnabled, true));
         setActionIconEnabled(typedArray.getBoolean(R.styleable.UserAccountLoginWidget_uxsdk_actionIconEnabled, true));
         typedArray.recycle();
@@ -355,21 +356,21 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
 
     private void initDefaults() {
         setWidgetStateTextColor(UserAccountState.NOT_LOGGED_IN,
-                                getResources().getColor(R.color.uxsdk_white_80_percent));
+                getResources().getColor(R.color.uxsdk_white_80_percent));
         setWidgetStateTextColor(UserAccountState.NOT_AUTHORIZED,
-                                getResources().getColor(R.color.uxsdk_white_80_percent));
+                getResources().getColor(R.color.uxsdk_white_80_percent));
         setWidgetStateTextColor(UserAccountState.AUTHORIZED, getResources().getColor(R.color.uxsdk_white_80_percent));
         setWidgetStateTextColor(UserAccountState.TOKEN_OUT_OF_DATE,
-                                getResources().getColor(R.color.uxsdk_white_80_percent));
+                getResources().getColor(R.color.uxsdk_white_80_percent));
         setWidgetStateTextColor(UserAccountState.UNKNOWN, getResources().getColor(R.color.uxsdk_white_80_percent));
 
         setWidgetMessageTextColor(UserAccountState.NOT_LOGGED_IN,
-                                  getResources().getColor(R.color.uxsdk_red_material_800));
+                getResources().getColor(R.color.uxsdk_red_material_800));
         setWidgetMessageTextColor(UserAccountState.NOT_AUTHORIZED, getResources().getColor(R.color.uxsdk_yellow_500));
         setWidgetMessageTextColor(UserAccountState.AUTHORIZED,
-                                  getResources().getColor(R.color.uxsdk_green_material_400));
+                getResources().getColor(R.color.uxsdk_green_material_400));
         setWidgetMessageTextColor(UserAccountState.TOKEN_OUT_OF_DATE,
-                                  getResources().getColor(R.color.uxsdk_yellow_500));
+                getResources().getColor(R.color.uxsdk_yellow_500));
         setWidgetMessageTextColor(UserAccountState.UNKNOWN, getResources().getColor(R.color.uxsdk_red_material_800));
 
         setUserIcon(UserAccountState.NOT_LOGGED_IN, getResources().getDrawable(R.drawable.uxsdk_ic_person));
@@ -382,7 +383,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
         setActionIcon(UserAccountState.NOT_AUTHORIZED, getResources().getDrawable(R.drawable.uxsdk_ic_person_log_out));
         setActionIcon(UserAccountState.AUTHORIZED, getResources().getDrawable(R.drawable.uxsdk_ic_person_log_out));
         setActionIcon(UserAccountState.TOKEN_OUT_OF_DATE,
-                      getResources().getDrawable(R.drawable.uxsdk_ic_person_log_out));
+                getResources().getDrawable(R.drawable.uxsdk_ic_person_log_out));
         setActionIcon(UserAccountState.UNKNOWN, getResources().getDrawable(R.drawable.uxsdk_ic_person_log_in));
 
         setWidgetStateTextSize(getResources().getDimension(R.dimen.uxsdk_user_account_state_text_size));
@@ -397,7 +398,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      * Set the color of the widget state text based on user login state
      *
      * @param userAccountState {@link UserAccountState} for which the color state list should be used
-     * @param colorStateList colors list based on android state of the text
+     * @param colorStateList   colors list based on android state of the text
      */
     public void setWidgetStateTextColor(@NonNull UserAccountState userAccountState,
                                         @Nullable ColorStateList colorStateList) {
@@ -408,7 +409,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      * Set the color of the widget state text based on user login state
      *
      * @param userAccountState {@link UserAccountState} for which the color should be used
-     * @param color integer value of color to be used for the user login state
+     * @param color            integer value of color to be used for the user login state
      */
     public void setWidgetStateTextColor(@NonNull UserAccountState userAccountState, @ColorInt int color) {
         widgetStateTextColorMap.put(userAccountState, color);
@@ -507,7 +508,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      * Set the color of the widget message text based on user login state
      *
      * @param userAccountState {@link UserAccountState} for which the color should be used
-     * @param color integer value of color to be used for the message text
+     * @param color            integer value of color to be used for the message text
      */
     public void setWidgetMessageTextColor(@NonNull UserAccountState userAccountState, @ColorInt int color) {
         widgetMessageTextColorMap.put(userAccountState, color);
@@ -595,7 +596,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      * Set icon for the action based on {@link UserAccountState}
      *
      * @param userAccountState {@link UserAccountState} for which icon should be used
-     * @param resourceId resource id for the icon
+     * @param resourceId       resource id for the icon
      */
     public void setActionIcon(@NonNull UserAccountState userAccountState, @DrawableRes int resourceId) {
         setActionIcon(userAccountState, getResources().getDrawable(resourceId));
@@ -605,7 +606,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      * Set icon for the action based on {@link UserAccountState}
      *
      * @param userAccountState {@link UserAccountState} for which icon should be used
-     * @param drawable drawable for the icon
+     * @param drawable         drawable for the icon
      */
     public void setActionIcon(@NonNull UserAccountState userAccountState, @Nullable Drawable drawable) {
         widgetActionIconMap.put(userAccountState, drawable);
@@ -652,7 +653,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      * Set icon for the user based on {@link UserAccountState}
      *
      * @param userAccountState {@link UserAccountState} for which icon should be used
-     * @param resourceId resource id for the icon
+     * @param resourceId       resource id for the icon
      */
     public void setUserIcon(@NonNull UserAccountState userAccountState, @DrawableRes int resourceId) {
         setUserIcon(userAccountState, getResources().getDrawable(resourceId));
@@ -662,7 +663,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      * Set icon for the user based on {@link UserAccountState}
      *
      * @param userAccountState {@link UserAccountState} for which icon should be used
-     * @param drawable drawable for the icon
+     * @param drawable         drawable for the icon
      */
     public void setUserIcon(@NonNull UserAccountState userAccountState, @Nullable Drawable drawable) {
         widgetUserIconMap.put(userAccountState, drawable);

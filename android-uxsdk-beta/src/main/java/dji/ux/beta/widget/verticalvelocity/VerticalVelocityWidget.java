@@ -26,16 +26,20 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.FloatRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+
+import java.text.DecimalFormat;
+
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.R;
 import dji.ux.beta.base.ConstraintLayoutWidget;
@@ -44,12 +48,11 @@ import dji.ux.beta.base.GlobalPreferencesManager;
 import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import dji.ux.beta.util.DisplayUtil;
 import dji.ux.beta.util.UnitConversionUtil;
-import java.text.DecimalFormat;
 
 /**
  * Shows the vertical velocity of the aircraft. The
  * arrow indicates the direction of travel of the aircraft.
- *
+ * <p>
  * Uses the unit set in the UNIT_TYPE global preferences
  * {@link dji.ux.beta.base.GlobalPreferencesInterface#getUnitType()} and the
  * {@link dji.ux.beta.base.uxsdkkeys.GlobalPreferenceKeys#UNIT_TYPE} UX Key
@@ -95,8 +98,8 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
 
         if (!isInEditMode()) {
             widgetModel = new VerticalVelocityWidgetModel(DJISDKModel.getInstance(),
-                                                          ObservableInMemoryKeyedStore.getInstance(),
-                                                          GlobalPreferencesManager.getInstance());
+                    ObservableInMemoryKeyedStore.getInstance(),
+                    GlobalPreferencesManager.getInstance());
             verticalVelocityTitleTextView.setText(getResources().getString(R.string.uxsdk_vertical_velocity_title));
             verticalVelocityValueTextView.setMinEms(EMS);
         }
@@ -129,11 +132,11 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getVerticalVelocity()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateValueText));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateValueText));
         addReaction(widgetModel.getUnitType()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateUnitText));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateUnitText));
     }
     //endregion
 
@@ -150,6 +153,7 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
             verticalVelocityImageView.setImageDrawable(downwardVelocityDrawable);
         }
     }
+
     private void updateUnitText(UnitConversionUtil.UnitType unitType) {
         if (unitType == UnitConversionUtil.UnitType.IMPERIAL) {
             verticalVelocityUnitTextView.setText(getResources().getString(R.string.uxsdk_unit_mile_per_hr));
@@ -236,7 +240,7 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the background for the vertical velocity title text view
+     * Set the background of the vertical velocity title text view
      *
      * @param drawable Drawable resource for the background
      */
@@ -302,7 +306,7 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     /**
      * Get the drawable resource for the upward vertical velocity icon
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource of the icon
      */
     @Nullable
     public Drawable getUpwardVerticalVelocityIcon() {
@@ -312,7 +316,7 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     /**
      * Get the drawable resource for the downward vertical velocity icon
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource of the icon
      */
     @Nullable
     public Drawable getDownwardVerticalVelocityIcon() {
@@ -322,7 +326,7 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     /**
      * Set the resource ID for the vertical velocity icon's background
      *
-     * @param resourceId Integer ID of the background resource
+     * @param resourceId Integer ID of the icon's background resource
      */
     public void setVerticalVelocityIconBackground(@DrawableRes int resourceId) {
         verticalVelocityImageView.setBackgroundResource(resourceId);
@@ -331,16 +335,16 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     /**
      * Set the drawable resource for the vertical velocity icon's background
      *
-     * @param background Drawable resource for the background
+     * @param background Drawable resource for the icon's background
      */
     public void setVerticalVelocityIconBackground(@Nullable Drawable background) {
         verticalVelocityImageView.setBackground(background);
     }
 
     /**
-     * Get the background drawable resource for the vertical velocity icon
+     * Get the drawable resource for the vertical velocity icon's background
      *
-     * @return Drawable for the icon's background
+     * @return Drawable resource of the icon's background
      */
     @Nullable
     public Drawable getVerticalVelocityIconBackground() {
@@ -539,93 +543,88 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VerticalVelocityWidget);
         int verticalVelocityTitleTextAppearanceId =
-            typedArray.getResourceId(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityTitleTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityTitleTextAppearance,
+                        INVALID_RESOURCE);
         if (verticalVelocityTitleTextAppearanceId != INVALID_RESOURCE) {
             setVerticalVelocityTitleTextAppearance(verticalVelocityTitleTextAppearanceId);
         }
 
         float verticalVelocityTitleTextSize =
-            typedArray.getDimension(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityTitleTextSize,
-                                    INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityTitleTextSize, INVALID_RESOURCE);
         if (verticalVelocityTitleTextSize != INVALID_RESOURCE) {
             setVerticalVelocityTitleTextSize(DisplayUtil.pxToSp(context, verticalVelocityTitleTextSize));
         }
 
         int verticalVelocityTitleTextColor =
-            typedArray.getColor(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityTitleTextColor,
-                                INVALID_COLOR);
+                typedArray.getColor(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityTitleTextColor, INVALID_COLOR);
         if (verticalVelocityTitleTextColor != INVALID_COLOR) {
             setVerticalVelocityTitleTextColor(verticalVelocityTitleTextColor);
         }
 
         Drawable verticalVelocityTitleTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityTitleBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityTitleBackgroundDrawable);
         if (verticalVelocityTitleTextBackgroundDrawable != null) {
             setVerticalVelocityTitleTextBackground(verticalVelocityTitleTextBackgroundDrawable);
         }
 
         Drawable upwardVerticalVelocityIcon =
-            typedArray.getDrawable(R.styleable.VerticalVelocityWidget_uxsdk_upwardVerticalVelocityIcon);
+                typedArray.getDrawable(R.styleable.VerticalVelocityWidget_uxsdk_upwardVerticalVelocityIcon);
         if (upwardVerticalVelocityIcon != null) {
             setUpwardVerticalVelocityIcon(upwardVerticalVelocityIcon);
         }
 
         Drawable downwardVerticalVelocityIcon =
-            typedArray.getDrawable(R.styleable.VerticalVelocityWidget_uxsdk_downwardVerticalVelocityIcon);
+                typedArray.getDrawable(R.styleable.VerticalVelocityWidget_uxsdk_downwardVerticalVelocityIcon);
         if (downwardVerticalVelocityIcon != null) {
             setDownwardVerticalVelocityIcon(downwardVerticalVelocityIcon);
         }
 
         int verticalVelocityValueTextAppearanceId =
-            typedArray.getResourceId(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityValueTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityValueTextAppearance,
+                        INVALID_RESOURCE);
         if (verticalVelocityValueTextAppearanceId != INVALID_RESOURCE) {
             setVerticalVelocityValueTextAppearance(verticalVelocityValueTextAppearanceId);
         }
 
         float verticalVelocityValueTextSize =
-            typedArray.getDimension(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityValueTextSize,
-                                    INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityValueTextSize, INVALID_RESOURCE);
         if (verticalVelocityValueTextSize != INVALID_RESOURCE) {
             setVerticalVelocityValueTextSize(DisplayUtil.pxToSp(context, verticalVelocityValueTextSize));
         }
 
         int verticalVelocityValueTextColor =
-            typedArray.getColor(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityValueTextColor,
-                                INVALID_COLOR);
+                typedArray.getColor(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityValueTextColor, INVALID_COLOR);
         if (verticalVelocityValueTextColor != INVALID_COLOR) {
             setVerticalVelocityValueTextColor(verticalVelocityValueTextColor);
         }
 
         Drawable verticalVelocityValueTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityValueBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityValueBackgroundDrawable);
         if (verticalVelocityValueTextBackgroundDrawable != null) {
             setVerticalVelocityValueTextBackground(verticalVelocityValueTextBackgroundDrawable);
         }
 
         int verticalVelocityUnitTextAppearanceId =
-            typedArray.getResourceId(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityUnitTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityUnitTextAppearance,
+                        INVALID_RESOURCE);
         if (verticalVelocityUnitTextAppearanceId != INVALID_RESOURCE) {
             setVerticalVelocityUnitTextAppearance(verticalVelocityUnitTextAppearanceId);
         }
 
         float verticalVelocityUnitTextSize =
-            typedArray.getDimension(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityUnitTextSize,
-                                    INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityUnitTextSize, INVALID_RESOURCE);
         if (verticalVelocityUnitTextSize != INVALID_RESOURCE) {
             setVerticalVelocityUnitTextSize(DisplayUtil.pxToSp(context, verticalVelocityUnitTextSize));
         }
 
         int verticalVelocityUnitTextColor =
-            typedArray.getColor(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityUnitTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityUnitTextColor, INVALID_COLOR);
         if (verticalVelocityUnitTextColor != INVALID_COLOR) {
             setVerticalVelocityUnitTextColor(verticalVelocityUnitTextColor);
         }
 
         Drawable verticalVelocityUnitTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityUnitBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.VerticalVelocityWidget_uxsdk_verticalVelocityUnitBackgroundDrawable);
         if (verticalVelocityUnitTextBackgroundDrawable != null) {
             setVerticalVelocityUnitTextBackground(verticalVelocityUnitTextBackgroundDrawable);
         }
