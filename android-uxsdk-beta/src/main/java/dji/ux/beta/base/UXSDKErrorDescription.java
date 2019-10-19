@@ -32,22 +32,22 @@ public final class UXSDKErrorDescription extends DJIError {
      * The value type of the object does not match the value type of the key.
      */
     public static final UXSDKErrorDescription VALUE_TYPE_MISMATCH =
-        new UXSDKErrorDescription("The value type of the object does not match the value type of the key.");
+            new UXSDKErrorDescription("The value type of the object does not match the value type of the key.");
 
     /**
      * Simulator not running. Wind simulation can only be achieved while the simulator is active.
      */
     public static final UXSDKErrorDescription SIMULATOR_WIND_ERROR =
-        new UXSDKErrorDescription("Simulator not running. Wind simulation can only be achieved while the simulator is active.");
+            new UXSDKErrorDescription("Simulator not running. Wind simulation can only be achieved while the simulator is active.");
 
     /**
-     *  Fly zone error
+     * Fly zone error
      */
     public static final UXSDKErrorDescription FLYZONE_ERROR =
             new UXSDKErrorDescription("FlyZoneManager not available.");
 
     /**
-     *  User account manager error
+     * User account manager error
      */
     public static final UXSDKErrorDescription USER_ACCOUNT_MANAGER_ERROR =
             new UXSDKErrorDescription("UserAccountManager not available.");

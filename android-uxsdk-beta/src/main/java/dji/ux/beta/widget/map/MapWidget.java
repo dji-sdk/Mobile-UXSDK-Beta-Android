@@ -28,11 +28,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.constraint.Group;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -41,9 +36,14 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
+
 import com.dji.mapkit.amap.provider.AMapProvider;
 import com.dji.mapkit.core.Mapkit;
-import com.dji.mapkit.core.MapkitOptions;
 import com.dji.mapkit.core.camera.DJICameraUpdate;
 import com.dji.mapkit.core.camera.DJICameraUpdateFactory;
 import com.dji.mapkit.core.maps.DJIMap;
@@ -56,7 +56,6 @@ import com.dji.mapkit.core.models.annotations.DJIMarker;
 import com.dji.mapkit.core.models.annotations.DJIMarkerOptions;
 import com.dji.mapkit.core.models.annotations.DJIPolyline;
 import com.dji.mapkit.core.models.annotations.DJIPolylineOptions;
-import com.dji.mapkit.core.providers.MapProvider;
 import com.dji.mapkit.google.provider.GoogleProvider;
 import com.dji.mapkit.here.provider.HereProvider;
 import com.dji.mapkit.mapbox.provider.MapboxProvider;
@@ -87,13 +86,7 @@ import dji.ux.beta.util.SettingDefinitions;
 import dji.ux.beta.util.ViewUtil;
 import dji.ux.beta.widget.useraccount.UserAccountLoginWidget;
 
-import static com.dji.mapkit.core.Mapkit.MapProviderConstant.AMAP_PROVIDER;
-import static com.dji.mapkit.core.Mapkit.MapProviderConstant.GOOGLE_MAP_PROVIDER;
-import static com.dji.mapkit.core.Mapkit.MapProviderConstant.HERE_MAP_PROVIDER;
-import static com.dji.mapkit.core.Mapkit.MapProviderConstant.MAPBOX_MAP_PROVIDER;
-
-public class MapWidget extends ConstraintLayoutWidget
-    implements View.OnTouchListener, OnStateChangeCallback, FlyZoneActionListener {
+public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchListener, OnStateChangeCallback, FlyZoneActionListener {
 
     //region  Constants
     private static final int INVALID_ALPHA = -1;
@@ -123,7 +116,7 @@ public class MapWidget extends ConstraintLayoutWidget
     private DJIMapViewInternal mapView;
     private MapCenterLock mapCenterLockMode = MapCenterLock.AIRCRAFT;
     private boolean isAutoFrameMapBounds = false;
-    private int mapType;
+    private DJIMap.MapType mapType;
     private UserAccountLoginWidget userAccountLoginWidget;
     private SchedulerProvider schedulerProvider;
     private DJIMap.OnMarkerClickListener onMarkerClickListener;
@@ -200,8 +193,8 @@ public class MapWidget extends ConstraintLayoutWidget
 
         if (!isInEditMode()) {
             widgetModel = new MapWidgetModel(DJISDKModel.getInstance(),
-                                             ObservableInMemoryKeyedStore.getInstance(),
-                                             schedulerProvider);
+                    ObservableInMemoryKeyedStore.getInstance(),
+                    schedulerProvider);
         }
         flyZoneHelper = new FlyZoneHelper(context, this, this);
 
@@ -217,11 +210,11 @@ public class MapWidget extends ConstraintLayoutWidget
             if (connected) {
                 addReaction(reactToHeadingChanges());
                 addReaction(widgetModel.getHomeLocation()
-                                       .observeOn(schedulerProvider.ui())
-                                       .subscribe(MapWidget.this::updateHomeLocation));
+                        .observeOn(schedulerProvider.ui())
+                        .subscribe(MapWidget.this::updateHomeLocation));
                 addReaction(widgetModel.getAircraftLocation()
-                                       .observeOn(schedulerProvider.ui())
-                                       .subscribe(MapWidget.this::updateAircraftLocation));
+                        .observeOn(schedulerProvider.ui())
+                        .subscribe(MapWidget.this::updateAircraftLocation));
             }
         }));
     }
@@ -334,14 +327,14 @@ public class MapWidget extends ConstraintLayoutWidget
     @Override
     public void requestSelfUnlock(@NonNull ArrayList<Integer> arrayList) {
         addDisposable(widgetModel.unlockFlyZone(arrayList)
-                                 .observeOn(schedulerProvider.ui())
-                                 .subscribe(this::getFlyZoneList, error -> {
-                                     Toast.makeText(getContext(),
-                                                    getResources().getString(R.string.uxsdk_fly_zone_unlock_failed,
-                                                                             error.getMessage()),
-                                                    Toast.LENGTH_SHORT).show();
-                                     logErrorConsumer(TAG, "request self unlock ");
-                                 }));
+                .observeOn(schedulerProvider.ui())
+                .subscribe(this::getFlyZoneList, error -> {
+                    Toast.makeText(getContext(),
+                            getResources().getString(R.string.uxsdk_fly_zone_unlock_failed, error.getMessage()),
+                            Toast.LENGTH_SHORT).show();
+                    logErrorConsumer(TAG, "request self unlock ");
+
+                }));
     }
 
     @Override
@@ -352,19 +345,19 @@ public class MapWidget extends ConstraintLayoutWidget
     @Override
     public void requestEnableFlyZone(@NonNull CustomUnlockZone customUnlockZone) {
         addDisposable(widgetModel.enableCustomUnlockZoneOnAircraft(customUnlockZone)
-                                 .observeOn(schedulerProvider.ui())
-                                 .subscribe(() -> {
-                                     requestCustomUnlockZonesFromServer();
-                                 }, error -> logErrorConsumer(TAG, "request enable fly zone ")));
+                .observeOn(schedulerProvider.ui())
+                .subscribe(() -> {
+                    requestCustomUnlockZonesFromServer();
+                }, error -> logErrorConsumer(TAG, "request enable fly zone ")));
     }
 
     @Override
     public void requestDisableFlyZone() {
         addDisposable(widgetModel.disableCustomUnlockZoneOnAircraft()
-                                 .observeOn(schedulerProvider.ui())
-                                 .subscribe(() -> {
-                                     requestCustomUnlockZonesFromServer();
-                                 }, error -> logErrorConsumer(TAG, "request disable fly zone ")));
+                .observeOn(schedulerProvider.ui())
+                .subscribe(() -> {
+                    requestCustomUnlockZonesFromServer();
+                }, error -> logErrorConsumer(TAG, "request disable fly zone ")));
     }
     //endregion
 
@@ -374,8 +367,9 @@ public class MapWidget extends ConstraintLayoutWidget
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.MapWidget);
         String mapBoxAccessToken = typedArray.getString(R.styleable.MapWidget_uxsdk_mapBoxToken);
         setMapProvider(SettingDefinitions.MapProvider.find(typedArray.getInt(R.styleable.MapWidget_uxsdk_mapProvider,
-                                                                             0)), mapBoxAccessToken);
-        setMapType(typedArray.getInt(R.styleable.MapWidget_uxsdk_djiMap_mapType, 1));
+                0)), mapBoxAccessToken);
+        setMapType(DJIMap.MapType.find(typedArray.getInt(R.styleable.MapWidget_uxsdk_djiMap_mapType,
+                DJIMap.MapType.NORMAL.getValue())));
         int color = typedArray.getColor(R.styleable.MapWidget_uxsdk_warningFlyZoneColor, INVALID_COLOR);
         if (color != INVALID_COLOR) {
             flyZoneHelper.setFlyZoneColor(FlyZoneCategory.WARNING, color);
@@ -429,7 +423,7 @@ public class MapWidget extends ConstraintLayoutWidget
             flyZoneHelper.setCustomUnlockFlyZoneAlpha(alphaValue);
         }
         alphaValue =
-            typedArray.getInt(R.styleable.MapWidget_uxsdk_customUnlockedFlyZoneOnAircraftColor, INVALID_ALPHA);
+                typedArray.getInt(R.styleable.MapWidget_uxsdk_customUnlockedFlyZoneOnAircraftColor, INVALID_ALPHA);
         if (isValidAlpha(alphaValue)) {
             flyZoneHelper.setCustomUnlockFlyZoneSentToAircraftAlpha(alphaValue);
         }
@@ -442,11 +436,7 @@ public class MapWidget extends ConstraintLayoutWidget
             flyZoneHelper.setSelfUnlockAlpha(alphaValue);
         }
         flyZoneHelper.setFlyZoneBorderWidth(typedArray.getFloat(R.styleable.MapWidget_uxsdk_flyZoneBorderWidth,
-                                                                FlyZoneHelper.DEFAULT_BORDER_WIDTH));
-        color = typedArray.getColor(R.styleable.MapWidget_uxsdk_homeDirectionColor, INVALID_COLOR);
-        if (color != INVALID_COLOR) {
-            setDirectionToHomeColor(color);
-        }
+                FlyZoneHelper.DEFAULT_BORDER_WIDTH));
         color = typedArray.getColor(R.styleable.MapWidget_uxsdk_maximumHeightColor, INVALID_COLOR);
         if (color != INVALID_COLOR) {
             flyZoneHelper.setMaximumHeightColor(color);
@@ -455,12 +445,6 @@ public class MapWidget extends ConstraintLayoutWidget
         if (color != INVALID_COLOR) {
             flyZoneHelper.setMaximumHeightAlpha(alphaValue);
         }
-        float dimension = typedArray.getDimension(R.styleable.MapWidget_uxsdk_homeDirectionWidth, INVALID_DIMENSION);
-        if (dimension != INVALID_DIMENSION) {
-            setDirectionToHomeWidth(dimension);
-        }
-        setDirectionToHomeEnabled(typedArray.getBoolean(R.styleable.MapWidget_uxsdk_homeDirectionEnabled, true));
-        setFlightPathEnabled(typedArray.getBoolean(R.styleable.MapWidget_uxsdk_flightPathEnabled, true));
 
         Drawable drawable = typedArray.getDrawable(R.styleable.MapWidget_uxsdk_flyZoneUnLockedIcon);
         if (drawable != null) {
@@ -482,6 +466,26 @@ public class MapWidget extends ConstraintLayoutWidget
             flyZoneHelper.setCustomUnlockEnabledMarkerIcon(drawable);
         }
 
+        color = typedArray.getColor(R.styleable.MapWidget_uxsdk_homeDirectionColor, INVALID_COLOR);
+        if (color != INVALID_COLOR) {
+            setDirectionToHomeColor(color);
+        }
+        float dimension = typedArray.getDimension(R.styleable.MapWidget_uxsdk_homeDirectionWidth, INVALID_DIMENSION);
+        if (dimension != INVALID_DIMENSION) {
+            setDirectionToHomeWidth(dimension);
+        }
+        setDirectionToHomeEnabled(typedArray.getBoolean(R.styleable.MapWidget_uxsdk_homeDirectionEnabled, true));
+
+        color = typedArray.getColor(R.styleable.MapWidget_uxsdk_flightPathColor, INVALID_COLOR);
+        if (color != INVALID_COLOR) {
+            setFlightPathColor(color);
+        }
+        dimension = typedArray.getDimension(R.styleable.MapWidget_uxsdk_flightPathWidth, INVALID_DIMENSION);
+        if (dimension != INVALID_DIMENSION) {
+            setFlightPathWidth(dimension);
+        }
+        setFlightPathEnabled(typedArray.getBoolean(R.styleable.MapWidget_uxsdk_flightPathEnabled, true));
+
         drawable = typedArray.getDrawable(R.styleable.MapWidget_uxsdk_aircraftMarkerIcon);
         if (drawable != null) {
             setAircraftMarkerIcon(drawable);
@@ -501,7 +505,7 @@ public class MapWidget extends ConstraintLayoutWidget
         setGimbalAttitudeEnabled(typedArray.getBoolean(R.styleable.MapWidget_uxsdk_gimbalAttitudeEnabled, true));
 
         mapCenterLockMode = MapCenterLock.find(typedArray.getInt(R.styleable.MapWidget_uxsdk_mapCenterLock,
-                                                                 MapCenterLock.AIRCRAFT.getIndex()));
+                MapCenterLock.AIRCRAFT.getIndex()));
         isAutoFrameMapBounds = typedArray.getBoolean(R.styleable.MapWidget_uxsdk_autoFrameMap, false);
         setFlyZoneLegendEnabled(typedArray.getBoolean(R.styleable.MapWidget_uxsdk_flyZoneLegendEnabled, false));
 
@@ -520,12 +524,13 @@ public class MapWidget extends ConstraintLayoutWidget
                 initMapboxMap(null, accessToken);
                 break;
             case GOOGLE:
-            default:
                 initGoogleMap(null);
+            default:
+                // do nothing
         }
     }
 
-    private void setMapType(int mapType) {
+    private void setMapType(DJIMap.MapType mapType) {
         this.mapType = mapType;
         if (map != null) {
             map.setMapType(mapType);
@@ -533,12 +538,13 @@ public class MapWidget extends ConstraintLayoutWidget
     }
 
     private Disposable reactToHeadingChanges() {
-        return Flowable.combineLatest(widgetModel.getAircraftHeading(), widgetModel.getGimbalHeading(), Pair::create)
-                       .observeOn(schedulerProvider.ui())
-                       .subscribe(values -> {
-                           updateAircraftHeading(values.first);
-                           setGimbalHeading(values.first, values.second);
-                       }, logErrorConsumer(TAG, "react to Heading Update "));
+        return Flowable.combineLatest(widgetModel.getAircraftHeading(),
+                widgetModel.getGimbalHeading(), Pair::create)
+                .observeOn(schedulerProvider.ui())
+                .subscribe(values -> {
+                    updateAircraftHeading(values.first);
+                    setGimbalHeading(values.first, values.second);
+                }, logErrorConsumer(TAG, "react to Heading Update "));
     }
 
     /**
@@ -564,20 +570,20 @@ public class MapWidget extends ConstraintLayoutWidget
     private void initHomeOnMap(DJILatLng homePosition) {
         if (map == null || !homePosition.isAvailable()) return;
         //Draw home marker
-        DJIMarkerOptions homeMarkerOptions = new DJIMarkerOptions().position(homePosition)
-                                                                   .icon(DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(
-                                                                       homeIcon)))
-                                                                   .title(HOME_MARKER)
-                                                                   .anchor(homeIconAnchorX, homeIconAnchorY)
-                                                                   .zIndex(HOME_MARKER_ELEVATION)
-                                                                   .visible(homeMarkerEnabled);
+        DJIMarkerOptions homeMarkerOptions = new DJIMarkerOptions()
+                .position(homePosition)
+                .icon(DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(homeIcon)))
+                .title(HOME_MARKER)
+                .anchor(homeIconAnchorX, homeIconAnchorY)
+                .zIndex(HOME_MARKER_ELEVATION)
+                .visible(homeMarkerEnabled);
         homeMarker = map.addMarker(homeMarkerOptions);
         DJILog.d(TAG,
-                 "added home marker to map at ("
-                     + homePosition.getLatitude()
-                     + ","
-                     + homePosition.getLongitude()
-                     + ")");
+                "added home marker to map at ("
+                        + homePosition.getLatitude()
+                        + ","
+                        + homePosition.getLongitude()
+                        + ")");
         setMapCenter(mapCenterLockMode, DEFAULT_ZOOM, false);
     }
 
@@ -586,9 +592,7 @@ public class MapWidget extends ConstraintLayoutWidget
      */
     private void updateHomeLocation(LocationCoordinate2D homeLocation) {
         if (homeLocation.getLatitude() == MapWidgetModel.INVALID_COORDINATE
-            || homeLocation.getLongitude() == MapWidgetModel.INVALID_COORDINATE) {
-            return;
-        }
+                || homeLocation.getLongitude() == MapWidgetModel.INVALID_COORDINATE) return;
         DJILatLng homePosition = new DJILatLng(homeLocation.getLatitude(), homeLocation.getLongitude());
         if (map == null || !homePosition.isAvailable()) return;
         if (homeMarker != null) {
@@ -607,31 +611,29 @@ public class MapWidget extends ConstraintLayoutWidget
     private void initAircraftOnMap(DJILatLng aircraftPosition) {
         if (map == null || !aircraftPosition.isAvailable()) return;
         //Draw aircraft marker
-        DJIMarkerOptions aircraftMarkerOptions = new DJIMarkerOptions().position(aircraftPosition)
-                                                                       .icon(DJIBitmapDescriptorFactory.fromBitmap(
-                                                                           ViewUtil.getBitmapFromVectorDrawable(
-                                                                               aircraftIcon)))
-                                                                       .title(AIRCRAFT_MARKER)
-                                                                       .anchor(aircraftIconAnchorX, aircraftIconAnchorY)
-                                                                       .zIndex(AIRCRAFT_MARKER_ELEVATION)
-                                                                       .visible(aircraftMarkerEnabled);
+        DJIMarkerOptions aircraftMarkerOptions = new DJIMarkerOptions()
+                .position(aircraftPosition)
+                .icon(DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(aircraftIcon)))
+                .title(AIRCRAFT_MARKER)
+                .anchor(aircraftIconAnchorX, aircraftIconAnchorY)
+                .zIndex(AIRCRAFT_MARKER_ELEVATION)
+                .visible(aircraftMarkerEnabled);
         aircraftMarker = map.addMarker(aircraftMarkerOptions);
 
-        DJIMarkerOptions gimbalMarkerOptions = new DJIMarkerOptions().position(aircraftPosition)
-                                                                     .icon(DJIBitmapDescriptorFactory.fromBitmap(
-                                                                         ViewUtil.getBitmapFromVectorDrawable(
-                                                                             gimbalYawIcon)))
-                                                                     .anchor(gimbalYawAnchorX, gimbalYawAnchorY)
-                                                                     .zIndex(GIMBAL_MARKER_ELEVATION)
-                                                                     .title(GIMBAL_YAW_MARKER)
-                                                                     .visible(gimbalYawMarkerEnabled);
+        DJIMarkerOptions gimbalMarkerOptions = new DJIMarkerOptions()
+                .position(aircraftPosition)
+                .icon(DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(gimbalYawIcon)))
+                .anchor(gimbalYawAnchorX, gimbalYawAnchorY)
+                .zIndex(GIMBAL_MARKER_ELEVATION)
+                .title(GIMBAL_YAW_MARKER)
+                .visible(gimbalYawMarkerEnabled);
         gimbalYawMarker = map.addMarker(gimbalMarkerOptions);
         DJILog.d(TAG,
-                 "added aircraft marker to map at ("
-                     + aircraftPosition.getLatitude()
-                     + ","
-                     + aircraftPosition.getLongitude()
-                     + ")");
+                "added aircraft marker to map at ("
+                        + aircraftPosition.getLatitude()
+                        + ","
+                        + aircraftPosition.getLongitude()
+                        + ")");
 
         setMapCenter(mapCenterLockMode, DEFAULT_ZOOM, false);
         getFlyZoneList();
@@ -648,11 +650,11 @@ public class MapWidget extends ConstraintLayoutWidget
     }
 
     private void updateAircraftHeading(float aircraftHeading) {
-        if (((aircraftHeading >= 0 && aircraftMarkerHeading >= 0) || (aircraftHeading <= 0
-            && aircraftMarkerHeading <= 0)) && map != null) {
+        if (((aircraftHeading >= 0 && aircraftMarkerHeading >= 0) ||
+                (aircraftHeading <= 0 && aircraftMarkerHeading <= 0)) && map != null) {
             animateAircraftHeading(aircraftMarkerHeading,
-                                   aircraftHeading - map.getCameraPosition().bearing,
-                                   aircraftHeading);
+                    aircraftHeading - map.getCameraPosition().bearing,
+                    aircraftHeading);
         } else {
             setAircraftHeading(aircraftHeading);
         }
@@ -687,7 +689,7 @@ public class MapWidget extends ConstraintLayoutWidget
 
         //rotation animation
         ValueAnimator rotateAnimation =
-            ValueAnimator.ofFloat(aircraftMarkerHeading, aircraftHeading - map.getCameraPosition().bearing);
+                ValueAnimator.ofFloat(aircraftMarkerHeading, aircraftHeading - map.getCameraPosition().bearing);
         rotateAnimation.setDuration(ROTATION_ANIM_DURATION);
         rotateAnimation.setInterpolator(new LinearInterpolator());
         rotateAnimation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -727,7 +729,7 @@ public class MapWidget extends ConstraintLayoutWidget
     /**
      * Animates the change in position of the aircraft
      *
-     * @param toPosition ending position
+     * @param toPosition   ending position
      * @param fromPosition starting position
      */
     private void animateAircraftMarker(final DJILatLng toPosition, final DJILatLng fromPosition) {
@@ -739,9 +741,9 @@ public class MapWidget extends ConstraintLayoutWidget
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 float progress = valueAnimator.getAnimatedFraction();
                 double latitude =
-                    (toPosition.getLatitude() - fromPosition.getLatitude()) * progress + fromPosition.getLatitude();
+                        (toPosition.getLatitude() - fromPosition.getLatitude()) * progress + fromPosition.getLatitude();
                 double longitude =
-                    (toPosition.getLongitude() - fromPosition.getLongitude()) * progress + fromPosition.getLongitude();
+                        (toPosition.getLongitude() - fromPosition.getLongitude()) * progress + fromPosition.getLongitude();
 
                 DJILatLng aircraftLatLng = new DJILatLng(latitude, longitude);
                 if (aircraftLatLng.isAvailable()) {
@@ -775,12 +777,9 @@ public class MapWidget extends ConstraintLayoutWidget
     private void updateAircraftLocation(LocationCoordinate3D locationCoordinate3D) {
         if (map == null) return;
         if (locationCoordinate3D.getLatitude() == MapWidgetModel.INVALID_COORDINATE
-            || locationCoordinate3D.getLongitude() == MapWidgetModel.INVALID_COORDINATE) {
-            return;
-        }
+                || locationCoordinate3D.getLongitude() == MapWidgetModel.INVALID_COORDINATE) return;
 
-        final DJILatLng aircraftPosition =
-            new DJILatLng(locationCoordinate3D.getLatitude(), locationCoordinate3D.getLongitude());
+        final DJILatLng aircraftPosition = new DJILatLng(locationCoordinate3D.getLatitude(), locationCoordinate3D.getLongitude());
         if (aircraftMarker != null) {
             final DJILatLng markerPosition = aircraftMarker.getPosition();
             //Update marker
@@ -809,9 +808,9 @@ public class MapWidget extends ConstraintLayoutWidget
             } else {
                 //create new line
                 DJIPolylineOptions homeLineOptions = new DJIPolylineOptions().add(aircraftMarker.getPosition())
-                                                                             .add(homeCoordinate)
-                                                                             .color(homeDirectionColor)
-                                                                             .width(homeDirectionWidth);
+                        .add(homeCoordinate)
+                        .color(homeDirectionColor)
+                        .width(homeDirectionWidth);
 
                 //draw new line
                 homeLine = map.addPolyline(homeLineOptions);
@@ -828,8 +827,8 @@ public class MapWidget extends ConstraintLayoutWidget
      * Sets the lock on the aircraft or the home location to be in center
      *
      * @param mapCenterLock the mode of centering
-     * @param zoomLevel the zoom level to set, or -1 to keep the current zoom level
-     * @param animate true if the camera should animate towards the point, false if it should go directly there
+     * @param zoomLevel     the zoom level to set, or -1 to keep the current zoom level
+     * @param animate       true if the camera should animate towards the point, false if it should go directly there
      */
     private void setMapCenter(MapCenterLock mapCenterLock, float zoomLevel, boolean animate) {
         if (map == null) return;
@@ -843,18 +842,20 @@ public class MapWidget extends ConstraintLayoutWidget
             switch (mapCenterLock) {
                 case AIRCRAFT:
                     if (aircraftMarker != null) {
-                        cameraPosition = new DJICameraPosition.Builder().bearing(rotation)
-                                                                        .target(aircraftMarker.getPosition())
-                                                                        .zoom(zoomLevel)
-                                                                        .build();
+                        cameraPosition = new DJICameraPosition.Builder()
+                                .bearing(rotation)
+                                .target(aircraftMarker.getPosition())
+                                .zoom(zoomLevel)
+                                .build();
                     }
                     break;
                 case HOME:
                     if (homeMarker != null) {
-                        cameraPosition = new DJICameraPosition.Builder().bearing(rotation)
-                                                                        .target(homeMarker.getPosition())
-                                                                        .zoom(zoomLevel)
-                                                                        .build();
+                        cameraPosition = new DJICameraPosition.Builder()
+                                .bearing(rotation)
+                                .target(homeMarker.getPosition())
+                                .zoom(zoomLevel)
+                                .build();
                     }
                     break;
                 case NONE:
@@ -885,11 +886,11 @@ public class MapWidget extends ConstraintLayoutWidget
         if (homeMarker == null || aircraftMarker == null) {
             if (homeMarker != null) {
                 latLngList.add(new DJILatLng(homeMarker.getPosition().getLatitude(),
-                                             homeMarker.getPosition().getLongitude()));
+                        homeMarker.getPosition().getLongitude()));
             }
             if (aircraftMarker != null) {
                 latLngList.add(new DJILatLng(aircraftMarker.getPosition().getLatitude(),
-                                             aircraftMarker.getPosition().getLongitude()));
+                        aircraftMarker.getPosition().getLongitude()));
             }
         } else {
             double aircraftLat = aircraftMarker.getPosition().getLatitude();
@@ -905,7 +906,7 @@ public class MapWidget extends ConstraintLayoutWidget
                 final DJILatLng homePosition = new DJILatLng(adjustedLat, adjustedLng);
                 latLngList.add(homePosition);
                 final DJILatLng dummyLocation =
-                    new DJILatLng(aircraftLat - (adjustedLat - aircraftLat), aircraftLng - (adjustedLng - aircraftLng));
+                        new DJILatLng(aircraftLat - (adjustedLat - aircraftLat), aircraftLng - (adjustedLng - aircraftLng));
                 latLngList.add(dummyLocation);
             } else if (mapCenterLockMode == MapCenterLock.HOME) {
                 final DJILatLng homePosition = new DJILatLng(homeLat, homeLng);
@@ -915,7 +916,7 @@ public class MapWidget extends ConstraintLayoutWidget
                 final DJILatLng aircraftPosition = new DJILatLng(adjustedLat, adjustedLng);
                 latLngList.add(aircraftPosition);
                 final DJILatLng dummyLocation =
-                    new DJILatLng(homeLat - (adjustedLat - homeLat), homeLng - (adjustedLng - homeLng));
+                        new DJILatLng(homeLat - (adjustedLat - homeLat), homeLng - (adjustedLng - homeLng));
                 latLngList.add(dummyLocation);
             } else if (mapCenterLockMode == MapCenterLock.NONE) {
                 double adjustedAircraftLat;
@@ -942,7 +943,7 @@ public class MapWidget extends ConstraintLayoutWidget
         }
         if (!latLngList.isEmpty()) {
             DJILatLngBounds latLngBounds = DJILatLngBounds.fromLatLngs(latLngList);
-            map.animateCamera(DJICameraUpdateFactory.newLatLngBounds(latLngBounds, 0, 0, 0, 100));
+            map.animateCamera(DJICameraUpdateFactory.newLatLngBounds(latLngBounds, 0, 100));
         }
     }
     //endregion
@@ -955,12 +956,10 @@ public class MapWidget extends ConstraintLayoutWidget
      * for their premium package.
      *
      * @param listener The OnMapReadyListener which will invoke the onMapReady method when the map has finished
-     * initializing.
+     *                 initializing.
      */
     public void initHereMap(@Nullable final OnMapReadyListener listener) {
-        MapProvider mapProvider = new HereProvider();
-        MapkitOptions mapkitOptions = new MapkitOptions.Builder().addMapProvider(HERE_MAP_PROVIDER).build();
-        mapView = mapProvider.dispatchMapViewRequest(getContext(), mapkitOptions);
+        mapView = new HereProvider().dispatchMapViewRequest(getContext(), null);
         addView((ViewGroup) mapView, 0);
         mapView.getDJIMapAsync(map -> {
             MapWidget.this.map = map;
@@ -979,12 +978,10 @@ public class MapWidget extends ConstraintLayoutWidget
      * #onDestroy()}, {@link #onSaveInstanceState(Bundle)}, and {@link #onLowMemory()}.
      *
      * @param listener The OnMapReadyListener which will invoke the onMapReady method when the map has finished
-     * initializing.
+     *                 initializing.
      */
     public void initGoogleMap(@Nullable final OnMapReadyListener listener) {
-        MapProvider mapProvider = new GoogleProvider();
-        MapkitOptions mapkitOptions = new MapkitOptions.Builder().addMapProvider(GOOGLE_MAP_PROVIDER).build();
-        mapView = mapProvider.dispatchMapViewRequest(getContext(), mapkitOptions);
+        mapView = new GoogleProvider().dispatchMapViewRequest(getContext(), null);
         addView((ViewGroup) mapView, 0);
         mapView.getDJIMapAsync(map -> {
             MapWidget.this.map = map;
@@ -997,12 +994,10 @@ public class MapWidget extends ConstraintLayoutWidget
      * Initializes the MapWidget with AMaps.
      *
      * @param listener The OnMapReadyListener which will invoke the onMapReady method when the map has finished
-     * initializing.
+     *                 initializing.
      */
     public void initAMap(@Nullable final OnMapReadyListener listener) {
-        MapProvider mapProvider = new AMapProvider();
-        MapkitOptions mapkitOptions = new MapkitOptions.Builder().addMapProvider(AMAP_PROVIDER).build();
-        mapView = mapProvider.dispatchMapViewRequest(getContext(), mapkitOptions);
+        mapView = new AMapProvider().dispatchMapViewRequest(getContext(), null);
         addView((ViewGroup) mapView, 0);
         mapView.getDJIMapAsync(map -> {
             MapWidget.this.map = map;
@@ -1014,15 +1009,13 @@ public class MapWidget extends ConstraintLayoutWidget
     /**
      * Initializes the MapWidget with Mapbox.
      *
-     * @param listener The OnMapReadyListener which will invoke the onMapReady method when the map has finished
-     * initializing.
+     * @param listener          The OnMapReadyListener which will invoke the onMapReady method when the map has finished
+     *                          initializing.
      * @param mapboxAccessToken The API access token from Mapbox.
      */
     public void initMapboxMap(@Nullable final OnMapReadyListener listener, @NonNull String mapboxAccessToken) {
         Mapkit.mapboxAccessToken(mapboxAccessToken);
-        MapProvider mapProvider = new MapboxProvider();
-        MapkitOptions mapkitOptions = new MapkitOptions.Builder().addMapProvider(MAPBOX_MAP_PROVIDER).build();
-        mapView = mapProvider.dispatchMapViewRequest(getContext(), mapkitOptions);
+        mapView = new MapboxProvider().dispatchMapViewRequest(getContext(), null);
         addView((ViewGroup) mapView, 0);
         mapView.getDJIMapAsync(map -> {
             MapWidget.this.map = map;
@@ -1042,13 +1035,12 @@ public class MapWidget extends ConstraintLayoutWidget
         map.setMapType(mapType);
         map.setOnMarkerClickListener(marker -> {
             String title = marker.getTitle();
-            if (title != null
-                && title.length() > 0
-                && !GIMBAL_YAW_MARKER.equals(title)
-                && !AIRCRAFT_MARKER.equals(title)
-                && !HOME_MARKER.equals(title)
-                && MathUtil.isInteger(title)
-                && flyZoneHelper.isFlyZoneMarkerId(title)) {
+            if (title != null && title.length() > 0
+                    && !GIMBAL_YAW_MARKER.equals(title)
+                    && !AIRCRAFT_MARKER.equals(title)
+                    && !HOME_MARKER.equals(title)
+                    && MathUtil.isInteger(title)
+                    && flyZoneHelper.isFlyZoneMarkerId(title)) {
                 flyZoneHelper.onFlyZoneMarkerClick(title);
             } else {
                 emitMarkerClickEvent(marker);
@@ -1056,14 +1048,13 @@ public class MapWidget extends ConstraintLayoutWidget
             return true;
         });
         addDisposable(widgetModel.getAircraftLocation()
-                                 .firstOrError()
-                                 .observeOn(AndroidSchedulers.mainThread())
-                                 .subscribe(this::updateAircraftLocation,
-                                            logErrorConsumer(TAG, "updateAircraftLocation")));
+                .firstOrError()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateAircraftLocation, logErrorConsumer(TAG, "updateAircraftLocation")));
         addDisposable(widgetModel.getHomeLocation()
-                                 .firstOrError()
-                                 .observeOn(AndroidSchedulers.mainThread())
-                                 .subscribe(this::updateHomeLocation, logErrorConsumer(TAG, "updateHomeLocation")));
+                .firstOrError()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateHomeLocation, logErrorConsumer(TAG, "updateHomeLocation")));
     }
 
     private void emitMarkerClickEvent(DJIMarker marker) {
@@ -1082,7 +1073,7 @@ public class MapWidget extends ConstraintLayoutWidget
         if (flightPathPoints.size() >= 2) {
             DJILatLng lastPosition = flightPathPoints.get(flightPathPoints.size() - 1);
             if (Math.abs(lastPosition.getLatitude() - aircraftPosition.getLatitude()) > 0.000005
-                || Math.abs(lastPosition.getLongitude() - aircraftPosition.getLongitude()) > 0.000005) {
+                    || Math.abs(lastPosition.getLongitude() - aircraftPosition.getLongitude()) > 0.000005) {
                 flightPathPoints.add(aircraftPosition);
             }
         } else {
@@ -1102,8 +1093,10 @@ public class MapWidget extends ConstraintLayoutWidget
         //must create new line or else flightPathLine does not update otherwise
         if (flightPathEnabled) {
             if (flightPathLine == null) {
-                DJIPolylineOptions polylineOptions =
-                    new DJIPolylineOptions().addAll(flightPathPoints).color(flightPathColor).width(flightPathWidth);
+                DJIPolylineOptions polylineOptions = new DJIPolylineOptions()
+                        .addAll(flightPathPoints)
+                        .color(flightPathColor)
+                        .width(flightPathWidth);
                 flightPathLine = map.addPolyline(polylineOptions);
             } else {
                 flightPathLine.setPoints(flightPathPoints);
@@ -1280,8 +1273,8 @@ public class MapWidget extends ConstraintLayoutWidget
      * Note: When using HERE Maps, the anchor point does not rotate with the marker.
      *
      * @param drawable The image to be set.
-     * @param x Specifies the x axis value of anchor to be at a particular point in the marker image.
-     * @param y Specifies the y axis value of anchor to be at a particular point in the marker image.
+     * @param x        Specifies the x axis value of anchor to be at a particular point in the marker image.
+     * @param y        Specifies the y axis value of anchor to be at a particular point in the marker image.
      */
     public void setAircraftMarkerIcon(@NonNull Drawable drawable, float x, float y) {
         aircraftIconAnchorX = x;
@@ -1301,12 +1294,14 @@ public class MapWidget extends ConstraintLayoutWidget
         aircraftIcon = drawable;
         if (aircraftMarker != null) {
             aircraftMarker.setIcon(DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(
-                aircraftIcon)));
+                    aircraftIcon)));
         }
     }
 
     /**
      * Get the aircraft marker icon
+     *
+     * @return Drawable used as aircraft icon
      */
     @NonNull
     public Drawable getAircraftMarkerIcon() {
@@ -1318,8 +1313,8 @@ public class MapWidget extends ConstraintLayoutWidget
      * Note: When using HERE Maps, the anchor point does not rotate with the marker.
      *
      * @param drawable The image to be set.
-     * @param x Specifies the x axis value of anchor to be at a particular point in the marker image.
-     * @param y Specifies the y axis value of anchor to be at a particular point in the marker image.
+     * @param x        Specifies the x axis value of anchor to be at a particular point in the marker image.
+     * @param y        Specifies the y axis value of anchor to be at a particular point in the marker image.
      */
     public void setHomeMarkerIcon(@NonNull Drawable drawable, float x, float y) {
         homeIconAnchorX = x;
@@ -1357,8 +1352,8 @@ public class MapWidget extends ConstraintLayoutWidget
      * Note: When using HERE Maps, the anchor point does not rotate with the marker.
      *
      * @param drawable The image to be set.
-     * @param x Specifies the x axis value of anchor to be at a particular point in the marker image.
-     * @param y Specifies the y axis value of anchor to be at a particular point in the marker image.
+     * @param x        Specifies the x axis value of anchor to be at a particular point in the marker image.
+     * @param y        Specifies the y axis value of anchor to be at a particular point in the marker image.
      */
     public void setGimbalMarkerIcon(@NonNull Drawable drawable, float x, float y) {
         gimbalYawAnchorX = x;
@@ -1378,7 +1373,7 @@ public class MapWidget extends ConstraintLayoutWidget
         gimbalYawIcon = drawable;
         if (gimbalYawMarker != null) {
             gimbalYawMarker.setIcon(DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(
-                gimbalYawIcon)));
+                    gimbalYawIcon)));
         }
     }
 
@@ -1504,10 +1499,11 @@ public class MapWidget extends ConstraintLayoutWidget
     public void requestCustomUnlockZonesFromServer() {
         if (flyZoneHelper.isUserAuthorized()) {
             addDisposable(Single.zip(widgetModel.getCustomUnlockZonesFromServer(),
-                                     widgetModel.getCustomUnlockZonesFromAircraft(),
-                                     Pair::new).observeOn(schedulerProvider.ui()).subscribe(result -> {
-                flyZoneHelper.onCustomUnlockZoneUpdate(result.second, result.first);
-            }, logErrorConsumer(TAG, "get custom unlock zones ")));
+                    widgetModel.getCustomUnlockZonesFromAircraft(), Pair::new)
+                    .observeOn(schedulerProvider.ui())
+                    .subscribe(result -> {
+                        flyZoneHelper.onCustomUnlockZoneUpdate(result.second, result.first);
+                    }, logErrorConsumer(TAG, "get custom unlock zones ")));
         }
     }
 
@@ -1516,9 +1512,11 @@ public class MapWidget extends ConstraintLayoutWidget
      */
     public void syncCustomUnlockZonesToAircraft() {
         if (flyZoneHelper.isUserAuthorized()) {
-            addDisposable(widgetModel.syncZonesToAircraft().observeOn(schedulerProvider.ui()).subscribe(() -> {
-                requestCustomUnlockZonesFromServer();
-            }, error -> logErrorConsumer(TAG, "sync custom unlock zones ")));
+            addDisposable(widgetModel.syncZonesToAircraft()
+                    .observeOn(schedulerProvider.ui())
+                    .subscribe(() -> {
+                        requestCustomUnlockZonesFromServer();
+                    }, error -> logErrorConsumer(TAG, "sync custom unlock zones ")));
         }
     }
 

@@ -24,7 +24,7 @@
 
 package com.dji.ux.beta.sample.widgetlist;
 
-import android.support.annotation.StringRes;
+import androidx.annotation.StringRes;
 
 /**
  * An item within the widget list.

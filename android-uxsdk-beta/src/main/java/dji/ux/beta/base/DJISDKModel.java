@@ -22,8 +22,8 @@
 
 package dji.ux.beta.base;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -70,6 +70,7 @@ public class DJISDKModel {
     //endregion
 
     //region DependentKeys Control
+
     /**
      * Check if DJISDKModel is available
      *
@@ -92,7 +93,7 @@ public class DJISDKModel {
     /**
      * Subscribes the listener object to all changes of value on the given  key.
      *
-     * @param key A valid value-based key (get, set and/or action)
+     * @param key      A valid value-based key (get, set and/or action)
      * @param listener Listener that is subscribing.
      * @return A flowable that emits objects based on a key.
      */
@@ -160,7 +161,7 @@ public class DJISDKModel {
     /**
      * Performs a set on a settable key, changing attributes on the connected product.
      *
-     * @param key A valid settable key.
+     * @param key   A valid settable key.
      * @param value A value object relevant to the given key.
      * @return A completable indicating success/error setting the value.
      */
@@ -190,7 +191,7 @@ public class DJISDKModel {
     /**
      * Performs an action on an actionable key.
      *
-     * @param key A valid actionable key.
+     * @param key       A valid actionable key.
      * @param arguments Optional arguments relevant to the specific key.
      * @return A completable indicating success/error performing the action.
      */

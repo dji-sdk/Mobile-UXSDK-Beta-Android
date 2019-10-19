@@ -26,15 +26,19 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.FloatRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+
+import java.text.DecimalFormat;
+
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.R;
 import dji.ux.beta.base.ConstraintLayoutWidget;
@@ -43,7 +47,6 @@ import dji.ux.beta.base.GlobalPreferencesManager;
 import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import dji.ux.beta.util.DisplayUtil;
 import dji.ux.beta.util.UnitConversionUtil;
-import java.text.DecimalFormat;
 
 /**
  * Shows the distance between the current location of the aircraft
@@ -67,9 +70,11 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     public DistanceHomeWidget(Context context) {
         super(context);
     }
+
     public DistanceHomeWidget(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     public DistanceHomeWidget(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -83,8 +88,8 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
 
         if (!isInEditMode()) {
             widgetModel = new DistanceHomeWidgetModel(DJISDKModel.getInstance(),
-                                                      ObservableInMemoryKeyedStore.getInstance(),
-                                                      GlobalPreferencesManager.getInstance());
+                    ObservableInMemoryKeyedStore.getInstance(),
+                    GlobalPreferencesManager.getInstance());
             distanceHomeTitleTextView.setText(getResources().getString(R.string.uxsdk_distance_home_title));
             distanceHomeValueTextView.setMinEms(EMS);
         }
@@ -115,11 +120,11 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getDistanceFromHome()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateValueText));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateValueText));
         addReaction(widgetModel.getUnitType()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateUnitText));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateUnitText));
     }
     //endregion
 
@@ -214,7 +219,7 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the background for the distance from home title text view
+     * Set the background of the distance from home title text view
      *
      * @param drawable Drawable resource for the background
      */
@@ -433,76 +438,76 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.DistanceHomeWidget);
         int distanceHomeTitleTextAppearanceId =
-            typedArray.getResourceId(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeTitleTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeTitleTextAppearance,
+                        INVALID_RESOURCE);
         if (distanceHomeTitleTextAppearanceId != INVALID_RESOURCE) {
             setDistanceHomeTitleTextAppearance(distanceHomeTitleTextAppearanceId);
         }
 
         float distanceHomeTitleTextSize =
-            typedArray.getDimension(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeTitleTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeTitleTextSize, INVALID_RESOURCE);
         if (distanceHomeTitleTextSize != INVALID_RESOURCE) {
             setDistanceHomeTitleTextSize(DisplayUtil.pxToSp(context, distanceHomeTitleTextSize));
         }
 
         int distanceHomeTitleTextColor =
-            typedArray.getColor(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeTitleTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeTitleTextColor, INVALID_COLOR);
         if (distanceHomeTitleTextColor != INVALID_COLOR) {
             setDistanceHomeTitleTextColor(distanceHomeTitleTextColor);
         }
 
         Drawable distanceHomeTitleTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeTitleBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeTitleBackgroundDrawable);
         if (distanceHomeTitleTextBackgroundDrawable != null) {
             setDistanceHomeTitleTextBackground(distanceHomeTitleTextBackgroundDrawable);
         }
 
         int distanceHomeValueTextAppearanceId =
-            typedArray.getResourceId(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeValueTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeValueTextAppearance,
+                        INVALID_RESOURCE);
         if (distanceHomeValueTextAppearanceId != INVALID_RESOURCE) {
             setDistanceHomeValueTextAppearance(distanceHomeValueTextAppearanceId);
         }
 
         float distanceHomeValueTextSize =
-            typedArray.getDimension(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeValueTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeValueTextSize, INVALID_RESOURCE);
         if (distanceHomeValueTextSize != INVALID_RESOURCE) {
             setDistanceHomeValueTextSize(DisplayUtil.pxToSp(context, distanceHomeValueTextSize));
         }
 
         int distanceHomeValueTextColor =
-            typedArray.getColor(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeValueTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeValueTextColor, INVALID_COLOR);
         if (distanceHomeValueTextColor != INVALID_COLOR) {
             setDistanceHomeValueTextColor(distanceHomeValueTextColor);
         }
 
         Drawable distanceHomeValueTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeValueBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeValueBackgroundDrawable);
         if (distanceHomeValueTextBackgroundDrawable != null) {
             setDistanceHomeValueTextBackground(distanceHomeValueTextBackgroundDrawable);
         }
 
         int distanceHomeUnitTextAppearanceId =
-            typedArray.getResourceId(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeUnitTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeUnitTextAppearance,
+                        INVALID_RESOURCE);
         if (distanceHomeUnitTextAppearanceId != INVALID_RESOURCE) {
             setDistanceHomeUnitTextAppearance(distanceHomeUnitTextAppearanceId);
         }
 
         float distanceHomeUnitTextSize =
-            typedArray.getDimension(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeUnitTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeUnitTextSize, INVALID_RESOURCE);
         if (distanceHomeUnitTextSize != INVALID_RESOURCE) {
             setDistanceHomeUnitTextSize(DisplayUtil.pxToSp(context, distanceHomeUnitTextSize));
         }
 
         int distanceHomeUnitTextColor =
-            typedArray.getColor(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeUnitTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeUnitTextColor, INVALID_COLOR);
         if (distanceHomeUnitTextColor != INVALID_COLOR) {
             setDistanceHomeUnitTextColor(distanceHomeUnitTextColor);
         }
 
         Drawable distanceHomeUnitTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeUnitBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.DistanceHomeWidget_uxsdk_distanceHomeUnitBackgroundDrawable);
         if (distanceHomeUnitTextBackgroundDrawable != null) {
             setDistanceHomeUnitTextBackground(distanceHomeUnitTextBackgroundDrawable);
         }

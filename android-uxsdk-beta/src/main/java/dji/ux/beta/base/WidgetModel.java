@@ -22,7 +22,7 @@
 
 package dji.ux.beta.base;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +62,7 @@ public abstract class WidgetModel {
     private CompositeDisposable keyDisposables;
     private CompositeDisposable compositeDisposable;
     private Disposable timerDisposable;
-    private DataProcessor<Boolean> productConnectionProcessor;
+    protected DataProcessor<Boolean> productConnectionProcessor;
     //endregion
 
     //region Default Constructor
@@ -75,6 +75,7 @@ public abstract class WidgetModel {
     //endregion
 
     //region Lifecycle
+
     /**
      * Set up the widget model by initializing all the required resources
      */
@@ -143,6 +144,7 @@ public abstract class WidgetModel {
 
     /**
      * Add a disposable to the composite disposable list to ensure cleanup after completion
+     *
      * @param disposable Disposable to be added
      */
     protected void addDisposable(@NonNull Disposable disposable) {
@@ -161,7 +163,7 @@ public abstract class WidgetModel {
      * Bind the given DJIKey to the given data processor. This data processor will be
      * invoked with every update to the key.
      *
-     * @param key DJIKey to be bound
+     * @param key           DJIKey to be bound
      * @param dataProcessor DataProcessor to be bound
      */
     protected void bindDataProcessor(@NonNull DJIKey key, @NonNull DataProcessor<?> dataProcessor) {
@@ -174,8 +176,8 @@ public abstract class WidgetModel {
      * The data processor and side effect consumer will be invoked with every update to the key.
      * The side effect consumer will be called before the data processor is updated.
      *
-     * @param key DJIKey to be bound
-     * @param dataProcessor DataProcessor to be bound
+     * @param key                DJIKey to be bound
+     * @param dataProcessor      DataProcessor to be bound
      * @param sideEffectConsumer Consumer to be called along with data processor
      */
     protected void bindDataProcessor(@NonNull DJIKey key,
@@ -188,7 +190,7 @@ public abstract class WidgetModel {
      * Bind the given UXKey to the given data processor. This data processor will be
      * invoked with every update to the key.
      *
-     * @param key UXKey to be bound
+     * @param key           UXKey to be bound
      * @param dataProcessor DataProcessor to be bound
      */
     protected void bindDataProcessor(@NonNull UXKey key, @NonNull DataProcessor<?> dataProcessor) {
@@ -201,8 +203,8 @@ public abstract class WidgetModel {
      * The data processor and side effect consumer will be invoked with every update to the key.
      * The side effect consumer will be called before the data processor is updated.
      *
-     * @param key UXKey to be bound
-     * @param dataProcessor DataProcessor to be bound
+     * @param key                UXKey to be bound
+     * @param dataProcessor      DataProcessor to be bound
      * @param sideEffectConsumer Consumer to be called along with data processor
      */
     protected void bindDataProcessor(@NonNull UXKey key,
@@ -214,7 +216,7 @@ public abstract class WidgetModel {
     /**
      * Get a throwable error consumer for the given error.
      *
-     * @param tag Tag for the log
+     * @param tag     Tag for the log
      * @param message Message to be logged
      * @return Throwable consumer
      */
@@ -231,9 +233,9 @@ public abstract class WidgetModel {
 
         if (djiSdkModel.isAvailable()) {
             keyDisposables.add(djiSdkModel.addListener(djiKey, this)
-                                          .doOnNext(sideEffectConsumer)
-                                          .doOnNext(bindConsumer)
-                                          .subscribe(o -> updateStates(), logError(djiKey)));
+                    .doOnNext(sideEffectConsumer)
+                    .doOnNext(bindConsumer)
+                    .subscribe(o -> updateStates(), logError(djiKey)));
         } else {
             queuePendingKey(new PendingKey(djiKey, bindConsumer, sideEffectConsumer));
         }

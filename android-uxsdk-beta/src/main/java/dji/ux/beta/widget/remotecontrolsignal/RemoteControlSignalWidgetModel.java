@@ -22,7 +22,8 @@
 
 package dji.ux.beta.widget.remotecontrolsignal;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
 import dji.keysdk.AirLinkKey;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.functions.Consumer;
@@ -59,6 +60,7 @@ public class RemoteControlSignalWidgetModel extends WidgetModel {
     //endregion
 
     //region Data
+
     /**
      * Get the value of the strength of the signal between the RC and the aircraft.
      *

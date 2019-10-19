@@ -22,9 +22,11 @@
 
 package dji.ux.beta.base.uxsdkkeys;
 
-import android.support.annotation.Nullable;
-import dji.log.DJILog;
+import androidx.annotation.Nullable;
+
 import java.util.Arrays;
+
+import dji.log.DJILog;
 
 /**
  * This is a wrapper class used by the UXKey system to
@@ -67,25 +69,25 @@ public class ModelValue {
 
     private boolean arrayEquals(Object a, Object b) {
         boolean returnEqual = false;
-        if(a.getClass() == int[].class) {
-            returnEqual = Arrays.equals((int[])a, (int[])b);
-        } else if(a.getClass() == boolean[].class) {
-            returnEqual = Arrays.equals((boolean[])a, (boolean[])b);
-        } else if(a.getClass() == byte[].class) {
-            returnEqual = Arrays.equals((byte[])a, (byte[])b);
-        } else if(a.getClass() == char[].class) {
-            returnEqual = Arrays.equals((char[])a, (char[])b);
-        } else if(a.getClass() == long[].class) {
-            returnEqual = Arrays.equals((long[])a, (long[])b);
-        } else if(a.getClass() == short[].class) {
-            returnEqual = Arrays.equals((short[])a, (short[])b);
-        } else if(a.getClass() == float[].class) {
-            returnEqual = Arrays.equals((float[])a, (float[])b);
-        } else if(a.getClass() == double[].class) {
-            returnEqual = Arrays.equals((double[])a, (double[])b);
+        if (a.getClass() == int[].class) {
+            returnEqual = Arrays.equals((int[]) a, (int[]) b);
+        } else if (a.getClass() == boolean[].class) {
+            returnEqual = Arrays.equals((boolean[]) a, (boolean[]) b);
+        } else if (a.getClass() == byte[].class) {
+            returnEqual = Arrays.equals((byte[]) a, (byte[]) b);
+        } else if (a.getClass() == char[].class) {
+            returnEqual = Arrays.equals((char[]) a, (char[]) b);
+        } else if (a.getClass() == long[].class) {
+            returnEqual = Arrays.equals((long[]) a, (long[]) b);
+        } else if (a.getClass() == short[].class) {
+            returnEqual = Arrays.equals((short[]) a, (short[]) b);
+        } else if (a.getClass() == float[].class) {
+            returnEqual = Arrays.equals((float[]) a, (float[]) b);
+        } else if (a.getClass() == double[].class) {
+            returnEqual = Arrays.equals((double[]) a, (double[]) b);
         } else {
             try {
-                returnEqual = Arrays.equals((Object[])a, (Object[])b);
+                returnEqual = Arrays.equals((Object[]) a, (Object[]) b);
             } catch (Exception e) {
                 DJILog.e(TAG, e.getMessage());
             }

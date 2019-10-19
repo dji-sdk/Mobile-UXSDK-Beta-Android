@@ -25,11 +25,12 @@
 package com.dji.ux.beta.sample.widgetlist;
 
 import android.content.res.Resources;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dji.ux.beta.sample.R;
 

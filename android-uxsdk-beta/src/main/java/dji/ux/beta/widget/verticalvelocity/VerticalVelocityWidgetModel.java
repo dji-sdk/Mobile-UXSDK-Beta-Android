@@ -22,8 +22,9 @@
 
 package dji.ux.beta.widget.verticalvelocity;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import dji.keysdk.FlightControllerKey;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.base.DJISDKModel;
@@ -64,6 +65,7 @@ public class VerticalVelocityWidgetModel extends WidgetModel {
     //endregion
 
     //region Data
+
     /**
      * Get the value of the vertical velocity of the aircraft
      *
@@ -88,8 +90,8 @@ public class VerticalVelocityWidgetModel extends WidgetModel {
     protected void inSetup() {
         FlightControllerKey aircraftVelocityZKey = FlightControllerKey.create(FlightControllerKey.VELOCITY_Z);
         bindDataProcessor(aircraftVelocityZKey,
-                          rawVerticalVelocityProcessor,
-                          verticalVelocity -> convertValueByUnit((float) verticalVelocity));
+                rawVerticalVelocityProcessor,
+                verticalVelocity -> convertValueByUnit((float) verticalVelocity));
 
         UXKey unitKey = UXKeys.create(GlobalPreferenceKeys.UNIT_TYPE);
         bindDataProcessor(unitKey, unitTypeProcessor);

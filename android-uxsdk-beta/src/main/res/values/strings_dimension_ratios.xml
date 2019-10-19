@@ -22,13 +22,18 @@
   -->
 
 <resources>
-    <string name="uxsdk_widget_default_ratio">1:1</string>
-    <string name="uxsdk_widget_remote_control_signal_ratio">19:11</string>
-    <string name="uxsdk_widget_compass_ratio">1:1</string>
-    <string name="uxsdk_widget_base_dashboard_distance_ratio">81:16</string>
-    <string name="uxsdk_widget_dashboard_ratio">476:91</string>
-    <string name="uxsdk_widget_simulator_ratio">1:3</string>
-    <string name="uxsdk_widget_preflight_status_ratio">238:33</string>
-    <string name="uxsdk_widget_user_account_login">4:1</string>
-    <string name="uxsdk_widget_map_ratio">4:3</string>
+    <string name="uxsdk_widget_default_ratio" translatable="false">1:1</string>
+    <string name="uxsdk_widget_auto_exposure_lock_ratio" translatable="false">10:9</string>
+    <string name="uxsdk_widget_remote_control_signal_ratio" translatable="false">19:11</string>
+    <string name="uxsdk_widget_compass_ratio" translatable="false">1:1</string>
+    <string name="uxsdk_widget_base_dashboard_distance_ratio" translatable="false">81:16</string>
+    <string name="uxsdk_widget_dashboard_ratio" translatable="false">476:91</string>
+    <string name="uxsdk_widget_simulator_control_ratio" translatable="false">1:3</string>
+    <string name="uxsdk_widget_fpv_ratio" translatable="false">16:9</string>
+    <string name="uxsdk_widget_preflight_status_ratio" translatable="false">238:33</string>
+    <string name="uxsdk_widget_user_account_login_ratio" translatable="false">4:1</string>
+    <string name="uxsdk_widget_base_camera_info_ratio" translatable="false">2:1</string>
+    <string name="uxsdk_widget_map_ratio" translatable="false">4:3</string>
+    <string name="uxsdk_widget_camera_config_ssd_ratio" translatable="false">5:1</string>
+    <string name="uxsdk_widget_camera_controls_ratio" translatable="false">1:4</string>
 </resources>

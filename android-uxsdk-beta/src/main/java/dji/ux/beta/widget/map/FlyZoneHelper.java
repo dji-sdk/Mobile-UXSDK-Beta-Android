@@ -28,13 +28,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.v4.graphics.ColorUtils;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.ImageView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.graphics.ColorUtils;
 
 import com.dji.mapkit.core.maps.DJIMap;
 import com.dji.mapkit.core.models.DJIBitmapDescriptor;
@@ -95,7 +96,12 @@ public class FlyZoneHelper {
     private Map<String, CustomUnlockZone> customUnlockZonesOnAircraft = new ConcurrentHashMap<>();
     private Map<String, FlyZoneInformation> flyZoneMarkerInformationMap = new ConcurrentHashMap<>();
     private Set<DJIMarker> customUnlockMarkersSet = new HashSet<>();
-    private Set<DJICircle> customUnlockCircleSet = new HashSet<>();
+    private Map<String, DJICircle> customUnlockCircleMap = new ConcurrentHashMap<>();
+    private Set<String> maximumHeightShapeFlyZoneId = new HashSet<>();
+    private Set<String> selfUnlockFlyZoneId = new HashSet<>();
+    private Set<String> customUnlockFlyZoneShapeId = new HashSet<>();
+    private Set<String> customUnlockFlyZoneOnAircraftShapeId = new HashSet<>();
+    private Set<String> customUnlockFlyZoneEnabledShapeId = new HashSet<>();
     @ColorInt
     private int customUnlockColor;
     private int customUnlockColorAlpha;
@@ -221,9 +227,8 @@ public class FlyZoneHelper {
                 verifyUserAndUnlock(flyZoneInformation);
             } else {
                 showSingleButtonDialog(flyZoneInformation.getName(),
-                                       context.getResources()
-                                              .getString(R.string.uxsdk_fly_zone_unlock_end_time,
-                                                         flyZoneInformation.getUnlockEndTime()));
+                        context.getResources().getString(R.string.uxsdk_fly_zone_unlock_end_time,
+                                flyZoneInformation.getUnlockEndTime()));
             }
         } else if (customUnlockZonesOnAircraft.get(flyZoneId) != null) {
             final CustomUnlockZone flyZoneInformation = customUnlockZonesOnAircraft.get(flyZoneId);
@@ -238,7 +243,7 @@ public class FlyZoneHelper {
     /**
      * Provide custom unlock zones that should be drawn on the map
      *
-     * @param customUnlockZoneMap custom unlock fly zones on aircraft
+     * @param customUnlockZoneMap  custom unlock fly zones on aircraft
      * @param customUnlockZoneList custom unlock fly zones from server
      */
     public void onCustomUnlockZoneUpdate(@NonNull Map<Integer, CustomUnlockZone> customUnlockZoneMap,
@@ -276,15 +281,14 @@ public class FlyZoneHelper {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, alertDialogTheme);
             alertDialogBuilder.setTitle(context.getResources().getString(R.string.uxsdk_fly_zone_warning));
             alertDialogBuilder.setMessage(context.getResources()
-                                                 .getString(R.string.uxsdk_custom_fly_zone_duplicate,
-                                                            enabledZone,
-                                                            customUnlockEnableZone.getName()));
+                    .getString(R.string.uxsdk_custom_fly_zone_duplicate,
+                            enabledZone, customUnlockEnableZone.getName()));
             alertDialogBuilder.setCancelable(false);
             alertDialogBuilder.setNegativeButton(context.getResources().getString(R.string.uxsdk_app_cancel),
-                                                 (dialog, which) -> dialog.cancel());
+                    (dialog, which) -> dialog.cancel());
             alertDialogBuilder.setPositiveButton(context.getResources().getString(R.string.uxsdk_fly_zone_unlock),
-                                                 (dialog, which) -> flyZoneActionListener.requestEnableFlyZone(
-                                                     customUnlockEnableZone));
+                    (dialog, which) -> flyZoneActionListener.requestEnableFlyZone(
+                            customUnlockEnableZone));
             alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         } else {
@@ -294,29 +298,34 @@ public class FlyZoneHelper {
 
     private void drawCustomUnlockFlyZones(CustomUnlockZone customUnlockZone, boolean isZoneSentToAircraft) {
         DJILatLng zoneCoordinates =
-            new DJILatLng(customUnlockZone.getCenter().getLatitude(), customUnlockZone.getCenter().getLongitude());
-        DJICircleOptions zoneCircle = new DJICircleOptions().radius(customUnlockZone.getRadius())
-                                                            .center(zoneCoordinates)
-                                                            .strokeWidth(flyZoneBorderWidth);
+                new DJILatLng(customUnlockZone.getCenter().getLatitude(), customUnlockZone.getCenter().getLongitude());
+        String customUnlockZoneId = String.valueOf(customUnlockZone.getID());
+        DJICircleOptions zoneCircle = new DJICircleOptions()
+                .radius(customUnlockZone.getRadius())
+                .center(zoneCoordinates)
+                .strokeWidth(flyZoneBorderWidth);
         if (isZoneSentToAircraft) {
-            DJIMarkerOptions markerOptions =
-                new DJIMarkerOptions().position(new DJILatLng(customUnlockZone.getCenter().getLatitude(),
-                                                              customUnlockZone.getCenter().getLongitude()))
-                                      .title(String.valueOf(customUnlockZone.getID()));
+            DJIMarkerOptions markerOptions = new DJIMarkerOptions()
+                    .position(new DJILatLng(customUnlockZone.getCenter().getLatitude(),
+                            customUnlockZone.getCenter().getLongitude()))
+                    .title(customUnlockZoneId);
             if (customUnlockZone.isEnabled()) {
 
                 zoneCircle.strokeColor(customUnlockEnabledColor)
-                          .fillColor(ColorUtils.setAlphaComponent(customUnlockEnabledColor,
-                                                                  customUnlockEnabledColorAlpha));
+                        .fillColor(ColorUtils.setAlphaComponent(customUnlockEnabledColor,
+                                customUnlockEnabledColorAlpha));
                 markerOptions.icon(customUnlockEnabledImg)
-                             .anchor(customUnlockImgEnabledXAnchor, customUnlockImgEnabledYAnchor);
+                        .anchor(customUnlockImgEnabledXAnchor, customUnlockImgEnabledYAnchor);
+                customUnlockFlyZoneEnabledShapeId.add(customUnlockZoneId);
+
             } else {
 
                 zoneCircle.strokeColor(customUnlockSentToAircraftColor)
-                          .fillColor(ColorUtils.setAlphaComponent(customUnlockSentToAircraftColor,
-                                                                  customUnlockSentToAircraftColorAlpha));
+                        .fillColor(ColorUtils.setAlphaComponent(customUnlockSentToAircraftColor,
+                                customUnlockSentToAircraftColorAlpha));
                 markerOptions.icon(customUnlockSentToAircraftImg)
-                             .anchor(customUnlockSentToAircraftImgXAnchor, customUnlockSentToAircraftImgYAnchor);
+                        .anchor(customUnlockSentToAircraftImgXAnchor, customUnlockSentToAircraftImgYAnchor);
+                customUnlockFlyZoneOnAircraftShapeId.add(customUnlockZoneId);
             }
 
             DJIMarker marker = map.addMarker(markerOptions);
@@ -324,21 +333,23 @@ public class FlyZoneHelper {
             marker.setVisible(customUnlockZonesVisibility);
         } else {
             zoneCircle.strokeColor(customUnlockColor)
-                      .fillColor(ColorUtils.setAlphaComponent(customUnlockColor, customUnlockColorAlpha));
+                    .fillColor(ColorUtils.setAlphaComponent(customUnlockColor, customUnlockColorAlpha));
+            customUnlockFlyZoneShapeId.add(customUnlockZoneId);
+
         }
         DJICircle circle = map.addSingleCircle(zoneCircle);
         if (circle != null) {
             circle.setVisible(customUnlockZonesVisibility);
-            customUnlockCircleSet.add(circle);
+            customUnlockCircleMap.put(customUnlockZoneId, circle);
         }
     }
 
     private void removeCustomFlyZones() {
-        if (customUnlockCircleSet != null) {
-            for (DJICircle djiCircle : customUnlockCircleSet) {
+        if (customUnlockCircleMap != null) {
+            for (DJICircle djiCircle : customUnlockCircleMap.values()) {
                 djiCircle.remove();
             }
-            customUnlockCircleSet = new HashSet<>();
+            customUnlockCircleMap = new ConcurrentHashMap<>();
         }
         if (customUnlockMarkersSet != null) {
             for (DJIMarker djiMarker : customUnlockMarkersSet) {
@@ -346,6 +357,9 @@ public class FlyZoneHelper {
             }
             customUnlockMarkersSet = new HashSet<>();
         }
+        customUnlockFlyZoneShapeId.clear();
+        customUnlockFlyZoneOnAircraftShapeId.clear();
+        customUnlockFlyZoneEnabledShapeId.clear();
     }
 
     private void removeFlyZonesOffMap() {
@@ -368,6 +382,8 @@ public class FlyZoneHelper {
             marker.remove();
         }
         flyZoneUnlockedMarkerMap.clear();
+        selfUnlockFlyZoneId.clear();
+        maximumHeightShapeFlyZoneId.clear();
     }
 
     private void removeFlyZoneCircleAndClearMap(Map<String, DJICircle> map) {
@@ -450,12 +466,8 @@ public class FlyZoneHelper {
         maximumHeightAlpha = DEFAULT_ALPHA;
         selfUnlockColor = getColor(R.color.uxsdk_unlocked_border);
 
-        selfUnlockedImg =
-            DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(context.getResources()
-                                                                                              .getDrawable(R.drawable.uxsdk_ic_flyzone_unlocked)));
-        selfLockedImg =
-            DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(context.getResources()
-                                                                                              .getDrawable(R.drawable.uxsdk_ic_flyzone_locked)));
+        selfUnlockedImg = DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(context.getResources().getDrawable(R.drawable.uxsdk_ic_flyzone_unlocked)));
+        selfLockedImg = DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(context.getResources().getDrawable(R.drawable.uxsdk_ic_flyzone_locked)));
         selfUnlockedImgXAnchor = DEFAULT_ANCHOR;
         selfUnlockedImgYAnchor = DEFAULT_ANCHOR;
         selfLockedImgXAnchor = DEFAULT_ANCHOR;
@@ -473,12 +485,8 @@ public class FlyZoneHelper {
         customUnlockSentToAircraftImgXAnchor = DEFAULT_ANCHOR;
         customUnlockSentToAircraftImgYAnchor = DEFAULT_ANCHOR;
 
-        customUnlockEnabledImg =
-            DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(context.getResources()
-                                                                                              .getDrawable(R.drawable.uxsdk_ic_flyzone_unlocked)));
-        customUnlockSentToAircraftImg =
-            DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(context.getResources()
-                                                                                              .getDrawable(R.drawable.uxsdk_ic_flyzone_locked)));
+        customUnlockEnabledImg = DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(context.getResources().getDrawable(R.drawable.uxsdk_ic_flyzone_unlocked)));
+        customUnlockSentToAircraftImg = DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(context.getResources().getDrawable(R.drawable.uxsdk_ic_flyzone_locked)));
     }
 
     private void drawFlyZone(FlyZoneInformation zone) {
@@ -491,33 +499,25 @@ public class FlyZoneHelper {
         DJILatLng zoneCoordinates = new DJILatLng(zoneLocation.getLatitude(), zoneLocation.getLongitude());
         //add the fly zone to the map
         if (zone.getFlyZoneType() == FlyZoneType.CIRCLE) {
-            DJICircleOptions zoneCircle = new DJICircleOptions().radius(zoneRadius)
-                                                                .center(zoneCoordinates)
-                                                                .strokeColor(isUnlocked
-                                                                             ? selfUnlockColor
-                                                                             : getFlyZoneColor(zone.getCategory()))
-                                                                .strokeWidth(flyZoneBorderWidth)
-                                                                .fillColor(ColorUtils.setAlphaComponent(isUnlocked
-                                                                                                        ? selfUnlockColor
-                                                                                                        : getFlyZoneColor(
-                                                                                                            zone.getCategory()),
-                                                                                                        isUnlocked
-                                                                                                        ? selfUnlockAlpha
-                                                                                                        : getFlyZoneAlpha(
-                                                                                                            zone.getCategory())));
+            DJICircleOptions zoneCircle = new DJICircleOptions()
+                    .radius(zoneRadius)
+                    .center(zoneCoordinates)
+                    .strokeColor(isUnlocked ? selfUnlockColor : getFlyZoneColor(zone.getCategory()))
+                    .strokeWidth(flyZoneBorderWidth)
+                    .fillColor(ColorUtils.setAlphaComponent(
+                            isUnlocked ? selfUnlockColor : getFlyZoneColor(zone.getCategory()),
+                            isUnlocked ? selfUnlockAlpha : getFlyZoneAlpha(zone.getCategory())));
             DJICircle circle = map.addSingleCircle(zoneCircle);
             addCircleToMap(zone, circle, zoneID);
         }
 
         if (isUnlocked) {
-            DJIMarkerOptions markerOptions =
-                new DJIMarkerOptions().position(new DJILatLng(zone.getCoordinate().getLatitude(),
-                                                              zone.getCoordinate().getLongitude()))
-                                      .icon(selfUnlockedImg)
-                                      .title(zoneID)
-                                      .anchor(selfUnlockedImgXAnchor, selfUnlockedImgYAnchor)
-                                      .visible(isFlyZoneUnlockingEnabled
-                                                   && visibleFlyZoneSet.contains(zone.getCategory()));
+            DJIMarkerOptions markerOptions = new DJIMarkerOptions()
+                    .position(new DJILatLng(zone.getCoordinate().getLatitude(), zone.getCoordinate().getLongitude()))
+                    .icon(selfUnlockedImg)
+                    .title(zoneID)
+                    .anchor(selfUnlockedImgXAnchor, selfUnlockedImgYAnchor)
+                    .visible(isFlyZoneUnlockingEnabled && visibleFlyZoneSet.contains(zone.getCategory()));
             DJIMarker djiMarker = map.addMarker(markerOptions);
 
             if (flyZoneLockedMarkerMap.containsKey(zoneID)) {
@@ -525,15 +525,14 @@ public class FlyZoneHelper {
                 flyZoneLockedMarkerMap.remove(zoneID);
             }
             flyZoneUnlockedMarkerMap.put(zoneID, djiMarker);
+            selfUnlockFlyZoneId.add(zoneID);
         } else if (isSelfUnlockable) {
-            DJIMarkerOptions markerOptions =
-                new DJIMarkerOptions().position(new DJILatLng(zone.getCoordinate().getLatitude(),
-                                                              zone.getCoordinate().getLongitude()))
-                                      .icon(selfLockedImg)
-                                      .title(zoneID)
-                                      .anchor(selfLockedImgXAnchor, selfLockedImgYAnchor)
-                                      .visible(isFlyZoneUnlockingEnabled
-                                                   && visibleFlyZoneSet.contains(zone.getCategory()));
+            DJIMarkerOptions markerOptions = new DJIMarkerOptions()
+                    .position(new DJILatLng(zone.getCoordinate().getLatitude(), zone.getCoordinate().getLongitude()))
+                    .icon(selfLockedImg)
+                    .title(zoneID)
+                    .anchor(selfLockedImgXAnchor, selfLockedImgYAnchor)
+                    .visible(isFlyZoneUnlockingEnabled && visibleFlyZoneSet.contains(zone.getCategory()));
             DJIMarker djiMarker = map.addMarker(markerOptions);
 
             if (flyZoneUnlockedMarkerMap.containsKey(zoneID)) {
@@ -543,39 +542,39 @@ public class FlyZoneHelper {
             flyZoneLockedMarkerMap.put(zoneID, djiMarker);
         }
 
-        drawSubFlyZones(zone);
+        drawSubFlyZones(zone, isUnlocked);
         flyZoneMarkerInformationMap.put(String.valueOf(zone.getFlyZoneID()), zone);
     }
 
-    private void drawSubFlyZones(FlyZoneInformation zone) {
+    private void drawSubFlyZones(FlyZoneInformation zone, boolean isUnlocked) {
         if (zone.getSubFlyZones() != null) {
             for (SubFlyZoneInformation subZone : zone.getSubFlyZones()) {
                 //draw sub-flyZone based on shape
+                String zoneSubZoneId = zone.getFlyZoneID() + "_" + subZone.getAreaID();
+                if (isUnlocked) selfUnlockFlyZoneId.add(zoneSubZoneId);
                 if (subZone.getShape() == SubFlyZoneShape.CYLINDER) {
                     LocationCoordinate2D subZoneLocation = subZone.getCenter();
                     double subZoneRadius = subZone.getRadius();
                     DJILatLng subZoneCoordinates =
-                        new DJILatLng(subZoneLocation.getLatitude(), subZoneLocation.getLongitude());
-                    DJICircleOptions mapCircleOptions = new DJICircleOptions().radius(subZoneRadius)
-                                                                              .center(subZoneCoordinates)
-                                                                              .fillColor(ColorUtils.setAlphaComponent(
-                                                                                  getFlyZoneColor(zone.getCategory()),
-                                                                                  getFlyZoneAlpha(zone.getCategory())))
-                                                                              .strokeWidth(flyZoneBorderWidth)
-                                                                              .strokeColor(getFlyZoneColor(zone.getCategory()));
+                            new DJILatLng(subZoneLocation.getLatitude(), subZoneLocation.getLongitude());
+                    DJICircleOptions mapCircleOptions = new DJICircleOptions()
+                            .radius(subZoneRadius)
+                            .center(subZoneCoordinates)
+                            .strokeWidth(flyZoneBorderWidth)
+                            .strokeColor(isUnlocked ? selfUnlockColor : getFlyZoneColor(zone.getCategory()))
+                            .fillColor(ColorUtils.setAlphaComponent(
+                                    isUnlocked ? selfUnlockColor : getFlyZoneColor(zone.getCategory()),
+                                    isUnlocked ? selfUnlockAlpha : getFlyZoneAlpha(zone.getCategory())));
                     if (subZone.getMaxFlightHeight() != 0) {
                         mapCircleOptions.fillColor(ColorUtils.setAlphaComponent(maximumHeightColor, maximumHeightAlpha))
-                                        .strokeColor(maximumHeightColor);
+                                .strokeColor(maximumHeightColor);
+                        maximumHeightShapeFlyZoneId.add(zoneSubZoneId);
                     }
                     DJICircle circle = map.addSingleCircle(mapCircleOptions);
                     if (circle != null) {
-                        addCircleToMap(zone, circle, zone.getFlyZoneID() + "_" + subZone.getAreaID());
+                        addCircleToMap(zone, circle, zoneSubZoneId);
                     } else {
-                        DJILog.e(TAG,
-                                 "Invalid flyzone not added to map: "
-                                     + zone.getFlyZoneID()
-                                     + "_"
-                                     + subZone.getAreaID());
+                        DJILog.e(TAG, "Invalid flyzone not added to map: " + zone.getFlyZoneID() + "_" + subZone.getAreaID());
                     }
                 } else if (subZone.getShape() == SubFlyZoneShape.POLYGON) {
                     List<LocationCoordinate2D> verticesLocations = subZone.getVertices();
@@ -585,23 +584,22 @@ public class FlyZoneHelper {
                         geoPolygonOptions.add(verticesCoordinate);
                     }
 
-                    geoPolygonOptions.fillColor(ColorUtils.setAlphaComponent(getFlyZoneColor(zone.getCategory()),
-                                                                             getFlyZoneAlpha(zone.getCategory())));
-                    geoPolygonOptions.strokeWidth(flyZoneBorderWidth).strokeColor(getFlyZoneColor(zone.getCategory()));
+                    geoPolygonOptions.strokeWidth(flyZoneBorderWidth)
+                            .strokeColor(isUnlocked ? selfUnlockColor : getFlyZoneColor(zone.getCategory()))
+                            .fillColor(ColorUtils.setAlphaComponent(
+                                    isUnlocked ? selfUnlockColor : getFlyZoneColor(zone.getCategory()),
+                                    isUnlocked ? selfUnlockAlpha : getFlyZoneAlpha(zone.getCategory())));
                     if (subZone.getMaxFlightHeight() != 0) {
                         geoPolygonOptions.fillColor(ColorUtils.setAlphaComponent(maximumHeightColor,
-                                                                                 maximumHeightAlpha))
-                                         .strokeColor(maximumHeightColor);
+                                maximumHeightAlpha))
+                                .strokeColor(maximumHeightColor);
+                        maximumHeightShapeFlyZoneId.add(zoneSubZoneId);
                     }
                     DJIPolygon geoPolygon = map.addPolygon(geoPolygonOptions);
                     if (geoPolygon != null) {
-                        addPolygonToMap(zone, geoPolygon, zone.getFlyZoneID() + "_" + subZone.getAreaID());
+                        addPolygonToMap(zone, geoPolygon, zoneSubZoneId);
                     } else {
-                        DJILog.e(TAG,
-                                 "Invalid flyzone not added to map: "
-                                     + zone.getFlyZoneID()
-                                     + "_"
-                                     + subZone.getAreaID());
+                        DJILog.e(TAG, "Invalid flyzone not added to map: " + zone.getFlyZoneID() + "_" + subZone.getAreaID());
                     }
                 }
             }
@@ -613,19 +611,17 @@ public class FlyZoneHelper {
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(message);
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setPositiveButton(context.getResources().getString(R.string.uxsdk_app_ok),
-                                             new DialogInterface.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(DialogInterface dialog, int which) {
-                                                     dialog.cancel();
-                                                 }
-                                             });
+        alertDialogBuilder.setPositiveButton(context.getResources().getString(R.string.uxsdk_app_ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
 
     private void addCircleToMap(FlyZoneInformation zone, DJICircle circle, String zoneId) {
-
         switch (zone.getCategory()) {
             case RESTRICTED:
                 restrictedDJICircleMap.put(zoneId, circle);
@@ -668,43 +664,28 @@ public class FlyZoneHelper {
     private void verifyUserAndUnlock(final FlyZoneInformation flyZoneInformation) {
         if (userAccountState == UserAccountState.AUTHORIZED) {
             unlockFlyZone(flyZoneInformation);
-        } else if (userAccountState == UserAccountState.NOT_LOGGED_IN
-            || userAccountState == UserAccountState.TOKEN_OUT_OF_DATE) {
-
-            showSingleButtonDialog(context.getResources().getString(R.string.uxsdk_error),
-                                   context.getResources().getString(R.string.uxsdk_self_fly_zone_login_requirement));
+        } else if (userAccountState == UserAccountState.NOT_LOGGED_IN || userAccountState == UserAccountState.TOKEN_OUT_OF_DATE) {
+            showSingleButtonDialog(context.getResources().getString(R.string.uxsdk_error), context.getResources().getString(R.string.uxsdk_self_fly_zone_login_requirement));
         } else {
-            showSingleButtonDialog(context.getResources().getString(R.string.uxsdk_error),
-                                   context.getResources()
-                                          .getString(R.string.uxsdk_fly_zone_unlock_failed_unauthorized));
+            showSingleButtonDialog(context.getResources().getString(R.string.uxsdk_error), context.getResources().getString(R.string.uxsdk_fly_zone_unlock_failed_unauthorized));
         }
     }
 
     private void unlockFlyZone(FlyZoneInformation flyZoneInformation) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context, alertDialogTheme);
-        alertDialogBuilder.setTitle(context.getResources()
-                                           .getString(R.string.uxsdk_fly_zone_unlock_zone,
-                                                      flyZoneInformation.getName()));
+        alertDialogBuilder.setTitle(context.getResources().getString(R.string.uxsdk_fly_zone_unlock_zone, flyZoneInformation.getName()));
         alertDialogBuilder.setMessage(context.getResources().getString(R.string.uxsdk_fly_zone_unlock_confirmation));
         alertDialogBuilder.setCancelable(false);
         alertDialogBuilder.setNegativeButton(context.getResources().getString(R.string.uxsdk_app_cancel),
-                                             new DialogInterface.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(DialogInterface dialog, int which) {
-                                                     dialog.cancel();
-                                                 }
-                                             });
+                (dialog, which) -> dialog.cancel());
         alertDialogBuilder.setPositiveButton(context.getResources().getString(R.string.uxsdk_fly_zone_unlock),
-                                             new DialogInterface.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(DialogInterface dialog, int which) {
-                                                     if (flyZoneActionListener != null) {
-                                                         ArrayList<Integer> flyZoneArrayList = new ArrayList<>();
-                                                         flyZoneArrayList.add(flyZoneInformation.getFlyZoneID());
-                                                         flyZoneActionListener.requestSelfUnlock(flyZoneArrayList);
-                                                     }
-                                                 }
-                                             });
+                (dialog, which) -> {
+                    if (flyZoneActionListener != null) {
+                        ArrayList<Integer> flyZoneArrayList = new ArrayList<>();
+                        flyZoneArrayList.add(flyZoneInformation.getFlyZoneID());
+                        flyZoneActionListener.requestSelfUnlock(flyZoneArrayList);
+                    }
+                });
         alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
@@ -732,11 +713,66 @@ public class FlyZoneHelper {
             case UNKNOWN:
             default:
         }
+        int flyZoneCategoryColor = ColorUtils.setAlphaComponent(
+                flyZoneColorMap.get(category), flyZoneAlphaMap.get(category));
+        int maxHeightColor = ColorUtils.setAlphaComponent(
+                maximumHeightColor, maximumHeightAlpha);
+        int selfUnlockZoneColor = ColorUtils.setAlphaComponent(
+                selfUnlockColor, selfUnlockAlpha);
+        for (Map.Entry<String, DJICircle> entry : circleMap.entrySet()) {
+            if (maximumHeightShapeFlyZoneId.contains(entry.getKey())) {
+                DJICircle flyZoneCircle = entry.getValue();
+                flyZoneCircle.setFillColor(maxHeightColor);
+                flyZoneCircle.setStrokeColor(maximumHeightColor);
+            } else if (selfUnlockFlyZoneId.contains(entry.getKey())) {
+                DJICircle flyZoneCircle = entry.getValue();
+                flyZoneCircle.setFillColor(selfUnlockZoneColor);
+                flyZoneCircle.setStrokeColor(selfUnlockColor);
+            } else {
+                DJICircle flyZoneCircle = entry.getValue();
+                flyZoneCircle.setFillColor(flyZoneCategoryColor);
+                flyZoneCircle.setStrokeColor(flyZoneColorMap.get(category));
+            }
+        }
 
-        for (DJICircle flyZoneCircle : circleMap.values()) {
-            flyZoneCircle.setFillColor(flyZoneColorMap.get(category));
+        for (Map.Entry<String, DJIPolygon> entry : polygonMap.entrySet()) {
+            if (maximumHeightShapeFlyZoneId.contains(entry.getKey())) {
+                DJIPolygon flyZonePolygon = entry.getValue();
+                flyZonePolygon.setFillColor(maxHeightColor);
+                flyZonePolygon.setStrokeColor(maximumHeightColor);
+            } else if (selfUnlockFlyZoneId.contains(entry.getKey())) {
+                DJIPolygon flyZonePolygon = entry.getValue();
+                flyZonePolygon.setFillColor(selfUnlockZoneColor);
+                flyZonePolygon.setStrokeColor(selfUnlockColor);
+            } else {
+                DJIPolygon flyZonePolygon = entry.getValue();
+                flyZonePolygon.setFillColor(flyZoneCategoryColor);
+                flyZonePolygon.setStrokeColor(flyZoneColorMap.get(category));
+            }
         }
     }
+
+    private void updateCustomFlyZoneViews() {
+        int strokeColor;
+        int zoneColor;
+
+        for (Map.Entry<String, DJICircle> entry : customUnlockCircleMap.entrySet()) {
+            if (customUnlockFlyZoneShapeId.contains(entry.getKey())) {
+                strokeColor = customUnlockColor;
+                zoneColor = ColorUtils.setAlphaComponent(customUnlockColor, customUnlockColorAlpha);
+            } else if (customUnlockFlyZoneOnAircraftShapeId.contains(entry.getKey())) {
+                strokeColor = customUnlockSentToAircraftColor;
+                zoneColor = ColorUtils.setAlphaComponent(customUnlockSentToAircraftColor, customUnlockSentToAircraftColorAlpha);
+            } else {
+                strokeColor = customUnlockEnabledColor;
+                zoneColor = ColorUtils.setAlphaComponent(customUnlockEnabledColor, customUnlockEnabledColorAlpha);
+            }
+            DJICircle flyZoneCircle = entry.getValue();
+            flyZoneCircle.setFillColor(zoneColor);
+            flyZoneCircle.setStrokeColor(strokeColor);
+        }
+    }
+
 
     private void initLegend(View parent) {
         warningLegend = parent.findViewById(R.id.imageview_legend_warning_zone);
@@ -793,6 +829,7 @@ public class FlyZoneHelper {
      */
     public void setSelfUnlockAlpha(int selfUnlockAlpha) {
         this.selfUnlockAlpha = selfUnlockAlpha;
+        updateFlyZoneViews(FlyZoneCategory.AUTHORIZATION);
     }
 
     /**
@@ -812,6 +849,7 @@ public class FlyZoneHelper {
      */
     public void setSelfUnlockColor(@ColorInt int selfUnlockColor) {
         this.selfUnlockColor = selfUnlockColor;
+        updateFlyZoneViews(FlyZoneCategory.AUTHORIZATION);
         updateLegendColor(selfUnlockLegend, selfUnlockColor);
     }
 
@@ -829,7 +867,7 @@ public class FlyZoneHelper {
      * Set selected fly zone category's visibility on the map.
      *
      * @param flyZoneCategory The category of fly zone to show/hide.
-     * @param isVisible `true` to show fly zones of this category.
+     * @param isVisible       `true` to show fly zones of this category.
      */
     public void setFlyZoneVisible(@NonNull FlyZoneCategory flyZoneCategory, boolean isVisible) {
         if (isVisible && flyZoneMarkerInformationMap.isEmpty()) {
@@ -848,7 +886,7 @@ public class FlyZoneHelper {
      * Sets the color of the given fly zone category.
      *
      * @param category The fly zone category.
-     * @param color The new border color.
+     * @param color    The new border color.
      */
     public void setFlyZoneColor(@NonNull FlyZoneCategory category, @ColorInt int color) {
         flyZoneColorMap.put(category, color);
@@ -871,10 +909,12 @@ public class FlyZoneHelper {
      * Set the alpha of the given fly zone category.
      *
      * @param category The fly zone category.
-     * @param alpha An alpha value from 0-255.
+     * @param alpha    An alpha value from 0-255.
      */
     public void setFlyZoneAlpha(@NonNull FlyZoneCategory category, @IntRange(from = 0, to = 255) int alpha) {
         flyZoneAlphaMap.put(category, alpha);
+        updateFlyZoneViews(category);
+        updateFlyZoneLegend();
     }
 
     /**
@@ -914,6 +954,7 @@ public class FlyZoneHelper {
     public void setCustomUnlockFlyZoneColor(@ColorInt int customUnlockColor) {
         this.customUnlockColor = customUnlockColor;
         updateLegendColor(customUnlockLegend, customUnlockColor);
+        updateCustomFlyZoneViews();
     }
 
     /**
@@ -925,6 +966,7 @@ public class FlyZoneHelper {
     public void setCustomUnlockFlyZoneSentToAircraftColor(@ColorInt int customUnlockSentToAircraftColor) {
         this.customUnlockSentToAircraftColor = customUnlockSentToAircraftColor;
         updateLegendColor(customUnlockOnAircraftLegend, customUnlockSentToAircraftColor);
+        updateCustomFlyZoneViews();
     }
 
     /**
@@ -935,6 +977,7 @@ public class FlyZoneHelper {
     public void setCustomUnlockFlyZoneEnabledColor(@ColorInt int customUnlockEnabledColor) {
         this.customUnlockEnabledColor = customUnlockEnabledColor;
         updateLegendColor(customUnlockEnabledLegend, customUnlockEnabledColor);
+        updateCustomFlyZoneViews();
     }
 
     /**
@@ -983,6 +1026,7 @@ public class FlyZoneHelper {
      */
     public void setCustomUnlockFlyZoneAlpha(@IntRange(from = 0, to = 255) int customUnlockColorAlpha) {
         this.customUnlockColorAlpha = customUnlockColorAlpha;
+        updateCustomFlyZoneViews();
     }
 
     /**
@@ -999,9 +1043,9 @@ public class FlyZoneHelper {
      *
      * @param customUnlockSentToAircraftColorAlpha The new alpha.
      */
-    public void setCustomUnlockFlyZoneSentToAircraftAlpha(
-        @IntRange(from = 0, to = 255) int customUnlockSentToAircraftColorAlpha) {
+    public void setCustomUnlockFlyZoneSentToAircraftAlpha(@IntRange(from = 0, to = 255) int customUnlockSentToAircraftColorAlpha) {
         this.customUnlockSentToAircraftColorAlpha = customUnlockSentToAircraftColorAlpha;
+        updateCustomFlyZoneViews();
     }
 
     /**
@@ -1020,6 +1064,7 @@ public class FlyZoneHelper {
      */
     public void setCustomUnlockFlyZoneEnabledAlpha(@IntRange(from = 0, to = 255) int customUnlockEnabledColorAlpha) {
         this.customUnlockEnabledColorAlpha = customUnlockEnabledColorAlpha;
+        updateCustomFlyZoneViews();
     }
 
     /**
@@ -1029,6 +1074,10 @@ public class FlyZoneHelper {
      */
     public void setMaximumHeightColor(@ColorInt int color) {
         this.maximumHeightColor = color;
+        updateFlyZoneViews(FlyZoneCategory.WARNING);
+        updateFlyZoneViews(FlyZoneCategory.ENHANCED_WARNING);
+        updateFlyZoneViews(FlyZoneCategory.AUTHORIZATION);
+        updateFlyZoneViews(FlyZoneCategory.RESTRICTED);
     }
 
     /**
@@ -1048,6 +1097,10 @@ public class FlyZoneHelper {
      */
     public void setMaximumHeightAlpha(@IntRange(from = 0, to = 255) int alpha) {
         this.maximumHeightAlpha = alpha;
+        updateFlyZoneViews(FlyZoneCategory.WARNING);
+        updateFlyZoneViews(FlyZoneCategory.ENHANCED_WARNING);
+        updateFlyZoneViews(FlyZoneCategory.AUTHORIZATION);
+        updateFlyZoneViews(FlyZoneCategory.RESTRICTED);
     }
 
     /**
@@ -1066,8 +1119,7 @@ public class FlyZoneHelper {
      * @param drawable The image to be set.
      */
     public void setCustomUnlockSentToAircraftMarkerIcon(@NonNull Drawable drawable) {
-        customUnlockSentToAircraftImg =
-            DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(drawable));
+        customUnlockSentToAircraftImg = DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(drawable));
         for (DJIMarker djiMarker : customUnlockMarkersSet) {
             djiMarker.setIcon(customUnlockSentToAircraftImg);
             djiMarker.setAnchor(customUnlockSentToAircraftImgXAnchor, customUnlockSentToAircraftImgYAnchor);
@@ -1078,8 +1130,8 @@ public class FlyZoneHelper {
      * Changes the icon of the custom unlock zones which are on aircraft but not enabled.
      *
      * @param drawable The image to be set.
-     * @param x Specifies the x axis value of anchor to be at a particular point in the marker image.
-     * @param y Specifies the y axis value of anchor to be at a particular point in the marker image.
+     * @param x        Specifies the x axis value of anchor to be at a particular point in the marker image.
+     * @param y        Specifies the y axis value of anchor to be at a particular point in the marker image.
      */
     public void setCustomUnlockSentToAircraftMarkerIcon(@NonNull Drawable drawable, float x, float y) {
         customUnlockSentToAircraftImgXAnchor = x;
@@ -1107,8 +1159,8 @@ public class FlyZoneHelper {
      * Changes the icon of the custom unlock zone which is enabled.
      *
      * @param drawable The image to be set.
-     * @param x Specifies the x axis value of anchor to be at a particular point in the marker image.
-     * @param y Specifies the y axis value of anchor to be at a particular point in the marker image.
+     * @param x        Specifies the x axis value of anchor to be at a particular point in the marker image.
+     * @param y        Specifies the y axis value of anchor to be at a particular point in the marker image.
      */
     public void setCustomUnlockEnabledMarkerIcon(@NonNull Drawable drawable, float x, float y) {
         customUnlockImgEnabledXAnchor = x;
@@ -1133,8 +1185,8 @@ public class FlyZoneHelper {
      * Changes the icon of the unlocked self-unlock zones.
      *
      * @param drawable The image to be set.
-     * @param x Specifies the x axis value of anchor to be at a particular point in the marker image.
-     * @param y Specifies the y axis value of anchor to be at a particular point in the marker image.
+     * @param x        Specifies the x axis value of anchor to be at a particular point in the marker image.
+     * @param y        Specifies the y axis value of anchor to be at a particular point in the marker image.
      */
     public void setSelfUnlockedMarkerIcon(@NonNull Drawable drawable, float x, float y) {
         selfUnlockedImgXAnchor = x;
@@ -1159,8 +1211,8 @@ public class FlyZoneHelper {
      * Changes the icon of the locked self-unlock zones.
      *
      * @param drawable The image to be set.
-     * @param x Specifies the x axis value of anchor to be at a particular point in the marker image.
-     * @param y Specifies the y axis value of anchor to be at a particular point in the marker image.
+     * @param x        Specifies the x axis value of anchor to be at a particular point in the marker image.
+     * @param y        Specifies the y axis value of anchor to be at a particular point in the marker image.
      */
     public void setSelfLockedMarkerIcon(@NonNull Drawable drawable, float x, float y) {
         selfLockedImgXAnchor = x;
@@ -1201,7 +1253,7 @@ public class FlyZoneHelper {
      */
     public void setCustomUnlockZonesVisible(boolean isVisible) {
         customUnlockZonesVisibility = isVisible;
-        for (DJICircle circle : customUnlockCircleSet) {
+        for (DJICircle circle : customUnlockCircleMap.values()) {
             circle.setVisible(isVisible);
         }
 

@@ -25,19 +25,22 @@
 package com.dji.ux.beta.sample.widgetlist;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dji.ux.beta.sample.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
+import dji.ux.beta.widget.fpv.interaction.FPVInteractionWidget;
 
 /**
  * A view with a single widget and an indicator of the current size of the widget. This widget
@@ -49,6 +52,8 @@ public class WidgetView extends ConstraintLayout {
     //region fields
     private WidgetViewHolder widgetViewHolder;
     private ScaleGestureDetector scaleGestureDetector;
+    private int originalHeight;
+    private int originalWidth;
     private float scaleFactor = 1.0f;
     //endregion
 
@@ -94,6 +99,14 @@ public class WidgetView extends ConstraintLayout {
         widget = widgetViewHolder.getWidget(getContext());
         if (widget != null) {
             containerView.addView(widget);
+            final ViewTreeObserver obs = widget.getViewTreeObserver();
+            obs.addOnPreDrawListener(() -> {
+                if (originalHeight == 0 && originalWidth == 0) {
+                    originalHeight = widget.getHeight();
+                    originalWidth = widget.getWidth();
+                }
+                return true;
+            });
         }
         aspectRatioTextView.setText(widgetViewHolder.getIdealDimensionRatioString());
 
@@ -122,8 +135,13 @@ public class WidgetView extends ConstraintLayout {
             scaleFactor *= scaleGestureDetector.getScaleFactor();
             scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 10.0f));
             if (widget != null) {
-                widget.setScaleX(scaleFactor);
-                widget.setScaleY(scaleFactor);
+                ViewGroup.LayoutParams layoutParams = widget.getLayoutParams();
+                layoutParams.height = originalHeight * (int) scaleFactor;
+                layoutParams.width = originalWidth * (int) scaleFactor;
+                widget.setLayoutParams(layoutParams);
+                if (widget instanceof FPVInteractionWidget) {
+                    ((FPVInteractionWidget) widget).adjustAspectRatio(layoutParams.width, layoutParams.height);
+                }
                 currentSizeTextView.setText(widgetViewHolder.getWidgetSize());
             }
             return true;

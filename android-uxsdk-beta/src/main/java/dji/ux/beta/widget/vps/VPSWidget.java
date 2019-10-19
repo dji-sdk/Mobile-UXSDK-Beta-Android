@@ -26,16 +26,20 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+
+import java.text.DecimalFormat;
+
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
@@ -46,13 +50,12 @@ import dji.ux.beta.base.GlobalPreferencesManager;
 import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import dji.ux.beta.util.DisplayUtil;
 import dji.ux.beta.util.UnitConversionUtil;
-import java.text.DecimalFormat;
 
 /**
  * Shows the status of the vision positioning system
  * as well as the height of the aircraft as received from the
  * vision positioning system if available.
- *
+ * <p>
  * Uses the unit set in the UNIT_TYPE global preferences
  * {@link dji.ux.beta.base.GlobalPreferencesInterface#getUnitType()} and the
  * {@link dji.ux.beta.base.uxsdkkeys.GlobalPreferenceKeys#UNIT_TYPE} UX Key
@@ -102,8 +105,8 @@ public class VPSWidget extends ConstraintLayoutWidget {
 
         if (!isInEditMode()) {
             widgetModel = new VPSWidgetModel(DJISDKModel.getInstance(),
-                                             ObservableInMemoryKeyedStore.getInstance(),
-                                             GlobalPreferencesManager.getInstance());
+                    ObservableInMemoryKeyedStore.getInstance(),
+                    GlobalPreferencesManager.getInstance());
             vpsTitleTextView.setText(getResources().getString(R.string.uxsdk_vps_title));
             vpsValueTextView.setMinEms(EMS);
         }
@@ -140,21 +143,21 @@ public class VPSWidget extends ConstraintLayoutWidget {
     protected void reactToModelChanges() {
         addReaction(reactToVPSChange());
         addReaction(widgetModel.getUnitType()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateUnitText));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateUnitText));
     }
     //endregion
 
     //region Reaction Helpers
     private Disposable reactToVPSChange() {
         return Flowable.combineLatest(widgetModel.getVisionPositioningEnabled(),
-                                      widgetModel.getUltrasonicBeingUsed(),
-                                      widgetModel.getUltrasonicHeight(),
-                                      (isVisionPositioningEnabled, isUltrasonicBeingUsed, ultrasonicHeight) -> Pair.create(
-                                          (isVisionPositioningEnabled && isUltrasonicBeingUsed),
-                                          ultrasonicHeight))
-                       .observeOn(AndroidSchedulers.mainThread())
-                       .subscribe(values -> updateUI(values.first, values.second));
+                widgetModel.getUltrasonicBeingUsed(),
+                widgetModel.getUltrasonicHeight(),
+                (isVisionPositioningEnabled, isUltrasonicBeingUsed, ultrasonicHeight) -> Pair.create(
+                        (isVisionPositioningEnabled && isUltrasonicBeingUsed),
+                        ultrasonicHeight))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(values -> updateUI(values.first, values.second));
     }
 
     private void updateUI(boolean isVPSEnabledAndUsed, float ultrasonicHeight) {
@@ -174,6 +177,7 @@ public class VPSWidget extends ConstraintLayoutWidget {
             }
         }
     }
+
     private void updateUnitText(UnitConversionUtil.UnitType unitType) {
         if (unitType == UnitConversionUtil.UnitType.IMPERIAL) {
             vpsUnitTextView.setText(getResources().getString(R.string.uxsdk_unit_feet));
@@ -260,7 +264,7 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the background for the vision positioning system status title text view
+     * Set the background of the vision positioning system status title text view
      *
      * @param drawable Drawable resource for the background
      */
@@ -327,7 +331,7 @@ public class VPSWidget extends ConstraintLayoutWidget {
     /**
      * Get the drawable resource for the vision positioning system enabled icon
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource of the icon
      */
     @Nullable
     public Drawable getVPSEnabledIcon() {
@@ -347,7 +351,7 @@ public class VPSWidget extends ConstraintLayoutWidget {
     /**
      * Set the resource ID for the vision positioning system icon's background
      *
-     * @param resourceId Integer ID of the background resource
+     * @param resourceId Integer ID of the icon's background resource
      */
     public void setVPSIconBackground(@DrawableRes int resourceId) {
         vpsImageView.setBackgroundResource(resourceId);
@@ -356,16 +360,16 @@ public class VPSWidget extends ConstraintLayoutWidget {
     /**
      * Set the drawable resource for the vision positioning system icon's background
      *
-     * @param background Drawable resource for the background
+     * @param background Drawable resource for the icon's background
      */
     public void setVPSIconBackground(@Nullable Drawable background) {
         vpsImageView.setBackground(background);
     }
 
     /**
-     * Get the background drawable resource for the vision positioning system icon
+     * Get the drawable resource for the vision positioning system icon's background
      *
-     * @return Drawable for the icon's background
+     * @return Drawable resource of the icon's background
      */
     @Nullable
     public Drawable getVPSIconBackground() {
@@ -566,13 +570,13 @@ public class VPSWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VPSWidget);
         int vpsTitleTextAppearanceId =
-            typedArray.getResourceId(R.styleable.VPSWidget_uxsdk_vpsTitleTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.VPSWidget_uxsdk_vpsTitleTextAppearance, INVALID_RESOURCE);
         if (vpsTitleTextAppearanceId != INVALID_RESOURCE) {
             setVPSTitleTextAppearance(vpsTitleTextAppearanceId);
         }
 
         float vpsTitleTextSize =
-            typedArray.getDimension(R.styleable.VPSWidget_uxsdk_vpsTitleTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.VPSWidget_uxsdk_vpsTitleTextSize, INVALID_RESOURCE);
         if (vpsTitleTextSize != INVALID_RESOURCE) {
             setVPSTitleTextSize(DisplayUtil.pxToSp(context, vpsTitleTextSize));
         }
@@ -583,7 +587,7 @@ public class VPSWidget extends ConstraintLayoutWidget {
         }
 
         Drawable vpsTitleTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.VPSWidget_uxsdk_vpsTitleBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.VPSWidget_uxsdk_vpsTitleBackgroundDrawable);
         if (vpsTitleTextBackgroundDrawable != null) {
             setVPSTitleTextBackground(vpsTitleTextBackgroundDrawable);
         }
@@ -599,37 +603,37 @@ public class VPSWidget extends ConstraintLayoutWidget {
         }
 
         int vpsValueTextAppearanceId =
-            typedArray.getResourceId(R.styleable.VPSWidget_uxsdk_vpsValueTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.VPSWidget_uxsdk_vpsValueTextAppearance, INVALID_RESOURCE);
         if (vpsValueTextAppearanceId != INVALID_RESOURCE) {
             setVPSValueTextAppearance(vpsValueTextAppearanceId);
         }
 
         float vpsValueTextSize =
-            typedArray.getDimension(R.styleable.VPSWidget_uxsdk_vpsValueTextSize, INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.VPSWidget_uxsdk_vpsValueTextSize, INVALID_RESOURCE);
         if (vpsValueTextSize != INVALID_RESOURCE) {
             setVPSValueTextSize(DisplayUtil.pxToSp(context, vpsValueTextSize));
         }
 
         int vpsValueEnabledTextColor =
-            typedArray.getColor(R.styleable.VPSWidget_uxsdk_vpsValueEnabledTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.VPSWidget_uxsdk_vpsValueEnabledTextColor, INVALID_COLOR);
         if (vpsValueEnabledTextColor != INVALID_COLOR) {
             setVPSValueEnabledTextColor(vpsValueEnabledTextColor);
         }
 
         int vpsValueDisabledTextColor =
-            typedArray.getColor(R.styleable.VPSWidget_uxsdk_vpsValueDisabledTextColor, INVALID_COLOR);
+                typedArray.getColor(R.styleable.VPSWidget_uxsdk_vpsValueDisabledTextColor, INVALID_COLOR);
         if (vpsValueDisabledTextColor != INVALID_COLOR) {
             setVPSValueDisabledTextColor(vpsValueDisabledTextColor);
         }
 
         Drawable vpsValueTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.VPSWidget_uxsdk_vpsValueBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.VPSWidget_uxsdk_vpsValueBackgroundDrawable);
         if (vpsValueTextBackgroundDrawable != null) {
             setVPSValueTextBackground(vpsValueTextBackgroundDrawable);
         }
 
         int vpsUnitTextAppearanceId =
-            typedArray.getResourceId(R.styleable.VPSWidget_uxsdk_vpsUnitTextAppearance, INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.VPSWidget_uxsdk_vpsUnitTextAppearance, INVALID_RESOURCE);
         if (vpsUnitTextAppearanceId != INVALID_RESOURCE) {
             setVPSUnitTextAppearance(vpsUnitTextAppearanceId);
         }
@@ -645,7 +649,7 @@ public class VPSWidget extends ConstraintLayoutWidget {
         }
 
         Drawable vpsUnitTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.VPSWidget_uxsdk_vpsUnitBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.VPSWidget_uxsdk_vpsUnitBackgroundDrawable);
         if (vpsUnitTextBackgroundDrawable != null) {
             setVPSUnitTextBackground(vpsUnitTextBackgroundDrawable);
         }

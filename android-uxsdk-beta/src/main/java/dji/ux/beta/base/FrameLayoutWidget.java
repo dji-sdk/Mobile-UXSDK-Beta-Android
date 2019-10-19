@@ -23,10 +23,11 @@
 package dji.ux.beta.base;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import dji.thirdparty.io.reactivex.disposables.CompositeDisposable;
 import dji.thirdparty.io.reactivex.disposables.Disposable;

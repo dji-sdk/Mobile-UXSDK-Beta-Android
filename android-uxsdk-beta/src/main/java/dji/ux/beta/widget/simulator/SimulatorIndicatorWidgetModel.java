@@ -22,7 +22,7 @@
 
 package dji.ux.beta.widget.simulator;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import dji.keysdk.DJIKey;
 import dji.keysdk.FlightControllerKey;
@@ -34,7 +34,7 @@ import dji.ux.beta.util.DataProcessor;
 
 /**
  * Simulator Indicator Widget Model
- *
+ * <p>
  * Widget Model for the {@link SimulatorIndicatorWidget} used to define the
  * underlying logic and communication
  */

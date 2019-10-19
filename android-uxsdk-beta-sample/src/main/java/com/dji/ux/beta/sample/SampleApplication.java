@@ -25,9 +25,15 @@
 package com.dji.ux.beta.sample;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
+
+import androidx.multidex.MultiDex;
 
 import com.secneo.sdk.Helper;
+
+import static com.dji.ux.beta.sample.DJIConnectionControlActivity.ACCESSORY_ATTACHED;
 
 /**
  * An application that loads the SDK classes.
@@ -35,9 +41,20 @@ import com.secneo.sdk.Helper;
 public class SampleApplication extends Application {
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+
+        BroadcastReceiver br = new OnDJIUSBAttachedReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ACCESSORY_ATTACHED);
+        registerReceiver(br, filter);
+    }
+
+    @Override
     protected void attachBaseContext(Context paramContext) {
         super.attachBaseContext(paramContext);
         Helper.install(SampleApplication.this);
+        MultiDex.install(this);
     }
 
 }

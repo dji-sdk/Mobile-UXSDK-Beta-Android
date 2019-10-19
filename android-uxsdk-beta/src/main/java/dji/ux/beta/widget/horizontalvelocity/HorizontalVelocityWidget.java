@@ -26,16 +26,20 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.FloatRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+
+import java.text.DecimalFormat;
+
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
@@ -46,11 +50,10 @@ import dji.ux.beta.base.GlobalPreferencesManager;
 import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import dji.ux.beta.util.DisplayUtil;
 import dji.ux.beta.util.UnitConversionUtil;
-import java.text.DecimalFormat;
 
 /**
  * Shows the horizontal velocity of the aircraft.
- *
+ * <p>
  * Uses the unit set in the UNIT_TYPE global preferences
  * {@link dji.ux.beta.base.GlobalPreferencesInterface#getUnitType()} and the
  * {@link dji.ux.beta.base.uxsdkkeys.GlobalPreferenceKeys#UNIT_TYPE} UX Key
@@ -94,8 +97,8 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
 
         if (!isInEditMode()) {
             widgetModel = new HorizontalVelocityWidgetModel(DJISDKModel.getInstance(),
-                                                            ObservableInMemoryKeyedStore.getInstance(),
-                                                            GlobalPreferencesManager.getInstance());
+                    ObservableInMemoryKeyedStore.getInstance(),
+                    GlobalPreferencesManager.getInstance());
             horizontalVelocityTitleTextView.setText(getResources().getString(R.string.uxsdk_horizontal_velocity_title));
             horizontalVelocityValueTextView.setMinEms(EMS);
         }
@@ -132,21 +135,23 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     //region reaction helpers
     private Disposable reactToHorizontalVelocityChange() {
         return Flowable.combineLatest(widgetModel.getHorizontalVelocity(), widgetModel.getUnitType(), Pair::new)
-                       .observeOn(AndroidSchedulers.mainThread())
-                       .subscribe(values -> updateUI(values.first, values.second));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(values -> updateUI(values.first, values.second));
     }
+
     private void updateUI(@FloatRange(from = MINIMUM_VELOCITY, to = MAXIMUM_VELOCITY) float horizontalVelocity,
                           UnitConversionUtil.UnitType unitType) {
         if (unitType == UnitConversionUtil.UnitType.METRIC
-            && speedMetricUnitType == UnitConversionUtil.SpeedMetricUnitType.KM_PER_HOUR) {
+                && speedMetricUnitType == UnitConversionUtil.SpeedMetricUnitType.KM_PER_HOUR) {
             horizontalVelocityValueTextView.setText(decimalFormat.format(UnitConversionUtil.convertMetersPerSecToKmPerHr(
-                horizontalVelocity)));
+                    horizontalVelocity)));
         } else {
             //Metric m/s or imperial mph will come through already converted
             horizontalVelocityValueTextView.setText(decimalFormat.format(horizontalVelocity));
         }
         updateUnitText(unitType);
     }
+
     private void updateUnitText(UnitConversionUtil.UnitType unitType) {
         if (unitType == UnitConversionUtil.UnitType.IMPERIAL) {
             horizontalVelocityUnitTextView.setText(getResources().getString(R.string.uxsdk_unit_mile_per_hr));
@@ -237,7 +242,7 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the background for the horizontal velocity title text view
+     * Set the background of the horizontal velocity title text view
      *
      * @param drawable Drawable resource for the background
      */
@@ -456,87 +461,87 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.HorizontalVelocityWidget);
         speedMetricUnitType =
-            UnitConversionUtil.SpeedMetricUnitType.find(typedArray.getInteger(R.styleable.HorizontalVelocityWidget_uxsdk_speedMetricUnitType,
-                                                                              UnitConversionUtil.SpeedMetricUnitType.METERS_PER_SECOND
-                                                                                  .value()));
+                UnitConversionUtil.SpeedMetricUnitType.find(typedArray.getInteger(R.styleable.HorizontalVelocityWidget_uxsdk_speedMetricUnitType,
+                        UnitConversionUtil.SpeedMetricUnitType.METERS_PER_SECOND
+                                .value()));
 
         int horizontalVelocityTitleTextAppearanceId =
-            typedArray.getResourceId(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityTitleTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityTitleTextAppearance,
+                        INVALID_RESOURCE);
         if (horizontalVelocityTitleTextAppearanceId != INVALID_RESOURCE) {
             setHorizontalVelocityTitleTextAppearance(horizontalVelocityTitleTextAppearanceId);
         }
 
         float horizontalVelocityTitleTextSize =
-            typedArray.getDimension(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityTitleTextSize,
-                                    INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityTitleTextSize,
+                        INVALID_RESOURCE);
         if (horizontalVelocityTitleTextSize != INVALID_RESOURCE) {
             setHorizontalVelocityTitleTextSize(DisplayUtil.pxToSp(context, horizontalVelocityTitleTextSize));
         }
 
         int horizontalVelocityTitleTextColor =
-            typedArray.getColor(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityTitleTextColor,
-                                INVALID_COLOR);
+                typedArray.getColor(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityTitleTextColor,
+                        INVALID_COLOR);
         if (horizontalVelocityTitleTextColor != INVALID_COLOR) {
             setHorizontalVelocityTitleTextColor(horizontalVelocityTitleTextColor);
         }
 
         Drawable horizontalVelocityTitleTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityTitleBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityTitleBackgroundDrawable);
         if (horizontalVelocityTitleTextBackgroundDrawable != null) {
             setHorizontalVelocityTitleTextBackground(horizontalVelocityTitleTextBackgroundDrawable);
         }
 
         int horizontalVelocityValueTextAppearanceId =
-            typedArray.getResourceId(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityValueTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityValueTextAppearance,
+                        INVALID_RESOURCE);
         if (horizontalVelocityValueTextAppearanceId != INVALID_RESOURCE) {
             setHorizontalVelocityValueTextAppearance(horizontalVelocityValueTextAppearanceId);
         }
 
         float horizontalVelocityValueTextSize =
-            typedArray.getDimension(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityValueTextSize,
-                                    INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityValueTextSize,
+                        INVALID_RESOURCE);
         if (horizontalVelocityValueTextSize != INVALID_RESOURCE) {
             setHorizontalVelocityValueTextSize(DisplayUtil.pxToSp(context, horizontalVelocityValueTextSize));
         }
 
         int horizontalVelocityValueTextColor =
-            typedArray.getColor(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityValueTextColor,
-                                INVALID_COLOR);
+                typedArray.getColor(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityValueTextColor,
+                        INVALID_COLOR);
         if (horizontalVelocityValueTextColor != INVALID_COLOR) {
             setHorizontalVelocityValueTextColor(horizontalVelocityValueTextColor);
         }
 
         Drawable horizontalVelocityValueTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityValueBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityValueBackgroundDrawable);
         if (horizontalVelocityValueTextBackgroundDrawable != null) {
             setHorizontalVelocityValueTextBackground(horizontalVelocityValueTextBackgroundDrawable);
         }
 
         int horizontalVelocityUnitTextAppearanceId =
-            typedArray.getResourceId(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityUnitTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityUnitTextAppearance,
+                        INVALID_RESOURCE);
         if (horizontalVelocityUnitTextAppearanceId != INVALID_RESOURCE) {
             setHorizontalVelocityUnitTextAppearance(horizontalVelocityUnitTextAppearanceId);
         }
 
         float horizontalVelocityUnitTextSize =
-            typedArray.getDimension(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityUnitTextSize,
-                                    INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityUnitTextSize,
+                        INVALID_RESOURCE);
         if (horizontalVelocityUnitTextSize != INVALID_RESOURCE) {
             setHorizontalVelocityUnitTextSize(DisplayUtil.pxToSp(context, horizontalVelocityUnitTextSize));
         }
 
         int horizontalVelocityUnitTextColor =
-            typedArray.getColor(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityUnitTextColor,
-                                INVALID_COLOR);
+                typedArray.getColor(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityUnitTextColor,
+                        INVALID_COLOR);
         if (horizontalVelocityUnitTextColor != INVALID_COLOR) {
             setHorizontalVelocityUnitTextColor(horizontalVelocityUnitTextColor);
         }
 
         Drawable horizontalVelocityUnitTextBackgroundDrawable =
-            typedArray.getDrawable(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityUnitBackgroundDrawable);
+                typedArray.getDrawable(R.styleable.HorizontalVelocityWidget_uxsdk_horizontalVelocityUnitBackgroundDrawable);
         if (horizontalVelocityUnitTextBackgroundDrawable != null) {
             setHorizontalVelocityUnitTextBackground(horizontalVelocityUnitTextBackgroundDrawable);
         }

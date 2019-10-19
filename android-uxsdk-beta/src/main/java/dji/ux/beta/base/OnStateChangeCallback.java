@@ -22,7 +22,7 @@
 
 package dji.ux.beta.base;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 /**
  * Interface to be implemented by widgets for coupled 1:1 communication

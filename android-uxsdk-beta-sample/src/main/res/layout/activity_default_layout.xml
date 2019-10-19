@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2019 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  ~
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DefaultLayoutActivity">
+
+    <dji.ux.beta.widget.fpv.FPVWidget
+        android:id="@+id/widget_fpv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <dji.ux.beta.widget.fpv.FPVWidget
+        android:id="@+id/widget_secondary_fpv"
+        android:layout_width="@dimen/mini_map_width"
+        android:layout_height="@dimen/mini_map_height"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="7dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline_topbar"
+        app:uxsdk_interactionEnabled="false"
+        app:uxsdk_sourceCameraNameVisibility="true"
+        app:uxsdk_videoSource="secondary" />
+
+    <!-- camera bar -->
+
+    <View
+        android:id="@+id/camera_config_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/dark_gray"
+        android:padding="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_camera_config_iso_and_ei"
+        app:layout_constraintEnd_toEndOf="@+id/widget_camera_config_wb"
+        app:layout_constraintStart_toStartOf="@+id/widget_camera_config_iso_and_ei"
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei"
+        tools:ignore="ContentDescription" />
+
+    <dji.ux.beta.widget.cameraconfig.iso.CameraConfigISOAndEIWidget
+        android:id="@+id/widget_camera_config_iso_and_ei"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/camera_config_height"
+        android:layout_marginTop="8dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        app:layout_constraintEnd_toStartOf="@+id/widget_camera_config_shutter"
+        app:layout_constraintTop_toBottomOf="@+id/guideline_topbar" />
+
+    <dji.ux.beta.widget.cameraconfig.shutter.CameraConfigShutterWidget
+        android:id="@+id/widget_camera_config_shutter"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/camera_config_height"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_camera_config_iso_and_ei"
+        app:layout_constraintEnd_toStartOf="@+id/widget_camera_config_aperture"
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+
+    <dji.ux.beta.widget.cameraconfig.aperture.CameraConfigApertureWidget
+        android:id="@+id/widget_camera_config_aperture"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/camera_config_height"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_camera_config_iso_and_ei"
+        app:layout_constraintEnd_toStartOf="@+id/widget_camera_config_ev"
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+
+    <dji.ux.beta.widget.cameraconfig.ev.CameraConfigEVWidget
+        android:id="@+id/widget_camera_config_ev"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/camera_config_height"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_camera_config_iso_and_ei"
+        app:layout_constraintEnd_toStartOf="@+id/widget_camera_config_wb"
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+
+    <dji.ux.beta.widget.cameraconfig.wb.CameraConfigWBWidget
+        android:id="@+id/widget_camera_config_wb"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/camera_config_height"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_camera_config_iso_and_ei"
+        app:layout_constraintEnd_toStartOf="@+id/widget_camera_config_storage"
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+
+    <dji.ux.beta.widget.cameraconfig.storage.CameraConfigStorageWidget
+        android:id="@+id/widget_camera_config_storage"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/camera_config_height"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/dark_gray"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_camera_config_iso_and_ei"
+        app:layout_constraintEnd_toStartOf="@+id/widget_camera_config_ssd"
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+
+    <dji.ux.beta.widget.cameraconfig.ssd.CameraConfigSSDWidget
+        android:id="@+id/widget_camera_config_ssd"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/camera_config_height"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/dark_gray"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_camera_config_iso_and_ei"
+        app:layout_constraintEnd_toStartOf="@+id/widget_auto_exposure_lock"
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+
+    <dji.ux.beta.widget.autoexposurelock.AutoExposureLockWidget
+        android:id="@+id/widget_auto_exposure_lock"
+        android:layout_width="@dimen/camera_bar_height"
+        android:layout_height="@dimen/camera_bar_height"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:padding="@dimen/camera_bar_padding"
+        app:layout_constraintEnd_toStartOf="@+id/widget_focus_mode"
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+
+    <dji.ux.beta.widget.focusmode.FocusModeWidget
+        android:id="@+id/widget_focus_mode"
+        android:layout_width="@dimen/camera_bar_height"
+        android:layout_height="@dimen/camera_bar_height"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:padding="2dp"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_auto_exposure_lock"
+        app:layout_constraintEnd_toStartOf="@+id/widget_focus_exposure_switch"
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+
+    <dji.ux.beta.widget.focusexposureswitch.FocusExposureSwitchWidget
+        android:id="@+id/widget_focus_exposure_switch"
+        android:layout_width="@dimen/camera_bar_height"
+        android:layout_height="@dimen/camera_bar_height"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:padding="@dimen/camera_bar_padding"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_auto_exposure_lock"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+
+    <!-- end camera bar -->
+
+    <dji.ux.beta.widget.cameracontrols.CameraControlsWidget
+        android:id="@+id/widget_camera_controls"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="@string/uxsdk_widget_camera_controls_ratio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.45"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45" />
+
+    <dji.ux.beta.widget.map.MapWidget
+        android:id="@+id/widget_map"
+        android:layout_width="@dimen/mini_map_width"
+        android:layout_height="@dimen/mini_map_height"
+        android:layout_marginRight="12dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:uxsdk_djiMap_mapType="normal" />
+
+    <!-- Everything below this line will appear on top of the full-screen map widget -->
+
+    <!-- top bar -->
+
+    <View
+        android:id="@+id/top_bar_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/dark_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <dji.ux.beta.widget.preflightstatus.PreFlightStatusWidget
+        android:id="@+id/widget_pre_flight_status"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/top_bar_background"
+        app:layout_constraintEnd_toStartOf="@+id/widget_simulator_indicator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:uxsdk_preFlightStatusMessageTextSize="@dimen/topbar_text_size" />
+
+    <dji.ux.beta.widget.simulator.SimulatorIndicatorWidget
+        android:id="@+id/widget_simulator_indicator"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/topbar_padding"
+        app:layout_constraintBottom_toBottomOf="@+id/top_bar_background"
+        app:layout_constraintDimensionRatio="@string/uxsdk_widget_default_ratio"
+        app:layout_constraintEnd_toStartOf="@+id/widget_vision"
+        app:layout_constraintHeight_percent="0.06"
+        app:layout_constraintTop_toTopOf="parent"
+        app:uxsdk_onStateChange="@+id/widget_simulator_control" />
+
+    <dji.ux.beta.widget.vision.VisionWidget
+        android:id="@+id/widget_vision"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/topbar_padding"
+        app:layout_constraintBottom_toBottomOf="@+id/top_bar_background"
+        app:layout_constraintDimensionRatio="@string/uxsdk_widget_default_ratio"
+        app:layout_constraintEnd_toStartOf="@+id/widget_remote_control_signal"
+        app:layout_constraintHeight_percent="0.06"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <dji.ux.beta.widget.remotecontrolsignal.RemoteControlSignalWidget
+        android:id="@+id/widget_remote_control_signal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="@dimen/topbar_padding"
+        app:layout_constraintBottom_toBottomOf="@+id/top_bar_background"
+        app:layout_constraintDimensionRatio="@string/uxsdk_widget_remote_control_signal_ratio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.06"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_topbar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.08" />
+
+    <!-- end top bar -->
+
+    <dji.ux.beta.widget.dashboard.DashboardWidget
+        android:id="@+id/widget_dashboard"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:uxsdk_hideWidgets="distanceRC" />
+
+    <dji.ux.beta.widget.simulator.SimulatorControlWidget
+        android:id="@+id/widget_simulator_control"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

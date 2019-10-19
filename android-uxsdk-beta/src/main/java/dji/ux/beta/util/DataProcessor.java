@@ -22,7 +22,7 @@
 
 package dji.ux.beta.util;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.processors.BehaviorProcessor;

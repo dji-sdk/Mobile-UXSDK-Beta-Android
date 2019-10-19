@@ -26,11 +26,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.annotation.ColorInt;
-import android.support.annotation.FloatRange;
-import android.support.annotation.IntRange;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
+
 import dji.ux.beta.R;
 import dji.ux.beta.util.DisplayUtil;
 
@@ -74,7 +76,7 @@ public class VisualCompassView extends View {
         paint.setColor(getContext().getResources().getColor(R.color.uxsdk_white_20_percent));
         paint.setStyle(Paint.Style.STROKE);
         strokeWidth =
-            DisplayUtil.dipToPx(getContext(), getContext().getResources().getDimension(R.dimen.uxsdk_line_width));
+                DisplayUtil.dipToPx(getContext(), getContext().getResources().getDimension(R.dimen.uxsdk_line_width));
         if (strokeWidth > MAX_LINE_WIDTH) {
             strokeWidth = MAX_LINE_WIDTH;
         }

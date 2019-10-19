@@ -24,8 +24,15 @@ package dji.ux.beta.base;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import android.graphics.Color;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+
+import dji.ux.beta.util.SettingDefinitions;
 import dji.ux.beta.util.UnitConversionUtil;
+import dji.ux.beta.widget.fpv.CenterPointView;
+import dji.ux.beta.widget.fpv.GridLineView;
 
 /**
  * Default implementation of the GlobalPreferencesInterface using SharedPreferences.
@@ -33,7 +40,12 @@ import dji.ux.beta.util.UnitConversionUtil;
  */
 public class DefaultGlobalPreferences implements GlobalPreferencesInterface {
     //region Constants
+    private static final String PREF_IS_AFC_ENABLED = "afcEnabled";
     private static final String PREF_GLOBAL_UNIT_TYPE = "globalUnitType";
+    private static final String PREF_GRID_LINE_TYPE = "gridLineType";
+    private static final String PREF_CENTER_POINT_TYPE = "centerPointType";
+    private static final String PREF_CENTER_POINT_COLOR = "centerPointColor";
+    private static final String PREF_CONTROL_MODE = "controlMode";
     //endregion
 
     //region Fields
@@ -69,5 +81,62 @@ public class DefaultGlobalPreferences implements GlobalPreferencesInterface {
     @Override
     public void setUnitType(@NonNull UnitConversionUtil.UnitType unitType) {
         sharedPreferences.edit().putInt(PREF_GLOBAL_UNIT_TYPE, unitType.value()).apply();
+    }
+
+    @Override
+    public boolean getAFCEnabled() {
+        return sharedPreferences.getBoolean(PREF_IS_AFC_ENABLED, true);
+    }
+
+    @Override
+    public void setAFCEnabled(boolean enabled) {
+        sharedPreferences.edit().putBoolean(PREF_IS_AFC_ENABLED, enabled).apply();
+    }
+
+    @Override
+    public void setGridLineType(@NonNull GridLineView.GridLineType gridLineType) {
+        sharedPreferences.edit().putInt(PREF_GRID_LINE_TYPE, gridLineType.value()).apply();
+    }
+
+    @NonNull
+    @Override
+    public GridLineView.GridLineType getGridLineType() {
+        return GridLineView.GridLineType.find(sharedPreferences.getInt(PREF_GRID_LINE_TYPE,
+                GridLineView.GridLineType.NONE.value()));
+    }
+
+    @Override
+    public void setCenterPointType(@NonNull CenterPointView.CenterPointType centerPointType) {
+        sharedPreferences.edit().putInt(PREF_CENTER_POINT_TYPE, centerPointType.value()).apply();
+    }
+
+    @NonNull
+    @Override
+    public CenterPointView.CenterPointType getCenterPointType() {
+        return CenterPointView.CenterPointType.find(sharedPreferences.getInt(PREF_CENTER_POINT_TYPE,
+                CenterPointView.CenterPointType.NONE.value()));
+    }
+
+    @Override
+    public void setCenterPointColor(@ColorInt int centerPointColor) {
+        sharedPreferences.edit().putInt(PREF_CENTER_POINT_COLOR, centerPointColor).apply();
+    }
+
+    @Override
+    @ColorInt
+    public int getCenterPointColor() {
+        return sharedPreferences.getInt(PREF_CENTER_POINT_COLOR, Color.WHITE);
+    }
+
+    @NonNull
+    @Override
+    public SettingDefinitions.ControlMode getControlMode() {
+        return SettingDefinitions.ControlMode.find(sharedPreferences.getInt(PREF_CONTROL_MODE,
+                SettingDefinitions.ControlMode.SPOT_METER.value()));
+    }
+
+    @Override
+    public void setControlMode(@NonNull SettingDefinitions.ControlMode controlMode) {
+        sharedPreferences.edit().putInt(PREF_CONTROL_MODE, controlMode.value()).apply();
     }
 }

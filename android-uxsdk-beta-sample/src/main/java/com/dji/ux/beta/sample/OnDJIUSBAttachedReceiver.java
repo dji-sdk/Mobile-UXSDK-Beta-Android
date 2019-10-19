@@ -28,6 +28,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import dji.sdk.sdkmanager.DJISDKManager;
+
 /**
  * This receiver will detect the USB attached event.
  * It will check if the app has been previously started.
@@ -46,6 +48,10 @@ public class OnDJIUSBAttachedReceiver extends BroadcastReceiver {
                     | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             startIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             context.startActivity(startIntent);
+        } else {
+            Intent attachedIntent = new Intent();
+            attachedIntent.setAction(DJISDKManager.USB_ACCESSORY_ATTACHED);
+            context.sendBroadcast(attachedIntent);
         }
     }
 }

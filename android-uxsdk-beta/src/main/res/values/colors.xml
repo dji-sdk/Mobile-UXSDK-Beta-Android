@@ -22,10 +22,6 @@
   -->
 
 <resources>
-    <color name="uxsdk_colorPrimary">#3F51B5</color>
-    <color name="uxsdk_colorPrimaryDark">#303F9F</color>
-    <color name="uxsdk_colorAccent">#FF4081</color>
-
     <color name="uxsdk_transparent">#00000000</color>
     <color name="uxsdk_background">#33ffffff</color>
 
@@ -90,9 +86,20 @@
     <color name="uxsdk_green_material_800">#FF0BE315</color>
     <color name="uxsdk_green_material_800_67_percent">#AA0BE315</color>
     <color name="uxsdk_green_material_800_22_percent">#550BE315</color>
+    <color name="uxsdk_green_500">#0AEE8B</color>
 
     <color name="uxsdk_user_account_login_widget_background">#1FA3F6</color>
     <color name="uxsdk_user_account_login_widget_pressed_background">#801FA3F6</color>
+
+    <!--ShootPhotoWidget-->
+    <color name="uxsdk_shoot_photo_pressed">@color/uxsdk_gray_640</color>
+    <color name="uxsdk_shoot_photo_normal">@color/uxsdk_white</color>
+    <color name="uxsdk_shoot_photo_hasselblad_ring">#EF6E10</color>
+
+    <color name="uxsdk_centerpoint_yellow">#fbc600</color>
+    <color name="uxsdk_centerpoint_red">#f14443</color>
+    <color name="uxsdk_centerpoint_blue">#3da2f8</color>
+    <color name="uxsdk_centerpoint_green">#58d65c</color>
 
     <!-- Map Widget-->
     <color name="uxsdk_zone_altitude">#979797</color>

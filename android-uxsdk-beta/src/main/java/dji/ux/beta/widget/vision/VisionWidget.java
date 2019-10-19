@@ -25,14 +25,13 @@ package dji.ux.beta.widget.vision;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +40,7 @@ import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.R;
 import dji.ux.beta.base.DJISDKModel;
 import dji.ux.beta.base.FrameLayoutWidget;
+import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import dji.ux.beta.widget.vision.VisionWidgetModel.AvoidanceSensorStatus;
 import dji.ux.beta.widget.vision.VisionWidgetModel.VisionSystemStatus;
 
@@ -82,7 +82,7 @@ public class VisionWidget extends FrameLayoutWidget {
 
         if (!isInEditMode()) {
             widgetModel = new VisionWidgetModel(DJISDKModel.getInstance(),
-                                                ObservableInMemoryKeyedStore.getInstance());
+                    ObservableInMemoryKeyedStore.getInstance());
         }
 
         initDefaultIcons();
@@ -111,11 +111,11 @@ public class VisionWidget extends FrameLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getVisionSystemStatus()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateIcon));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateIcon));
         addReaction(widgetModel.getAvoidanceSensorStatus()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateIcon));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateIcon));
     }
     //endregion
 
@@ -133,21 +133,21 @@ public class VisionWidget extends FrameLayoutWidget {
     private void initDefaultIcons() {
         visionMap = new HashMap<>();
         visionMap.put(VisionSystemStatus.NORMAL,
-                      ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_topbar_visual_normal));
+                ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_topbar_visual_normal));
         visionMap.put(VisionSystemStatus.CLOSED,
-                      ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_topbar_visual_closed));
+                ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_topbar_visual_closed));
         visionMap.put(VisionSystemStatus.DISABLED,
-                      ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_topbar_visual_error));
+                ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_topbar_visual_error));
 
         avoidanceMap = new HashMap<>();
         avoidanceMap.put(AvoidanceSensorStatus.ALL,
-                         ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_avoid_normal_all));
+                ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_avoid_normal_all));
         avoidanceMap.put(AvoidanceSensorStatus.FRONT_BACK,
-                         ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_avoid_normal_front_back));
+                ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_avoid_normal_front_back));
         avoidanceMap.put(AvoidanceSensorStatus.DISABLED,
-                         ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_avoid_disable_all));
+                ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_avoid_disable_all));
         avoidanceMap.put(AvoidanceSensorStatus.CLOSED,
-                         ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_avoid_disable_all));
+                ContextCompat.getDrawable(getContext(), R.drawable.uxsdk_ic_avoid_disable_all));
     }
     //endregion
 
@@ -161,7 +161,7 @@ public class VisionWidget extends FrameLayoutWidget {
     /**
      * Sets the icon to the given image when the {@link VisionSystemStatus} is the given value.
      *
-     * @param status The status at which the icon will change to the given image.
+     * @param status     The status at which the icon will change to the given image.
      * @param resourceId The id of the image the icon will change to.
      */
     public void setVisionIcon(@NonNull VisionSystemStatus status, @DrawableRes int resourceId) {
@@ -171,7 +171,7 @@ public class VisionWidget extends FrameLayoutWidget {
     /**
      * Sets the icon to the given image when the {@link VisionSystemStatus} is the given value.
      *
-     * @param status The status at which the icon will change to the given image.
+     * @param status   The status at which the icon will change to the given image.
      * @param drawable The image the icon will change to.
      */
     public void setVisionIcon(@NonNull VisionSystemStatus status, @Nullable Drawable drawable) {
@@ -193,7 +193,7 @@ public class VisionWidget extends FrameLayoutWidget {
     /**
      * Sets the icon to the given image when the {@link AvoidanceSensorStatus} is the given value.
      *
-     * @param status The status at which the icon will change to the given image.
+     * @param status     The status at which the icon will change to the given image.
      * @param resourceId The id of the image the icon will change to.
      */
     public void setAvoidanceIcon(@NonNull AvoidanceSensorStatus status, @DrawableRes int resourceId) {
@@ -203,7 +203,7 @@ public class VisionWidget extends FrameLayoutWidget {
     /**
      * Sets the icon to the given image when the {@link AvoidanceSensorStatus} is the given value.
      *
-     * @param status The status at which the icon will change to the given image.
+     * @param status   The status at which the icon will change to the given image.
      * @param drawable The image the icon will change to.
      */
     public void setAvoidanceIcon(@NonNull AvoidanceSensorStatus status, @Nullable Drawable drawable) {
@@ -274,8 +274,7 @@ public class VisionWidget extends FrameLayoutWidget {
             setAvoidanceIcon(AvoidanceSensorStatus.ALL, allAvoidanceIcon);
         }
 
-        Drawable frontBackAvoidanceIcon =
-            typedArray.getDrawable(R.styleable.VisionWidget_uxsdk_frontBackAvoidanceIcon);
+        Drawable frontBackAvoidanceIcon = typedArray.getDrawable(R.styleable.VisionWidget_uxsdk_frontBackAvoidanceIcon);
         if (frontBackAvoidanceIcon != null) {
             setAvoidanceIcon(AvoidanceSensorStatus.FRONT_BACK, frontBackAvoidanceIcon);
         }

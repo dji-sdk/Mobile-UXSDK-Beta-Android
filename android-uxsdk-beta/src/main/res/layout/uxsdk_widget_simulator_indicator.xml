@@ -22,17 +22,15 @@
   -->
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:app="http://schemas.android.com/apk/res-auto"
-       xmlns:tools="http://schemas.android.com/tools"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="dji.ux.beta.widget.simulator.SimulatorIndicatorWidget">
 
     <ImageView
         android:id="@+id/imageview_simulator_indicator"
-        android:layout_gravity="center"
-        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:srcCompat="@drawable/uxsdk_ic_simulator"
-        tools:ignore="ContentDescription"/>
+        tools:ignore="ContentDescription" />
+
 </merge>

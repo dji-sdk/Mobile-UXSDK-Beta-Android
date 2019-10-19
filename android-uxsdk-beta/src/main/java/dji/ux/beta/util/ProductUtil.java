@@ -62,6 +62,17 @@ public final class ProductUtil {
     }
 
     /**
+     * Determine whether the connected product has a Hasselblad camera.
+     *
+     * @return `true` if the connected product has a Hasselblad camera. `false` if there is
+     * no product connected or if the connected product does not have a Hasselblad camera.
+     */
+    public static boolean isHasselbladCamera() {
+        return isProductAvailable()
+                && Model.MAVIC_2_PRO.equals(DJISDKManager.getInstance().getProduct().getModel());
+    }
+
+    /**
      * Determine whether the connected product is a Mavic 2 Enterprise.
      *
      * @return `true` if the connected product is a Mavic 2 Enterprise. `false` if there is
@@ -71,6 +82,41 @@ public final class ProductUtil {
         if (isProductAvailable()) {
             Model model = DJISDKManager.getInstance().getProduct().getModel();
             return Model.MAVIC_2_ENTERPRISE.equals(model) || Model.MAVIC_2_ENTERPRISE_DUAL.equals(model);
+        }
+        return false;
+    }
+
+    /**
+     * Determine whether the connected product is in the Phantom 4 series.
+     *
+     * @return `true` if the connected product is in the Phantom 4 series. `false` if there is
+     * no product connected or if the connected product is not in the Phantom 4 series.
+     */
+    public static boolean isPhantom4Series() {
+        if (DJISDKManager.getInstance() != null && DJISDKManager.getInstance().getProduct() != null) {
+            Model model = DJISDKManager.getInstance().getProduct().getModel();
+            return Model.PHANTOM_4.equals(model)
+                    || Model.PHANTOM_4_ADVANCED.equals(model)
+                    || Model.PHANTOM_4_PRO.equals(model)
+                    || Model.PHANTOM_4_PRO_V2.equals(model)
+                    || Model.PHANTOM_4_RTK.equals(model);
+        }
+        return false;
+    }
+
+    /**
+     * Determine whether the connected product supports external video input.
+     *
+     * @return `true` if the connected product supports external video input. `false` if there is
+     * no product connected or if the connected product does not support external video input.
+     */
+    public static boolean isExtPortSupportedProduct() {
+        if (isProductAvailable()) {
+            Model model = DJISDKManager.getInstance().getProduct().getModel();
+            return Model.MATRICE_600.equals(model)
+                    || Model.MATRICE_600_PRO.equals(model)
+                    || Model.A3.equals(model)
+                    || Model.N3.equals(model);
         }
         return false;
     }

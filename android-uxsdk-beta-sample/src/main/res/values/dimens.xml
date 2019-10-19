@@ -19,9 +19,22 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
+  ~
   -->
 
 <resources>
+    <!-- map activity -->
     <dimen name="map_settings_separator">15dp</dimen>
     <dimen name="map_settings_item_separator">5dp</dimen>
+
+    <!-- default layout activity -->
+    <dimen name="mini_map_height">100dp</dimen>
+    <dimen name="mini_map_width">150dp</dimen>
+    <dimen name="mini_map_margin">12dp</dimen>
+    <dimen name="topbar_padding">2dp</dimen>
+    <dimen name="topbar_text_size">16sp</dimen>
+    <dimen name="camera_config_height">28dp</dimen>
+    <dimen name="camera_bar_height">35dp</dimen>
+    <dimen name="camera_bar_padding">6dp</dimen>
 </resources>

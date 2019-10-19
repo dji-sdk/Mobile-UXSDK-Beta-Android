@@ -1,0 +1,671 @@
+/*
+ * Copyright (c) 2018-2019 DJI
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+package dji.ux.beta.widget.cameracapture.recordvideo;
+
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import dji.common.camera.SSDOperationState;
+import dji.common.camera.SettingsDefinitions;
+import dji.ux.beta.R;
+import dji.ux.beta.base.ConstraintLayoutWidget;
+import dji.ux.beta.base.DJISDKModel;
+import dji.ux.beta.base.SchedulerProvider;
+import dji.ux.beta.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.util.CameraUtil;
+import dji.ux.beta.util.ProductUtil;
+import dji.ux.beta.util.SettingDefinitions.CameraIndex;
+
+/**
+ * Record Video Widget
+ * <p>
+ * Widget can be used for recording video. The widget displays the current video mode. It also
+ * displays the storage state and errors associated with it.
+ */
+public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClickListener {
+
+    //region fields
+    private final String TAG = RecordVideoWidget.class.getSimpleName();
+    private RecordVideoWidgetModel widgetModel;
+    private ImageView centerImageView;
+    private TextView videoTimerTextView;
+    private ImageView storageStatusOverlayImageView;
+    private Map<StorageIconState, Drawable> storageInternalIconMap;
+    private Map<StorageIconState, Drawable> storageSSDIconMap;
+    private Map<StorageIconState, Drawable> storageSDCardIconMap;
+    private Drawable recordVideoStartDrawable;
+    private Drawable recordVideoStopDrawable;
+    private Drawable recordVideoStartHasselbladDrawable;
+    private Drawable recordVideoStopHasselbladDrawable;
+    private SchedulerProvider schedulerProvider;
+    //endregion
+
+    //region lifecycle
+    public RecordVideoWidget(Context context) {
+        super(context);
+    }
+
+    public RecordVideoWidget(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public RecordVideoWidget(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    protected void initView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        inflate(context, R.layout.uxsdk_widget_record_video, this);
+        centerImageView = findViewById(R.id.image_view_center);
+        videoTimerTextView = findViewById(R.id.text_view_video_record_time);
+        storageStatusOverlayImageView = findViewById(R.id.image_view_storage_status_overlay);
+        storageInternalIconMap = new HashMap<>();
+        storageSSDIconMap = new HashMap<>();
+        storageSDCardIconMap = new HashMap<>();
+        centerImageView.setOnClickListener(this);
+        schedulerProvider = SchedulerProvider.getInstance();
+        if (!isInEditMode()) {
+            widgetModel =
+                    new RecordVideoWidgetModel(DJISDKModel.getInstance(),
+                            ObservableInMemoryKeyedStore.getInstance(),
+                            schedulerProvider);
+        }
+        initDefaults();
+        if (attrs != null) {
+            initAttributes(context, attrs);
+        }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (!isInEditMode()) {
+            widgetModel.setup();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        if (!isInEditMode()) {
+            widgetModel.cleanup();
+        }
+        super.onDetachedFromWindow();
+    }
+
+    @Override
+    protected void reactToModelChanges() {
+        addReaction(
+                widgetModel.getRecordingTimeInSeconds()
+                        .observeOn(schedulerProvider.ui())
+                        .subscribe(
+                                this::updateRecordingTime,
+                                logErrorConsumer(TAG, "record time: ")));
+        addReaction(
+                widgetModel.isRecording()
+                        .observeOn(schedulerProvider.ui())
+                        .subscribe(
+                                this::onIsRecordingVideoChange,
+                                logErrorConsumer(TAG, "is recording: ")));
+        addReaction(
+                widgetModel.getCameraVideoStorageState()
+                        .observeOn(schedulerProvider.ui())
+                        .subscribe(
+                                this::updateCameraForegroundResource,
+                                logErrorConsumer(TAG, "camera storage update: ")));
+    }
+
+    @NonNull
+    @Override
+    public String getIdealDimensionRatioString() {
+        return getResources().getString(R.string.uxsdk_widget_default_ratio);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.equals(centerImageView)) {
+            addDisposable(widgetModel.isRecording().firstOrError().flatMapCompletable(isRecording -> {
+                if (isRecording) {
+                    return widgetModel.stopRecordVideo();
+                } else {
+                    return widgetModel.startRecordVideo();
+                }
+            }).observeOn(schedulerProvider.ui()).subscribe(() -> {
+            }, error -> logErrorConsumer(TAG, "START STOP VIDEO")));
+        }
+    }
+    //endregion
+
+    //region private helpers
+    private void initDefaults() {
+        recordVideoStartDrawable = getResources().getDrawable(R.drawable.uxsdk_selector_start_record_video);
+        recordVideoStopDrawable = getResources().getDrawable(R.drawable.uxsdk_selector_stop_record_video);
+        recordVideoStartHasselbladDrawable = getResources().getDrawable(R.drawable.uxsdk_ic_hasselblad_shutter_start);
+        recordVideoStopHasselbladDrawable = getResources().getDrawable(R.drawable.uxsdk_ic_hasselblad_shutter_stop);
+        setInternalStorageIcon(StorageIconState.NOT_INSERTED, R.drawable.uxsdk_ic_internal_storage_not_inserted);
+        setInternalStorageIcon(StorageIconState.SLOW, R.drawable.uxsdk_ic_internal_storage_slow);
+        setInternalStorageIcon(StorageIconState.FULL, R.drawable.uxsdk_ic_internal_storage_full);
+        setSDCardStorageIcon(StorageIconState.NOT_INSERTED, R.drawable.uxsdk_ic_sdcard_not_inserted);
+        setSDCardStorageIcon(StorageIconState.SLOW, R.drawable.uxsdk_ic_sdcard_slow);
+        setSDCardStorageIcon(StorageIconState.FULL, R.drawable.uxsdk_ic_sdcard_full);
+        setSSDStorageIcon(StorageIconState.NOT_INSERTED, R.drawable.uxsdk_ic_ssd_not_inserted);
+        setSSDStorageIcon(StorageIconState.FULL, R.drawable.uxsdk_ic_ssd_full);
+        setVideoTimerTextColor(Color.WHITE);
+        if (!isInEditMode()) {
+            setCameraIndex(CameraIndex.CAMERA_INDEX_0);
+        }
+    }
+
+    private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RecordVideoWidget);
+        if (!isInEditMode()) {
+            setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.RecordVideoWidget_uxsdk_cameraIndex, 0)));
+        }
+
+        int textAppearance = typedArray.getResourceId(R.styleable.RecordVideoWidget_uxsdk_timerTextAppearance, INVALID_RESOURCE);
+        if (textAppearance != INVALID_RESOURCE) {
+            setTimerTextAppearance(textAppearance);
+        }
+        setVideoTimerTextColor(typedArray.getColor(R.styleable.RecordVideoWidget_uxsdk_timerTextColor, Color.WHITE));
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_timerTextBackground) != null) {
+            setVideoTimerTextBackground(typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_timerTextBackground));
+        }
+        setVideoTimerTextSize(typedArray.getDimension(R.styleable.RecordVideoWidget_uxsdk_timerTextSize, 12));
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_foregroundIconBackground) != null) {
+            setForegroundIconBackground(typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_foregroundIconBackground));
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_recordStartIcon) != null) {
+            recordVideoStartDrawable = typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_recordStartIcon);
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_recordStopIcon) != null) {
+            recordVideoStopDrawable = typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_recordStopIcon);
+        }
+
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_recordStartHasselbladIcon) != null) {
+            recordVideoStartHasselbladDrawable = typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_recordStartHasselbladIcon);
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_recordStopHasselbladIcon) != null) {
+            recordVideoStopHasselbladDrawable = typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_recordStopHasselbladIcon);
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_internalStorageNotInsertedIcon) != null) {
+            setInternalStorageIcon(StorageIconState.NOT_INSERTED, typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_internalStorageNotInsertedIcon));
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_internalStorageFullIcon) != null) {
+            setInternalStorageIcon(StorageIconState.FULL, typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_internalStorageFullIcon));
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_internalStorageSlowIcon) != null) {
+            setInternalStorageIcon(StorageIconState.SLOW, typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_internalStorageSlowIcon));
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_sdCardNotInsertedIcon) != null) {
+            setSDCardStorageIcon(StorageIconState.NOT_INSERTED, typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_sdCardNotInsertedIcon));
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_sdCardFullIcon) != null) {
+            setSDCardStorageIcon(StorageIconState.FULL, typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_sdCardFullIcon));
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_sdCardSlowIcon) != null) {
+            setSDCardStorageIcon(StorageIconState.SLOW, typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_sdCardSlowIcon));
+        }
+
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_ssdNotInsertedIcon) != null) {
+            setSSDStorageIcon(StorageIconState.NOT_INSERTED, typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_ssdNotInsertedIcon));
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_ssdFullIcon) != null) {
+            setSSDStorageIcon(StorageIconState.FULL, typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_ssdFullIcon));
+        }
+        if (typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_ssdSlowIcon) != null) {
+            setSSDStorageIcon(StorageIconState.SLOW, typedArray.getDrawable(R.styleable.RecordVideoWidget_uxsdk_ssdSlowIcon));
+        }
+
+        typedArray.recycle();
+    }
+
+    private void updateCameraForegroundResource(CameraVideoStorageState cameraVideoStorageState) {
+        Drawable foregroundResource = null;
+        if (cameraVideoStorageState instanceof CameraSDVideoStorageState) {
+            if (cameraVideoStorageState.getStorageLocation() == SettingsDefinitions.StorageLocation.SDCARD) {
+                if (((CameraSDVideoStorageState) cameraVideoStorageState).getSdCardOperationState()
+                        == SettingsDefinitions.SDCardOperationState.NOT_INSERTED) {
+                    foregroundResource = getSDCardStorageIcon(StorageIconState.NOT_INSERTED);
+                } else if (((CameraSDVideoStorageState) cameraVideoStorageState).getSdCardOperationState()
+                        == SettingsDefinitions.SDCardOperationState.FULL) {
+                    foregroundResource = getSDCardStorageIcon(StorageIconState.FULL);
+                } else if (((CameraSDVideoStorageState) cameraVideoStorageState).getSdCardOperationState()
+                        == SettingsDefinitions.SDCardOperationState.SLOW) {
+                    foregroundResource = getSDCardStorageIcon(StorageIconState.SLOW);
+                }
+            } else if (cameraVideoStorageState.getStorageLocation() == SettingsDefinitions.StorageLocation.INTERNAL_STORAGE) {
+                if (((CameraSDVideoStorageState) cameraVideoStorageState).getSdCardOperationState()
+                        == SettingsDefinitions.SDCardOperationState.NOT_INSERTED) {
+                    foregroundResource = getInternalStorageIcon(StorageIconState.NOT_INSERTED);
+                } else if (((CameraSDVideoStorageState) cameraVideoStorageState).getSdCardOperationState()
+                        == SettingsDefinitions.SDCardOperationState.FULL) {
+                    foregroundResource = getInternalStorageIcon(StorageIconState.FULL);
+                } else if (((CameraSDVideoStorageState) cameraVideoStorageState).getSdCardOperationState()
+                        == SettingsDefinitions.SDCardOperationState.SLOW) {
+                    foregroundResource = getInternalStorageIcon(StorageIconState.SLOW);
+                }
+            }
+        } else if (cameraVideoStorageState instanceof CameraSSDVideoStorageState) {
+            if (((CameraSSDVideoStorageState) cameraVideoStorageState).getSsdOperationState()
+                    == SSDOperationState.NOT_FOUND) {
+                foregroundResource = getSSDStorageIcon(StorageIconState.NOT_INSERTED);
+            } else if (((CameraSSDVideoStorageState) cameraVideoStorageState).getSsdOperationState()
+                    == SSDOperationState.FULL) {
+                foregroundResource = getSSDStorageIcon(StorageIconState.FULL);
+            }
+        }
+
+        storageStatusOverlayImageView.setImageDrawable(foregroundResource);
+    }
+
+    private void updateRecordingTime(int seconds) {
+        videoTimerTextView.setText(CameraUtil.formatVideoTime(getResources(), seconds));
+    }
+
+    private void onIsRecordingVideoChange(boolean isRecordingVideo) {
+        Drawable recordStart = ProductUtil.isHasselbladCamera() ? recordVideoStartHasselbladDrawable : recordVideoStartDrawable;
+        Drawable recordStop = ProductUtil.isHasselbladCamera() ? recordVideoStopHasselbladDrawable : recordVideoStopDrawable;
+        centerImageView.setImageDrawable(isRecordingVideo ? recordStop : recordStart);
+        videoTimerTextView.setVisibility(isRecordingVideo ? View.VISIBLE : View.INVISIBLE);
+        storageStatusOverlayImageView.setVisibility(isRecordingVideo ? View.GONE : View.VISIBLE);
+    }
+    //endregion
+
+    //region customizations
+
+    /**
+     * Set the index of camera to which the widget should react
+     *
+     * @param cameraIndex {@link CameraIndex}
+     */
+    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
+        widgetModel.setCameraIndex(cameraIndex);
+    }
+
+    /**
+     * Get the index of the camera to which the widget is reacting
+     *
+     * @return {@link CameraIndex}
+     */
+    @NonNull
+    public CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
+    }
+
+    /**
+     * Set the start record video icon
+     *
+     * @param resourceId to be used
+     */
+    public void setRecordVideoStartDrawable(@DrawableRes int resourceId) {
+        setRecordVideoStartDrawable(getResources().getDrawable(resourceId));
+    }
+
+    /**
+     * Set the start record video icon
+     *
+     * @param drawable to be used
+     */
+    public void setRecordVideoStartDrawable(@Nullable Drawable drawable) {
+        recordVideoStartDrawable = drawable;
+    }
+
+    /**
+     * Get the current start recording video icon
+     *
+     * @return Drawable currently used
+     */
+    @Nullable
+    public Drawable getRecordVideoStartDrawable() {
+        return recordVideoStartDrawable;
+    }
+
+    /**
+     * Set stop video recording icon
+     *
+     * @param resourceId to be used
+     */
+    public void setRecordVideoStopDrawable(@DrawableRes int resourceId) {
+        setRecordVideoStopDrawable(getResources().getDrawable(resourceId));
+    }
+
+    /**
+     * Set stop video recording icon
+     *
+     * @param drawable to be used
+     */
+    public void setRecordVideoStopDrawable(@Nullable Drawable drawable) {
+        recordVideoStopDrawable = drawable;
+    }
+
+    /**
+     * Get the current stop video recording icon
+     *
+     * @return Drawable currently used
+     */
+    @Nullable
+    public Drawable getRecordVideoStopDrawable() {
+        return recordVideoStopDrawable;
+    }
+
+    /**
+     * Set the current icon for start video recording for Hasselblad camera
+     *
+     * @param resourceId to be used
+     */
+    public void setRecordVideoHasselbladDrawable(@DrawableRes int resourceId) {
+        setRecordVideoHasselbladDrawable(getResources().getDrawable(resourceId));
+    }
+
+    /**
+     * Set the current icon for start video recording for Hasselblad camera
+     *
+     * @param drawable to be used
+     */
+    public void setRecordVideoHasselbladDrawable(@Nullable Drawable drawable) {
+        recordVideoStartHasselbladDrawable = drawable;
+    }
+
+    /**
+     * Get the current icon for start video recording for Hasselblad camera
+     *
+     * @return Drawable currently used
+     */
+    @Nullable
+    public Drawable getRecordVideoHasselbladDrawable() {
+        return recordVideoStartHasselbladDrawable;
+    }
+
+    /**
+     * Set the icon for stop video recording for Hasselblad camera
+     * Currently on Mavic 2 Pro
+     *
+     * @param resourceId to be used
+     */
+    public void setRecordVideoStopHasselbladDrawable(@DrawableRes int resourceId) {
+        setRecordVideoStopHasselbladDrawable(getResources().getDrawable(resourceId));
+    }
+
+    /**
+     * Set the icon for stop video recording for Hasselblad camera
+     * Currently on Mavic 2 Pro
+     *
+     * @param drawable to be used
+     */
+    public void setRecordVideoStopHasselbladDrawable(@Nullable Drawable drawable) {
+        recordVideoStopHasselbladDrawable = drawable;
+    }
+
+    /**
+     * Get the current icon for stop video recording for Hasselblad camera
+     * Currently on Mavic 2 Pro
+     *
+     * @return Drawable currently used
+     */
+    @Nullable
+    public Drawable getRecordVideoStopHasselbladDrawable() {
+        return recordVideoStopHasselbladDrawable;
+    }
+
+    /**
+     * Set the icon for internal storage based on storage icon state
+     *
+     * @param storageIconState for which icon is used
+     * @param resourceId       to be used
+     */
+    public void setInternalStorageIcon(@NonNull StorageIconState storageIconState, @DrawableRes int resourceId) {
+        setInternalStorageIcon(storageIconState, getResources().getDrawable(resourceId));
+    }
+
+    /**
+     * Set the icon for internal storage based on storage icon state
+     *
+     * @param storageIconState for which icon is used
+     * @param drawable         to be used
+     */
+    public void setInternalStorageIcon(@NonNull StorageIconState storageIconState, @Nullable Drawable drawable) {
+        storageInternalIconMap.put(storageIconState, drawable);
+    }
+
+    /**
+     * Get the icon for internal storage based on storage icon state
+     *
+     * @param storageIconState for which icon is used
+     * @return Drawable currently used
+     */
+    @Nullable
+    public Drawable getInternalStorageIcon(@NonNull StorageIconState storageIconState) {
+        return storageInternalIconMap.get(storageIconState);
+    }
+
+    /**
+     * Set the icon for SD card storage based on storage icon state
+     *
+     * @param storageIconState for which icon is used
+     * @param resourceId       to be used
+     */
+    public void setSDCardStorageIcon(@NonNull StorageIconState storageIconState, @DrawableRes int resourceId) {
+        setSDCardStorageIcon(storageIconState, getResources().getDrawable(resourceId));
+    }
+
+    /**
+     * Set the icon for SD card storage based on storage icon state
+     *
+     * @param storageIconState for which icon is used
+     * @param drawable         to be used
+     */
+    public void setSDCardStorageIcon(@NonNull StorageIconState storageIconState, @Nullable Drawable drawable) {
+        storageSDCardIconMap.put(storageIconState, drawable);
+    }
+
+    /**
+     * Get the icon for SD card storage based on storage icon state
+     *
+     * @param storageIconState for which icon is used
+     * @return Drawable currently used
+     */
+    @Nullable
+    public Drawable getSDCardStorageIcon(@NonNull StorageIconState storageIconState) {
+        return storageSDCardIconMap.get(storageIconState);
+    }
+
+    /**
+     * Set the icon for SSD storage based on storage icon state
+     *
+     * @param storageIconState for which icon should be used
+     * @param resourceId       to be used
+     */
+    public void setSSDStorageIcon(@NonNull StorageIconState storageIconState, @DrawableRes int resourceId) {
+        setSSDStorageIcon(storageIconState, getResources().getDrawable(resourceId));
+    }
+
+    /**
+     * Set the icon for SSD storage based on storage icon state
+     *
+     * @param storageIconState for which icon should be used
+     * @param drawable         Drawable to be used
+     */
+    public void setSSDStorageIcon(@NonNull StorageIconState storageIconState, @Nullable Drawable drawable) {
+        storageSSDIconMap.put(storageIconState, drawable);
+    }
+
+    /**
+     * Get the icon for SSD storage based on storage icon state
+     *
+     * @param storageIconState for which icon is used
+     * @return Drawable currently used
+     */
+    @Nullable
+    public Drawable getSSDStorageIcon(@NonNull StorageIconState storageIconState) {
+        return storageSSDIconMap.get(storageIconState);
+    }
+
+    /**
+     * Set the background of the foreground icon
+     *
+     * @param resourceId to be used as background
+     */
+    public void setForegroundIconBackground(@DrawableRes int resourceId) {
+        storageStatusOverlayImageView.setBackgroundResource(resourceId);
+    }
+
+    /**
+     * Set background of the foreground icon
+     *
+     * @param drawable to be used as background
+     */
+    public void setForegroundIconBackground(@Nullable Drawable drawable) {
+        storageStatusOverlayImageView.setBackground(drawable);
+    }
+
+    /**
+     * Get current background of foreground icon
+     *
+     * @return Drawable being used
+     */
+    public Drawable getForegroundIconBackground(@DrawableRes int resourceId) {
+        return storageStatusOverlayImageView.getBackground();
+    }
+
+    /**
+     * Set the background of the video record duration text
+     *
+     * @param resourceId to be used
+     */
+    public void setVideoTimerTextBackground(@DrawableRes int resourceId) {
+        videoTimerTextView.setBackgroundResource(resourceId);
+    }
+
+    /**
+     * Set the background of the video record duration text
+     *
+     * @param drawable to be used
+     */
+    public void setVideoTimerTextBackground(@NonNull Drawable drawable) {
+        videoTimerTextView.setBackground(drawable);
+    }
+
+    /**
+     * Set the color state list for video record duration text
+     *
+     * @param colorStateList to be used
+     */
+    public void setVideoTimerTextColors(@Nullable ColorStateList colorStateList) {
+        videoTimerTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color of video record duration text
+     *
+     * @param color integer value representing color
+     */
+    public void setVideoTimerTextColor(@ColorInt int color) {
+        videoTimerTextView.setTextColor(color);
+    }
+
+    /**
+     * Get the color state list currently used for video record duration text
+     *
+     * @return ColorSateList
+     */
+    @Nullable
+    public ColorStateList getVideoTimerTextColors() {
+        return videoTimerTextView.getTextColors();
+    }
+
+    /**
+     * Get the current text color of video record duration text
+     *
+     * @return integer value representing color
+     */
+    @ColorInt
+    public int getVideoTimerTextColor() {
+        return videoTimerTextView.getCurrentTextColor();
+    }
+
+    /**
+     * Set the text size of video record duration text
+     *
+     * @param textSize float value
+     */
+    public void setVideoTimerTextSize(@Dimension float textSize) {
+        videoTimerTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get the current text size of video record duration text
+     *
+     * @return float value representing text size
+     */
+    @Dimension
+    public float getVideoTimerTextSize() {
+        return videoTimerTextView.getTextSize();
+    }
+
+    /**
+     * Set the text appearance for video record duration text
+     *
+     * @param textAppearance to be used
+     */
+    public void setTimerTextAppearance(@StyleRes int textAppearance) {
+        videoTimerTextView.setTextAppearance(getContext(), textAppearance);
+    }
+    //endregion
+
+    /**
+     * Enum indicating storage error state
+     */
+    public enum StorageIconState {
+        /**
+         * The storage is slow
+         */
+        SLOW,
+
+        /**
+         * The storage is full
+         */
+        FULL,
+
+        /**
+         * The storage is not inserted
+         */
+        NOT_INSERTED
+    }
+}

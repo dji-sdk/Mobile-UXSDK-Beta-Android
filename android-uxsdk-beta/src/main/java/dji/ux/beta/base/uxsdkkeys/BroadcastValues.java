@@ -22,8 +22,8 @@
 
 package dji.ux.beta.base.uxsdkkeys;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * This is a wrapper class used by the UXKey system to
@@ -42,6 +42,7 @@ public class BroadcastValues {
     public ModelValue getPreviousValue() {
         return previousValue;
     }
+
     public ModelValue getCurrentValue() {
         return currentValue;
     }

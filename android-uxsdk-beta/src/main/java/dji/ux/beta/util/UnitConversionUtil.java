@@ -42,6 +42,7 @@ public final class UnitConversionUtil {
     //endregion
 
     //region Length or Distance Conversion Functions
+
     /**
      * Utility function to convert meters to feet
      *
@@ -64,6 +65,7 @@ public final class UnitConversionUtil {
     //endregion
 
     //region Speed Conversion Functions
+
     /**
      * Utility function to convert meters per second to miles per hour
      *
@@ -106,6 +108,7 @@ public final class UnitConversionUtil {
     //endregion
 
     //region Time Conversion Functions
+
     /**
      * Convert the total value of seconds into an array with seconds, minutes, hours.
      *
@@ -153,6 +156,7 @@ public final class UnitConversionUtil {
         public int value() {
             return this.intValue;
         }
+
         public static UnitType find(int value) {
             UnitType result = METRIC;
             for (int i = 0; i < values().length; i++) {
@@ -194,6 +198,7 @@ public final class UnitConversionUtil {
         public int value() {
             return this.intValue;
         }
+
         public static SpeedMetricUnitType find(int value) {
             SpeedMetricUnitType result = METERS_PER_SECOND;
             for (int i = 0; i < values().length; i++) {

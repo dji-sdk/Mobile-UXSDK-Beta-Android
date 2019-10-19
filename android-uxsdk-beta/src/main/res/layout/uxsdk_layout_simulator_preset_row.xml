@@ -21,14 +21,13 @@
   ~ SOFTWARE.
   -->
 
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginBottom="5dp"
     android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     android:orientation="horizontal"
     android:paddingTop="5dp">
 
@@ -55,9 +54,9 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.15dp"
-        android:background="@color/uxsdk_light_gray_800"
         android:layout_marginTop="5dp"
+        android:background="@color/uxsdk_light_gray_800"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageview_preset_delete" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

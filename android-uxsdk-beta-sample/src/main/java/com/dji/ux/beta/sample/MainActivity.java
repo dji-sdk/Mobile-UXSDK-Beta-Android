@@ -25,16 +25,10 @@
 package com.dji.ux.beta.sample;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -49,9 +43,13 @@ import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import com.dji.ux.beta.sample.util.MapUtil;
 import com.dji.ux.beta.sample.widgetlist.WidgetsActivity;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -65,11 +63,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dji.common.error.DJIError;
 import dji.common.error.DJISDKError;
-import dji.log.DJILog;
 import dji.sdk.base.BaseComponent;
 import dji.sdk.base.BaseProduct;
+import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
+import dji.ux.beta.util.SettingDefinitions;
 
 /**
  * Handles the connection to the product and provides links to the different test activities. Also
@@ -81,20 +80,19 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     //region Constants
     private static final String LAST_USED_BRIDGE_IP = "bridgeip";
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
-            Manifest.permission.VIBRATE,
-            Manifest.permission.INTERNET,
-            Manifest.permission.ACCESS_WIFI_STATE,
-            Manifest.permission.WAKE_LOCK,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_NETWORK_STATE,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.CHANGE_WIFI_STATE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.BLUETOOTH,
-            Manifest.permission.BLUETOOTH_ADMIN,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.RECORD_AUDIO
+            Manifest.permission.VIBRATE, // Gimbal rotation
+            Manifest.permission.INTERNET, // API requests
+            Manifest.permission.ACCESS_WIFI_STATE, // WIFI connected products
+            Manifest.permission.ACCESS_COARSE_LOCATION, // Maps
+            Manifest.permission.ACCESS_NETWORK_STATE, // WIFI connected products
+            Manifest.permission.ACCESS_FINE_LOCATION, // Maps
+            Manifest.permission.CHANGE_WIFI_STATE, // Changing between WIFI and USB connection
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, // Log files
+            Manifest.permission.BLUETOOTH, // Bluetooth connected products
+            Manifest.permission.BLUETOOTH_ADMIN, // Bluetooth connected products
+            Manifest.permission.READ_EXTERNAL_STORAGE, // Log files
+            Manifest.permission.READ_PHONE_STATE, // Device UUID accessed upon registration
+            Manifest.permission.RECORD_AUDIO // Speaker accessory
     };
     private static final int REQUEST_PERMISSION_CODE = 12345;
     private static final String TIME_FORMAT = "MMM dd, yyyy 'at' h:mm:ss a";
@@ -104,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     //region Fields
     private AtomicBoolean isRegistrationInProgress = new AtomicBoolean(false);
     private static boolean isAppStarted = false;
+    private int lastProgress = -1;
     private DJISDKManager.SDKManagerCallback registrationCallback = new DJISDKManager.SDKManagerCallback() {
 
         @Override
@@ -134,7 +133,14 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             if (product != null) {
                 runOnUiThread(() -> {
                     addLog("Connected to product");
-                    productNameTextView.setText(getString(R.string.product_name, product.getModel().getDisplayName()));
+                    if (product.getModel() != null) {
+                        productNameTextView.setText(getString(R.string.product_name, product.getModel().getDisplayName()));
+                    } else if (product instanceof Aircraft) {
+                        Aircraft aircraft = (Aircraft) product;
+                        if (aircraft.getRemoteController() != null) {
+                            productNameTextView.setText(getString(R.string.remote_controller));
+                        }
+                    }
                 });
             }
         }
@@ -150,6 +156,18 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         @Override
         public void onInitProcess(DJISDKInitEvent djisdkInitEvent, int totalProcess) {
             runOnUiThread(() -> addLog(djisdkInitEvent.getInitializationState().toString()));
+        }
+
+        @Override
+        public void onDatabaseDownloadProgress(long current, long total) {
+            runOnUiThread(() -> {
+                int progress = (int) (100 * current / total);
+                if (progress == lastProgress) {
+                    return;
+                }
+                lastProgress = progress;
+                addLog("Fly safe database download progress: " + progress);
+            });
         }
     };
     private List<String> missingPermission = new ArrayList<>();
@@ -175,51 +193,18 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             getSupportActionBar().setTitle(R.string.dji_ux_sample_app_name_long);
         }
         isAppStarted = true;
-        versionTextView.setText(getResources().getString(R.string.sdk_version, DJISDKManager.getInstance().getSDKVersion()));
-        bridgeModeEditText.setText(PreferenceManager.getDefaultSharedPreferences(this).getString(LAST_USED_BRIDGE_IP, ""));
-        bridgeModeEditText.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH
-                    || actionId == EditorInfo.IME_ACTION_DONE
-                    || event != null
-                    && event.getAction() == KeyEvent.ACTION_DOWN
-                    && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-                if (event != null && event.isShiftPressed()) {
-                    return false;
-                } else {
-                    // the user is done typing.
-                    handleBridgeIPTextChange();
-                }
-            }
-            return false; // pass on to other listeners.
-        });
-        bridgeModeEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // do nothing
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // do nothing
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (s != null && s.toString().contains("\n")) {
-                    // the user is done typing.
-                    // remove new line characcter
-                    final String currentText = bridgeModeEditText.getText().toString();
-                    bridgeModeEditText.setText(currentText.substring(0, currentText.indexOf('\n')));
-                    handleBridgeIPTextChange();
-                }
-            }
-        });
         checkAndRequestPermissions();
+        setBridgeModeEditText();
+        versionTextView.setText(getResources().getString(R.string.sdk_version,
+                DJISDKManager.getInstance().getSDKVersion()));
     }
 
     @Override
     protected void onDestroy() {
-        DJISDKManager.getInstance().destroy();
+        // Prevent memory leak by releasing DJISDKManager's references to this activity
+        if (DJISDKManager.getInstance() != null) {
+            DJISDKManager.getInstance().destroy();
+        }
         isAppStarted = false;
         super.onDestroy();
     }
@@ -281,6 +266,51 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     /**
+     * Initialize the bridge mode edit text
+     */
+    private void setBridgeModeEditText() {
+        bridgeModeEditText.setText(PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(LAST_USED_BRIDGE_IP, ""));
+        bridgeModeEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH
+                    || actionId == EditorInfo.IME_ACTION_DONE
+                    || event != null
+                    && event.getAction() == KeyEvent.ACTION_DOWN
+                    && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                if (event != null && event.isShiftPressed()) {
+                    return false;
+                } else {
+                    // the user is done typing.
+                    handleBridgeIPTextChange();
+                }
+            }
+            return false; // pass on to other listeners.
+        });
+        bridgeModeEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Nothing to do
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Nothing to do
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s != null && s.toString().contains("\n")) {
+                    // the user is done typing.
+                    // remove new line character
+                    final String currentText = bridgeModeEditText.getText().toString();
+                    bridgeModeEditText.setText(currentText.substring(0, currentText.indexOf('\n')));
+                    handleBridgeIPTextChange();
+                }
+            }
+        });
+    }
+
+    /**
      * React to changes in the Bridge IP text view. If the text view is non-empty, attempts to
      * start a connection over the bridge.
      */
@@ -297,6 +327,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     /**
      * Adds the given text to the logs along with a timestamp of the current time.
+     *
      * @param description The line of text to add to the logs.
      */
     private void addLog(String description) {
@@ -323,6 +354,15 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     /**
+     * Starts the {@link DefaultLayoutActivity}.
+     */
+    @OnClick(R.id.default_layout_button)
+    public void onDefaultLayoutClick() {
+        Intent intent = new Intent(this, DefaultLayoutActivity.class);
+        startActivity(intent);
+    }
+
+    /**
      * Displays a menu of map providers before launching the {@link MapWidgetActivity}. Disables
      * providers that are not supported by this device.
      *
@@ -335,8 +375,8 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         Menu popupMenu = popup.getMenu();
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.map_select_menu, popupMenu);
-        popupMenu.findItem(R.id.here_map).setEnabled(isHereMapsSupported());
-        popupMenu.findItem(R.id.google_map).setEnabled(isGoogleMapsSupported(this));
+        popupMenu.findItem(R.id.here_map).setEnabled(MapUtil.isHereMapsSupported());
+        popupMenu.findItem(R.id.google_map).setEnabled(MapUtil.isGoogleMapsSupported(this));
         popup.show();
     }
 
@@ -350,55 +390,24 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
         Intent intent = new Intent(this, MapWidgetActivity.class);
-        int mapBrand = 0;
+        SettingDefinitions.MapProvider mapBrand;
         switch (menuItem.getItemId()) {
             case R.id.here_map:
-                mapBrand = 0;
+                mapBrand = SettingDefinitions.MapProvider.HERE;
                 break;
             case R.id.google_map:
-                mapBrand = 1;
+                mapBrand = SettingDefinitions.MapProvider.GOOGLE;
                 break;
             case R.id.amap:
-                mapBrand = 2;
+                mapBrand = SettingDefinitions.MapProvider.AMAP;
                 break;
             case R.id.mapbox:
-                mapBrand = 3;
+            default:
+                mapBrand = SettingDefinitions.MapProvider.MAPBOX;
                 break;
         }
-        intent.putExtra(MapWidgetActivity.MAP_PROVIDER, mapBrand);
+        intent.putExtra(MapWidgetActivity.MAP_PROVIDER_KEY, mapBrand.getIndex());
         startActivity(intent);
         return false;
-    }
-
-    /**
-     * HERE Maps are supported by ARM V7 and AMR V8 devices. They are not supported by x86 or mips
-     * devices.
-     *
-     * @return `true` if HERE Maps are supported by this device.
-     */
-    public static boolean isHereMapsSupported() {
-        String abi;
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            abi = Build.CPU_ABI;
-        } else {
-            abi = Build.SUPPORTED_ABIS[0];
-        }
-        DJILog.d(TAG, "abi=" + abi);
-
-        //The possible values are armeabi, armeabi-v7a, arm64-v8a, x86, x86_64, mips, mips64.
-        return abi.contains("arm");
-    }
-
-    /**
-     * Google maps are supported only if Google Play Services are available on this device.
-     *
-     * @param context An instance of {@link Context}.
-     * @return `true` if Google Maps are supported by this device.
-     */
-    public static boolean isGoogleMapsSupported(Context context) {
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(context);
-        return resultCode == ConnectionResult.SUCCESS;
     }
 }

@@ -22,8 +22,9 @@
 
 package dji.ux.beta.base.uxsdkkeys;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
@@ -34,15 +35,16 @@ public interface ObservableKeyedStore {
      *
      * @param key A valid UXKey
      * @return A flowable that emits BroadcastValues based on the given key.
-     *         This flowable can be used to subscribe to the keys as required.
+     * This flowable can be used to subscribe to the keys as required.
      */
     @NonNull
     Flowable<BroadcastValues> addObserver(@NonNull UXKey key);
 
     /**
      * Removes the observer object for the given key so it no longer receives updates
+     *
      * @param disposable Disposable used for observing key values
-     * @param key A valid UXKey
+     * @param key        A valid UXKey
      */
     void removeObserver(@NonNull Disposable disposable, @NonNull UXKey key);
 
@@ -50,6 +52,7 @@ public interface ObservableKeyedStore {
      * Removes the subscription to updates for all observers of a specific key value.
      * Does not affect the observers of any other key.
      * receive any further updates for this key
+     *
      * @param key A valid UXKey
      */
     void removeAllObserversForKey(@NonNull UXKey key);
@@ -73,10 +76,10 @@ public interface ObservableKeyedStore {
     /**
      * Performs a set on a UXKey, changing the value for the key.
      *
+     * @param key   A valid settable key
      * @param value A value object relevant to the given key
-     * @param key A valid settable key
      * @return Completable which indicates success or error setting the value.
      */
     @NonNull
-    Completable setValue(Object value, @NonNull UXKey key);
+    Completable setValue(@NonNull UXKey key, Object value);
 }

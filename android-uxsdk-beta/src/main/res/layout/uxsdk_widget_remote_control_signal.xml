@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018-2019 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,35 +21,33 @@
   -->
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-       xmlns:app="http://schemas.android.com/apk/res-auto"
-       xmlns:tools="http://schemas.android.com/tools"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       tools:parentTag="dji.ux.beta.widget.remotecontrolsignal.RemoteControlSignalWidget">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="dji.ux.beta.widget.remotecontrolsignal.RemoteControlSignalWidget">
 
     <ImageView
         android:id="@+id/imageview_rc_icon"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
-        app:srcCompat="@drawable/uxsdk_ic_topbar_remote_controller"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/imageview_rc_signal"
-        tools:ignore="ContentDescription"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/uxsdk_ic_topbar_remote_controller"
+        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/imageview_rc_signal"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="2dp"
         android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
         android:src="@drawable/uxsdk_signal_level_list"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageview_rc_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription"/>
+        app:layout_constraintStart_toEndOf="@+id/imageview_rc_icon"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="ContentDescription" />
 </merge>

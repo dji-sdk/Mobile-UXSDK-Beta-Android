@@ -25,11 +25,13 @@ package dji.ux.beta.base;
 import dji.thirdparty.io.reactivex.Scheduler;
 
 /**
- *  Interface for creating multiple Schedulers
+ * Interface for creating multiple Schedulers
  */
 public interface SchedulerProviderInterface {
     Scheduler io();
+
     Scheduler computation();
+
     Scheduler ui();
 
 }

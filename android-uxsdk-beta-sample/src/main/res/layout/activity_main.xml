@@ -19,9 +19,11 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
+  ~
   -->
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -115,22 +117,35 @@
         android:textColor="@color/black"
         app:layout_constraintLeft_toLeftOf="@+id/button_panel"
         app:layout_constraintRight_toRightOf="@+id/button_panel"
-        app:layout_constraintTop_toTopOf="@+id/button_panel"
-        app:layout_constraintBottom_toTopOf="@+id/map_button"/>
+        app:layout_constraintTop_toTopOf="@+id/button_panel" />
+
+    <TextView
+        android:id="@+id/default_layout_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="@string/default_layout"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="@+id/button_panel"
+        app:layout_constraintRight_toRightOf="@+id/button_panel"
+        app:layout_constraintTop_toBottomOf="@+id/widget_button" />
 
     <TextView
         android:id="@+id/map_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_margin="8dp"
         android:background="@color/white"
         android:gravity="center"
         android:padding="8dp"
         android:text="@string/map"
         android:textColor="@color/black"
-        app:layout_constraintLeft_toLeftOf="@+id/widget_button"
-        app:layout_constraintRight_toRightOf="@+id/widget_button"
-        app:layout_constraintTop_toBottomOf="@+id/widget_button" />
+        app:layout_constraintLeft_toLeftOf="@+id/button_panel"
+        app:layout_constraintRight_toRightOf="@+id/button_panel"
+        app:layout_constraintTop_toBottomOf="@+id/default_layout_button" />
 
     <View
         android:id="@+id/log_panel"
@@ -151,6 +166,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/logs"
+        android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="@+id/log_panel"
         app:layout_constraintTop_toTopOf="@+id/log_panel" />
@@ -168,8 +184,9 @@
             android:id="@+id/text_view_logs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             tools:text="Registering product" />
 
     </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

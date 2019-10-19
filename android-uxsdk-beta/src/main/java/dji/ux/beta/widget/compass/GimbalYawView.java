@@ -26,10 +26,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.annotation.ColorInt;
-import android.support.annotation.FloatRange;
 import android.util.AttributeSet;
 import android.view.View;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.FloatRange;
+
 import dji.ux.beta.R;
 import dji.ux.beta.util.DisplayUtil;
 
@@ -170,6 +172,7 @@ public class GimbalYawView extends View {
     //endregion
 
     //region Customizations
+
     /**
      * Set the stroke width for the lines
      *

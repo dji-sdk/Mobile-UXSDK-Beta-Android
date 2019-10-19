@@ -22,8 +22,9 @@
 
 package dji.ux.beta.widget.map;
 
-import android.support.annotation.NonNull;
 import android.util.Pair;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -50,7 +51,7 @@ import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.Single;
 import dji.thirdparty.io.reactivex.SingleOnSubscribe;
 import dji.ux.beta.base.DJISDKModel;
-import dji.ux.beta.base.SchedulerProvider;
+import dji.ux.beta.base.SchedulerProviderInterface;
 import dji.ux.beta.base.UXSDKError;
 import dji.ux.beta.base.UXSDKErrorDescription;
 import dji.ux.beta.base.WidgetModel;
@@ -79,23 +80,21 @@ public class MapWidgetModel extends WidgetModel {
     private List<FlyZoneInformation> flyZoneList;
     private List<CustomUnlockZone> customFlyZoneList;
     private Map<Integer, CustomUnlockZone> customUnlockZoneMap;
-    private SchedulerProvider schedulerProvider;
+    private SchedulerProviderInterface schedulerProvider;
     private boolean isFirstFlyZoneListRequest = true;
-    private FlyZoneManager flyZoneManager;
-
     //endregion
 
     //region life-cycle
     public MapWidgetModel(@NonNull DJISDKModel djiSdkModel,
                           @NonNull ObservableInMemoryKeyedStore keyedStore,
-                          @NonNull SchedulerProvider schedulerProvider) {
+                          @NonNull SchedulerProviderInterface schedulerProvider) {
         super(djiSdkModel, keyedStore);
         aircraftLocationDataProcessor =
-            DataProcessor.create(new LocationCoordinate3D(INVALID_COORDINATE, INVALID_COORDINATE, -1f));
+                DataProcessor.create(new LocationCoordinate3D(INVALID_COORDINATE, INVALID_COORDINATE, -1f));
         homeLatitudeDataProcessor = DataProcessor.create(INVALID_COORDINATE);
         homeLongitudeDataProcessor = DataProcessor.create(INVALID_COORDINATE);
         homeLocationDataProcessor =
-            DataProcessor.create(new LocationCoordinate2D(INVALID_COORDINATE, INVALID_COORDINATE));
+                DataProcessor.create(new LocationCoordinate2D(INVALID_COORDINATE, INVALID_COORDINATE));
         gimbalYawDataProcessor = DataProcessor.create(0.0f);
         aircraftHeadingDataProcessor = DataProcessor.create(0.0f);
         flightControllerSerialNumberDataProcessor = DataProcessor.create("");
@@ -112,12 +111,12 @@ public class MapWidgetModel extends WidgetModel {
         DJIKey homeLatKey = FlightControllerKey.create(FlightControllerKey.HOME_LOCATION_LATITUDE);
         bindDataProcessor(homeLatKey, homeLatitudeDataProcessor, newValue -> {
             homeLocationDataProcessor.onNext(new LocationCoordinate2D((double) newValue,
-                                                                      homeLongitudeDataProcessor.getValue()));
+                    homeLongitudeDataProcessor.getValue()));
         });
         DJIKey homeLngKey = FlightControllerKey.create(FlightControllerKey.HOME_LOCATION_LONGITUDE);
         bindDataProcessor(homeLngKey, homeLongitudeDataProcessor, newValue -> {
             homeLocationDataProcessor.onNext(new LocationCoordinate2D(homeLatitudeDataProcessor.getValue(),
-                                                                      (double) newValue));
+                    (double) newValue));
         });
         DJIKey gimbalHeadingKey = GimbalKey.create(GimbalKey.YAW_ANGLE_WITH_AIRCRAFT_IN_DEGREE);
         bindDataProcessor(gimbalHeadingKey, gimbalYawDataProcessor);
@@ -187,27 +186,27 @@ public class MapWidgetModel extends WidgetModel {
             return Single.just(new ArrayList<>());
         }
         Single flyZoneListSingle =
-            Single.zip(getFlyZonesInSurroundingArea(), getSelfUnlockedFlyZones(), Pair::new).flatMap(arrayListPair -> {
-                if (arrayListPair.first.size() > 0) {
-                    HashSet<Integer> duplicateCheck = new HashSet<>();
-                    for (FlyZoneInformation zone : arrayListPair.second) {
-                        duplicateCheck.add(zone.getFlyZoneID());
-                    }
-                    for (FlyZoneInformation zone : arrayListPair.first) {
-                        if (!duplicateCheck.contains(zone.getFlyZoneID())) {
-                            arrayListPair.second.add(zone);
+                Single.zip(getFlyZonesInSurroundingArea(), getSelfUnlockedFlyZones(), Pair::new).flatMap(arrayListPair -> {
+                    if (arrayListPair.first.size() > 0) {
+                        HashSet<Integer> duplicateCheck = new HashSet<>();
+                        for (FlyZoneInformation zone : arrayListPair.second) {
+                            duplicateCheck.add(zone.getFlyZoneID());
                         }
+                        for (FlyZoneInformation zone : arrayListPair.first) {
+                            if (!duplicateCheck.contains(zone.getFlyZoneID())) {
+                                arrayListPair.second.add(zone);
+                            }
+                        }
+                        flyZoneList = arrayListPair.second;
+                        return Single.just(flyZoneList);
+                    } else {
+                        return Single.just(new ArrayList<FlyZoneInformation>());
                     }
-                    flyZoneList = arrayListPair.second;
-                    return Single.just(flyZoneList);
-                } else {
-                    return Single.just(new ArrayList<FlyZoneInformation>());
-                }
-            });
+                });
         if (isFirstFlyZoneListRequest) {
             isFirstFlyZoneListRequest = false;
             return Single.timer(FIRST_TIME_DELAY, TimeUnit.SECONDS, schedulerProvider.computation())
-                         .flatMap(aLong -> flyZoneListSingle);
+                    .flatMap(aLong -> flyZoneListSingle);
         } else {
             return flyZoneListSingle.subscribeOn(schedulerProvider.computation());
         }
@@ -282,7 +281,7 @@ public class MapWidgetModel extends WidgetModel {
                 public void onSuccess(List<UnlockedZoneGroup> unlockedZoneGroups) {
                     for (UnlockedZoneGroup unlockedZoneGroup : unlockedZoneGroups) {
                         if (flightControllerSerialNumberDataProcessor.getValue().equals(unlockedZoneGroup.getSn())
-                            && !singleEmitter.isDisposed()) {
+                                && !singleEmitter.isDisposed()) {
                             singleEmitter.onSuccess(unlockedZoneGroup.getCustomUnlockZones());
                             break;
                         }
@@ -414,22 +413,23 @@ public class MapWidgetModel extends WidgetModel {
                 return;
             }
 
-            getFlyZoneManager().getFlyZonesInSurroundingArea(new CommonCallbacks.CompletionCallbackWith<ArrayList<FlyZoneInformation>>() {
-                @Override
-                public void onSuccess(ArrayList<FlyZoneInformation> flyZoneInformations) {
+            getFlyZoneManager().getFlyZonesInSurroundingArea(
+                    new CommonCallbacks.CompletionCallbackWith<ArrayList<FlyZoneInformation>>() {
+                        @Override
+                        public void onSuccess(ArrayList<FlyZoneInformation> flyZoneInformations) {
 
-                    if (!singleEmitter.isDisposed()) {
-                        singleEmitter.onSuccess(flyZoneInformations);
-                    }
-                }
+                            if (!singleEmitter.isDisposed()) {
+                                singleEmitter.onSuccess(flyZoneInformations);
+                            }
+                        }
 
-                @Override
-                public void onFailure(DJIError error) {
-                    if (!singleEmitter.isDisposed()) {
-                        singleEmitter.onError(new UXSDKError(error));
-                    }
-                }
-            });
+                        @Override
+                        public void onFailure(DJIError error) {
+                            if (!singleEmitter.isDisposed()) {
+                                singleEmitter.onError(new UXSDKError(error));
+                            }
+                        }
+                    });
         }).subscribeOn(schedulerProvider.computation());
     }
 
@@ -464,11 +464,7 @@ public class MapWidgetModel extends WidgetModel {
     }
 
     private FlyZoneManager getFlyZoneManager() {
-        if (flyZoneManager == null) {
-            flyZoneManager = DJISDKManager.getInstance().getFlyZoneManager();
-        }
-
-        return flyZoneManager;
+        return DJISDKManager.getInstance().getFlyZoneManager();
     }
     //endregion
 }

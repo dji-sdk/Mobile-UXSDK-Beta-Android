@@ -22,26 +22,29 @@
 
 package dji.ux.beta.base.uxsdkkeys;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * This is a class to define a UXKey.
- *
+ * <p>
  * String key: String value of UXParamKey as defined in its parent class
  * Class valueType: Type of value this key will take for setting or return
- *                  to getters and observers
+ * to getters and observers.
  * String keyString: The full path of this key used for storage which includes
- *                   the index of the component.
+ * the index of the component.
+ * UpdateType updateType: The update type of this key.
  */
 public class UXKey {
     private final String key;
     private final Class valueType;
     private final String keyPath;
+    private final UXKeys.UpdateType updateType;
 
-    public UXKey(@NonNull String key, @NonNull Class valueType, @NonNull String keyPath) {
+    public UXKey(@NonNull String key, @NonNull Class valueType, @NonNull String keyPath, @NonNull UXKeys.UpdateType updateType) {
         this.key = key;
         this.valueType = valueType;
         this.keyPath = keyPath;
+        this.updateType = updateType;
     }
 
     public String getKey() {
@@ -54,5 +57,9 @@ public class UXKey {
 
     public String getKeyPath() {
         return keyPath;
+    }
+
+    public UXKeys.UpdateType getUpdateType() {
+        return updateType;
     }
 }

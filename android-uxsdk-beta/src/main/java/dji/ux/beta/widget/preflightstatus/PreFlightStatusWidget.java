@@ -27,18 +27,20 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.StyleRes;
-import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StyleRes;
+import androidx.core.graphics.ColorUtils;
+
 import dji.common.logics.warningstatuslogic.WarningStatusItem;
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.R;
@@ -49,10 +51,10 @@ import dji.ux.beta.util.DisplayUtil;
 
 /**
  * This widget shows the pre-flight status of the aircraft.
- *
+ * <p>
  * The WarningStatusItem received by this widget contains the message to be
  * displayed, the warning level and the urgency of the message.
- *
+ * <p>
  * The color of the background changes depending on the severity of the
  * status as determined by the WarningLevel. The UI also reacts
  * to the urgency of the message by causing the background to blink.
@@ -92,31 +94,31 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
         blinkAnimation = AnimationUtils.loadAnimation(context, R.anim.uxsdk_anim_blink);
 
         backgroundError = new GradientDrawable();
-        initGradientDrawable(backgroundError, new int[] {
-            getResources().getColor(R.color.uxsdk_red_material_700),
-            getResources().getColor(R.color.uxsdk_red_material_700_transparent)
+        initGradientDrawable(backgroundError, new int[]{
+                getResources().getColor(R.color.uxsdk_red_material_700),
+                getResources().getColor(R.color.uxsdk_red_material_700_transparent)
         });
 
         backgroundWarning = new GradientDrawable();
-        initGradientDrawable(backgroundWarning, new int[] {
-            getResources().getColor(R.color.uxsdk_yellow), getResources().getColor(R.color.uxsdk_yellow_transparent)
+        initGradientDrawable(backgroundWarning, new int[]{
+                getResources().getColor(R.color.uxsdk_yellow), getResources().getColor(R.color.uxsdk_yellow_transparent)
         });
 
         backgroundGood = new GradientDrawable();
-        initGradientDrawable(backgroundGood, new int[] {
-            getResources().getColor(R.color.uxsdk_green_material_400),
-            getResources().getColor(R.color.uxsdk_green_material_400_transparent)
+        initGradientDrawable(backgroundGood, new int[]{
+                getResources().getColor(R.color.uxsdk_green_material_400),
+                getResources().getColor(R.color.uxsdk_green_material_400_transparent)
         });
 
         backgroundOffline = new GradientDrawable();
-        initGradientDrawable(backgroundOffline, new int[] {
-            getResources().getColor(R.color.uxsdk_light_gray_800),
-            getResources().getColor(R.color.uxsdk_light_gray_800_transparent)
+        initGradientDrawable(backgroundOffline, new int[]{
+                getResources().getColor(R.color.uxsdk_light_gray_800),
+                getResources().getColor(R.color.uxsdk_light_gray_800_transparent)
         });
 
         if (!isInEditMode()) {
             widgetModel =
-                new PreFlightStatusWidgetModel(DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance());
+                    new PreFlightStatusWidgetModel(DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance());
         }
 
         if (attrs != null) {
@@ -151,8 +153,8 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getPreFlightStatus()
-                               .observeOn(AndroidSchedulers.mainThread())
-                               .subscribe(this::updateUI));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::updateUI));
     }
     //endregion
 
@@ -269,7 +271,7 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
      * @param startColor color integer resource for starting color of gradient
      */
     public void setPreFlightStatusBackgroundErrorColor(@ColorInt int startColor) {
-        backgroundError.setColors(new int[] { startColor, ColorUtils.setAlphaComponent(startColor, 0) });
+        backgroundError.setColors(new int[]{startColor, ColorUtils.setAlphaComponent(startColor, 0)});
     }
 
     /**
@@ -277,10 +279,10 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
      * The background will be a gradient from the start color to the end color
      *
      * @param startColor color integer resource for starting color of gradient
-     * @param endColor color integer resource for ending color of gradient
+     * @param endColor   color integer resource for ending color of gradient
      */
     public void setPreFlightStatusBackgroundErrorColors(@ColorInt int startColor, @ColorInt int endColor) {
-        backgroundError.setColors(new int[] { startColor, endColor });
+        backgroundError.setColors(new int[]{startColor, endColor});
     }
 
     /**
@@ -302,7 +304,7 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
      * @param startColor color integer resource for starting color of gradient
      */
     public void setPreFlightStatusBackgroundWarningColor(@ColorInt int startColor) {
-        backgroundWarning.setColors(new int[] { startColor, ColorUtils.setAlphaComponent(startColor, 0) });
+        backgroundWarning.setColors(new int[]{startColor, ColorUtils.setAlphaComponent(startColor, 0)});
     }
 
     /**
@@ -310,10 +312,10 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
      * The background will be a gradient from the start color to the end color
      *
      * @param startColor color integer resource for starting color of gradient
-     * @param endColor color integer resource for ending color of gradient
+     * @param endColor   color integer resource for ending color of gradient
      */
     public void setPreFlightStatusBackgroundWarningColors(@ColorInt int startColor, @ColorInt int endColor) {
-        backgroundWarning.setColors(new int[] { startColor, endColor });
+        backgroundWarning.setColors(new int[]{startColor, endColor});
     }
 
     /**
@@ -335,7 +337,7 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
      * @param startColor color integer resource for starting color of gradient
      */
     public void setPreFlightStatusBackgroundGoodColor(@ColorInt int startColor) {
-        backgroundGood.setColors(new int[] { startColor, ColorUtils.setAlphaComponent(startColor, 0) });
+        backgroundGood.setColors(new int[]{startColor, ColorUtils.setAlphaComponent(startColor, 0)});
     }
 
     /**
@@ -343,10 +345,10 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
      * The background will be a gradient from the start color to the end color
      *
      * @param startColor color integer resource for starting color of gradient
-     * @param endColor color integer resource for ending color of gradient
+     * @param endColor   color integer resource for ending color of gradient
      */
     public void setPreFlightStatusBackgroundGoodColors(@ColorInt int startColor, @ColorInt int endColor) {
-        backgroundGood.setColors(new int[] { startColor, endColor });
+        backgroundGood.setColors(new int[]{startColor, endColor});
     }
 
     /**
@@ -368,7 +370,7 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
      * @param startColor color integer resource for starting color of gradient
      */
     public void setPreFlightStatusBackgroundOfflineColor(@ColorInt int startColor) {
-        backgroundOffline.setColors(new int[] { startColor, ColorUtils.setAlphaComponent(startColor, 0) });
+        backgroundOffline.setColors(new int[]{startColor, ColorUtils.setAlphaComponent(startColor, 0)});
     }
 
     /**
@@ -376,10 +378,10 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
      * The background will be a gradient from the start color to the end color
      *
      * @param startColor color integer resource for starting color of gradient
-     * @param endColor color integer resource for ending color of gradient
+     * @param endColor   color integer resource for ending color of gradient
      */
     public void setPreFlightStatusBackgroundOfflineColors(@ColorInt int startColor, @ColorInt int endColor) {
-        backgroundOffline.setColors(new int[] { startColor, endColor });
+        backgroundOffline.setColors(new int[]{startColor, endColor});
     }
 
     /**
@@ -398,44 +400,44 @@ public class PreFlightStatusWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PreFlightStatusWidget);
         int preFlightStatusMessageTextAppearanceId =
-            typedArray.getResourceId(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusMessageTextAppearance,
-                                     INVALID_RESOURCE);
+                typedArray.getResourceId(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusMessageTextAppearance,
+                        INVALID_RESOURCE);
         if (preFlightStatusMessageTextAppearanceId != INVALID_RESOURCE) {
             setPreFlightStatusMessageTextAppearance(preFlightStatusMessageTextAppearanceId);
         }
         float preFlightStatusMessageTextSize =
-            typedArray.getDimension(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusMessageTextSize,
-                                    INVALID_RESOURCE);
+                typedArray.getDimension(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusMessageTextSize,
+                        INVALID_RESOURCE);
         if (preFlightStatusMessageTextSize != INVALID_RESOURCE) {
             setPreFlightStatusMessageTextSize(DisplayUtil.pxToSp(context, preFlightStatusMessageTextSize));
         }
         int preFlightStatusMessageTextColor =
-            typedArray.getColor(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusMessageTextColor,
-                                INVALID_COLOR);
+                typedArray.getColor(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusMessageTextColor,
+                        INVALID_COLOR);
         if (preFlightStatusMessageTextColor != INVALID_COLOR) {
             setPreFlightStatusMessageTextColor(preFlightStatusMessageTextColor);
         }
         int preFlightStatusBackgroundErrorColor =
-            typedArray.getColor(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusBackgroundErrorColor,
-                                INVALID_COLOR);
+                typedArray.getColor(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusBackgroundErrorColor,
+                        INVALID_COLOR);
         if (preFlightStatusBackgroundErrorColor != INVALID_COLOR) {
             setPreFlightStatusBackgroundErrorColor(preFlightStatusBackgroundErrorColor);
         }
         int preFlightStatusBackgroundWarningColor =
-            typedArray.getColor(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusBackgroundWarningColor,
-                                INVALID_COLOR);
+                typedArray.getColor(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusBackgroundWarningColor,
+                        INVALID_COLOR);
         if (preFlightStatusBackgroundWarningColor != INVALID_COLOR) {
             setPreFlightStatusBackgroundWarningColor(preFlightStatusBackgroundWarningColor);
         }
         int preFlightStatusBackgroundGoodColor =
-            typedArray.getColor(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusBackgroundGoodColor,
-                                INVALID_COLOR);
+                typedArray.getColor(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusBackgroundGoodColor,
+                        INVALID_COLOR);
         if (preFlightStatusBackgroundGoodColor != INVALID_COLOR) {
             setPreFlightStatusBackgroundGoodColor(preFlightStatusBackgroundGoodColor);
         }
         int preFlightStatusBackgroundOfflineColor =
-            typedArray.getColor(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusBackgroundOfflineColor,
-                                INVALID_COLOR);
+                typedArray.getColor(R.styleable.PreFlightStatusWidget_uxsdk_preFlightStatusBackgroundOfflineColor,
+                        INVALID_COLOR);
         if (preFlightStatusBackgroundOfflineColor != INVALID_COLOR) {
             setPreFlightStatusBackgroundOfflineColor(preFlightStatusBackgroundOfflineColor);
         }

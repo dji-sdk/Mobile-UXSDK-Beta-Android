@@ -22,9 +22,9 @@
 
 package dji.ux.beta.base.uxsdkkeys;
 
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
-import dji.log.DJILog;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -33,6 +33,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import dji.log.DJILog;
 
 /**
  * This class is used to create valid UX keys from given String UXParamKeys and indices.
@@ -43,14 +45,36 @@ public class UXKeys {
     private final static int DEFAULT_INDEX = 0;
     private static Map<String, UXKey> keysPathMap = new ConcurrentHashMap<>();
     private static Map<String, Class> keyValueMap = new ConcurrentHashMap<>();
+    private static Map<String, UpdateType> keyUpdateTypeMap = new ConcurrentHashMap<>();
 
     @Retention(RetentionPolicy.RUNTIME)
-    @Target({ ElementType.FIELD, ElementType.PARAMETER })
+    @Target({ElementType.FIELD, ElementType.PARAMETER})
     protected @interface UXParamKey {
         /**
          * The type of param that the method associated to this key will take or return
+         *
+         * @return The class type of the param
          */
         @NonNull Class type();
+
+        /**
+         * The update type of this key.
+         *
+         * @return UpdateType type for this key.
+         */
+        @NonNull UpdateType updateType();
+    }
+
+    public enum UpdateType {
+        /**
+         * The key will update its listeners only when there is a change in the value
+         */
+        ON_CHANGE,
+
+        /**
+         * The key will update its listeners every time a value is received
+         */
+        ON_EVENT
     }
 
     protected UXKeys() {
@@ -62,17 +86,19 @@ public class UXKeys {
         Field[] fields = clazz.getFields();
         for (Field field : fields) {
             if (field.getType() == String.class && isStatic(field.getModifiers()) && (field.isAnnotationPresent(
-                UXParamKey.class))) {
+                    UXParamKey.class))) {
                 try {
                     String paramKey = (String) field.get(null);
                     UXParamKey paramKeyAnnotation = field.getAnnotation(UXParamKey.class);
                     addKeyValueTypeToMap(paramKey, paramKeyAnnotation.type());
+                    addKeyUpdateTypeToMap(paramKey, paramKeyAnnotation.updateType());
                 } catch (Exception e) {
                     DJILog.e(TAG, e.getMessage());
                 }
             }
         }
     }
+
     /**
      * Use this function to initialize any classes containing UXParamKeys
      *
@@ -95,7 +121,7 @@ public class UXKeys {
     /**
      * This functions allows creation of a UXKey using a param key (String) and an index (int)
      *
-     * @param key String param key with UXParamKey annotation defined in class UXKeys or its children
+     * @param key   String param key with UXParamKey annotation defined in class UXKeys or its children
      * @param index Index of the component the key is being created for - default is 0
      * @return UXKey if value-type of key has been registered - null otherwise
      */
@@ -105,8 +131,9 @@ public class UXKeys {
         UXKey uxKey = getCache(keyPath);
         if (uxKey == null) {
             Class valueType = keyValueMap.get(key);
-            if (valueType != null) {
-                uxKey = new UXKey(key, valueType, keyPath);
+            UpdateType updateType = keyUpdateTypeMap.get(key);
+            if (valueType != null && updateType != null) {
+                uxKey = new UXKey(key, valueType, keyPath, updateType);
                 putCache(keyPath, uxKey);
             }
         }
@@ -116,7 +143,7 @@ public class UXKeys {
     /**
      * Use this function to initialize any custom keys created
      *
-     * @param key String key with UXParamKey annotation to be initialized
+     * @param key       String key with UXParamKey annotation to be initialized
      * @param valueType Non-primitive class value-type of the key to be initialized (eg. Integer, Boolean etc)
      */
     private static void addKeyValueTypeToMap(@NonNull String key, @NonNull Class valueType) {
@@ -125,8 +152,14 @@ public class UXKeys {
         }
     }
 
+    private static void addKeyUpdateTypeToMap(@NonNull String key, @NonNull UpdateType updateType) {
+        if (!keyUpdateTypeMap.containsKey(key)) {
+            keyUpdateTypeMap.put(key, updateType);
+        }
+    }
+
     private static String producePathFromElements(@NonNull String param, int index) {
-        return param + "/" + Integer.toString(index);
+        return param + "/" + index;
     }
 
     private static UXKey getCache(String keyStr) {
