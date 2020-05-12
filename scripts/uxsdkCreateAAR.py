@@ -48,7 +48,7 @@ directoryName = "android-uxsdk-beta"
 
 
 # External Gradle Wrapper path
-gradleWrapper = "../../Mobile-UXSDK-Beta-Android"
+gradleWrapper = "../"
 
 if branchName:
 	print ("************ Checking out Branch " + branchName + " **************")
@@ -70,7 +70,7 @@ if outputDirectory:
 else:
 	sp.Popen("mkdir android-uxsdk-beta", shell=True)
 	outputDirectory = "./android-uxsdk-beta/"
-modules =["android-uxsdk-beta-core", "android-uxsdk-beta-cameracore", "android-uxsdk-beta-datamanagement",  "android-uxsdk-beta-extras", "android-uxsdk-beta-hardwareaccessory", "android-uxsdk-beta-intelligentflight", "android-uxsdk-beta-map", "android-uxsdk-beta-training", "android-uxsdk-beta-visualcamera"]
+modules =["android-uxsdk-beta-core", "android-uxsdk-beta-cameracore", "android-uxsdk-beta-hardwareaccessory", "android-uxsdk-beta-map", "android-uxsdk-beta-training", "android-uxsdk-beta-visualcamera"]
 
 
 for module in modules:
