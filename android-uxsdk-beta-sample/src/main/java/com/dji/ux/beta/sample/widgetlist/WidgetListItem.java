@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ public class WidgetListItem {
     /**
      * Create a new {@link WidgetListItem} with the given title and the given widgetViewHolders.
      *
-     * @param titleId A resource ID of the title to display within the widget list.
+     * @param titleId           A resource ID of the title to display within the widget list.
      * @param widgetViewHolders An array of {@link WidgetViewHolder} objects to display.
      */
     public WidgetListItem(@StringRes int titleId, WidgetViewHolder... widgetViewHolders) {

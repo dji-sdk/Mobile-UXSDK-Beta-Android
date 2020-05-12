@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2019 DJI
+  ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <dji.ux.beta.widget.map.MapWidget
+    <dji.ux.beta.map.widget.map.MapWidget
         android:id="@+id/map_widget"
         android:layout_width="0dp"
         android:layout_height="0dp"

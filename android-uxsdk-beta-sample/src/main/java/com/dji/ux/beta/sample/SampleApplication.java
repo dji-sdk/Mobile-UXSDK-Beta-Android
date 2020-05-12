@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,6 +33,9 @@ import androidx.multidex.MultiDex;
 
 import com.secneo.sdk.Helper;
 
+import dji.ux.beta.core.base.DefaultGlobalPreferences;
+import dji.ux.beta.core.base.GlobalPreferencesManager;
+
 import static com.dji.ux.beta.sample.DJIConnectionControlActivity.ACCESSORY_ATTACHED;
 
 /**
@@ -43,6 +46,9 @@ public class SampleApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //For the global preferences to take effect, this must be done before the widgets are initialized
+        //If this is not done, no global preferences will take effect or persist across app restarts
+        GlobalPreferencesManager.initialize(new DefaultGlobalPreferences(this));
 
         BroadcastReceiver br = new OnDJIUSBAttachedReceiver();
         IntentFilter filter = new IntentFilter();
