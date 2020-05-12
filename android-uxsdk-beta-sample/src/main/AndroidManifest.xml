@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2019 DJI
+  ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -72,17 +72,17 @@
             android:value="@string/dji_ux_sample_here_maps_id" />
         <meta-data
             android:name="com.here.android.maps.apptoken"
-            android:value="@string/dji_ux_sample_here_maps_apptoken" />
+            android:value="@string/dji_ux_sample_here_maps_app_token" />
         <meta-data
             android:name="com.here.android.maps.license.key"
             android:value="@string/dji_ux_sample_here_maps_license_key" />
 
         <service
             android:name="com.here.android.mpa.service.MapService"
-            android:exported="false"
             android:label="HereMapService">
             <intent-filter>
-                <action android:name="HereMapServiceIntent" />
+                <!--Note, action name should not be changed.-->
+                <action android:name="com.here.android.mpa.service.MapService.v3" />
             </intent-filter>
         </service>
 

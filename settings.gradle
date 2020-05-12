@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,18 @@
  * SOFTWARE.
  */
 
-include ':android-uxsdk-beta'
+include ':android-uxsdk-beta-core'
+include ':android-uxsdk-beta-cameracore'
+include ':android-uxsdk-beta-hardwareaccessory'
+include ':android-uxsdk-beta-map'
+include ':android-uxsdk-beta-training'
+include ':android-uxsdk-beta-visualcamera'
 include ':android-uxsdk-beta-sample'
 
-project(':android-uxsdk-beta').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta')
+project(':android-uxsdk-beta-core').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-core')
+project(':android-uxsdk-beta-cameracore').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-cameracore')
+project(':android-uxsdk-beta-hardwareaccessory').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-hardwareaccessory')
+project(':android-uxsdk-beta-map').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-map')
+project(':android-uxsdk-beta-training').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-training')
+project(':android-uxsdk-beta-visualcamera').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-visualcamera')
 project(':android-uxsdk-beta-sample').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-sample')

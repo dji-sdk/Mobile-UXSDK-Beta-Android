@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -77,26 +77,25 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import dji.common.flightcontroller.flyzone.FlyZoneCategory;
-import dji.ux.beta.util.SettingDefinitions;
-import dji.ux.beta.util.ViewUtil;
-import dji.ux.beta.widget.map.MapWidget;
+import dji.ux.beta.core.util.SettingDefinitions;
+import dji.ux.beta.core.util.ViewUtil;
+import dji.ux.beta.map.widget.map.MapWidget;
 
 import static com.here.android.mpa.common.MapSettings.setIsolatedDiskCacheRootPath;
 
 /**
- * Displays a {@link dji.ux.beta.widget.map.MapWidget} and controls to customize the look of
+ * Displays a {@link MapWidget} and controls to customize the look of
  * each of the components.
  */
 public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
-    //region constants
-    private static final String TAG = "MapWidgetActivity";
     /**
      * The key for passing a map provider through the intent.
      */
     public static final String MAP_PROVIDER_KEY = "MapProvider";
+    //region constants
+    private static final String TAG = "MapWidgetActivity";
     //endregion
-
     //region fields
     @BindView(R.id.map_widget)
     protected MapWidget mapWidget;
@@ -181,8 +180,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
         switch (mapProvider) {
             case HERE:
                 boolean success = setIsolatedDiskCacheRootPath(
-                        getExternalFilesDir(null) + File.separator + ".here-maps",
-                        "HereMapServiceIntent");
+                        getExternalFilesDir(null) + File.separator + ".here-maps-cache");
                 if (success) {
                     mapWidget.initHereMap(onMapReadyListener);
                 }
@@ -195,7 +193,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
                 break;
             case MAPBOX:
             default:
-                mapWidget.initMapboxMap(onMapReadyListener, getResources().getString(R.string.dji_ux_sample_mapbox_token));
+                mapWidget.initMapboxMap(getResources().getString(R.string.dji_ux_sample_mapbox_token), onMapReadyListener);
                 break;
         }
         mapWidget.onCreate(savedInstanceState);

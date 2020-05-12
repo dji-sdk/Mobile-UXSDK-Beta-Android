@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,7 +48,7 @@ public class DJIConnectionControlActivity extends Activity {
         if (usbIntent != null) {
             String action = usbIntent.getAction();
             if (UsbManager.ACTION_USB_ACCESSORY_ATTACHED.equals(action)) {
-                Intent attachedIntent=new Intent();
+                Intent attachedIntent = new Intent();
                 attachedIntent.setAction(ACCESSORY_ATTACHED);
                 sendBroadcast(attachedIntent);
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,8 +36,8 @@ import androidx.fragment.app.Fragment;
 
 import com.dji.ux.beta.sample.R;
 
-import dji.ux.beta.widget.simulator.SimulatorControlWidget;
-import dji.ux.beta.widget.simulator.SimulatorIndicatorWidget;
+import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget;
+import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget;
 
 /**
  * A fragment that shows a single widget or a set of coupled widgets.
@@ -94,7 +94,7 @@ public class WidgetFragment extends Fragment {
             WidgetView widgetView1 = new WidgetView(getContext());
             ViewGroup widget1 = widgetView1.init(widgetListItem.getWidgetViewHolders()[1]);
             if (widget0 instanceof SimulatorIndicatorWidget) {
-                ((SimulatorIndicatorWidget)widget0).setStateChangeCallback((SimulatorControlWidget)widget1);
+                ((SimulatorIndicatorWidget) widget0).setStateChangeCallback((SimulatorControlWidget) widget1);
             }
             rootView.addView(widgetView0);
             rootView.addView(widgetView1);
