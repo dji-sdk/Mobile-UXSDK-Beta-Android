@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -104,7 +104,7 @@ public class WidgetListItemAdapter extends RecyclerView.Adapter<WidgetListItemAd
         /**
          * Sets the selected state of this widget list item.
          *
-         * @param selected Whether this widget list item is selected.
+         * @param selected  Whether this widget list item is selected.
          * @param resources An instance of {@link Resources}.
          */
         public void setSelected(boolean selected, Resources resources) {

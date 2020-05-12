@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,14 +21,20 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
+    lintOptions {
+        abortOnError = false
+    }
+    compileSdkVersion 29
+    buildToolsVersion "29.0.1"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.dji.ux.beta.sample"
-        minSdkVersion 16
-        targetSdkVersion 28
+        minSdkVersion 19
+        targetSdkVersion 29
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         ndk {
@@ -39,7 +45,7 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -66,6 +72,8 @@ android {
         doNotStrip "*/*/libDJICSDKCommon.so"
         doNotStrip "*/*/libDJIUpgradeCore.so"
         doNotStrip "*/*/libDJIUpgradeJNI.so"
+        doNotStrip "*/*/libDJIWaypointV2Core.so"
+        doNotStrip "*/*/libDJIMOP.so"
 
         pickFirst 'lib/*/libstlport_shared.so'
         pickFirst 'lib/*/libRoadLineRebuildAPI.so'
@@ -77,64 +85,75 @@ android {
         pickFirst 'lib/*/libDJIFlySafeCore.so'
         pickFirst 'lib/*/libdjifs_jni.so'
         pickFirst 'lib/*/libsfjni.so'
+        exclude 'META-INF/proguard/okhttp3.pro'
         exclude 'META-INF/rxjava.properties'
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildToolsVersion = '28.0.3'
-    configurations.all {
-        resolutionStrategy.force 'com.android.support:support-annotations:27.0.0'
-    }
 }
 
 dependencies {
-    implementation ('com.dji:dji-uxsdk:4.11')
-    implementation ('com.dji:dji-sdk:4.11', {
+
+    implementation ('com.dji:dji-sdk:4.12', {
         /**
-         * Uncomment the "library-anti-distortion" if your app does not need Anti Distortion for Mavic 2 Pro and Mavic 2 Zoom.
-         * Uncomment the "fly-safe-database" if your need smaller apk for release, we will download it when DJISDKManager.getInstance().registerApp
+         * Comment the "library-anti-distortion" if your app needs Anti Distortion for Mavic 2 Pro
+         * and Mavic 2 Zoom.
+         * Comment the "fly-safe-database" if you don't need a smaller apk for release. When
+         * uncommented, we will download it when DJISDKManager.getInstance().registerApp
          * is called, and it won't register success without fly-safe-database.
-         * Both will greatly reducing the size of the APK.
+         * Both will greatly reduce the size of the APK.
          */
         exclude module: 'library-anti-distortion'
         exclude module: 'fly-safe-database'
     })
-    compileOnly ('com.dji:dji-sdk-provided:4.11')
+    compileOnly ('com.dji:dji-sdk-provided:4.12')
 
+    implementation 'com.amap.api:3dmap:6.9.2'
+    implementation 'com.amap.api:search:6.9.2'
+    implementation 'com.amap.api:location:4.7.0'
+    //HERE maps
+    implementation files('libs/HERE-sdk-3.15.0.aar')
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.5.1'
+
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.squareup.wire:wire-runtime:2.2.0'
+    implementation 'org.bouncycastle:bcprov-jdk15on:1.57'
+    implementation 'org.bouncycastle:bcpkix-jdk15on:1.57'
+    implementation 'com.squareup.okio:okio:1.15.0'
+    implementation 'com.vividsolutions:jts:1.8'
+    implementation 'org.reactivestreams:reactive-streams:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation 'com.lmax:disruptor:3.3.9'
     implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'com.google.android.gms:play-services-base:16.0.0'
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
+    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'org.greenrobot:eventbus:3.0.0'
+    implementation 'com.google.protobuf:protobuf-java:3.8.0'
+    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'com.dji:library-anti-distortion:4.7'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-rc01'
     implementation 'androidx.core:core:1.0.0'
-
+    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'androidx.media:media:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation "androidx.core:core-ktx:1.1.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
 
-    //AMaps
-    implementation 'com.amap.api:3dmap:5.5.0'
-    implementation 'com.amap.api:search:5.5.0'
-    implementation 'com.amap.api:location:3.6.1'
-    //HERE maps
-    implementation files('libs/HERE-sdk-3.8.0.aar')
-
-    implementation project(":android-uxsdk-beta")
-
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0-rc01'
-    api 'com.google.android.gms:play-services-base:16.0.0'
-    api 'com.google.android.gms:play-services-maps:16.0.0'
-    api 'com.mapbox.mapboxsdk:mapbox-android-sdk:5.5.1'
-    implementation ('com.mapbox.mapboxsdk:mapbox-sdk-services:4.0.0'){
-        exclude module:'gson'
-    }
-
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.18.3'
-    androidTestImplementation 'org.mockito:mockito-android:2.6.2'
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    androidTestImplementation 'androidx.test:rules:1.1.0'
-    testImplementation 'org.robolectric:robolectric:3.8'
+    // UXSDK Modules
+    implementation project(path: ':android-uxsdk-beta-cameracore')
+    implementation project(path: ':android-uxsdk-beta-hardwareaccessory')
+    implementation project(path: ':android-uxsdk-beta-map')
+    implementation project(path: ':android-uxsdk-beta-training')
+    implementation project(path: ':android-uxsdk-beta-visualcamera')
+}
+repositories {
+    mavenCentral()
 }

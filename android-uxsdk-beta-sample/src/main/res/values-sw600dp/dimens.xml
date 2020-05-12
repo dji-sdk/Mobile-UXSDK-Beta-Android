@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2019 DJI
+  ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -31,4 +31,6 @@
     <dimen name="topbar_text_size">24sp</dimen>
     <dimen name="camera_config_height">40dp</dimen>
     <dimen name="camera_bar_height">50dp</dimen>
+    <dimen name="single_battery_text_size">20sp</dimen>
+    <dimen name="dual_battery_text_size">12sp</dimen>
 </resources>

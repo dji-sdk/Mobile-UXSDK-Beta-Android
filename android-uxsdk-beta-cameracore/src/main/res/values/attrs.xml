@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+<resources>
+
+    <declare-styleable name="AutoExposureLockWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_widgetTitleTextAppearance" />
+        <attr name="uxsdk_widgetTitleTextSize" />
+        <attr name="uxsdk_widgetTitleTextColor" />
+        <attr name="uxsdk_autoExposureLockDrawableTint" format="color|reference" />
+        <attr name="uxsdk_autoExposureUnlockDrawableTint" format="color|reference" />
+        <attr name="uxsdk_autoExposureLockDrawable" format="reference" />
+        <attr name="uxsdk_autoExposureUnlockDrawable" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ExposureSettingsIndicatorWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_iconBackground" />
+        <attr name="uxsdk_aperturePriorityModeDrawable" format="reference" />
+        <attr name="uxsdk_shutterPriorityModeDrawable" format="reference" />
+        <attr name="uxsdk_programModeDrawable" format="reference" />
+        <attr name="uxsdk_manualModeDrawable" format="reference" />
+        <attr name="uxsdk_unknownModeDrawable" format="reference" />
+        <!-- Insert ID of the Camera exposure settings panel that needs to react to a state change on this widget.
+        See {@link dji.ux.beta.core.widget.cameraaction.exposuresettingsindicator.ExposureSettingsIndicatorWidget.setStateChangeCallback}
+        and //TODO -->
+        <attr name="uxsdk_onStateChange" />
+    </declare-styleable>
+
+    <declare-styleable name="FocusExposureSwitchWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_manualFocusDrawable" format="reference" />
+        <attr name="uxsdk_autoFocusDrawable" format="reference" />
+        <attr name="uxsdk_meteringDrawable" format="reference" />
+        <attr name="uxsdk_iconBackground" />
+    </declare-styleable>
+
+    <declare-styleable name="FocusModeWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_widgetTitleTextSize" />
+        <attr name="uxsdk_widgetTitleBackground" />
+        <attr name="uxsdk_activeModeTextColor" format="reference" />
+        <attr name="uxsdk_inactiveModeTextColor" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CameraSettingsMenuIndicatorWidget">
+        <attr name="uxsdk_settingsTextBackground" format="reference" />
+        <attr name="uxsdk_settingsTextSize" format="dimension" />
+        <attr name="uxsdk_settingsTextColor" format="color" />
+        <!-- Insert ID of the Camera exposure settings panel that needs to react to a state change on this widget.
+        See {@link dji.ux.beta.core.widget.cameraaction.camerasettingsindicator.CameraSettingsMenuIndicatorWidget.setStateChangeCallback}
+        and //TODO -->
+        <attr name="uxsdk_onStateChange" />
+    </declare-styleable>
+
+    <declare-styleable name="PhotoVideoSwitchWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_iconBackground" />
+        <attr name="uxsdk_photoModeIcon" format="reference" />
+        <attr name="uxsdk_videoModeIcon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RecordVideoWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_timerTextBackground" format="reference" />
+        <attr name="uxsdk_timerTextAppearance" format="reference" />
+        <attr name="uxsdk_timerTextColor" format="color" />
+        <attr name="uxsdk_timerTextSize" format="dimension" />
+        <attr name="uxsdk_recordStartIcon" format="reference" />
+        <attr name="uxsdk_recordStopIcon" format="reference" />
+        <attr name="uxsdk_recordStartHasselbladIcon" format="reference" />
+        <attr name="uxsdk_recordStopHasselbladIcon" format="reference" />
+        <attr name="uxsdk_ssdFullIcon" />
+        <attr name="uxsdk_ssdSlowIcon" />
+        <attr name="uxsdk_ssdNotInsertedIcon" />
+        <attr name="uxsdk_sdCardFullIcon" />
+        <attr name="uxsdk_sdCardSlowIcon" />
+        <attr name="uxsdk_sdCardNotInsertedIcon" />
+        <attr name="uxsdk_internalStorageFullIcon" />
+        <attr name="uxsdk_internalStorageSlowIcon" />
+        <attr name="uxsdk_internalStorageNotInsertedIcon" />
+        <attr name="uxsdk_foregroundIconBackground" />
+    </declare-styleable>
+
+    <declare-styleable name="ShootPhotoWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_progressRingColor" format="color" />
+        <attr name="uxsdk_progressRingHasselbladColor" format="color" />
+        <attr name="uxsdk_shootPhotoStartIcon" format="reference" />
+        <attr name="uxsdk_shootPhotoStopIcon" format="reference" />
+        <attr name="uxsdk_shootPhotoStartHasselbladIcon" format="reference" />
+        <attr name="uxsdk_shootPhotoStopHasselbladIcon" format="reference" />
+        <attr name="uxsdk_ssdFullIcon" />
+        <attr name="uxsdk_ssdSlowIcon" />
+        <attr name="uxsdk_ssdNotInsertedIcon" />
+        <attr name="uxsdk_sdCardFullIcon" />
+        <attr name="uxsdk_sdCardSlowIcon" />
+        <attr name="uxsdk_sdCardNotInsertedIcon" />
+        <attr name="uxsdk_internalStorageFullIcon" />
+        <attr name="uxsdk_internalStorageSlowIcon" />
+        <attr name="uxsdk_internalStorageNotInsertedIcon" />
+        <attr name="uxsdk_foregroundIconBackground" />
+    </declare-styleable>
+
+</resources>

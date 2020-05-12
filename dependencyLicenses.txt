@@ -278,8 +278,10 @@ any resulting litigation.
 -------------------------------------------------------------------------------
 
 Mobile-UXSDK-Beta-Android uses unmodified libraries from the Android Open Source Project
-(https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt),
-which is licensed under the Apache License - v 2.0. A copy of the Apache License - v 2.0
+(https://android.googlesource.com/platform/prebuilts/maven_repo/android/+/master/NOTICE.txt), 
+Kotlin (https://github.com/JetBrains/kotlin/tree/master/license)
+and ToastCompat (https://github.com/PureWriter/ToastCompat/blob/master/LICENSE)
+which are licensed under the Apache License - v 2.0. A copy of the Apache License - v 2.0
 is provided below.
 
 Apache License
@@ -439,4 +441,3 @@ such warranty or additional liability.
 END OF TERMS AND CONDITIONS
 
 -------------------------------------------------------------------------------
-

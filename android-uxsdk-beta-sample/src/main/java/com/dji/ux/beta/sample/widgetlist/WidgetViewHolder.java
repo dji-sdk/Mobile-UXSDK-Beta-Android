@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,9 +35,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import dji.log.DJILog;
-import dji.ux.beta.base.ConstraintLayoutWidget;
-import dji.ux.beta.base.FrameLayoutWidget;
-import dji.ux.beta.util.DisplayUtil;
+import dji.ux.beta.core.base.ConstraintLayoutWidget;
+import dji.ux.beta.core.base.FrameLayoutWidget;
+import dji.ux.beta.core.util.DisplayUtil;
 
 /**
  * A view holder for a single widget.
