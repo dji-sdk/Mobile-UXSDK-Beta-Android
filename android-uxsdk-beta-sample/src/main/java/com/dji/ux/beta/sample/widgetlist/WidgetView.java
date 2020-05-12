@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,7 +40,7 @@ import com.dji.ux.beta.sample.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
-import dji.ux.beta.widget.fpv.interaction.FPVInteractionWidget;
+import dji.ux.beta.core.widget.fpv.interaction.FPVInteractionWidget;
 
 /**
  * A view with a single widget and an indicator of the current size of the widget. This widget

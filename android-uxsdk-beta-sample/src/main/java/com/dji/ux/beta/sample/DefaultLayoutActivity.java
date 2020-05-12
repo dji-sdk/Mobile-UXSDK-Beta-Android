@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,11 +40,15 @@ import butterknife.OnClick;
 import dji.common.airlink.PhysicalSource;
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.thirdparty.io.reactivex.disposables.CompositeDisposable;
-import dji.ux.beta.base.DefaultGlobalPreferences;
-import dji.ux.beta.base.GlobalPreferencesManager;
-import dji.ux.beta.util.SettingDefinitions;
-import dji.ux.beta.widget.fpv.FPVWidget;
-import dji.ux.beta.widget.map.MapWidget;
+import dji.ux.beta.core.extension.ViewExtensions;
+import dji.ux.beta.core.panelwidget.systemstatus.SystemStatusListPanelWidget;
+import dji.ux.beta.core.panelwidget.topbar.TopBarPanelWidget;
+import dji.ux.beta.core.util.SettingDefinitions;
+import dji.ux.beta.core.widget.fpv.FPVWidget;
+import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget;
+import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget;
+import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget;
+import dji.ux.beta.map.widget.map.MapWidget;
 
 /**
  * Displays a sample layout of widgets similar to that of the various DJI apps.
@@ -63,6 +67,9 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     @BindView(R.id.root_view)
     protected ConstraintLayout parentView;
 
+    @BindView(R.id.widget_panel_system_status_list)
+    protected SystemStatusListPanelWidget systemStatusListPanelWidget;
+
     private boolean isMapMini = true;
     private int widgetHeight;
     private int widgetWidth;
@@ -76,9 +83,6 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //For the global preferences to take effect, this must be done before the widgets are initialized
-        //If this is not done, no global preferences will take effect or persist across app restarts
-        GlobalPreferencesManager.initialize(new DefaultGlobalPreferences(this));
         setContentView(R.layout.activity_default_layout);
 
         widgetHeight = (int) getResources().getDimension(R.dimen.mini_map_height);
@@ -93,6 +97,23 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         mapWidget.initAMap(map -> map.setOnMapClickListener(latLng -> onViewClick(mapWidget)));
         mapWidget.getUserAccountLoginWidget().setVisibility(View.GONE);
         mapWidget.onCreate(savedInstanceState);
+
+        // Setup top bar state callbacks
+        TopBarPanelWidget topBarPanel = findViewById(R.id.panel_top_bar);
+        SystemStatusWidget systemStatusWidget = topBarPanel.getSystemStatusWidget();
+        if (systemStatusWidget != null) {
+            systemStatusWidget.setStateChangeCallback(findViewById(R.id.widget_panel_system_status_list));
+        }
+
+        SimulatorIndicatorWidget simulatorIndicatorWidget = topBarPanel.getSimulatorIndicatorWidget();
+        if (simulatorIndicatorWidget != null) {
+            simulatorIndicatorWidget.setStateChangeCallback(findViewById(R.id.widget_simulator_control));
+        }
+
+        GPSSignalWidget gpsSignalWidget = topBarPanel.getGPSSignalWidget();
+        if (gpsSignalWidget != null) {
+            gpsSignalWidget.setStateChangeCallback(findViewById(R.id.widget_rtk));
+        }
     }
 
     @Override
@@ -122,6 +143,14 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         compositeDisposable.add(secondaryFPVWidget.getCameraName()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateSecondaryVideoVisibility));
+
+        compositeDisposable.add(systemStatusListPanelWidget.closeButtonPressed()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(pressed -> {
+                    if (pressed) {
+                        ViewExtensions.hide(systemStatusListPanelWidget);
+                    }
+                }));
     }
 
     @Override
@@ -191,7 +220,7 @@ public class DefaultLayoutActivity extends AppCompatActivity {
      * Helper method to resize the FPV and Map Widgets.
      *
      * @param viewToEnlarge The view that needs to be enlarged to full screen.
-     * @param viewToShrink The view that needs to be shrunk to a thumbnail.
+     * @param viewToShrink  The view that needs to be shrunk to a thumbnail.
      */
     private void resizeViews(View viewToEnlarge, View viewToShrink) {
         //enlarge first widget

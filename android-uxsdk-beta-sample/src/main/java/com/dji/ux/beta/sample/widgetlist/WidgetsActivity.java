@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,39 +34,52 @@ import com.dji.ux.beta.sample.R;
 
 import java.util.ArrayList;
 
-import dji.ux.beta.widget.altitude.AltitudeWidget;
-import dji.ux.beta.widget.autoexposurelock.AutoExposureLockWidget;
-import dji.ux.beta.widget.cameracapture.CameraCaptureWidget;
-import dji.ux.beta.widget.cameracapture.recordvideo.RecordVideoWidget;
-import dji.ux.beta.widget.cameracapture.shootphoto.ShootPhotoWidget;
-import dji.ux.beta.widget.cameraconfig.aperture.CameraConfigApertureWidget;
-import dji.ux.beta.widget.cameraconfig.ev.CameraConfigEVWidget;
-import dji.ux.beta.widget.cameraconfig.iso.CameraConfigISOAndEIWidget;
-import dji.ux.beta.widget.cameraconfig.shutter.CameraConfigShutterWidget;
-import dji.ux.beta.widget.cameraconfig.ssd.CameraConfigSSDWidget;
-import dji.ux.beta.widget.cameraconfig.storage.CameraConfigStorageWidget;
-import dji.ux.beta.widget.cameraconfig.wb.CameraConfigWBWidget;
-import dji.ux.beta.widget.cameracontrols.CameraControlsWidget;
-import dji.ux.beta.widget.cameracontrols.camerasettingsindicator.CameraSettingsMenuIndicatorWidget;
-import dji.ux.beta.widget.cameracontrols.exposuresettingsindicator.ExposureSettingsIndicatorWidget;
-import dji.ux.beta.widget.cameracontrols.photovideoswitch.PhotoVideoSwitchWidget;
-import dji.ux.beta.widget.compass.CompassWidget;
-import dji.ux.beta.widget.dashboard.DashboardWidget;
-import dji.ux.beta.widget.distancehome.DistanceHomeWidget;
-import dji.ux.beta.widget.distancerc.DistanceRCWidget;
-import dji.ux.beta.widget.focusexposureswitch.FocusExposureSwitchWidget;
-import dji.ux.beta.widget.focusmode.FocusModeWidget;
-import dji.ux.beta.widget.fpv.FPVWidget;
-import dji.ux.beta.widget.fpv.interaction.FPVInteractionWidget;
-import dji.ux.beta.widget.horizontalvelocity.HorizontalVelocityWidget;
-import dji.ux.beta.widget.preflightstatus.PreFlightStatusWidget;
-import dji.ux.beta.widget.remotecontrolsignal.RemoteControlSignalWidget;
-import dji.ux.beta.widget.simulator.SimulatorControlWidget;
-import dji.ux.beta.widget.simulator.SimulatorIndicatorWidget;
-import dji.ux.beta.widget.useraccount.UserAccountLoginWidget;
-import dji.ux.beta.widget.verticalvelocity.VerticalVelocityWidget;
-import dji.ux.beta.widget.vision.VisionWidget;
-import dji.ux.beta.widget.vps.VPSWidget;
+import dji.ux.beta.cameracore.widget.autoexposurelock.AutoExposureLockWidget;
+import dji.ux.beta.cameracore.widget.cameracapture.CameraCaptureWidget;
+import dji.ux.beta.cameracore.widget.cameracapture.recordvideo.RecordVideoWidget;
+import dji.ux.beta.cameracore.widget.cameracapture.shootphoto.ShootPhotoWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator.CameraSettingsMenuIndicatorWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettingsindicator.ExposureSettingsIndicatorWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch.PhotoVideoSwitchWidget;
+import dji.ux.beta.cameracore.widget.focusexposureswitch.FocusExposureSwitchWidget;
+import dji.ux.beta.cameracore.widget.focusmode.FocusModeWidget;
+import dji.ux.beta.core.panelwidget.systemstatus.SystemStatusListPanelWidget;
+import dji.ux.beta.core.panelwidget.topbar.TopBarPanelWidget;
+import dji.ux.beta.core.widget.airsense.AirSenseWidget;
+import dji.ux.beta.core.widget.altitude.AltitudeWidget;
+import dji.ux.beta.core.widget.battery.BatteryWidget;
+import dji.ux.beta.core.widget.compass.CompassWidget;
+import dji.ux.beta.core.widget.connection.ConnectionWidget;
+import dji.ux.beta.core.widget.dashboard.DashboardWidget;
+import dji.ux.beta.core.widget.distancehome.DistanceHomeWidget;
+import dji.ux.beta.core.widget.distancerc.DistanceRCWidget;
+import dji.ux.beta.core.widget.flightmode.FlightModeWidget;
+import dji.ux.beta.core.widget.fpv.FPVWidget;
+import dji.ux.beta.core.widget.fpv.interaction.FPVInteractionWidget;
+import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget;
+import dji.ux.beta.core.widget.horizontalvelocity.HorizontalVelocityWidget;
+import dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidget;
+import dji.ux.beta.core.widget.remotecontrollersignal.RemoteControllerSignalWidget;
+import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget;
+import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget;
+import dji.ux.beta.core.widget.useraccount.UserAccountLoginWidget;
+import dji.ux.beta.core.widget.verticalvelocity.VerticalVelocityWidget;
+import dji.ux.beta.core.widget.videosignal.VideoSignalWidget;
+import dji.ux.beta.core.widget.vision.VisionWidget;
+import dji.ux.beta.core.widget.vps.VPSWidget;
+import dji.ux.beta.hardwareaccessory.widget.rtk.RTKEnabledWidget;
+import dji.ux.beta.hardwareaccessory.widget.rtk.RTKSatelliteStatusWidget;
+import dji.ux.beta.hardwareaccessory.widget.rtk.RTKWidget;
+import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.aperture.CameraConfigApertureWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.ev.CameraConfigEVWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.iso.CameraConfigISOAndEIWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.shutter.CameraConfigShutterWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.ssd.CameraConfigSSDWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.storage.CameraConfigStorageWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.wb.CameraConfigWBWidget;
+
 
 /**
  * Displays a list of widget names. Clicking on a widget name will show that widget in a separate
@@ -109,10 +122,14 @@ public class WidgetsActivity extends AppCompatActivity implements WidgetListFrag
      */
     private void populateList() {
         widgetListItems = new ArrayList<>();
+        widgetListItems.add(new WidgetListItem(R.string.air_sense_widget_title,
+                new WidgetViewHolder(AirSenseWidget.class, 58, 50)));
         widgetListItems.add(new WidgetListItem(R.string.altitude_widget_title,
                 new WidgetViewHolder(AltitudeWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.auto_exposure_lock_widget_title,
                 new WidgetViewHolder(AutoExposureLockWidget.class, 35, 35)));
+        widgetListItems.add(new WidgetListItem(R.string.battery_widget_title,
+                new WidgetViewHolder(BatteryWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.camera_capture_widget_title,
                 new WidgetViewHolder(CameraCaptureWidget.class, 50, 50)));
         widgetListItems.add(new WidgetListItem(R.string.camera_config_aperture_widget_title,
@@ -135,6 +152,8 @@ public class WidgetsActivity extends AppCompatActivity implements WidgetListFrag
                 new WidgetViewHolder(CameraSettingsMenuIndicatorWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.compass_widget_title,
                 new WidgetViewHolder(CompassWidget.class, ViewGroup.LayoutParams.WRAP_CONTENT, 91)));
+        widgetListItems.add(new WidgetListItem(R.string.connection_widget_title,
+                new WidgetViewHolder(ConnectionWidget.class, ViewGroup.LayoutParams.WRAP_CONTENT, 50)));
         widgetListItems.add(new WidgetListItem(R.string.dashboard_widget_title,
                 new WidgetViewHolder(DashboardWidget.class, ViewGroup.LayoutParams.WRAP_CONTENT, 91)));
         widgetListItems.add(new WidgetListItem(R.string.distance_home_widget_title,
@@ -143,6 +162,8 @@ public class WidgetsActivity extends AppCompatActivity implements WidgetListFrag
                 new WidgetViewHolder(DistanceRCWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.exposure_settings_indicator_widget_title,
                 new WidgetViewHolder(ExposureSettingsIndicatorWidget.class)));
+        widgetListItems.add(new WidgetListItem(R.string.flight_mode_widget_title,
+                new WidgetViewHolder(FlightModeWidget.class, ViewGroup.LayoutParams.WRAP_CONTENT, 50)));
         widgetListItems.add(new WidgetListItem(R.string.focus_exposure_switch_widget_title,
                 new WidgetViewHolder(FocusExposureSwitchWidget.class, 35, 35)));
         widgetListItems.add(new WidgetListItem(R.string.focus_mode_widget_title,
@@ -151,29 +172,46 @@ public class WidgetsActivity extends AppCompatActivity implements WidgetListFrag
                 new WidgetViewHolder(FPVWidget.class, 150, 100)));
         widgetListItems.add(new WidgetListItem(R.string.fpv_interaction_widget_title,
                 new WidgetViewHolder(FPVInteractionWidget.class, 150, 100)));
+        widgetListItems.add(new WidgetListItem(R.string.gps_signal_widget_title,
+                new WidgetViewHolder(GPSSignalWidget.class, 95, 50)));
         widgetListItems.add(new WidgetListItem(R.string.horizontal_velocity_widget_title,
                 new WidgetViewHolder(HorizontalVelocityWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.photo_video_switch_widget_title,
                 new WidgetViewHolder(PhotoVideoSwitchWidget.class)));
-        widgetListItems.add(new WidgetListItem(R.string.pre_flight_status_widget_title,
-                new WidgetViewHolder(PreFlightStatusWidget.class, 238, 33)));
+        widgetListItems.add(new WidgetListItem(R.string.system_status_widget_title,
+                new WidgetViewHolder(SystemStatusWidget.class, 238, 33)));
         widgetListItems.add(new WidgetListItem(R.string.record_video_widget_title,
                 new WidgetViewHolder(RecordVideoWidget.class, 50, 50)));
+        widgetListItems.add(new WidgetListItem(R.string.remaining_flight_time_widget_title,
+                new WidgetViewHolder(RemainingFlightTimeWidget.class, ViewGroup.LayoutParams.MATCH_PARENT, 30)));
         widgetListItems.add(new WidgetListItem(R.string.remote_control_signal_widget_title,
-                new WidgetViewHolder(RemoteControlSignalWidget.class, 38, 22)));
+                new WidgetViewHolder(RemoteControllerSignalWidget.class, 38, 22)));
+        widgetListItems.add(new WidgetListItem(R.string.rtk_enabled_widget_title,
+                new WidgetViewHolder(RTKEnabledWidget.class, ViewGroup.LayoutParams.MATCH_PARENT, 150)));
+        widgetListItems.add(new WidgetListItem(R.string.rtk_satellite_status_widget_title,
+                new WidgetViewHolder(RTKSatelliteStatusWidget.class, ViewGroup.LayoutParams.MATCH_PARENT, 350)));
+        widgetListItems.add(new WidgetListItem(R.string.rtk_widget_title,
+                new WidgetViewHolder(RTKWidget.class, ViewGroup.LayoutParams.MATCH_PARENT, 200)));
         widgetListItems.add(new WidgetListItem(R.string.shoot_photo_widget_title,
                 new WidgetViewHolder(ShootPhotoWidget.class, 50, 50)));
         widgetListItems.add(new WidgetListItem(R.string.simulator_indicator_control_widgets_title,
                 new WidgetViewHolder(SimulatorIndicatorWidget.class, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT),
                 new WidgetViewHolder(SimulatorControlWidget.class, 300, ViewGroup.LayoutParams.MATCH_PARENT)));
+        widgetListItems.add(new WidgetListItem(R.string.system_status_panel_title,
+                new WidgetViewHolder(SystemStatusListPanelWidget.class, 550, 200)));
+        widgetListItems.add(new WidgetListItem(R.string.top_bar_panel_title,
+                new WidgetViewHolder(TopBarPanelWidget.class, ViewGroup.LayoutParams.MATCH_PARENT, 25)));
         widgetListItems.add(new WidgetListItem(R.string.user_account_login_widget_title,
-                new WidgetViewHolder(UserAccountLoginWidget.class,240,60)));
+                new WidgetViewHolder(UserAccountLoginWidget.class, 240, 60)));
         widgetListItems.add(new WidgetListItem(R.string.vertical_velocity_widget_title,
                 new WidgetViewHolder(VerticalVelocityWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.vision_widget_title,
                 new WidgetViewHolder(VisionWidget.class)));
+        widgetListItems.add(new WidgetListItem(R.string.video_signal_widget_title,
+                new WidgetViewHolder(VideoSignalWidget.class, 86, 50)));
         widgetListItems.add(new WidgetListItem(R.string.vps_widget_title,
                 new WidgetViewHolder(VPSWidget.class)));
+
     }
 
     @Override

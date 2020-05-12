@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  -->
+<resources>
+
+
+    <declare-styleable name="SeekBarView">
+        <attr name="uxsdk_minValueVisible" format="boolean" />
+        <attr name="uxsdk_maxValueVisible" format="boolean" />
+        <attr name="uxsdk_minusVisible" format="boolean" />
+        <attr name="uxsdk_plusVisible" format="boolean" />
+        <attr name="uxsdk_baselineVisible" format="boolean" />
+    </declare-styleable>
+
+
+    <declare-styleable name="IconButtonWidget">
+        <attr name="uxsdk_iconBackground" />
+        <attr name="uxsdk_connectedStateIconColor" />
+        <attr name="uxsdk_disconnectedStateIconColor" />
+    </declare-styleable>
+
+    <attr name="uxsdk_cameraIndex">
+        <enum name="cameraIndex0" value="0" />
+        <enum name="cameraIndex1" value="1" />
+        <enum name="cameraIndex2" value="2" />
+    </attr>
+
+    <attr name="uxsdk_gimbalIndex">
+        <enum name="port" value="0" />
+        <enum name="starboard" value="1" />
+    </attr>
+
+    <attr name="uxsdk_speedMetricUnitType">
+        <enum name="metersPerSecond" value="0" />
+        <enum name="kmPerHour" value="1" />
+    </attr>
+    <attr name="uxsdk_iconBackground" format="reference" />
+    <attr name="uxsdk_widgetTitleTextAppearance" format="reference" />
+    <attr name="uxsdk_widgetTitleTextSize" format="dimension" />
+    <attr name="uxsdk_widgetTitleTextColor" format="color|reference" />
+    <attr name="uxsdk_widgetTitleBackground" format="reference" />
+
+    <attr name="uxsdk_buttonBackground" format="reference" />
+    <attr name="uxsdk_buttonTextSize" format="dimension" />
+    <attr name="uxsdk_buttonTextColor" format="color|reference" />
+    <attr name="uxsdk_buttonTextAppearance" format="reference" />
+    <attr name="uxsdk_closeIcon" format="reference" />
+    <attr name="uxsdk_closeIconBackground" format="reference" />
+    <attr name="uxsdk_ssdFullIcon" format="reference" />
+    <attr name="uxsdk_ssdSlowIcon" format="reference" />
+    <attr name="uxsdk_ssdNotInsertedIcon" format="reference" />
+    <attr name="uxsdk_sdCardFullIcon" format="reference" />
+    <attr name="uxsdk_sdCardSlowIcon" format="reference" />
+    <attr name="uxsdk_sdCardNotInsertedIcon" format="reference" />
+    <attr name="uxsdk_internalStorageFullIcon" format="reference" />
+    <attr name="uxsdk_internalStorageSlowIcon" format="reference" />
+    <attr name="uxsdk_internalStorageNotInsertedIcon" format="reference" />
+    <attr name="uxsdk_foregroundIconBackground" format="reference" />
+    <attr name="uxsdk_labelsTextSize" format="dimension" />
+    <attr name="uxsdk_labelsTextColor" format="color" />
+    <attr name="uxsdk_labelsBackground" format="reference" />
+    <attr name="uxsdk_labelsTextAppearance" format="reference" />
+    <attr name="uxsdk_switchThumbIcon" format="reference" />
+    <attr name="uxsdk_seekbarThumbIcon" format="reference" />
+    <attr name="uxsdk_messageTextSize" format="dimension" />
+    <attr name="uxsdk_messageTextAppearance" format="reference" />
+    <attr name="uxsdk_messageTextBackground" format="reference" />
+    <attr name="uxsdk_rulerLinesColor" format="color" />
+    <!-- Insert ID of the widget that needs to react to a state change on this widget. -->
+    <attr name="uxsdk_onStateChange" format="reference" />
+    <attr name="uxsdk_connectedStateIconColor" format="color" />
+    <attr name="uxsdk_disconnectedStateIconColor" format="color" />
+
+    <attr name="uxsdk_imageFormatTextAppearance" format="reference" />
+    <attr name="uxsdk_imageFormatTextColor" format="color" />
+    <attr name="uxsdk_imageFormatTextBackground" format="reference" />
+    <attr name="uxsdk_imageFormatTextSize" format="dimension" />
+    <attr name="uxsdk_capacityValueTextAppearance" format="reference" />
+    <attr name="uxsdk_capacityValueTextColor" format="color" />
+    <attr name="uxsdk_capacityValueTextBackground" format="reference" />
+    <attr name="uxsdk_capacityValueTextSize" format="dimension" />
+
+    <attr name="uxsdk_evValueTextAppearance" format="reference" />
+    <attr name="uxsdk_evValueTextSize" format="dimension" />
+    <attr name="uxsdk_evValueTextColor" format="color|reference" />
+    <attr name="uxsdk_evValueBackgroundDrawable" format="reference" />
+
+    <attr name="uxsdk_rtkSeparatorsColor" format="color" />
+
+    <attr name="uxsdk_titleText" format="string|reference" />
+    <attr name="uxsdk_titleTextAppearance" format="reference" />
+    <attr name="uxsdk_titleTextSize" format="dimension" />
+    <attr name="uxsdk_titleTextColor" format="color|reference" />
+
+    <declare-styleable name="BatteryWidget">
+        <attr name="uxsdk_voltageVisibility" format="boolean" />
+        <attr name="uxsdk_singlePercentAppearance" format="reference" />
+        <attr name="uxsdk_dualPercentAppearance" format="reference" />
+        <attr name="uxsdk_dualVoltageAppearance" format="reference" />
+        <attr name="uxsdk_percentTextColorNormal" format="color" />
+        <attr name="uxsdk_percentTextColorError" format="color" />
+        <attr name="uxsdk_percentTextColorWarningLevel1" format="color" />
+        <attr name="uxsdk_percentTextColorWarningLevel2" format="color" />
+        <attr name="uxsdk_percentTextColorOverheating" format="color" />
+        <attr name="uxsdk_percentTextColorUnknown" format="color" />
+        <attr name="uxsdk_voltageTextColorNormal" format="color" />
+        <attr name="uxsdk_voltageTextColorError" format="color" />
+        <attr name="uxsdk_voltageTextColorWarningLevel1" format="color" />
+        <attr name="uxsdk_voltageTextColorWarningLevel2" format="color" />
+        <attr name="uxsdk_voltageTextColorOverheating" format="color" />
+        <attr name="uxsdk_voltageTextColorUnknown" format="color" />
+        <attr name="uxsdk_voltageBackgroundNormal" format="reference" />
+        <attr name="uxsdk_voltageBackgroundError" format="reference" />
+        <attr name="uxsdk_voltageBackgroundWarningLevel1" format="reference" />
+        <attr name="uxsdk_voltageBackgroundWarningLevel2" format="reference" />
+        <attr name="uxsdk_voltageBackgroundOverheating" format="reference" />
+        <attr name="uxsdk_voltageBackgroundUnknown" format="reference" />
+        <attr name="uxsdk_singlePercentTextSize" format="dimension" />
+        <attr name="uxsdk_dualPercentTextSize" format="dimension" />
+        <attr name="uxsdk_dualVoltageTextSize" format="dimension" />
+        <attr name="uxsdk_singleIconNormal" format="reference" />
+        <attr name="uxsdk_singleIconError" format="reference" />
+        <attr name="uxsdk_singleIconWarningLevel1" format="reference" />
+        <attr name="uxsdk_singleIconWarningLevel2" format="reference" />
+        <attr name="uxsdk_singleIconOverheating" format="reference" />
+        <attr name="uxsdk_singleIconUnknown" format="reference" />
+        <attr name="uxsdk_singleIconDimensionRatio" format="string|reference" />
+        <attr name="uxsdk_dualIconNormal" format="reference" />
+        <attr name="uxsdk_dualIconError" format="reference" />
+        <attr name="uxsdk_dualIconWarningLevel1" format="reference" />
+        <attr name="uxsdk_dualIconWarningLevel2" format="reference" />
+        <attr name="uxsdk_dualIconOverheating" format="reference" />
+        <attr name="uxsdk_dualIconUnknown" format="reference" />
+        <attr name="uxsdk_dualIconDimensionRatio" format="string|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="FlightModeWidget">
+        <attr name="uxsdk_textAppearance" format="reference" />
+        <attr name="uxsdk_textBackground" format="reference" />
+        <attr name="uxsdk_textSize" format="dimension" />
+        <attr name="uxsdk_icon" format="reference" />
+        <attr name="uxsdk_iconDimensionRatio" format="string|reference" />
+        <attr name="uxsdk_iconBackground" />
+        <attr name="uxsdk_connectedStateIconColor" />
+        <attr name="uxsdk_disconnectedStateIconColor" />
+        <attr name="uxsdk_connectedStateTextColor" format="color" />
+        <attr name="uxsdk_disconnectedStateTextColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="UserAccountLoginWidget">
+        <attr name="uxsdk_messageTextAppearance" />
+        <attr name="uxsdk_messageTextSize" />
+        <attr name="uxsdk_messageTextEnabled" format="boolean" />
+        <attr name="uxsdk_messageTextColorAuthorized" format="color" />
+        <attr name="uxsdk_messageTextColorTokenOutOfDate" format="color" />
+        <attr name="uxsdk_messageTextColorNotAuthorized" format="color" />
+        <attr name="uxsdk_messageTextColorNotLoggedIn" format="color" />
+        <attr name="uxsdk_messageTextBackground" />
+        <attr name="uxsdk_stateTextEnabled" format="boolean" />
+        <attr name="uxsdk_stateTextAppearance" format="reference" />
+        <attr name="uxsdk_stateTextSize" format="dimension" />
+        <attr name="uxsdk_stateTextColorAuthorized" format="color" />
+        <attr name="uxsdk_stateTextColorTokenOutOfDate" format="color" />
+        <attr name="uxsdk_stateTextColorNotAuthorized" format="color" />
+        <attr name="uxsdk_stateTextColorNotLoggedIn" format="color" />
+        <attr name="uxsdk_stateTextBackground" format="reference" />
+        <attr name="uxsdk_userIconEnabled" format="boolean" />
+        <attr name="uxsdk_userIconAuthorized" format="reference" />
+        <attr name="uxsdk_userIconNotAuthorized" format="reference" />
+        <attr name="uxsdk_userIconTokenOutOfDate" format="reference" />
+        <attr name="uxsdk_userIconNotLoggedIn" format="reference" />
+        <attr name="uxsdk_userIconBackground" format="reference" />
+        <attr name="uxsdk_actionIconEnabled" format="boolean" />
+        <attr name="uxsdk_actionIconAuthorized" format="reference" />
+        <attr name="uxsdk_actionIconNotAuthorized" format="reference" />
+        <attr name="uxsdk_actionIconTokenOutOfDate" format="reference" />
+        <attr name="uxsdk_actionIconNotLoggedIn" format="reference" />
+        <attr name="uxsdk_actionIconBackground" format="reference" />
+    </declare-styleable>
+    <declare-styleable name="VisionWidget">
+        <attr name="uxsdk_normalVisionIcon" format="reference" />
+        <attr name="uxsdk_closedVisionIcon" format="reference" />
+        <attr name="uxsdk_disabledVisionIcon" format="reference" />
+        <attr name="uxsdk_omniAllVisionIcon" format="reference" />
+        <attr name="uxsdk_omniFrontBackVisionIcon" format="reference" />
+        <attr name="uxsdk_omniClosedVisionIcon" format="reference" />
+        <attr name="uxsdk_omniDisabledVisionIcon" format="reference" />
+        <attr name="uxsdk_visionIconBackground" format="reference" />
+        <attr name="uxsdk_disconnectedStateIconColor" />
+    </declare-styleable>
+
+    <declare-styleable name="RemoteControllerSignalWidget">
+        <attr name="uxsdk_rcIcon" format="reference" />
+        <attr name="uxsdk_rcSignalIcon" format="reference" />
+        <attr name="uxsdk_connectedStateIconColor" />
+        <attr name="uxsdk_disconnectedStateIconColor" />
+    </declare-styleable>
+
+    <declare-styleable name="VideoSignalWidget">
+        <attr name="uxsdk_videoIcon" format="reference" />
+        <attr name="uxsdk_videoSignalIcon" format="reference" />
+        <attr name="uxsdk_frequencyBandTextAppearance" format="reference" />
+        <attr name="uxsdk_frequencyBandTextSize" format="dimension" />
+        <attr name="uxsdk_frequencyBandTextColor" format="color" />
+        <attr name="uxsdk_frequencyBandBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_connectedStateIconColor" />
+        <attr name="uxsdk_disconnectedStateIconColor" />
+    </declare-styleable>
+
+    <declare-styleable name="GPSSignalWidget">
+        <attr name="uxsdk_gpsIcon" format="reference" />
+        <attr name="uxsdk_externalGPSIcon" format="reference" />
+        <attr name="uxsdk_gpsIconBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_gpsSignalIcon" format="reference" />
+        <attr name="uxsdk_gpsSignalIconBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_satelliteCountTextAppearance" format="reference" />
+        <attr name="uxsdk_satelliteCountTextSize" format="dimension" />
+        <attr name="uxsdk_satelliteCountTextColor" format="color" />
+        <attr name="uxsdk_satelliteCountBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_rtkEnabledTextAppearance" format="reference" />
+        <attr name="uxsdk_rtkEnabledTextSize" format="dimension" />
+        <attr name="uxsdk_rtkAccurateTextColor" format="color" />
+        <attr name="uxsdk_rtkInaccurateTextColor" format="color" />
+        <attr name="uxsdk_rtkEnabledBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_connectedStateIconColor" />
+        <attr name="uxsdk_disconnectedStateIconColor" />
+        <!-- Insert ID of the RTK widget that needs to react to a state change on this widget.
+        See {@link dji.ux.beta.core.widget.gps.GPSSignalWidget.setStateChangeCallback}
+        and {@link dji.ux.beta.hardwareaccessory.widget.rtk.RTKWidget}. -->
+        <attr name="uxsdk_onStateChange" />
+    </declare-styleable>
+
+    <declare-styleable name="CompassWidget">
+        <attr name="uxsdk_homeIcon" format="reference" />
+        <attr name="uxsdk_rcLocationIcon" format="reference" />
+        <attr name="uxsdk_aircraftIcon" format="reference" />
+        <attr name="uxsdk_gimbalYawIcon" format="reference" />
+        <attr name="uxsdk_northIcon" format="reference" />
+        <attr name="uxsdk_innerCirclesIcon" format="reference" />
+        <attr name="uxsdk_compassBackgroundIcon" format="reference" />
+        <attr name="uxsdk_aircraftAttitudeIcon" format="reference" />
+        <attr name="uxsdk_visualCompassViewStrokeWidth" format="dimension" />
+        <attr name="uxsdk_visualCompassViewLineColor" format="color" />
+        <attr name="uxsdk_visualCompassViewLineInterval" format="integer" />
+        <attr name="uxsdk_visualCompassViewNumberOfLines" format="integer" />
+        <attr name="uxsdk_gimbalYawViewStrokeWidth" format="dimension" />
+        <attr name="uxsdk_gimbalYawViewYawColor" format="color" />
+        <attr name="uxsdk_gimbalYawViewInvalidColor" format="color" />
+        <attr name="uxsdk_gimbalYawViewBlinkColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="AltitudeWidget">
+        <attr name="uxsdk_altitudeTitleTextAppearance" format="reference" />
+        <attr name="uxsdk_altitudeTitleTextSize" format="dimension" />
+        <attr name="uxsdk_altitudeTitleTextColor" format="color" />
+        <attr name="uxsdk_altitudeTitleBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_altitudeValueTextAppearance" format="reference" />
+        <attr name="uxsdk_altitudeValueTextSize" format="dimension" />
+        <attr name="uxsdk_altitudeValueTextColor" format="color" />
+        <attr name="uxsdk_altitudeValueBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_altitudeUnitTextAppearance" format="reference" />
+        <attr name="uxsdk_altitudeUnitTextSize" format="dimension" />
+        <attr name="uxsdk_altitudeUnitTextColor" format="color" />
+        <attr name="uxsdk_altitudeUnitBackgroundDrawable" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="DistanceHomeWidget">
+        <attr name="uxsdk_distanceHomeTitleTextAppearance" format="reference" />
+        <attr name="uxsdk_distanceHomeTitleTextSize" format="dimension" />
+        <attr name="uxsdk_distanceHomeTitleTextColor" format="color" />
+        <attr name="uxsdk_distanceHomeTitleBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_distanceHomeValueTextAppearance" format="reference" />
+        <attr name="uxsdk_distanceHomeValueTextSize" format="dimension" />
+        <attr name="uxsdk_distanceHomeValueTextColor" format="color" />
+        <attr name="uxsdk_distanceHomeValueBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_distanceHomeUnitTextAppearance" format="reference" />
+        <attr name="uxsdk_distanceHomeUnitTextSize" format="dimension" />
+        <attr name="uxsdk_distanceHomeUnitTextColor" format="color" />
+        <attr name="uxsdk_distanceHomeUnitBackgroundDrawable" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="DistanceRCWidget">
+        <attr name="uxsdk_distanceRCTitleTextAppearance" format="reference" />
+        <attr name="uxsdk_distanceRCTitleTextSize" format="dimension" />
+        <attr name="uxsdk_distanceRCTitleTextColor" format="color" />
+        <attr name="uxsdk_distanceRCTitleBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_distanceRCValueTextAppearance" format="reference" />
+        <attr name="uxsdk_distanceRCValueTextSize" format="dimension" />
+        <attr name="uxsdk_distanceRCValueTextColor" format="color" />
+        <attr name="uxsdk_distanceRCValueBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_distanceRCUnitTextAppearance" format="reference" />
+        <attr name="uxsdk_distanceRCUnitTextSize" format="dimension" />
+        <attr name="uxsdk_distanceRCUnitTextColor" format="color" />
+        <attr name="uxsdk_distanceRCUnitBackgroundDrawable" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="VPSWidget">
+        <attr name="uxsdk_vpsTitleTextAppearance" format="reference" />
+        <attr name="uxsdk_vpsTitleTextSize" format="dimension" />
+        <attr name="uxsdk_vpsTitleTextColor" format="color" />
+        <attr name="uxsdk_vpsTitleBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_vpsEnabledIcon" format="reference" />
+        <attr name="uxsdk_vpsDisabledIcon" format="reference" />
+        <attr name="uxsdk_vpsValueTextAppearance" format="reference" />
+        <attr name="uxsdk_vpsValueTextSize" format="dimension" />
+        <attr name="uxsdk_vpsValueEnabledTextColor" format="color" />
+        <attr name="uxsdk_vpsValueDisabledTextColor" format="color" />
+        <attr name="uxsdk_vpsValueBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_vpsUnitTextAppearance" format="reference" />
+        <attr name="uxsdk_vpsUnitTextSize" format="dimension" />
+        <attr name="uxsdk_vpsUnitTextColor" format="color" />
+        <attr name="uxsdk_vpsUnitBackgroundDrawable" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="HorizontalVelocityWidget">
+        <attr name="uxsdk_speedMetricUnitType" />
+        <attr name="uxsdk_horizontalVelocityTitleTextAppearance" format="reference" />
+        <attr name="uxsdk_horizontalVelocityTitleTextSize" format="dimension" />
+        <attr name="uxsdk_horizontalVelocityTitleTextColor" format="color" />
+        <attr name="uxsdk_horizontalVelocityTitleBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_horizontalVelocityValueTextAppearance" format="reference" />
+        <attr name="uxsdk_horizontalVelocityValueTextSize" format="dimension" />
+        <attr name="uxsdk_horizontalVelocityValueTextColor" format="color" />
+        <attr name="uxsdk_horizontalVelocityValueBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_horizontalVelocityUnitTextAppearance" format="reference" />
+        <attr name="uxsdk_horizontalVelocityUnitTextSize" format="dimension" />
+        <attr name="uxsdk_horizontalVelocityUnitTextColor" format="color" />
+        <attr name="uxsdk_horizontalVelocityUnitBackgroundDrawable" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="VerticalVelocityWidget">
+        <attr name="uxsdk_verticalVelocityTitleTextAppearance" format="reference" />
+        <attr name="uxsdk_verticalVelocityTitleTextSize" format="dimension" />
+        <attr name="uxsdk_verticalVelocityTitleTextColor" format="color" />
+        <attr name="uxsdk_verticalVelocityTitleBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_upwardVerticalVelocityIcon" format="reference" />
+        <attr name="uxsdk_downwardVerticalVelocityIcon" format="reference" />
+        <attr name="uxsdk_verticalVelocityValueTextAppearance" format="reference" />
+        <attr name="uxsdk_verticalVelocityValueTextSize" format="dimension" />
+        <attr name="uxsdk_verticalVelocityValueTextColor" format="color" />
+        <attr name="uxsdk_verticalVelocityValueBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_verticalVelocityUnitTextAppearance" format="reference" />
+        <attr name="uxsdk_verticalVelocityUnitTextSize" format="dimension" />
+        <attr name="uxsdk_verticalVelocityUnitTextColor" format="color" />
+        <attr name="uxsdk_verticalVelocityUnitBackgroundDrawable" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SystemStatusWidget">
+        <attr name="uxsdk_systemStatusMessageTextAppearance" format="reference" />
+        <attr name="uxsdk_systemStatusMessageTextSize" format="dimension" />
+        <attr name="uxsdk_systemStatusMessageErrorTextColor" format="color" />
+        <attr name="uxsdk_systemStatusMessageWarningTextColor" format="color" />
+        <attr name="uxsdk_systemStatusMessageGoodTextColor" format="color" />
+        <attr name="uxsdk_systemStatusMessageOfflineTextColor" format="color" />
+        <attr name="uxsdk_systemStatusErrorBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_systemStatusWarningBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_systemStatusGoodBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_systemStatusOfflineBackgroundDrawable" format="reference" />
+        <!-- Insert ID of the spotlight widget that needs to react to a state change on this widget.
+        See {@link dji.ux.beta.core.widget.systemstatus.SystemStatusWidget.setStateChangeCallback}
+        and {@link dji.ux.beta.core.panelwidget.systemstatus.SystemStatusListPanelWidget}. -->
+        <attr name="uxsdk_onStateChange" />
+    </declare-styleable>
+
+    <declare-styleable name="DashboardWidget">
+        <attr name="uxsdk_hideWidgets">
+            <flag name="compass" value="1" />
+            <flag name="altitude" value="2" />
+            <flag name="distanceHome" value="4" />
+            <flag name="distanceRC" value="8" />
+            <flag name="horizontalVelocity" value="16" />
+            <flag name="verticalVelocity" value="32" />
+            <flag name="VPS" value="64" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="FPVWidget">
+        <attr name="uxsdk_videoSource" format="enum">
+            <enum name="auto" value="0" />
+            <enum name="primary" value="1" />
+            <enum name="secondary" value="2" />
+        </attr>
+        <attr name="uxsdk_sourceCameraNameVisibility" format="boolean" />
+        <attr name="uxsdk_sourceCameraSideVisibility" format="boolean" />
+        <attr name="uxsdk_cameraNameTextAppearance" format="reference" />
+        <attr name="uxsdk_cameraNameTextSize" format="dimension" />
+        <attr name="uxsdk_cameraNameTextColor" format="color" />
+        <attr name="uxsdk_cameraNameBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_cameraSideTextAppearance" format="reference" />
+        <attr name="uxsdk_cameraSideTextSize" format="dimension" />
+        <attr name="uxsdk_cameraSideTextColor" format="color" />
+        <attr name="uxsdk_cameraSideBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_gridLineType" format="enum">
+            <enum name="none" value="0" />
+            <enum name="parallel" value="1" />
+            <enum name="parallelDiagonal" value="2" />
+        </attr>
+        <attr name="uxsdk_gridLineColor" format="color" />
+        <attr name="uxsdk_gridLineWidth" format="float" />
+        <attr name="uxsdk_gridLineNumber" format="integer" />
+        <attr name="uxsdk_gridLinesEnabled" format="boolean" />
+        <attr name="uxsdk_centerPointType" format="enum">
+            <enum name="none" value="0" />
+            <enum name="standard" value="1" />
+            <enum name="cross" value="2" />
+            <enum name="narrowCross" value="3" />
+            <enum name="frame" value="4" />
+            <enum name="frameAndCross" value="5" />
+            <enum name="square" value="6" />
+            <enum name="squareAndCross" value="7" />
+        </attr>
+        <attr name="uxsdk_centerPointColor" format="color" />
+        <attr name="uxsdk_centerPointEnabled" format="boolean" />
+        <attr name="uxsdk_interactionEnabled" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="FPVInteractionWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_gimbalIndex" />
+        <attr name="uxsdk_manualFocusIcon" format="reference" />
+        <attr name="uxsdk_autoFocusIcon" format="reference" />
+        <attr name="uxsdk_autoFocusContinuousIcon" format="reference" />
+        <attr name="uxsdk_focusTargetDuration" format="integer" />
+        <attr name="uxsdk_centerMeterIcon" format="reference" />
+        <attr name="uxsdk_spotMeterIcon" format="reference" />
+        <attr name="uxsdk_centerMeterScaleX" format="float" />
+        <attr name="uxsdk_centerMeterScaleY" format="float" />
+        <attr name="uxsdk_gimbalPointIcon" format="reference" />
+        <attr name="uxsdk_gimbalMoveIcon" format="reference" />
+        <attr name="uxsdk_gimbalArrowIcon" format="reference" />
+        <attr name="uxsdk_gimbalVelocityFactor" format="float" />
+        <attr name="uxsdk_vibrationEnabled" format="boolean" />
+        <attr name="uxsdk_vibrationDuration" format="integer" />
+        <attr name="uxsdk_touchFocusEnabled" format="boolean" />
+        <attr name="uxsdk_spotMeteringEnabled" format="boolean" />
+        <attr name="uxsdk_gimbalControlEnabled" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="AirSenseWidget">
+        <attr name="uxsdk_airSenseConnectedStateIcon" format="reference" />
+        <attr name="uxsdk_airSenseDisconnectedStateIcon" format="reference" />
+        <attr name="uxsdk_airSenseIconBackground" format="reference" />
+        <attr name="uxsdk_airSenseIconDisconnectedTint" format="color" />
+        <attr name="uxsdk_airSenseIconNoAirplanesNearbyTint" format="color" />
+        <attr name="uxsdk_airSenseIconWarningLevel0Tint" format="color" />
+        <attr name="uxsdk_airSenseIconWarningLevel1Tint" format="color" />
+        <attr name="uxsdk_airSenseIconWarningLevel2Tint" format="color" />
+        <attr name="uxsdk_airSenseIconWarningLevel3Tint" format="color" />
+        <attr name="uxsdk_airSenseIconWarningLevel4Tint" format="color" />
+        <attr name="uxsdk_linkTextSize" format="dimension" />
+        <attr name="uxsdk_linkTextColor" format="color" />
+        <attr name="uxsdk_linkTextBackground" format="reference" />
+        <attr name="uxsdk_linkTextAppearance" format="reference" />
+        <attr name="uxsdk_checkBoxTextSize" format="dimension" />
+        <attr name="uxsdk_checkBoxTextColor" format="reference" />
+        <attr name="uxsdk_checkBoxTextBackground" format="reference" />
+        <attr name="uxsdk_checkBoxTextAppearance" format="reference" />
+        <attr name="uxsdk_warningDialogTheme" format="reference" />
+        <attr name="uxsdk_termsDialogTheme" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RemainingFlightTimeWidget">
+        <attr name="uxsdk_homeLetterBackgroundColor" format="color|reference" />
+        <attr name="uxsdk_homeLetterColor" format="color|reference" />
+        <attr name="uxsdk_flightTimeBackgroundColor" format="color|reference" />
+        <attr name="uxsdk_flightTimeTextColor" format="color|reference" />
+        <attr name="uxsdk_lowBatteryThresholdColor" format="color|reference" />
+        <attr name="uxsdk_seriousLowBatteryThresholdColor" format="color|reference" />
+        <attr name="uxsdk_batteryRequiredToLandColor" format="color|reference" />
+        <attr name="uxsdk_batteryRequiredToGoHomeColor" format="color|reference" />
+        <attr name="uxsdk_batteryChargeRemainingColor" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="PanelWidget">
+        <!-- TODO uxsdk_titleBarBackgroundColor not working-->
+        <attr name="uxsdk_titleBarBackgroundColor" format="color|reference" />
+        <attr name="uxsdk_backButtonIcon" format="reference" />
+        <attr name="uxsdk_backButtonIconBackground" format="reference" />
+        <attr name="uxsdk_backButtonIconColor" format="color|reference" />
+        <attr name="uxsdk_closeButtonIcon" format="reference" />
+        <attr name="uxsdk_closeButtonIconBackground" format="reference" />
+        <attr name="uxsdk_closeButtonIconColor" format="color|reference" />
+        <attr name="uxsdk_titleText"/>
+        <attr name="uxsdk_titleTextSize"/>
+        <attr name="uxsdk_titleTextColor"/>
+        <attr name="uxsdk_titleTextBackground"/>
+        <attr name="uxsdk_titleTextAppearance"/>
+    </declare-styleable>
+
+    <declare-styleable name="BarPanelWidget">
+        <attr name="uxsdk_itemsMarginLeft" format="dimension" />
+        <attr name="uxsdk_itemsMarginTop" format="dimension" />
+        <attr name="uxsdk_itemsMarginRight" format="dimension" />
+        <attr name="uxsdk_itemsMarginBottom" format="dimension" />
+        <attr name="uxsdk_itemsSpacing" format="dimension" />
+        <attr name="uxsdk_guidelinePercent" format="float" />
+        <attr name="uxsdk_leftBias" format="float" />
+        <attr name="uxsdk_rightBias" format="float" />
+        <attr name="uxsdk_leftChainStyle">
+            <enum name="spread" value="0" />
+            <enum name="spread_inside" value="1" />
+            <enum name="packed" value="2" />
+        </attr>
+        <attr name="uxsdk_rightChainStyle">
+            <enum name="spread" value="0" />
+            <enum name="spread_inside" value="1" />
+            <enum name="packed" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="PanelNavigationView">
+        <attr name="uxsdk_animationEnabled" format="boolean"/>
+        <attr name="uxsdk_animationAddViewToTop" format="reference" />
+        <attr name="uxsdk_animationRemoveViewFromTop" format="reference" />
+        <attr name="uxsdk_animationShowView" format="reference" />
+        <attr name="uxsdk_animationHideView" format="reference" />
+    </declare-styleable>
+
+    <attr name="uxsdk_list_item_button_text" format="string|reference" />
+    <attr name="uxsdk_list_item_button_text_size" format="dimension|reference" />
+    <attr name="uxsdk_list_item_button_text_color" format="color|reference" />
+    <attr name="uxsdk_list_item_button_appearance" format="reference" />
+    <attr name="uxsdk_list_item_button_background" format="reference" />
+    <attr name="uxsdk_list_item_button_enabled" format="boolean" />
+    <attr name="uxsdk_list_item_button_visibility" format="boolean" />
+    <attr name="uxsdk_list_item_dialog_theme" format="integer|reference"/>
+    <attr name="uxsdk_format_confirmation_dialog_icon" format="reference" />
+    <attr name="uxsdk_format_success_dialog_icon" format="reference"/>
+    <attr name="uxsdk_format_error_dialog_icon" format="reference"/>
+
+    <declare-styleable name="ListItemTitleWidget">
+        <attr name="uxsdk_list_item_title" format="string|reference" />
+        <attr name="uxsdk_list_item_title_appearance" format="reference" />
+        <attr name="uxsdk_list_item_icon" format="reference" />
+        <attr name="uxsdk_list_item_icon_color" format="color|reference" />
+        <attr name="uxsdk_list_item_title_text_size" format="dimension|reference" />
+        <attr name="uxsdk_list_item_title_text_color" format="color|reference" />
+        <attr name="uxsdk_list_item_title_text_background" format="reference" />
+        <attr name="uxsdk_list_item_padding_left" format="dimension|reference" />
+        <attr name="uxsdk_list_item_padding_right" format="dimension|reference" />
+        <attr name="uxsdk_list_item_padding_top" format="dimension|reference" />
+        <attr name="uxsdk_list_item_padding_bottom" format="dimension|reference" />
+        <attr name="uxsdk_list_item_disconnected_color" format="color|reference" />
+        <attr name="uxsdk_list_item_normal_color" format="color|reference" />
+        <attr name="uxsdk_list_item_warning_color" format="color|reference" />
+        <attr name="uxsdk_list_item_error_color" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ListItemLabelButtonWidget">
+        <attr name="uxsdk_list_item_label" format="string|reference" />
+        <attr name="uxsdk_list_item_label_text_size" format="dimension|reference" />
+        <attr name="uxsdk_list_item_label_text_color" format="color|reference" />
+        <attr name="uxsdk_list_item_label_appearance" format="reference" />
+        <attr name="uxsdk_list_item_label_background" format="reference" />
+        <attr name="uxsdk_list_item_label_visibility" format="boolean" />
+        <attr name="uxsdk_list_item_button_text" />
+        <attr name="uxsdk_list_item_button_text_size"/>
+        <attr name="uxsdk_list_item_button_text_color"/>
+        <attr name="uxsdk_list_item_button_appearance"/>
+        <attr name="uxsdk_list_item_button_background"/>
+        <attr name="uxsdk_list_item_button_enabled"/>
+        <attr name="uxsdk_list_item_button_visibility"/>
+    </declare-styleable>
+
+    <declare-styleable name="ListItemEditTextButtonWidget">
+        <attr name="uxsdk_list_item_hint" format="string|reference" />
+        <attr name="uxsdk_list_item_hint_text_size" format="dimension|reference" />
+        <attr name="uxsdk_list_item_hint_text_color" format="color|reference" />
+        <attr name="uxsdk_list_item_hint_appearance" format="reference" />
+        <attr name="uxsdk_list_item_hint_background" format="reference" />
+        <attr name="uxsdk_list_item_hint_visibility" format="boolean" />
+        <attr name="uxsdk_list_item_button_text" />
+        <attr name="uxsdk_list_item_button_text_size"/>
+        <attr name="uxsdk_list_item_button_text_color"/>
+        <attr name="uxsdk_list_item_button_appearance"/>
+        <attr name="uxsdk_list_item_button_background"/>
+        <attr name="uxsdk_list_item_button_enabled"/>
+        <attr name="uxsdk_list_item_button_visibility"/>
+        <attr name="uxsdk_list_item_edit_text" format="string|reference" />
+        <attr name="uxsdk_list_item_edit_text_size" format="dimension|reference" />
+        <attr name="uxsdk_list_item_edit_text_color" format="color|reference" />
+        <attr name="uxsdk_list_item_edit_appearance" format="reference" />
+        <attr name="uxsdk_list_item_edit_background" format="reference" />
+        <attr name="uxsdk_list_item_edit_enabled" format="boolean" />
+        <attr name="uxsdk_list_item_edit_visibility" format="boolean" />
+        <attr name="uxsdk_list_item_edit_text_normal_color" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ListItemRadioButtonWidget">
+        <attr name="uxsdk_center_option_background_selector" format="reference" />
+        <attr name="uxsdk_first_option_background_selector" format="reference" />
+        <attr name="uxsdk_last_option_background_selector" format="reference" />
+        <attr name="uxsdk_option_color_state_list" format="reference" />
+        <attr name="uxsdk_option_text_size" format="dimension|reference" />
+        <attr name="uxsdk_option_text_appearance" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SDCardStatusListItemWidget">
+        <attr name="uxsdk_list_item_dialog_theme" />
+        <attr name="uxsdk_format_confirmation_dialog_icon" />
+        <attr name="uxsdk_format_success_dialog_icon" />
+        <attr name="uxsdk_format_error_dialog_icon" />
+    </declare-styleable>
+    
+    <declare-styleable name="MaxAltitudeListItemWidget">
+        <attr name="uxsdk_list_item_dialog_theme" />
+        <attr name="uxsdk_toast_messages_enabled" format="boolean" />
+    </declare-styleable>
+
+    <attr name="uxsdk_simulatorActiveDrawable" format="reference" />
+    <attr name="uxsdk_simulatorInactiveDrawable" format="reference" />
+
+    <declare-styleable name="ConnectionWidget">
+        <attr name="uxsdk_iconBackground" />
+        <attr name="uxsdk_disconnectedIcon" format="reference" />
+        <attr name="uxsdk_connectedIcon" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SimulatorIndicatorWidget">
+        <attr name="uxsdk_iconBackground" />
+        <attr name="uxsdk_simulatorActiveDrawable" />
+        <attr name="uxsdk_simulatorInactiveDrawable" />
+        <!-- Insert ID of the simulator widget that needs to react to a state change on this widget.
+        See {@link dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget.setStateChangeCallback}
+        and {@link dji.ux.beta.training.widget.simulator.SimulatorControlWidget}. -->
+        <attr name="uxsdk_onStateChange" />
+    </declare-styleable>
+
+    <declare-styleable name="SystemStatusListPanelWidget">
+        <!-- E.g., app:excludeItem="flight_mode|radio_quality" -->
+        <attr name="uxsdk_excludeItem">
+            <flag name="flight_mode" value="1"/>
+            <flag name="rc_stick_mode" value="2"/>
+            <flag name="sd_card_status" value="4"/>
+            <flag name="max_altitude" value="8"/>
+        </attr>
+    </declare-styleable>
+
+
+    <declare-styleable name="TopBarPanelWidget">
+        <!-- E.g., app:excludeItem="flight_mode|simulator_indicator" -->
+        <attr name="uxsdk_excludeTopBarItem">
+            <flag name="system_status" value="1"/>
+            <flag name="flight_mode" value="2"/>
+            <flag name="simulator_indicator" value="4"/>
+            <flag name="air_sense" value="8"/>
+            <flag name="gps_signal" value="16"/>
+            <flag name="vision" value="32"/>
+            <flag name="rc_signal" value="64"/>
+            <flag name="video_signal" value="128"/>
+            <flag name="battery" value="256"/>
+            <flag name="connection" value="512"/>
+        </attr>
+    </declare-styleable>
+</resources>

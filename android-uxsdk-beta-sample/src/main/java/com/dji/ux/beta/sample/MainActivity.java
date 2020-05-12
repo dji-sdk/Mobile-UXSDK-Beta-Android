@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,8 +28,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -68,14 +68,15 @@ import dji.sdk.base.BaseProduct;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
-import dji.ux.beta.util.SettingDefinitions;
+import dji.ux.beta.core.util.SettingDefinitions;
+
 
 /**
  * Handles the connection to the product and provides links to the different test activities. Also
  * shows the current connection status and displays logs for the different steps of the SDK
  * registration process.
  */
-public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener{
+public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
 
     //region Constants
     private static final String LAST_USED_BRIDGE_IP = "bridgeip";
@@ -382,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     /**
      * When one of the map providers is clicked, the {@link MapWidgetActivity} is launched with
-     * the {@link dji.ux.beta.widget.map.MapWidget} initialized with the given provider.
+     * the {@link dji.ux.beta.map.widget.map.MapWidget} initialized with the given provider.
      *
      * @param menuItem The menu item that was clicked.
      * @return `true` if the click has been consumed.
