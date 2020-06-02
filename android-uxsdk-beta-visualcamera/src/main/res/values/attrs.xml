@@ -102,10 +102,10 @@
         <attr name="uxsdk_capacityValueTextColor" />
         <attr name="uxsdk_capacityValueTextBackground" />
         <attr name="uxsdk_capacityValueTextSize" />
-        <attr name="uxsdk_cameraColorTextAppearance" />
-        <attr name="uxsdk_cameraColorTextColor" />
-        <attr name="uxsdk_cameraColorTextBackground" />
-        <attr name="uxsdk_cameraColorTextSize" />
+        <attr name="uxsdk_cameraColorTextAppearance" format="reference"/>
+        <attr name="uxsdk_cameraColorTextColor" format="color"/>
+        <attr name="uxsdk_cameraColorTextBackground" format="reference"/>
+        <attr name="uxsdk_cameraColorTextSize" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="CameraConfigSSDWidget">

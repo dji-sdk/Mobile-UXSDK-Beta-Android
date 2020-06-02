@@ -110,6 +110,7 @@
     <attr name="uxsdk_titleTextAppearance" format="reference" />
     <attr name="uxsdk_titleTextSize" format="dimension" />
     <attr name="uxsdk_titleTextColor" format="color|reference" />
+    <attr name="uxsdk_titleTextBackground" format="reference"/>
 
     <declare-styleable name="BatteryWidget">
         <attr name="uxsdk_voltageVisibility" format="boolean" />
