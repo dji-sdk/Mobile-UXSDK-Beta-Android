@@ -289,8 +289,8 @@ public class FPVWidget extends ConstraintLayoutWidget implements TextureView.Sur
      */
     private void changeView(int width, int height, int relativeWidth, int relativeHeight) {
         ViewGroup.LayoutParams lp = fpvTextureView.getLayoutParams();
-        lp.width = width;
-        lp.height = height;
+        lp.width = relativeWidth;
+        lp.height = relativeHeight;
         fpvTextureView.setLayoutParams(lp);
         if (width > viewWidth) {
             fpvTextureView.setScaleX((float) width / viewWidth);
