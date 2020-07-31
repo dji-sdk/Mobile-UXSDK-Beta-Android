@@ -19,7 +19,15 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
     <dimen name="uxsdk_system_status_text_size">18sp</dimen>
+    <dimen name="uxsdk_list_item_edit_text_size">18sp</dimen>
+    <dimen name="uxsdk_list_item_label_text_size">18sp</dimen>
+    <dimen name="uxsdk_list_item_hint_text_size">16sp</dimen>
+    <dimen name="uxsdk_list_item_radio_button_text_size">15sp</dimen>
+    <dimen name="uxsdk_list_item_button_text_size">15sp</dimen>
+    <dimen name="uxsdk_list_item_title_text_size">20sp</dimen>
 </resources>

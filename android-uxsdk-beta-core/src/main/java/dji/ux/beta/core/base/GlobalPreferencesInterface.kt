@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base
@@ -27,6 +28,7 @@ import dji.ux.beta.core.ui.CenterPointView.CenterPointType
 import dji.ux.beta.core.ui.GridLineView.GridLineType
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode
 import dji.ux.beta.core.util.UnitConversionUtil.UnitType
+
 
 /**
  * Interface to be implemented for functions included under

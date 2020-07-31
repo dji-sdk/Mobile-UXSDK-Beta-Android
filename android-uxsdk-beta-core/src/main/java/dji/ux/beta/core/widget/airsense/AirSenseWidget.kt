@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.airsense
@@ -160,7 +161,7 @@ open class AirSenseWidget @JvmOverloads constructor(
      */
     @get:ColorInt
     @setparam:ColorInt
-    var termsLinkTextColor = 0
+    var termsLinkTextColor = getColor(R.color.uxsdk_blue)
 
     /**
      * The background of the terms link text view
@@ -271,9 +272,9 @@ open class AirSenseWidget @JvmOverloads constructor(
 
     private fun updateWarningMessages(warningLevel: AirSenseWarningLevel) {
         addDisposable(widgetModel.sendWarningMessages(getString(R.string.uxsdk_message_air_sense_warning_title),
-                        getString(R.string.uxsdk_message_air_sense_dangerous_content),
-                        getString(R.string.uxsdk_message_air_sense_warning_content),
-                        warningLevel)
+                getString(R.string.uxsdk_message_air_sense_dangerous_content),
+                getString(R.string.uxsdk_message_air_sense_warning_content),
+                warningLevel)
                 .subscribe())
     }
 

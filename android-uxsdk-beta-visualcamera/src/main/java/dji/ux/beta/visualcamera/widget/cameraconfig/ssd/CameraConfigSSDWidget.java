@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.visualcamera.widget.cameraconfig.ssd;
@@ -384,15 +385,6 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
-    }
-
-    /**
      * Get the index of the camera to which the widget is reacting
      *
      * @return {@link SettingDefinitions.CameraIndex}
@@ -403,30 +395,21 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Set the index of camera to which the widget should react
+     *
+     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
+     */
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        widgetModel.setCameraIndex(cameraIndex);
+    }
+
+    /**
      * Set text appearance of the SSD clip info text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setSSDClipInfoTextAppearance(@StyleRes int textAppearance) {
         ssdClipInfoTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the SSD clip info text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setSSDClipInfoTextColor(@NonNull ColorStateList colorStateList) {
-        ssdClipInfoTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the SSD clip info text view
-     *
-     * @param color color integer resource
-     */
-    public void setSSDClipInfoTextColor(@ColorInt int color) {
-        ssdClipInfoTextView.setTextColor(color);
     }
 
     /**
@@ -450,12 +433,21 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the SSD clip info text view
+     * Set text color state list for the SSD clip info text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setSSDClipInfoTextSize(@Dimension float textSize) {
-        ssdClipInfoTextView.setTextSize(textSize);
+    public void setSSDClipInfoTextColor(@NonNull ColorStateList colorStateList) {
+        ssdClipInfoTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the SSD clip info text view
+     *
+     * @param color color integer resource
+     */
+    public void setSSDClipInfoTextColor(@ColorInt int color) {
+        ssdClipInfoTextView.setTextColor(color);
     }
 
     /**
@@ -466,6 +458,25 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getSSDClipInfoTextSize() {
         return ssdClipInfoTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the SSD clip info text view
+     *
+     * @param textSize text size float value
+     */
+    public void setSSDClipInfoTextSize(@Dimension float textSize) {
+        ssdClipInfoTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the SSD clip info text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getSSDClipInfoTextBackground() {
+        return ssdClipInfoTextView.getBackground();
     }
 
     /**
@@ -487,40 +498,12 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the SSD clip info text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getSSDClipInfoTextBackground() {
-        return ssdClipInfoTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the SSD capacity or license text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setSSDCapacityOrLicenseTextAppearance(@StyleRes int textAppearance) {
         ssdCapacityOrLicenseTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the SSD capacity or license text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setSSDCapacityOrLicenseTextColor(@NonNull ColorStateList colorStateList) {
-        ssdCapacityOrLicenseTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the SSD capacity or license text view
-     *
-     * @param color color integer resource
-     */
-    public void setSSDCapacityOrLicenseTextColor(@ColorInt int color) {
-        ssdCapacityOrLicenseTextView.setTextColor(color);
     }
 
     /**
@@ -544,12 +527,21 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the SSD capacity or license text view
+     * Set text color state list for the SSD capacity or license text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setSSDCapacityOrLicenseTextSize(@Dimension float textSize) {
-        ssdCapacityOrLicenseTextView.setTextSize(textSize);
+    public void setSSDCapacityOrLicenseTextColor(@NonNull ColorStateList colorStateList) {
+        ssdCapacityOrLicenseTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the SSD capacity or license text view
+     *
+     * @param color color integer resource
+     */
+    public void setSSDCapacityOrLicenseTextColor(@ColorInt int color) {
+        ssdCapacityOrLicenseTextView.setTextColor(color);
     }
 
     /**
@@ -560,6 +552,25 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getSSDCapacityOrLicenseTextSize() {
         return ssdCapacityOrLicenseTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the SSD capacity or license text view
+     *
+     * @param textSize text size float value
+     */
+    public void setSSDCapacityOrLicenseTextSize(@Dimension float textSize) {
+        ssdCapacityOrLicenseTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the SSD capacity or license text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getSSDCapacityOrLicenseTextBackground() {
+        return ssdCapacityOrLicenseTextView.getBackground();
     }
 
     /**
@@ -581,40 +592,12 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the SSD capacity or license text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getSSDCapacityOrLicenseTextBackground() {
-        return ssdCapacityOrLicenseTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the SSD status info text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setStatusInfoTextAppearance(@StyleRes int textAppearance) {
         statusInfoTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the SSD status info text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setStatusInfoTextColor(@NonNull ColorStateList colorStateList) {
-        statusInfoTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the SSD status info text view
-     *
-     * @param color color integer resource
-     */
-    public void setStatusInfoTextColor(@ColorInt int color) {
-        statusInfoTextView.setTextColor(color);
     }
 
     /**
@@ -638,12 +621,21 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the SSD status info text view
+     * Set text color state list for the SSD status info text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setStatusInfoTextSize(@Dimension float textSize) {
-        statusInfoTextView.setTextSize(textSize);
+    public void setStatusInfoTextColor(@NonNull ColorStateList colorStateList) {
+        statusInfoTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the SSD status info text view
+     *
+     * @param color color integer resource
+     */
+    public void setStatusInfoTextColor(@ColorInt int color) {
+        statusInfoTextView.setTextColor(color);
     }
 
     /**
@@ -654,6 +646,25 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getStatusInfoTextSize() {
         return statusInfoTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the SSD status info text view
+     *
+     * @param textSize text size float value
+     */
+    public void setStatusInfoTextSize(@Dimension float textSize) {
+        statusInfoTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the SSD status info text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getStatusInfoTextBackground() {
+        return statusInfoTextView.getBackground();
     }
 
     /**
@@ -675,40 +686,12 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the SSD status info text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getStatusInfoTextBackground() {
-        return statusInfoTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the SSD format info text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setFormatInfoTextAppearance(@StyleRes int textAppearance) {
         formatInfoTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the SSD format info text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setFormatInfoTextColor(@NonNull ColorStateList colorStateList) {
-        formatInfoTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the SSD format info text view
-     *
-     * @param color color integer resource
-     */
-    public void setFormatInfoTextColor(@ColorInt int color) {
-        formatInfoTextView.setTextColor(color);
     }
 
     /**
@@ -732,12 +715,21 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the SSD format info text view
+     * Set text color state list for the SSD format info text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setFormatInfoTextSize(@Dimension float textSize) {
-        formatInfoTextView.setTextSize(textSize);
+    public void setFormatInfoTextColor(@NonNull ColorStateList colorStateList) {
+        formatInfoTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the SSD format info text view
+     *
+     * @param color color integer resource
+     */
+    public void setFormatInfoTextColor(@ColorInt int color) {
+        formatInfoTextView.setTextColor(color);
     }
 
     /**
@@ -748,6 +740,25 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getFormatInfoTextSize() {
         return formatInfoTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the SSD format info text view
+     *
+     * @param textSize text size float value
+     */
+    public void setFormatInfoTextSize(@Dimension float textSize) {
+        formatInfoTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the SSD format info text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getFormatInfoTextBackground() {
+        return formatInfoTextView.getBackground();
     }
 
     /**
@@ -769,40 +780,12 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the SSD format info text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getFormatInfoTextBackground() {
-        return formatInfoTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the SSD capacity value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setSSDCapacityValueTextAppearance(@StyleRes int textAppearance) {
         ssdCapacityValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the SSD capacity value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setSSDCapacityValueTextColor(@NonNull ColorStateList colorStateList) {
-        ssdCapacityValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the SSD capacity value text view
-     *
-     * @param color color integer resource
-     */
-    public void setSSDCapacityValueTextColor(@ColorInt int color) {
-        ssdCapacityValueTextView.setTextColor(color);
     }
 
     /**
@@ -826,12 +809,21 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the SSD capacity value text view
+     * Set text color state list for the SSD capacity value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setSSDCapacityValueTextSize(@Dimension float textSize) {
-        ssdCapacityValueTextView.setTextSize(textSize);
+    public void setSSDCapacityValueTextColor(@NonNull ColorStateList colorStateList) {
+        ssdCapacityValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the SSD capacity value text view
+     *
+     * @param color color integer resource
+     */
+    public void setSSDCapacityValueTextColor(@ColorInt int color) {
+        ssdCapacityValueTextView.setTextColor(color);
     }
 
     /**
@@ -842,6 +834,25 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getSSDCapacityValueTextSize() {
         return ssdCapacityValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the SSD capacity value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setSSDCapacityValueTextSize(@Dimension float textSize) {
+        ssdCapacityValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the SSD capacity value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getSSDCapacityValueTextBackground() {
+        return ssdCapacityValueTextView.getBackground();
     }
 
     /**
@@ -863,13 +874,13 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the SSD capacity value text view
+     * Get the drawable resource for the SSD status icon
      *
-     * @return Drawable resource of the background
+     * @return Drawable for the SSD status icon
      */
-    @Nullable
-    public Drawable getSSDCapacityValueTextBackground() {
-        return ssdCapacityValueTextView.getBackground();
+    @NonNull
+    public Drawable getSSDStatusIcon() {
+        return ssdStatusImageView.getDrawable();
     }
 
     /**
@@ -891,13 +902,13 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the SSD status icon
+     * Get the background drawable resource for the SSD status icon
      *
-     * @return Drawable for the SSD status icon
+     * @return Drawable for the SSD status icon's background
      */
-    @NonNull
-    public Drawable getSSDStatusIcon() {
-        return ssdStatusImageView.getDrawable();
+    @Nullable
+    public Drawable getSSDStatusIconBackground() {
+        return ssdStatusImageView.getBackground();
     }
 
     /**
@@ -916,16 +927,6 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
      */
     public void setSSDStatusIconBackground(@Nullable Drawable background) {
         ssdStatusImageView.setBackground(background);
-    }
-
-    /**
-     * Get the background drawable resource for the SSD status icon
-     *
-     * @return Drawable for the SSD status icon's background
-     */
-    @Nullable
-    public Drawable getSSDStatusIconBackground() {
-        return ssdStatusImageView.getBackground();
     }
 
     /**
@@ -961,6 +962,16 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Get the background drawable resource for the SSD icon
+     *
+     * @return Drawable for the SSD icon's background
+     */
+    @Nullable
+    public Drawable getSSDIconBackground() {
+        return ssdImageView.getBackground();
+    }
+
+    /**
      * Set the resource ID for the SSD icon's background
      *
      * @param resourceId Integer ID of the background resource
@@ -976,16 +987,6 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
      */
     public void setSSDIconBackground(@Nullable Drawable background) {
         ssdImageView.setBackground(background);
-    }
-
-    /**
-     * Get the background drawable resource for the SSD icon
-     *
-     * @return Drawable for the SSD icon's background
-     */
-    @Nullable
-    public Drawable getSSDIconBackground() {
-        return ssdImageView.getBackground();
     }
 
     //Initialize all customizable attributes

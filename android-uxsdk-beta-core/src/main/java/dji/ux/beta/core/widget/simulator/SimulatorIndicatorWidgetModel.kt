@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.simulator
@@ -50,8 +51,6 @@ class SimulatorIndicatorWidgetModel(
 
     /**
      * Check if the simulator is running
-     *
-     * @return Boolean flowable value to represent if the simulator is currently running
      */
     val isSimulatorActive: Flowable<Boolean>
         get() = simulatorActiveDataProcessor.toFlowable()

@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample;
@@ -31,6 +30,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -40,6 +40,7 @@ import butterknife.OnClick;
 import dji.common.airlink.PhysicalSource;
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.thirdparty.io.reactivex.disposables.CompositeDisposable;
+import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
 import dji.ux.beta.core.extension.ViewExtensions;
 import dji.ux.beta.core.panelwidget.systemstatus.SystemStatusListPanelWidget;
 import dji.ux.beta.core.panelwidget.topbar.TopBarPanelWidget;
@@ -48,7 +49,9 @@ import dji.ux.beta.core.widget.fpv.FPVWidget;
 import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget;
 import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget;
 import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget;
+import dji.ux.beta.hardwareaccessory.widget.rtk.RTKWidget;
 import dji.ux.beta.map.widget.map.MapWidget;
+import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget;
 
 /**
  * Displays a sample layout of widgets similar to that of the various DJI apps.
@@ -60,15 +63,21 @@ public class DefaultLayoutActivity extends AppCompatActivity {
 
     @BindView(R.id.widget_fpv)
     protected FPVWidget fpvWidget;
+    @BindView(R.id.widget_fpv_interaction)
+    protected FPVInteractionWidget fpvInteractionWidget;
     @BindView(R.id.widget_map)
     protected MapWidget mapWidget;
     @BindView(R.id.widget_secondary_fpv)
     protected FPVWidget secondaryFPVWidget;
     @BindView(R.id.root_view)
     protected ConstraintLayout parentView;
-
     @BindView(R.id.widget_panel_system_status_list)
     protected SystemStatusListPanelWidget systemStatusListPanelWidget;
+
+    @BindView(R.id.widget_rtk)
+    protected RTKWidget rtkWidget;
+    @BindView(R.id.widget_simulator_control)
+    protected SimulatorControlWidget simulatorControlWidget;
 
     private boolean isMapMini = true;
     private int widgetHeight;
@@ -151,6 +160,25 @@ public class DefaultLayoutActivity extends AppCompatActivity {
                         ViewExtensions.hide(systemStatusListPanelWidget);
                     }
                 }));
+
+        compositeDisposable.add(rtkWidget.getWidgetStateUpdate()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(rtkWidgetState -> {
+                    if (rtkWidgetState instanceof RTKWidget.RTKWidgetState.VisibilityUpdate) {
+                        if (((RTKWidget.RTKWidgetState.VisibilityUpdate) rtkWidgetState).isVisible()) {
+                            hideOtherPanels(rtkWidget);
+                        }
+                    }
+                }));
+        compositeDisposable.add(simulatorControlWidget.getUIStateUpdates()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simulatorControlWidgetState -> {
+                    if (simulatorControlWidgetState instanceof SimulatorControlWidget.SimulatorControlWidgetUIUpdate.VisibilityToggled) {
+                        if (((SimulatorControlWidget.SimulatorControlWidgetUIUpdate.VisibilityToggled) simulatorControlWidgetState).isVisible()) {
+                            hideOtherPanels(simulatorControlWidget);
+                        }
+                    }
+                }));
     }
 
     @Override
@@ -165,6 +193,19 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     //endregion
 
     //region Utils
+
+    private void hideOtherPanels(@Nullable View widget) {
+        View[] panels = {
+                rtkWidget,
+                simulatorControlWidget
+        };
+
+        for (View panel : panels) {
+            if (widget != panel) {
+                panel.setVisibility(View.GONE);
+            }
+        }
+    }
 
     /**
      * Handles a click event on the FPV widget
@@ -195,9 +236,8 @@ public class DefaultLayoutActivity extends AppCompatActivity {
 
             //resize widgets
             resizeViews(fpvWidget, mapWidget);
-
             //enable interaction on FPV
-            fpvWidget.setInteractionEnabled(true);
+            fpvInteractionWidget.setInteractionEnabled(true);
             //disable user login widget on map
             mapWidget.getUserAccountLoginWidget().setVisibility(View.GONE);
             isMapMini = true;
@@ -205,11 +245,10 @@ public class DefaultLayoutActivity extends AppCompatActivity {
             //reorder widgets
             parentView.removeView(fpvWidget);
             parentView.addView(fpvWidget, parentView.indexOfChild(mapWidget) + 1);
-
             //resize widgets
             resizeViews(mapWidget, fpvWidget);
             //disable interaction on FPV
-            fpvWidget.setInteractionEnabled(false);
+            fpvInteractionWidget.setInteractionEnabled(false);
             //enable user login widget on map
             mapWidget.getUserAccountLoginWidget().setVisibility(View.VISIBLE);
             isMapMini = false;

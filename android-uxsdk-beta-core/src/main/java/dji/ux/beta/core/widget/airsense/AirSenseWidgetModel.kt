@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.airsense
@@ -50,23 +51,19 @@ class AirSenseWidgetModel(djiSdkModel: DJISDKModel,
     private val airSenseConnectedProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val airSenseWarningLevelProcessor: DataProcessor<AirSenseWarningLevel> = DataProcessor.create(AirSenseWarningLevel.UNKNOWN)
     private val airSenseAirplaneStatesProcessor: DataProcessor<Array<AirSenseAirplaneState>> = DataProcessor.create(emptyArray())
-    private lateinit var sendWarningMessageKey: UXKey
+    private val sendWarningMessageKey: UXKey = UXKeys.create(MessagingKeys.SEND_WARNING_MESSAGE)
     private val airSenseStatusProcessor: DataProcessor<AirSenseStatus> = DataProcessor.create(AirSenseStatus.DISCONNECTED)
     //endregion
 
     //region Data
     /**
      * Get the AirSense warning level.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val airSenseWarningLevel: Flowable<AirSenseWarningLevel>
         get() = airSenseWarningLevelProcessor.toFlowable().distinctUntilChanged()
 
     /**
      * Get the number of airplanes detected by AirSense
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val airSenseStatus: Flowable<AirSenseStatus>
         get() = airSenseStatusProcessor.toFlowable()
@@ -119,7 +116,6 @@ class AirSenseWidgetModel(djiSdkModel: DJISDKModel,
         bindDataProcessor(airSenseWarningLevelKey, airSenseWarningLevelProcessor)
         val airSenseAirplaneStatesKey: DJIKey = FlightControllerKey.create(FlightControllerKey.AIR_SENSE_AIRPLANE_STATES)
         bindDataProcessor(airSenseAirplaneStatesKey, airSenseAirplaneStatesProcessor)
-        sendWarningMessageKey = UXKeys.create(MessagingKeys.SEND_WARNING_MESSAGE)
     }
 
     override fun inCleanup() {

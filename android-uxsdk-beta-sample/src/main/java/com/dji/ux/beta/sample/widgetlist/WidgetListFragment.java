@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample.widgetlist;
@@ -46,14 +45,13 @@ import butterknife.ButterKnife;
  */
 public class WidgetListFragment extends Fragment {
 
-    //region Fields
-    private OnWidgetItemSelectedListener onWidgetItemSelectedListener;
-    private int selectedPosition = -1;
-    //endregion
-
     //region Views
     @BindView(R.id.recyclerview_widgets)
     protected RecyclerView widgetRecyclerView;
+    //region Fields
+    private OnWidgetItemSelectedListener onWidgetItemSelectedListener;
+    //endregion
+    private int selectedPosition = -1;
     //endregion
 
     //region Lifecycle

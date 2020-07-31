@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.visualcamera.widget.cameraconfig.iso;
@@ -153,15 +154,6 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
-    }
-
-    /**
      * Get the index of the camera to which the widget is reacting
      *
      * @return {@link SettingDefinitions.CameraIndex}
@@ -172,30 +164,21 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Set the index of camera to which the widget should react
+     *
+     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
+     */
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        widgetModel.setCameraIndex(cameraIndex);
+    }
+
+    /**
      * Set text appearance of the ISO and EI title text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setISOAndEITitleTextAppearance(@StyleRes int textAppearance) {
         isoTitleTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the ISO and EI title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setISOAndEITitleTextColor(@NonNull ColorStateList colorStateList) {
-        isoTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the ISO and EI title text view
-     *
-     * @param color color integer resource
-     */
-    public void setISOAndEITitleTextColor(@ColorInt int color) {
-        isoTitleTextView.setTextColor(color);
     }
 
     /**
@@ -219,12 +202,21 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the ISO and EI title text view
+     * Set text color state list for the ISO and EI title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setISOAndEITitleTextSize(@Dimension float textSize) {
-        isoTitleTextView.setTextSize(textSize);
+    public void setISOAndEITitleTextColor(@NonNull ColorStateList colorStateList) {
+        isoTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the ISO and EI title text view
+     *
+     * @param color color integer resource
+     */
+    public void setISOAndEITitleTextColor(@ColorInt int color) {
+        isoTitleTextView.setTextColor(color);
     }
 
     /**
@@ -235,6 +227,25 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getISOAndEITitleTextSize() {
         return isoTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the ISO and EI title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setISOAndEITitleTextSize(@Dimension float textSize) {
+        isoTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the ISO and EI title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getISOAndEITitleTextBackground() {
+        return isoTitleTextView.getBackground();
     }
 
     /**
@@ -256,40 +267,12 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the ISO and EI title text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getISOAndEITitleTextBackground() {
-        return isoTitleTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the ISO and EI value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setISOAndEIValueTextAppearance(@StyleRes int textAppearance) {
         isoValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the ISO and EI value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setISOAndEIValueTextColor(@NonNull ColorStateList colorStateList) {
-        isoValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the ISO and EI value text view
-     *
-     * @param color color integer resource
-     */
-    public void setISOAndEIValueTextColor(@ColorInt int color) {
-        isoValueTextView.setTextColor(color);
     }
 
     /**
@@ -313,12 +296,21 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the ISO and EI value text view
+     * Set text color state list for the ISO and EI value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setISOAndEIValueTextSize(@Dimension float textSize) {
-        isoValueTextView.setTextSize(textSize);
+    public void setISOAndEIValueTextColor(@NonNull ColorStateList colorStateList) {
+        isoValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the ISO and EI value text view
+     *
+     * @param color color integer resource
+     */
+    public void setISOAndEIValueTextColor(@ColorInt int color) {
+        isoValueTextView.setTextColor(color);
     }
 
     /**
@@ -329,6 +321,25 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getISOAndEIValueTextSize() {
         return isoValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the ISO and EI value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setISOAndEIValueTextSize(@Dimension float textSize) {
+        isoValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the ISO and EI value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getISOAndEIValueTextBackground() {
+        return isoValueTextView.getBackground();
     }
 
     /**
@@ -347,16 +358,6 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
      */
     public void setISOAndEIValueTextBackground(@Nullable Drawable drawable) {
         isoValueTextView.setBackground(drawable);
-    }
-
-    /**
-     * Get current background of the ISO and EI value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getISOAndEIValueTextBackground() {
-        return isoValueTextView.getBackground();
     }
     //endregion
 

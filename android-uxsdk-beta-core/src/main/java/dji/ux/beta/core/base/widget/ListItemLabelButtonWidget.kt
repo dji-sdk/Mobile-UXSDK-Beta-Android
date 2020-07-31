@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base.widget
@@ -268,6 +269,7 @@ abstract class ListItemLabelButtonWidget<T> @JvmOverloads constructor(
         listItemLabelTextView.id = ViewIDGenerator.generateViewId()
         listItemLabelTextView.gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT or Gravity.END
         listItemLabelTextColors = resources.getColorStateList(R.color.uxsdk_selector_text_color)
+        listItemLabelTextSize = getDimension(R.dimen.uxsdk_list_item_label_text_size)
         listItemLabel = getString(R.string.uxsdk_string_default_value)
     }
 
@@ -279,6 +281,7 @@ abstract class ListItemLabelButtonWidget<T> @JvmOverloads constructor(
         listItemButton.setOnClickListener(this)
         listItemButton.gravity = Gravity.CENTER
         listItemButton.minWidth = getDimension(R.dimen.uxsdk_list_item_button_min_width).toInt()
+        listItemButtonTextSize = getDimension(R.dimen.uxsdk_list_item_button_text_size)
         val buttonPaddingHorizontal: Int = getDimension(R.dimen.uxsdk_list_item_button_padding_horizontal).toInt()
         val buttonPaddingVertical: Int = getDimension(R.dimen.uxsdk_list_item_button_padding_vertical).toInt()
         listItemButton.setPadding(buttonPaddingHorizontal, buttonPaddingVertical, buttonPaddingHorizontal, buttonPaddingVertical)
@@ -287,7 +290,7 @@ abstract class ListItemLabelButtonWidget<T> @JvmOverloads constructor(
     private fun configureLabelWidget() {
         initLabel()
         val layoutParams = LayoutParams(0, ConstraintSet.WRAP_CONTENT)
-        layoutParams.rightToRight = guidelineRight.id
+        layoutParams.rightToLeft = clickIndicatorId
         layoutParams.topToTop = guidelineTop.id
         layoutParams.bottomToBottom = guidelineBottom.id
         layoutParams.leftToRight = guidelineCenter.id
@@ -298,7 +301,7 @@ abstract class ListItemLabelButtonWidget<T> @JvmOverloads constructor(
     private fun configureButtonWidget() {
         initButton()
         val layoutParams = LayoutParams(ConstraintSet.WRAP_CONTENT, ConstraintSet.WRAP_CONTENT)
-        layoutParams.rightToRight = guidelineRight.id
+        layoutParams.rightToLeft = clickIndicatorId
         layoutParams.topToTop = guidelineTop.id
         layoutParams.bottomToBottom = guidelineBottom.id
         listItemButton.layoutParams = layoutParams
@@ -310,7 +313,7 @@ abstract class ListItemLabelButtonWidget<T> @JvmOverloads constructor(
         initButton()
         val labelLayoutParams = LayoutParams(0, ConstraintSet.WRAP_CONTENT)
         labelLayoutParams.leftToRight = listItemButton.id
-        labelLayoutParams.rightToRight = guidelineRight.id
+        labelLayoutParams.rightToLeft = clickIndicatorId
         labelLayoutParams.topToTop = guidelineTop.id
         labelLayoutParams.bottomToBottom = guidelineBottom.id
         listItemLabelTextView.layoutParams = labelLayoutParams
@@ -328,29 +331,36 @@ abstract class ListItemLabelButtonWidget<T> @JvmOverloads constructor(
     }
 
     /**
-     * Set the background of the item label
+     * Set the background of the item button
+     *
+     * @param resourceId Integer ID of the background resource
      */
     fun setListItemButtonBackground(@DrawableRes resourceId: Int) {
         listItemButtonBackground = getDrawable(resourceId)
     }
 
     /**
-     * Set the text appearance of the button
+     * Set the text appearance of the item button
+     *
+     * @param textAppearanceResId Style resource for text appearance
      */
     fun setListItemButtonTextAppearance(@StyleRes textAppearanceResId: Int) {
         listItemButton.setTextAppearance(context, textAppearanceResId)
     }
 
-
     /**
      * Set the background of the item label
+     *
+     * @param resourceId Integer ID of the background resource
      */
     fun setListItemLabelBackground(@DrawableRes resourceId: Int) {
         listItemLabelBackground = getDrawable(resourceId)
     }
 
     /**
-     * Set the text appearance of the label
+     * Set the text appearance of the item label
+     *
+     * @param textAppearanceResId Style resource for text appearance
      */
     fun setListItemLabelTextAppearance(@StyleRes textAppearanceResId: Int) {
         listItemLabelTextView.setTextAppearance(context, textAppearanceResId)
@@ -364,10 +374,16 @@ abstract class ListItemLabelButtonWidget<T> @JvmOverloads constructor(
 
     @CallSuper
     override fun onClick(view: View?) {
+        super.onClick(view)
         if (view == listItemButton) {
             uiUpdateStateProcessor.onNext(WidgetUIState.ButtonClick)
             onButtonClick()
         }
+    }
+
+    @CallSuper
+    override fun onListItemClick() {
+      uiUpdateStateProcessor.onNext(WidgetUIState.ListItemClick)
     }
 
     abstract fun onButtonClick()
@@ -376,6 +392,11 @@ abstract class ListItemLabelButtonWidget<T> @JvmOverloads constructor(
      * Widget UI update State
      */
     sealed class WidgetUIState {
+        /**
+         * List Item click update
+         */
+        object ListItemClick : WidgetUIState()
+
         /**
          * Button click update
          */

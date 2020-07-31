@@ -19,7 +19,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="27dp"
     android:height="24dp"

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2018-2020 DJI
   ~
@@ -18,7 +19,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
     <style name="UXSDKMapWidgetTheme" parent="@style/Base.Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/uxsdk_blue</item>

@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.ui;
@@ -515,6 +516,16 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
+     * Get the drawable resource for the track icon
+     *
+     * @return Drawable resource for the icon
+     */
+    @Nullable
+    public Drawable getTrackIcon() {
+        return seekBarTrackImage.getDrawable();
+    }
+
+    /**
      * Set the resource ID for the track icon
      *
      * @param resourceId Integer ID of the drawable resource
@@ -533,13 +544,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get the drawable resource for the track icon
+     * Get the drawable resource for the track icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource for the icon's background
      */
     @Nullable
-    public Drawable getTrackIcon() {
-        return seekBarTrackImage.getDrawable();
+    public Drawable getTrackIconBackground() {
+        return seekBarTrackImage.getBackground();
     }
 
     /**
@@ -561,13 +572,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get the drawable resource for the track icon's background
+     * Get the drawable resource for the thumb icon
      *
-     * @return Drawable resource for the icon's background
+     * @return Drawable resource for the icon
      */
     @Nullable
-    public Drawable getTrackIconBackground() {
-        return seekBarTrackImage.getBackground();
+    public Drawable getThumbIcon() {
+        return seekBarThumbImage.getDrawable();
     }
 
     /**
@@ -589,13 +600,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get the drawable resource for the thumb icon
+     * Get the drawable resource for the thumb icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource for the icon's background
      */
     @Nullable
-    public Drawable getThumbIcon() {
-        return seekBarThumbImage.getDrawable();
+    public Drawable getThumbIconBackground() {
+        return seekBarThumbImage.getBackground();
     }
 
     /**
@@ -617,13 +628,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get the drawable resource for the thumb icon's background
+     * Get the drawable resource for the minus icon
      *
-     * @return Drawable resource for the icon's background
+     * @return Drawable resource for the icon
      */
     @Nullable
-    public Drawable getThumbIconBackground() {
-        return seekBarThumbImage.getBackground();
+    public Drawable getMinusIcon() {
+        return seekBarMinus.getDrawable();
     }
 
     /**
@@ -645,13 +656,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get the drawable resource for the minus icon
+     * Get the drawable resource for the minus icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource for the icon's background
      */
     @Nullable
-    public Drawable getMinusIcon() {
-        return seekBarMinus.getDrawable();
+    public Drawable getMinusIconBackground() {
+        return seekBarMinus.getBackground();
     }
 
     /**
@@ -673,13 +684,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get the drawable resource for the minus icon's background
+     * Get the drawable resource for the plus icon
      *
-     * @return Drawable resource for the icon's background
+     * @return Drawable resource for the icon
      */
     @Nullable
-    public Drawable getMinusIconBackground() {
-        return seekBarMinus.getBackground();
+    public Drawable getPlusIcon() {
+        return seekBarPlus.getDrawable();
     }
 
     /**
@@ -701,13 +712,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get the drawable resource for the plus icon
+     * Get the drawable resource for the plus icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource for the icon's background
      */
     @Nullable
-    public Drawable getPlusIcon() {
-        return seekBarPlus.getDrawable();
+    public Drawable getPlusIconBackground() {
+        return seekBarPlus.getBackground();
     }
 
     /**
@@ -729,22 +740,22 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get the drawable resource for the plus icon's background
-     *
-     * @return Drawable resource for the icon's background
-     */
-    @Nullable
-    public Drawable getPlusIconBackground() {
-        return seekBarPlus.getBackground();
-    }
-
-    /**
      * Set text appearance of the value text view
      *
      * @param textAppearanceResId Style resource for text appearance
      */
     public void setValueTextAppearance(@StyleRes int textAppearanceResId) {
         seekBarValueText.setTextAppearance(getContext(), textAppearanceResId);
+    }
+
+    /**
+     * Get current text color of the value text view
+     *
+     * @return color integer resource
+     */
+    @ColorInt
+    public int getValueTextColor() {
+        return seekBarValueText.getCurrentTextColor();
     }
 
     /**
@@ -766,16 +777,6 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get current text color of the value text view
-     *
-     * @return color integer resource
-     */
-    @ColorInt
-    public int getValueTextColor() {
-        return seekBarValueText.getCurrentTextColor();
-    }
-
-    /**
      * Get current color state list of the value text view
      *
      * @return ColorStateList resource
@@ -783,6 +784,16 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     @NonNull
     public ColorStateList getValueTextColors() {
         return seekBarValueText.getTextColors();
+    }
+
+    /**
+     * Get current background of the value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getValueTextBackground() {
+        return seekBarValueText.getBackground();
     }
 
     /**
@@ -804,13 +815,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get current background of the value text view
+     * Get current text size of the value text view
      *
-     * @return Drawable resource of the background
+     * @return text size of the text view
      */
-    @Nullable
-    public Drawable getValueTextBackground() {
-        return seekBarValueText.getBackground();
+    @Dimension
+    public float getValueTextSize() {
+        return seekBarValueText.getTextSize();
     }
 
     /**
@@ -823,22 +834,22 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get current text size of the value text view
-     *
-     * @return text size of the text view
-     */
-    @Dimension
-    public float getValueTextSize() {
-        return seekBarValueText.getTextSize();
-    }
-
-    /**
      * Set text appearance of the min value text view
      *
      * @param textAppearanceResId Style resource for text appearance
      */
     public void setMinValueTextAppearance(@StyleRes int textAppearanceResId) {
         seekBarMinText.setTextAppearance(getContext(), textAppearanceResId);
+    }
+
+    /**
+     * Get current text color of the min value text view
+     *
+     * @return color integer resource
+     */
+    @ColorInt
+    public int getMinValueTextColor() {
+        return seekBarMinText.getCurrentTextColor();
     }
 
     /**
@@ -860,16 +871,6 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get current text color of the min value text view
-     *
-     * @return color integer resource
-     */
-    @ColorInt
-    public int getMinValueTextColor() {
-        return seekBarMinText.getCurrentTextColor();
-    }
-
-    /**
      * Get current color state list of the min value text view
      *
      * @return ColorStateList resource
@@ -877,6 +878,16 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     @NonNull
     public ColorStateList getMinValueTextColors() {
         return seekBarMinText.getTextColors();
+    }
+
+    /**
+     * Get current background of the min value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getMinValueTextBackground() {
+        return seekBarMinText.getBackground();
     }
 
     /**
@@ -898,13 +909,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get current background of the min value text view
+     * Get current text size of the min value text view
      *
-     * @return Drawable resource of the background
+     * @return text size of the text view
      */
-    @Nullable
-    public Drawable getMinValueTextBackground() {
-        return seekBarMinText.getBackground();
+    @Dimension
+    public float getMinValueTextSize() {
+        return seekBarMinText.getTextSize();
     }
 
     /**
@@ -917,22 +928,22 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get current text size of the min value text view
-     *
-     * @return text size of the text view
-     */
-    @Dimension
-    public float getMinValueTextSize() {
-        return seekBarMinText.getTextSize();
-    }
-
-    /**
      * Set text appearance of the max value text view
      *
      * @param textAppearanceResId Style resource for text appearance
      */
     public void setMaxValueTextAppearance(@StyleRes int textAppearanceResId) {
         seekBarMaxText.setTextAppearance(getContext(), textAppearanceResId);
+    }
+
+    /**
+     * Get current text color of the max value text view
+     *
+     * @return color integer resource
+     */
+    @ColorInt
+    public int getMaxValueTextColor() {
+        return seekBarMaxText.getCurrentTextColor();
     }
 
     /**
@@ -954,16 +965,6 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get current text color of the max value text view
-     *
-     * @return color integer resource
-     */
-    @ColorInt
-    public int getMaxValueTextColor() {
-        return seekBarMaxText.getCurrentTextColor();
-    }
-
-    /**
      * Get current color state list of the max value text view
      *
      * @return ColorStateList resource
@@ -971,6 +972,16 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     @NonNull
     public ColorStateList getMaxValueTextColors() {
         return seekBarMaxText.getTextColors();
+    }
+
+    /**
+     * Get current background of the max value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getMaxValueTextBackground() {
+        return seekBarMaxText.getBackground();
     }
 
     /**
@@ -992,13 +1003,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get current background of the max value text view
+     * Get current text size of the max value text view
      *
-     * @return Drawable resource of the background
+     * @return text size of the text view
      */
-    @Nullable
-    public Drawable getMaxValueTextBackground() {
-        return seekBarMaxText.getBackground();
+    @Dimension
+    public float getMaxValueTextSize() {
+        return seekBarMaxText.getTextSize();
     }
 
     /**
@@ -1011,13 +1022,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
-     * Get current text size of the max value text view
+     * Get the color of the baseline
      *
-     * @return text size of the text view
+     * @return color integer resource
      */
-    @Dimension
-    public float getMaxValueTextSize() {
-        return seekBarMaxText.getTextSize();
+    @ColorInt
+    public int getBaselineColor() {
+        return seekBarBaselineColor;
     }
 
     /**
@@ -1028,16 +1039,6 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     public void setBaselineColor(@ColorInt int color) {
         seekBarBaselineColor = color;
         seekBarBaseline.setBackgroundColor(color);
-    }
-
-    /**
-     * Get the color of the baseline
-     *
-     * @return color integer resource
-     */
-    @ColorInt
-    public int getBaselineColor() {
-        return seekBarBaselineColor;
     }
 
     /**

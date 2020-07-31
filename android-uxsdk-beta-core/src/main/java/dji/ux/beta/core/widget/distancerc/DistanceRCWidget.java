@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.distancerc;
@@ -164,24 +165,6 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set text color state list for the distance from RC title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setDistanceRCTitleTextColor(@NonNull ColorStateList colorStateList) {
-        distanceRCTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the distance from RC title text view
-     *
-     * @param color color integer resource
-     */
-    public void setDistanceRCTitleTextColor(@ColorInt int color) {
-        distanceRCTitleTextView.setTextColor(color);
-    }
-
-    /**
      * Get current text color state list of the distance from RC title text view
      *
      * @return ColorStateList resource
@@ -202,12 +185,21 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the distance from RC title text view
+     * Set text color state list for the distance from RC title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setDistanceRCTitleTextSize(@Dimension float textSize) {
-        distanceRCTitleTextView.setTextSize(textSize);
+    public void setDistanceRCTitleTextColor(@NonNull ColorStateList colorStateList) {
+        distanceRCTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the distance from RC title text view
+     *
+     * @param color color integer resource
+     */
+    public void setDistanceRCTitleTextColor(@ColorInt int color) {
+        distanceRCTitleTextView.setTextColor(color);
     }
 
     /**
@@ -218,6 +210,25 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getDistanceRCTitleTextSize() {
         return distanceRCTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the distance from RC title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setDistanceRCTitleTextSize(@Dimension float textSize) {
+        distanceRCTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the distance from RC title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getDistanceRCTitleTextBackground() {
+        return distanceRCTitleTextView.getBackground();
     }
 
     /**
@@ -239,40 +250,12 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the distance from RC title text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getDistanceRCTitleTextBackground() {
-        return distanceRCTitleTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the distance from RC value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setDistanceRCValueTextAppearance(@StyleRes int textAppearance) {
         distanceRCValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the distance from RC value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setDistanceRCValueTextColor(@NonNull ColorStateList colorStateList) {
-        distanceRCValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the distance from RC value text view
-     *
-     * @param color color integer resource
-     */
-    public void setDistanceRCValueTextColor(@ColorInt int color) {
-        distanceRCValueTextView.setTextColor(color);
     }
 
     /**
@@ -296,12 +279,21 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the distance from RC value text view
+     * Set text color state list for the distance from RC value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setDistanceRCValueTextSize(@Dimension float textSize) {
-        distanceRCValueTextView.setTextSize(textSize);
+    public void setDistanceRCValueTextColor(@NonNull ColorStateList colorStateList) {
+        distanceRCValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the distance from RC value text view
+     *
+     * @param color color integer resource
+     */
+    public void setDistanceRCValueTextColor(@ColorInt int color) {
+        distanceRCValueTextView.setTextColor(color);
     }
 
     /**
@@ -312,6 +304,25 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getDistanceRCValueTextSize() {
         return distanceRCValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the distance from RC value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setDistanceRCValueTextSize(@Dimension float textSize) {
+        distanceRCValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the distance from RC value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getDistanceRCValueTextBackground() {
+        return distanceRCValueTextView.getBackground();
     }
 
     /**
@@ -333,40 +344,12 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the distance from RC value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getDistanceRCValueTextBackground() {
-        return distanceRCValueTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the distance from RC unit text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setDistanceRCUnitTextAppearance(@StyleRes int textAppearance) {
         distanceRCUnitTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the distance from RC  unit text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setDistanceRCUnitTextColor(@NonNull ColorStateList colorStateList) {
-        distanceRCUnitTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the distance from RC unit text view
-     *
-     * @param color color integer resource
-     */
-    public void setDistanceRCUnitTextColor(@ColorInt int color) {
-        distanceRCUnitTextView.setTextColor(color);
     }
 
     /**
@@ -390,12 +373,21 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the distance from RC unit text view
+     * Set text color state list for the distance from RC  unit text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setDistanceRCUnitTextSize(@Dimension float textSize) {
-        distanceRCUnitTextView.setTextSize(textSize);
+    public void setDistanceRCUnitTextColor(@NonNull ColorStateList colorStateList) {
+        distanceRCUnitTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the distance from RC unit text view
+     *
+     * @param color color integer resource
+     */
+    public void setDistanceRCUnitTextColor(@ColorInt int color) {
+        distanceRCUnitTextView.setTextColor(color);
     }
 
     /**
@@ -406,6 +398,25 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getDistanceRCUnitTextSize() {
         return distanceRCUnitTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the distance from RC unit text view
+     *
+     * @param textSize text size float value
+     */
+    public void setDistanceRCUnitTextSize(@Dimension float textSize) {
+        distanceRCUnitTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the distance from RC unit text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getDistanceRCUnitTextBackground() {
+        return distanceRCUnitTextView.getBackground();
     }
 
     /**
@@ -424,16 +435,6 @@ public class DistanceRCWidget extends ConstraintLayoutWidget {
      */
     public void setDistanceRCUnitTextBackground(@DrawableRes int resourceId) {
         distanceRCUnitTextView.setBackgroundResource(resourceId);
-    }
-
-    /**
-     * Get current background of the distance from RC unit text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getDistanceRCUnitTextBackground() {
-        return distanceRCUnitTextView.getBackground();
     }
 
     //Initialize all customizable attributes

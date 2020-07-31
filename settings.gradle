@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 include ':android-uxsdk-beta-core'
@@ -26,6 +27,7 @@ include ':android-uxsdk-beta-hardwareaccessory'
 include ':android-uxsdk-beta-map'
 include ':android-uxsdk-beta-training'
 include ':android-uxsdk-beta-visualcamera'
+include ':android-uxsdk-beta-intelligentflight'
 include ':android-uxsdk-beta-sample'
 
 project(':android-uxsdk-beta-core').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-core')
@@ -34,4 +36,5 @@ project(':android-uxsdk-beta-hardwareaccessory').projectDir = new File(rootProje
 project(':android-uxsdk-beta-map').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-map')
 project(':android-uxsdk-beta-training').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-training')
 project(':android-uxsdk-beta-visualcamera').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-visualcamera')
+project(':android-uxsdk-beta-intelligentflight').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-intelligentflight')
 project(':android-uxsdk-beta-sample').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-sample')

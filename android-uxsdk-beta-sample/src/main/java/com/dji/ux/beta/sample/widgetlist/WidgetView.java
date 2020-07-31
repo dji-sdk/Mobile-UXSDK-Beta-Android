@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample.widgetlist;
@@ -40,7 +39,9 @@ import com.dji.ux.beta.sample.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
-import dji.ux.beta.core.widget.fpv.interaction.FPVInteractionWidget;
+import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
+
+
 
 /**
  * A view with a single widget and an indicator of the current size of the widget. This widget
@@ -49,22 +50,21 @@ import dji.ux.beta.core.widget.fpv.interaction.FPVInteractionWidget;
  */
 public class WidgetView extends ConstraintLayout {
 
-    //region fields
-    private WidgetViewHolder widgetViewHolder;
-    private ScaleGestureDetector scaleGestureDetector;
-    private int originalHeight;
-    private int originalWidth;
-    private float scaleFactor = 1.0f;
-    //endregion
-
-    //region Views
-    private ViewGroup widget;
     @BindView(R.id.widget_container)
     protected LinearLayout containerView;
     @BindView(R.id.textview_aspect_ratio)
     protected TextView aspectRatioTextView;
     @BindView(R.id.textview_current_size)
     protected TextView currentSizeTextView;
+    //region fields
+    private WidgetViewHolder widgetViewHolder;
+    private ScaleGestureDetector scaleGestureDetector;
+    //endregion
+    private int originalHeight;
+    private int originalWidth;
+    private float scaleFactor = 1.0f;
+    //region Views
+    private ViewGroup widget;
     //endregion
 
     //region lifecycle

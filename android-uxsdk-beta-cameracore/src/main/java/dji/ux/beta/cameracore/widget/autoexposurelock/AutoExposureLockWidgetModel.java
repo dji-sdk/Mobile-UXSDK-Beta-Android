@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.autoexposurelock;
@@ -37,7 +38,7 @@ import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
 /**
  * Auto Exposure Lock Widget Model
- *
+ * <p>
  * Widget Model for the {@link AutoExposureLockWidget} used to define the
  * underlying logic and communication
  */
@@ -73,16 +74,6 @@ public class AutoExposureLockWidgetModel extends WidgetModel {
     //region Actions
 
     /**
-     * Set camera index to which the model should react.
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        this.cameraIndex = cameraIndex.getIndex();
-        restart();
-    }
-
-    /**
      * Get the camera index for which the model is reacting.
      *
      * @return int representing {@link CameraIndex}.
@@ -90,6 +81,16 @@ public class AutoExposureLockWidgetModel extends WidgetModel {
     @NonNull
     public CameraIndex getCameraIndex() {
         return CameraIndex.find(cameraIndex);
+    }
+
+    /**
+     * Set camera index to which the model should react.
+     *
+     * @param cameraIndex index of the camera.
+     */
+    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
+        this.cameraIndex = cameraIndex.getIndex();
+        restart();
     }
 
     /**

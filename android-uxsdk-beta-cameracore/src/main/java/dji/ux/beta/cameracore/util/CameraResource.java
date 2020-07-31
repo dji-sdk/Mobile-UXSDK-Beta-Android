@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.util;
@@ -97,7 +98,6 @@ public class CameraResource {
             } else if (PhotoPanoramaMode.PANORAMA_MODE_3X3.value() == value) {
                 return R.drawable.uxsdk_ic_photo_mode_pano_3x3;
             } else if (PhotoPanoramaMode.PANORAMA_MODE_SUPER_RESOLUTION.value() == value) {
-                //TODO add correct image
                 return R.drawable.uxsdk_ic_photo_mode_nor;
             } else if (PhotoPanoramaMode.PANORAMA_MODE_SPHERE.value() == value) {
                 return R.drawable.uxsdk_ic_photo_mode_pano_sphere;
@@ -105,10 +105,8 @@ public class CameraResource {
                 return R.drawable.uxsdk_ic_photo_mode_pano_180;
             }
         } else if (ShootPhotoMode.EHDR.value() == mode) {
-            //TODO add correct image
             return R.drawable.uxsdk_ic_photo_mode_nor;
         } else if (ShootPhotoMode.HYPER_LIGHT.value() == mode) {
-            //TODO add correct image
             return R.drawable.uxsdk_ic_photo_mode_nor;
         } else {
             return R.drawable.uxsdk_ic_photo_mode_nor;

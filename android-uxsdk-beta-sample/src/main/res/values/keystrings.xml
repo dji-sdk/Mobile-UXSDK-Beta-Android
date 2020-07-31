@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2018-2020 DJI
   ~
@@ -18,6 +19,7 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
 
 <resources>
@@ -28,5 +30,4 @@
     <string name="dji_ux_sample_google_maps_api_key">YOUR GOOGLE MAPS API KEY</string>
     <string name="dji_ux_sample_amaps_api_key">YOUR AMAPS API KEY</string>
     <string name="dji_ux_sample_mapbox_token">YOUR_MAPBOX_TOKEN</string>
-
 </resources>

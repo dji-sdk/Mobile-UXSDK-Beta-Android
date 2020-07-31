@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample;
@@ -70,7 +69,6 @@ import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
 import dji.ux.beta.core.util.SettingDefinitions;
 
-
 /**
  * Handles the connection to the product and provides links to the different test activities. Also
  * shows the current connection status and displays logs for the different steps of the SDK
@@ -80,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     //region Constants
     private static final String LAST_USED_BRIDGE_IP = "bridgeip";
+    private static final int REQUEST_PERMISSION_CODE = 12345;
     private static final String[] REQUIRED_PERMISSION_LIST = new String[]{
             Manifest.permission.VIBRATE, // Gimbal rotation
             Manifest.permission.INTERNET, // API requests
@@ -95,14 +94,22 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
             Manifest.permission.READ_PHONE_STATE, // Device UUID accessed upon registration
             Manifest.permission.RECORD_AUDIO // Speaker accessory
     };
-    private static final int REQUEST_PERMISSION_CODE = 12345;
     private static final String TIME_FORMAT = "MMM dd, yyyy 'at' h:mm:ss a";
     private static final String TAG = "MainActivity";
     //endregion
-
+    private static boolean isAppStarted = false;
+    @BindView(R.id.text_view_version)
+    protected TextView versionTextView;
+    @BindView(R.id.text_view_registered)
+    protected TextView registeredTextView;
+    @BindView(R.id.text_view_product_name)
+    protected TextView productNameTextView;
+    @BindView(R.id.edit_text_bridge_ip)
+    protected EditText bridgeModeEditText;
+    @BindView(R.id.text_view_logs)
+    protected TextView logsTextView;
     //region Fields
     private AtomicBoolean isRegistrationInProgress = new AtomicBoolean(false);
-    private static boolean isAppStarted = false;
     private int lastProgress = -1;
     private DJISDKManager.SDKManagerCallback registrationCallback = new DJISDKManager.SDKManagerCallback() {
 
@@ -147,6 +154,23 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
 
         @Override
+        public void onProductChanged(BaseProduct product) {
+            if (product != null) {
+                runOnUiThread(() -> {
+                    addLog("Product changed");
+                    if (product.getModel() != null) {
+                        productNameTextView.setText(getString(R.string.product_name, product.getModel().getDisplayName()));
+                    } else if (product instanceof Aircraft) {
+                        Aircraft aircraft = (Aircraft) product;
+                        if (aircraft.getRemoteController() != null) {
+                            productNameTextView.setText(getString(R.string.remote_controller));
+                        }
+                    }
+                });
+            }
+        }
+
+        @Override
         public void onComponentChange(BaseProduct.ComponentKey key,
                                       BaseComponent oldComponent,
                                       BaseComponent newComponent) {
@@ -172,17 +196,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         }
     };
     private List<String> missingPermission = new ArrayList<>();
-    @BindView(R.id.text_view_version)
-    protected TextView versionTextView;
-    @BindView(R.id.text_view_registered)
-    protected TextView registeredTextView;
-    @BindView(R.id.text_view_product_name)
-    protected TextView productNameTextView;
-    @BindView(R.id.edit_text_bridge_ip)
-    protected EditText bridgeModeEditText;
-    @BindView(R.id.text_view_logs)
-    protected TextView logsTextView;
     //endregion
+
+    /**
+     * Whether the app has started.
+     *
+     * @return `true` if the app has been started.
+     */
+    public static boolean isStarted() {
+        return isAppStarted;
+    }
 
     //region Lifecycle
     @Override
@@ -190,15 +213,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle(R.string.dji_ux_sample_app_name_long);
-        }
         isAppStarted = true;
         checkAndRequestPermissions();
         setBridgeModeEditText();
         versionTextView.setText(getResources().getString(R.string.sdk_version,
                 DJISDKManager.getInstance().getSDKVersion()));
     }
+    //endregion
 
     @Override
     protected void onDestroy() {
@@ -209,7 +230,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         isAppStarted = false;
         super.onDestroy();
     }
-    //endregion
 
     /**
      * Checks if there is any missing permissions, and
@@ -336,30 +356,15 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         logsTextView.append(sdf.format(Calendar.getInstance().getTime()) + " " + description + "\n");
     }
 
-    /**
-     * Whether the app has started.
-     *
-     * @return `true` if the app has been started.
-     */
-    public static boolean isStarted() {
-        return isAppStarted;
-    }
-
-    /**
-     * Starts the {@link WidgetsActivity}.
-     */
-    @OnClick(R.id.widget_button)
-    public void onWidgetClick() {
-        Intent intent = new Intent(this, WidgetsActivity.class);
-        startActivity(intent);
-    }
-
-    /**
-     * Starts the {@link DefaultLayoutActivity}.
-     */
     @OnClick(R.id.default_layout_button)
     public void onDefaultLayoutClick() {
         Intent intent = new Intent(this, DefaultLayoutActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.widget_list)
+    public void onWidgetListClick() {
+        Intent intent = new Intent(this, WidgetsActivity.class);
         startActivity(intent);
     }
 
@@ -380,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         popupMenu.findItem(R.id.google_map).setEnabled(MapUtil.isGoogleMapsSupported(this));
         popup.show();
     }
+
 
     /**
      * When one of the map providers is clicked, the {@link MapWidgetActivity} is launched with
@@ -411,4 +417,5 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         startActivity(intent);
         return false;
     }
+
 }

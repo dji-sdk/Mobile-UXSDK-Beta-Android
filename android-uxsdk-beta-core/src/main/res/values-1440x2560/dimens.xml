@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="uxsdk_list_item_edit_text_size">4sp</dimen>
+    <dimen name="uxsdk_list_item_label_text_size">4sp</dimen>
+    <dimen name="uxsdk_list_item_hint_text_size">2sp</dimen>
+    <dimen name="uxsdk_list_item_radio_button_text_size">3sp</dimen>
+    <dimen name="uxsdk_list_item_button_text_size">3sp</dimen>
+    <dimen name="uxsdk_list_item_title_text_size">6sp</dimen>
+</resources>

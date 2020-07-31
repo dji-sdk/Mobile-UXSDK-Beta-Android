@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.util;
@@ -156,6 +157,23 @@ public class CameraActionSound {
         }
 
         /**
+         * Returns the enum constant of this type with the input integer value.
+         *
+         * @param value The input integer value
+         * @return The enum constant of this type
+         */
+        public static ShutterSoundCount find(int value) {
+            ShutterSoundCount result = UNKNOWN;
+            for (int i = 0; i < values().length; i++) {
+                if (values()[i]._equals(value)) {
+                    result = values()[i];
+                    break;
+                }
+            }
+            return result;
+        }
+
+        /**
          * Returns the real value of an enum value.
          *
          * @return integer The real value.
@@ -172,23 +190,6 @@ public class CameraActionSound {
          */
         private boolean _equals(int b) {
             return value == b;
-        }
-
-        /**
-         * Returns the enum constant of this type with the input integer value.
-         *
-         * @param value The input integer value
-         * @return The enum constant of this type
-         */
-        public static ShutterSoundCount find(int value) {
-            ShutterSoundCount result = UNKNOWN;
-            for (int i = 0; i < values().length; i++) {
-                if (values()[i]._equals(value)) {
-                    result = values()[i];
-                    break;
-                }
-            }
-            return result;
         }
 
     }

@@ -44,6 +44,7 @@ import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettingsindicator.Ex
 import dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch.PhotoVideoSwitchWidget;
 import dji.ux.beta.cameracore.widget.focusexposureswitch.FocusExposureSwitchWidget;
 import dji.ux.beta.cameracore.widget.focusmode.FocusModeWidget;
+import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
 import dji.ux.beta.core.panelwidget.systemstatus.SystemStatusListPanelWidget;
 import dji.ux.beta.core.panelwidget.topbar.TopBarPanelWidget;
 import dji.ux.beta.core.widget.airsense.AirSenseWidget;
@@ -56,7 +57,6 @@ import dji.ux.beta.core.widget.distancehome.DistanceHomeWidget;
 import dji.ux.beta.core.widget.distancerc.DistanceRCWidget;
 import dji.ux.beta.core.widget.flightmode.FlightModeWidget;
 import dji.ux.beta.core.widget.fpv.FPVWidget;
-import dji.ux.beta.core.widget.fpv.interaction.FPVInteractionWidget;
 import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget;
 import dji.ux.beta.core.widget.horizontalvelocity.HorizontalVelocityWidget;
 import dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidget;

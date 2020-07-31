@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.ui;
@@ -124,6 +125,17 @@ public class ProgressRingView extends View {
         canvas.drawArc(boundaries, 0, 360, false, paint);
     }
 
+    public void setRingColor(@ColorInt int color) {
+        ringColor = color;
+        paint.setColor(color);
+        initProgressGradient(width, height);
+        invalidate();
+    }
+
+    public boolean isIndeterminate() {
+        return indeterminate;
+    }
+
     public void setIndeterminate(boolean indeterminate) {
         if (indeterminate == this.indeterminate) return;
 
@@ -135,17 +147,6 @@ public class ProgressRingView extends View {
             indeterminateAnimation.cancel();
             indeterminateAnimation.reset();
         }
-    }
-
-    public void setRingColor(@ColorInt int color) {
-        ringColor = color;
-        paint.setColor(color);
-        initProgressGradient(width, height);
-        invalidate();
-    }
-
-    public boolean isIndeterminate() {
-        return indeterminate;
     }
 
     private void initProgressGradient(int w, int h) {

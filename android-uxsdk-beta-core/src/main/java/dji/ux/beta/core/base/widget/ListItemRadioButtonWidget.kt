@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base.widget
@@ -52,8 +53,6 @@ abstract class ListItemRadioButtonWidget<T> @JvmOverloads constructor(
 ) : ListItemTitleWidget<T>(context, attrs, defStyleAttr), RadioGroup.OnCheckedChangeListener {
 
     protected val uiUpdateStateProcessor: PublishProcessor<WidgetUIState> = PublishProcessor.create()
-
-    protected val INVALID_OPTION_INDEX = -1
 
     private val radioGroup: RadioGroup = RadioGroup(context)
 
@@ -137,7 +136,7 @@ abstract class ListItemRadioButtonWidget<T> @JvmOverloads constructor(
         radioGroup.setOnCheckedChangeListener(this)
         radioGroup.gravity = Gravity.CENTER_VERTICAL or Gravity.RIGHT or Gravity.END
         val layoutParams = LayoutParams(0, ConstraintSet.WRAP_CONTENT)
-        layoutParams.rightToRight = guidelineRight.id
+        layoutParams.rightToLeft = clickIndicatorId
         layoutParams.topToTop = guidelineTop.id
         layoutParams.bottomToBottom = guidelineBottom.id
         layoutParams.leftToRight = guidelineCenter.id
@@ -233,6 +232,10 @@ abstract class ListItemRadioButtonWidget<T> @JvmOverloads constructor(
         }
     }
 
+    override fun onListItemClick() {
+        uiUpdateStateProcessor.onNext(WidgetUIState.ListItemClick)
+    }
+
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         for (i in 0 until radioGroup.childCount) {
@@ -266,11 +269,19 @@ abstract class ListItemRadioButtonWidget<T> @JvmOverloads constructor(
      */
     sealed class WidgetUIState {
         /**
+         * List Item click update
+         */
+        object ListItemClick : WidgetUIState()
+
+        /**
          * Option click update
          */
         data class OptionTapped(val optionIndex: Int, val optionLabel: String) : WidgetUIState()
 
     }
 
+    protected companion object {
+        const val INVALID_OPTION_INDEX = -1
+    }
 
 }

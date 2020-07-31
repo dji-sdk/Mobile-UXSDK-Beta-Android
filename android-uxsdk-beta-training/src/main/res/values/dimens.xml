@@ -19,7 +19,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
     <dimen name="uxsdk_simulator_header_text_size">16sp</dimen>
     <dimen name="uxsdk_simulator_dialog_padding">5dp</dimen>
@@ -27,4 +29,8 @@
     <dimen name="uxsdk_simulator_dialog_width">400dp</dimen>
     <dimen name="uxsdk_simulator_dialog_height">300dp</dimen>
     <dimen name="uxsdk_simulator_dialog_button_text_size">16sp</dimen>
+
+    <dimen name="uxsdk_simulator_row_height">45dp</dimen>
+    <dimen name="uxsdk_simulator_row_margin">5dp</dimen>
+    <dimen name="uxsdk_simulator_row_text_size">14sp</dimen>
 </resources>

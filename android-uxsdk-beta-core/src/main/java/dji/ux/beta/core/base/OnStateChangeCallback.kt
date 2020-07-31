@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base
@@ -26,5 +27,9 @@ package dji.ux.beta.core.base
  * Interface to be implemented by widgets for coupled 1:1 communication
  */
 interface OnStateChangeCallback<T> {
+
+    /**
+     * Called when the state has changed
+     */
     fun onStateChange(state: T?)
 }

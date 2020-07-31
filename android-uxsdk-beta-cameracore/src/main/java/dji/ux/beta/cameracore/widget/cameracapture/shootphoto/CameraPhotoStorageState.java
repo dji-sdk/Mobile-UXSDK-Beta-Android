@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracapture.shootphoto;
@@ -39,7 +40,7 @@ public abstract class CameraPhotoStorageState {
     }
 
     /**
-     * Get the current storage location
+     *  Get the current storage location
      *
      * @return instance of {@link dji.common.camera.SettingsDefinitions.StorageLocation}
      */
@@ -48,7 +49,7 @@ public abstract class CameraPhotoStorageState {
     }
 
     /**
-     * Get the number of photos that can be clicked before running out of storage
+     *  Get the number of photos that can be clicked before running out of storage
      *
      * @return long value representing count of photos
      */

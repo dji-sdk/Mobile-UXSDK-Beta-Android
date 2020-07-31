@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.map.widget.map;
@@ -66,9 +67,9 @@ import dji.ux.beta.core.util.DataProcessor;
  */
 public class MapWidgetModel extends WidgetModel {
 
+    public static final double INVALID_COORDINATE = 181;  //valid longitude range is -180 to 180.
     //region fields
     private static final String TAG = "MapWidgetModel";
-    public static final double INVALID_COORDINATE = 181;  //valid longitude range is -180 to 180.
     private static final int FIRST_TIME_DELAY = 3;
     private final DataProcessor<LocationCoordinate3D> aircraftLocationDataProcessor;
     private final DataProcessor<Double> homeLatitudeDataProcessor;

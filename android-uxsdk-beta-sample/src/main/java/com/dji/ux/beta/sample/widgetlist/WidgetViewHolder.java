@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample.widgetlist;
@@ -38,6 +37,7 @@ import dji.log.DJILog;
 import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.FrameLayoutWidget;
 import dji.ux.beta.core.util.DisplayUtil;
+
 
 /**
  * A view holder for a single widget.

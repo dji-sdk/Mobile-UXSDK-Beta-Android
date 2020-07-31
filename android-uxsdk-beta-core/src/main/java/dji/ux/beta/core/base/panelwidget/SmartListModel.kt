@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base.panelwidget
@@ -26,10 +27,17 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.IntRange
+import dji.common.product.Model
 import dji.thirdparty.io.reactivex.Flowable
+import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
 import dji.thirdparty.io.reactivex.disposables.CompositeDisposable
 import dji.thirdparty.io.reactivex.disposables.Disposable
+import dji.thirdparty.io.reactivex.functions.Consumer
 import dji.thirdparty.io.reactivex.processors.PublishProcessor
+import dji.ux.beta.core.base.DJISDKModel
+import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.panelwidget.systemstatus.SmartListInternalModel
+import dji.ux.beta.core.util.RxUtil
 
 /**
  * The [String] to identify a widget.
@@ -87,6 +95,11 @@ abstract class SmartListModel @JvmOverloads constructor(
     val widgetCreated: Flowable<Pair<WidgetID, View>>
         get() = widgetCreatedProcessor
 
+    /**
+     * Widget model to detect the connected product.
+     */
+    val widgetModel = SmartListInternalModel(djiSdkModel = DJISDKModel.getInstance(),
+            uxKeyManager = ObservableInMemoryKeyedStore.getInstance())
     private var currentOrderList: MutableList<WidgetID> = mutableListOf()
     private val createdWidgetsMap: MutableMap<WidgetID, View> = mutableMapOf()
     private var activeWidgetList: List<View> = emptyList()
@@ -105,7 +118,13 @@ abstract class SmartListModel @JvmOverloads constructor(
         currentOrderList = registeredWidgetIDList.toMutableList()
         buildAndInstallWidgets(defaultActiveWidgetSet)
         compositeDisposable = CompositeDisposable()
+        widgetModel.setup()
+        addDisposable(widgetModel.aircraftModel
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(Consumer { onAircraftModelChanged(it) },
+                        RxUtil.logErrorConsumer("SmartListModel", "Error on Aircraft Model Changed. ")))
         inSetUp()
+
     }
 
     /**
@@ -113,6 +132,7 @@ abstract class SmartListModel @JvmOverloads constructor(
      */
     fun cleanUp() {
         inCleanUp()
+        widgetModel.cleanup()
         disposeAll()
     }
 
@@ -125,6 +145,11 @@ abstract class SmartListModel @JvmOverloads constructor(
      * Cleanup method for post-usage destruction that must be implemented
      */
     protected abstract fun inCleanUp()
+
+    /**
+     * Setup the list based on the connected aircraft
+     */
+    protected abstract fun onAircraftModelChanged(model: Model)
     //endregion
 
     //region Installing Widgets

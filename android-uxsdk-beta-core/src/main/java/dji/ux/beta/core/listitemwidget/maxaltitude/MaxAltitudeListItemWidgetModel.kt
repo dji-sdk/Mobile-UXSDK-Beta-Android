@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.listitemwidget.maxaltitude
@@ -67,8 +68,6 @@ class MaxAltitudeListItemWidgetModel(
 
     /**
      * Get the max altitude state
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val maxAltitudeState: Flowable<MaxAltitudeState>
         get() = maxAltitudeStateProcessor.toFlowable()
@@ -85,6 +84,7 @@ class MaxAltitudeListItemWidgetModel(
         val unitTypeKey = GlobalPreferenceKeys.create(GlobalPreferenceKeys.UNIT_TYPE)
         bindDataProcessor(unitTypeKey, unitTypeDataProcessor)
         preferencesManager?.setUpListener()
+        preferencesManager?.let { unitTypeDataProcessor.onNext(it.unitType) }
 
     }
 

@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.core.listitemwidget.rcstickmode
@@ -58,7 +59,6 @@ class RCStickModeListItemWidgetModel(
 
     /**
      * Get the current rc stick list item state
-     * @return Flowable with value of RCStickModeListItemState
      */
     val rcStickModeState: Flowable<RCStickModeState> = rcStickModeStateProcessor.toFlowable()
 

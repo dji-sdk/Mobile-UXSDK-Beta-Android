@@ -18,11 +18,14 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.util;
 
 import dji.common.product.Model;
+import dji.sdk.base.BaseProduct;
+import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
 
 /**
@@ -92,6 +95,23 @@ public final class ProductUtil {
     }
 
     /**
+     * Determine whether the connected product is in the  Matrice 200 series.
+     *
+     * @param model The connected product.
+     * @return `true` if the connected product is in the  Matrice 200 series. `false` if the
+     * connected product is not in the  Matrice 200 series.
+     */
+    public static boolean isMatrice200Series(Model model) {
+        return Model.MATRICE_200.equals(model)
+                || Model.MATRICE_210.equals(model)
+                || Model.MATRICE_210_RTK.equals(model)
+                || Model.MATRICE_200_V2.equals(model)
+                || Model.MATRICE_210_V2.equals(model)
+                || Model.MATRICE_210_RTK_V2.equals(model)
+                || Model.MATRICE_300_RTK.equals(model);
+    }
+
+    /**
      * Determine whether the connected product is part of the Phantom 3 series.
      *
      * @param model The connected product.
@@ -152,7 +172,7 @@ public final class ProductUtil {
         }
         return false;
     }
-
+    
     /**
      * Determine whether the connected product has vision sensors.
      *
@@ -165,5 +185,23 @@ public final class ProductUtil {
                 && !Model.MATRICE_100.equals(model)
                 && !isPhantom3Series(model)
                 && !isInspire1Series(model);
+    }
+
+    /**
+     * Determine whether the connected product is connected by WiFi only without an RC.
+     *
+     * @return True if the product is connected by WiFi.
+     */
+    public static boolean isProductWiFiConnected() {
+        if (!isProductAvailable()) return false;
+
+        BaseProduct product = DJISDKManager.getInstance().getProduct();
+        if (product instanceof Aircraft) {
+            Aircraft aircraft = (Aircraft) product;
+            return (aircraft.isConnected() &&
+                    (aircraft.getRemoteController() == null
+                            || !aircraft.getRemoteController().isConnected()));
+        }
+        return false;
     }
 }

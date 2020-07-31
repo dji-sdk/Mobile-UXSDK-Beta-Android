@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.focusexposureswitch;
@@ -58,9 +59,9 @@ public class FocusExposureSwitchWidgetModel extends WidgetModel {
     private final DataProcessor<MeteringMode> meteringModeDataProcessor;
     private final DataProcessor<ControlMode> controlModeDataProcessor;
     private final ObservableInMemoryKeyedStore keyedStore;
+    private final GlobalPreferencesInterface preferencesManager;
     private DJIKey meteringModeKey;
     private UXKey controlModeKey;
-    private final GlobalPreferencesInterface preferencesManager;
     private int cameraIndex;
     private SchedulerProviderInterface schedulerProvider;
     //endregion

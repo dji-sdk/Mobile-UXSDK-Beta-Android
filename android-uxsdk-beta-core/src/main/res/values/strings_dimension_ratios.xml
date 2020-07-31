@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -19,7 +18,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
     <string name="uxsdk_widget_default_ratio" translatable="false">W,1:1</string>
     <string name="uxsdk_widget_battery_ratio" translatable="false">W,25:11</string>

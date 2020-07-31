@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base.uxsdkkeys;
@@ -50,14 +51,6 @@ public class ObservableInMemoryKeyedStore implements ObservableKeyedStore {
 
     private Lock lock = new ReentrantLock();
 
-    private static class SingletonHolder {
-        private static ObservableInMemoryKeyedStore instance = new ObservableInMemoryKeyedStore();
-    }
-
-    public static ObservableInMemoryKeyedStore getInstance() {
-        return ObservableInMemoryKeyedStore.SingletonHolder.instance;
-    }
-
     private ObservableInMemoryKeyedStore() {
         keyStringProcessorMap = new ConcurrentHashMap<>(INITIAL_CAPACITY);
         store = FlatStore.getInstance();
@@ -65,6 +58,10 @@ public class ObservableInMemoryKeyedStore implements ObservableKeyedStore {
         UXKeys.addNewKeyClass(GlobalPreferenceKeys.class);
         UXKeys.addNewKeyClass(CameraKeys.class);
         UXKeys.addNewKeyClass(MessagingKeys.class);
+    }
+
+    public static ObservableInMemoryKeyedStore getInstance() {
+        return ObservableInMemoryKeyedStore.SingletonHolder.instance;
     }
 
     /**
@@ -200,5 +197,9 @@ public class ObservableInMemoryKeyedStore implements ObservableKeyedStore {
         } finally {
             lock.unlock();
         }
+    }
+
+    private static class SingletonHolder {
+        private static ObservableInMemoryKeyedStore instance = new ObservableInMemoryKeyedStore();
     }
 }

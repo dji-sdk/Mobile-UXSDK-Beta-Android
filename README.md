@@ -33,5 +33,5 @@ Mobile-UXSDK-Beta-Android is available under the the MIT license. Please see the
 
 ## Future Plans
 
-We are eager to give you a sneak peek, and are very interested in receiving your feedback and suggestions. Please refer to the wiki or the release notes for the full list of elements that the Beta 3 version makes available.
-Our long-term plan is for this framework to reach feature parity with the UX SDK 4.12 release. The core team is currently working on porting the remaining widgets and other APIs to the new architecture and we will open source them in additional future Beta releases as they are completed. We welcome your feedback on the architecture and your ideas for additional widgets, including those not included in prior UX SDK releases, as well as your contributions and PRs for any ***currently open-sourced features***.
+We are eager to give you a sneak peek, and are very interested in receiving your feedback and suggestions. Please refer to the wiki or the release notes for the full list of elements that the Beta 4 version makes available.
+Our long-term plan is for this framework to reach feature parity with the UX SDK 4.13 release. The core team is currently working on porting the remaining widgets and other APIs to the new architecture and we will open source them in additional future Beta releases as they are completed. We welcome your feedback on the architecture and your ideas for additional widgets, including those not included in prior UX SDK releases, as well as your contributions and PRs for any ***currently open-sourced features***.

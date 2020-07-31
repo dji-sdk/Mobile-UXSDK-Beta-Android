@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracapture.shootphoto;
@@ -402,6 +403,16 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     //region customizations
 
     /**
+     * Get the index of the camera to which the widget is reacting
+     *
+     * @return {@link CameraIndex}
+     */
+    @NonNull
+    public CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
+    }
+
+    /**
      * Set the index of camera to which the widget should react
      *
      * @param cameraIndex {@link CameraIndex}
@@ -413,13 +424,12 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     }
 
     /**
-     * Get the index of the camera to which the widget is reacting
+     * Get the current start shooting photo icon
      *
-     * @return {@link CameraIndex}
+     * @return Drawable currently used
      */
-    @NonNull
-    public CameraIndex getCameraIndex() {
-        return widgetModel.getCameraIndex();
+    public Drawable getStartShootPhotoDrawable() {
+        return startShootPhotoDrawable;
     }
 
     /**
@@ -442,12 +452,13 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     }
 
     /**
-     * Get the current start shooting photo icon
+     * Get the current stop shooting photo icon
      *
      * @return Drawable currently used
      */
-    public Drawable getStartShootPhotoDrawable() {
-        return startShootPhotoDrawable;
+    @Nullable
+    public Drawable getStopShootPhotoDrawable() {
+        return stopShootPhotoDrawable;
     }
 
     /**
@@ -470,13 +481,13 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     }
 
     /**
-     * Get the current stop shooting photo icon
+     * Get the current icon for start shooting photo for Hasselblad camera
      *
      * @return Drawable currently used
      */
     @Nullable
-    public Drawable getStopShootPhotoDrawable() {
-        return stopShootPhotoDrawable;
+    public Drawable getStartShootHasselbladPhotoDrawable() {
+        return startShootPhotoHasselbladDrawable;
     }
 
     /**
@@ -499,13 +510,14 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     }
 
     /**
-     * Get the current icon for start shooting photo for Hasselblad camera
+     * Get the current icon for stop shooting photo for Hasselblad camera
+     * Currently on Mavic 2 Pro
      *
      * @return Drawable currently used
      */
     @Nullable
-    public Drawable getStartShootHasselbladPhotoDrawable() {
-        return startShootPhotoHasselbladDrawable;
+    public Drawable getStopShootHasselbladPhotoDrawable() {
+        return stopShootPhotoHasselbladDrawable;
     }
 
     /**
@@ -527,17 +539,6 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     public void setStopShootHasselbladPhotoDrawable(@Nullable Drawable drawable) {
         stopShootPhotoHasselbladDrawable = drawable;
         checkAndUpdateCanStartOrStopShootingPhoto();
-    }
-
-    /**
-     * Get the current icon for stop shooting photo for Hasselblad camera
-     * Currently on Mavic 2 Pro
-     *
-     * @return Drawable currently used
-     */
-    @Nullable
-    public Drawable getStopShootHasselbladPhotoDrawable() {
-        return stopShootPhotoHasselbladDrawable;
     }
 
     /**
@@ -637,6 +638,16 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     }
 
     /**
+     * Get current background of foreground icon
+     *
+     * @return Drawable being used
+     */
+    @Nullable
+    public Drawable getForegroundIconBackground() {
+        return storageStatusOverlayImageView.getBackground();
+    }
+
+    /**
      * Set the background of the foreground icon
      *
      * @param resourceId to be used as background
@@ -655,13 +666,13 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     }
 
     /**
-     * Get current background of foreground icon
+     * Get the color of the progress ring
      *
-     * @return Drawable being used
+     * @return integer representing color
      */
-    @Nullable
-    public Drawable getForegroundIconBackground() {
-        return storageStatusOverlayImageView.getBackground();
+    @ColorInt
+    public int getProgressRingColor() {
+        return progressRingColor;
     }
 
     /**
@@ -675,13 +686,14 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     }
 
     /**
-     * Get the color of the progress ring
+     * Get the color of the progress ring when the camera is Hasselblad
+     * Currently on Mavic 2 Pro
      *
      * @return integer representing color
      */
     @ColorInt
-    public int getProgressRingColor() {
-        return progressRingColor;
+    public int getProgressRingHasselbladColor() {
+        return progressRingHasselbladColor;
     }
 
     /**
@@ -693,17 +705,6 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     public void setProgressRingHasselbladColor(@ColorInt int color) {
         progressRingHasselbladColor = color;
         checkAndUpdateCanStartOrStopShootingPhoto();
-    }
-
-    /**
-     * Get the color of the progress ring when the camera is Hasselblad
-     * Currently on Mavic 2 Pro
-     *
-     * @return integer representing color
-     */
-    @ColorInt
-    public int getProgressRingHasselbladColor() {
-        return progressRingHasselbladColor;
     }
     //endregion
 

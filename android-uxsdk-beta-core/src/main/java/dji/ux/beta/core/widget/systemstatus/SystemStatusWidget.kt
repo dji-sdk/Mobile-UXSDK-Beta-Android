@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.systemstatus
@@ -107,6 +108,29 @@ open class SystemStatusWidget @JvmOverloads constructor(
      * This can be used to link the widget to [dji.ux.beta.core.panelwidget.systemstatus.SystemStatusListPanelWidget]
      */
     var stateChangeCallback: OnStateChangeCallback<Any>? = null
+
+    /**
+     * The default mode determines the default text color and image background settings.
+     */
+    var defaultMode = DefaultMode.COLOR
+        set(value) {
+            field = value
+            if (value == DefaultMode.COLOR) {
+                setSystemStatusMessageTextColor(WarningLevel.ERROR, getColor(R.color.uxsdk_status_error))
+                setSystemStatusMessageTextColor(WarningLevel.WARNING, getColor(R.color.uxsdk_status_warning))
+                setSystemStatusMessageTextColor(WarningLevel.GOOD, getColor(R.color.uxsdk_status_good))
+                setSystemStatusMessageTextColor(WarningLevel.OFFLINE, getColor(R.color.uxsdk_status_offline))
+
+                setSystemStatusBackgroundDrawable(null)
+            } else {
+                setSystemStatusMessageTextColor(getColor(R.color.uxsdk_white))
+
+                setSystemStatusBackgroundDrawable(WarningLevel.ERROR, getDrawable(R.drawable.uxsdk_gradient_error))
+                setSystemStatusBackgroundDrawable(WarningLevel.WARNING, getDrawable(R.drawable.uxsdk_gradient_warning))
+                setSystemStatusBackgroundDrawable(WarningLevel.GOOD, getDrawable(R.drawable.uxsdk_gradient_good))
+                setSystemStatusBackgroundDrawable(WarningLevel.OFFLINE, getDrawable(R.drawable.uxsdk_gradient_offline))
+            }
+        }
 
     private var stateChangeResourceId: Int = 0
 
@@ -202,7 +226,7 @@ open class SystemStatusWidget @JvmOverloads constructor(
 
     private fun reactToCompassError(): Disposable {
         return Flowable.combineLatest(widgetModel.systemStatus, widgetModel.isMotorOn,
-                        BiFunction<WarningStatusItem, Boolean, Pair<WarningStatusItem, Boolean>> { first: WarningStatusItem, second: Boolean -> Pair(first, second) })
+                BiFunction<WarningStatusItem, Boolean, Pair<WarningStatusItem, Boolean>> { first: WarningStatusItem, second: Boolean -> Pair(first, second) })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(Consumer { values: Pair<WarningStatusItem, Boolean> -> updateVoiceNotification(values.first, values.second) },
                         logErrorConsumer(TAG, "react to Compass Error: "))
@@ -256,6 +280,19 @@ open class SystemStatusWidget @JvmOverloads constructor(
     }
 
     /**
+     * Set the text color of the system status message for all warning levels.
+     *
+     * @param color The color of the system status message text.
+     */
+    fun setSystemStatusMessageTextColor(@ColorInt color: Int) {
+        textColorMap[WarningLevel.ERROR] = color
+        textColorMap[WarningLevel.WARNING] = color
+        textColorMap[WarningLevel.GOOD] = color
+        textColorMap[WarningLevel.OFFLINE] = color
+        checkAndUpdateUI()
+    }
+
+    /**
      * Get the text color of the system status message for the given warning level.
      *
      * @param level The level for which to get the system status message text color.
@@ -278,6 +315,19 @@ open class SystemStatusWidget @JvmOverloads constructor(
     }
 
     /**
+     * Set the background drawable of the system status message for all warning levels.
+     *
+     * @param background The background of the system status message.
+     */
+    fun setSystemStatusBackgroundDrawable(background: Drawable?) {
+        backgroundDrawableMap[WarningLevel.ERROR] = background
+        backgroundDrawableMap[WarningLevel.WARNING] = background
+        backgroundDrawableMap[WarningLevel.GOOD] = background
+        backgroundDrawableMap[WarningLevel.OFFLINE] = background
+        checkAndUpdateUI()
+    }
+
+    /**
      * Get the background drawable of the system status message for the given warning level.
      *
      * @param level The level for which to get the system status message background drawable.
@@ -291,6 +341,9 @@ open class SystemStatusWidget @JvmOverloads constructor(
     @SuppressLint("Recycle")
     private fun initAttributes(context: Context, attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.SystemStatusWidget).use { typedArray ->
+            typedArray.getIntegerAndUse(R.styleable.SystemStatusWidget_uxsdk_defaultMode) {
+                defaultMode = DefaultMode.find(it)
+            }
             typedArray.getResourceIdAndUse(R.styleable.SystemStatusWidget_uxsdk_systemStatusMessageTextAppearance) {
                 setSystemStatusMessageTextAppearance(it)
             }
@@ -363,6 +416,36 @@ open class SystemStatusWidget @JvmOverloads constructor(
          * System status update
          */
         data class SystemStatusUpdated(val status: WarningStatusItem) : SystemStatusWidgetState()
+    }
+
+    /**
+     * Sets the mode for the default image backgrounds and text colors.
+     */
+    enum class DefaultMode(@get:JvmName("value") val value: Int) {
+        /**
+         * The text color updates to match the [WarningLevel] and there is no image background.
+         */
+        COLOR(0),
+
+        /**
+         * The text is white and the background image is a gradient which updates to match the
+         * [WarningLevel].
+         */
+        GRADIENT(1);
+
+        companion object {
+            @JvmStatic
+            fun find(value: Int): DefaultMode {
+                var result = COLOR
+                for (i in values().indices) {
+                    if (values()[i].value == value) {
+                        result = values()[i]
+                        break
+                    }
+                }
+                return result
+            }
+        }
     }
     //endregion
 }

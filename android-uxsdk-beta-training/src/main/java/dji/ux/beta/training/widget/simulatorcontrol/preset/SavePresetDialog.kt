@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.training.widget.simulatorcontrol.preset
@@ -47,31 +48,37 @@ import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget
  * The values entered in [SimulatorControlWidget] can be saved for future simulation as preset.
  * This dialog provides a user interface to enter the name to be used for saving the preset.
  */
-class SavePresetDialog(context: Context) : Dialog(context), View.OnClickListener {
+class SavePresetDialog (
+        context: Context,
+        cancelable: Boolean,
+        simulatorPresetData: SimulatorPresetData
+) : Dialog(context), View.OnClickListener {
 
     //region fields
-    private lateinit var simulatorPresetData: SimulatorPresetData
-    private lateinit var titleTextView: TextView
-    private lateinit var saveTextView: TextView
-    private lateinit var cancelTextView: TextView
-    private lateinit var presetEditText: EditText
+    private val simulatorPresetData: SimulatorPresetData
+    private val titleTextView: TextView
+    private val saveTextView: TextView
+    private val cancelTextView: TextView
+    private val presetEditText: EditText
+    //endregion
+
+    //region lifecycle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.uxsdk_dialog_simulator_save_preset)
         window?.setBackgroundDrawableResource(R.drawable.uxsdk_background_dialog_rounded_corners)
         window?.setLayout(context.resources.getDimension(R.dimen.uxsdk_simulator_dialog_width).toInt(),
                 ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    init {
+        setContentView(R.layout.uxsdk_dialog_simulator_save_preset)
         titleTextView = findViewById(R.id.textview_save_preset_header)
         presetEditText = findViewById(R.id.edit_text_preset_name)
         saveTextView = findViewById(R.id.textview_save_preset)
         saveTextView.setOnClickListener(this)
         cancelTextView = findViewById(R.id.textview_cancel_simulator_dialog)
         cancelTextView.setOnClickListener(this)
-    }
 
-    constructor(context: Context,
-                cancelable: Boolean,
-                simulatorPresetData: SimulatorPresetData) : this(context) {
         setCancelable(cancelable)
         this.simulatorPresetData = simulatorPresetData
     }
@@ -84,6 +91,9 @@ class SavePresetDialog(context: Context) : Dialog(context), View.OnClickListener
             dismiss()
         }
     }
+    //endregion
+
+    //region Helpers
 
     private fun savePreset(name: String) {
         if (TextUtils.isEmpty(name)) {
@@ -98,7 +108,6 @@ class SavePresetDialog(context: Context) : Dialog(context), View.OnClickListener
     //endregion
 
     //region customizations
-
 
     /**
      * Text color state list of widget title
@@ -120,6 +129,8 @@ class SavePresetDialog(context: Context) : Dialog(context), View.OnClickListener
 
     /**
      * Set text appearance of the widget title
+     *
+     * @param textAppearance Style resource for text appearance
      */
     fun setTitleTextAppearance(@StyleRes textAppearance: Int) {
         titleTextView.setTextAppearance(context, textAppearance)
@@ -140,7 +151,6 @@ class SavePresetDialog(context: Context) : Dialog(context), View.OnClickListener
     fun setTitleBackground(@DrawableRes resourceId: Int) {
         titleBackground = context.resources.getDrawable(resourceId)
     }
-
 
     /**
      * Current background of button text
@@ -181,6 +191,8 @@ class SavePresetDialog(context: Context) : Dialog(context), View.OnClickListener
 
     /**
      * Set text appearance of the button
+     *
+     * @param textAppearance Style resource for text appearance
      */
     fun setButtonTextAppearance(@StyleRes textAppearance: Int) {
         saveTextView.setTextAppearance(context, textAppearance)

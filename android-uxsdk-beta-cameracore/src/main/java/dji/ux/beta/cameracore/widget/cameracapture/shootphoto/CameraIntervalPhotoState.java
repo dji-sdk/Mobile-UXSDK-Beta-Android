@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracapture.shootphoto;
@@ -65,7 +66,7 @@ public class CameraIntervalPhotoState extends CameraPhotoState {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj != null && obj instanceof CameraIntervalPhotoState) {
+        if (obj instanceof CameraIntervalPhotoState) {
             return ((CameraIntervalPhotoState) obj).getShootPhotoMode() == this.getShootPhotoMode()
                     && ((CameraIntervalPhotoState) obj).getCaptureCount() == this.getCaptureCount()
                     && ((CameraIntervalPhotoState) obj).getTimeIntervalInSeconds() == this.getTimeIntervalInSeconds();

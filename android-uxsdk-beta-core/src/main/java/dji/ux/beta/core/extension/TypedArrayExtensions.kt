@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 @file:JvmName("TypedArrayExtensions")
@@ -154,6 +155,17 @@ inline fun <R> TypedArray.getIntegerAndUse(@StyleableRes index: Int, block: (Int
     if (intValue != INVALID_RESOURCE) {
         block(intValue)
     }
+}
+
+/**
+ * Retrieve the integer value for the attribute at [index] and executes the given [block]
+ * function with the retrieved resource or the [defaultValue].
+ *
+ * @see TypedArray.getResourceId
+ */
+inline fun <R> TypedArray.getBooleanAndUse(@StyleableRes index: Int, defaultValue: Boolean, block: (Boolean) -> R) {
+    val booleanValue = getBoolean(index, defaultValue)
+    block(booleanValue)
 }
 
 

@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.core.widget.gpssignal
@@ -57,8 +58,6 @@ class GPSSignalWidgetModel(djiSdkModel: DJISDKModel,
     //region Data
     /**
      * Get the value of the strength of the GPS signal as a [GPSSignalLevel].
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val gpsSignalQuality: Flowable<GPSSignalLevel>
         @JvmName("getGPSSignalQuality")
@@ -66,16 +65,12 @@ class GPSSignalWidgetModel(djiSdkModel: DJISDKModel,
 
     /**
      * Get the number of satellites as an integer value.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val satelliteNumber: Flowable<Int>
         get() = satelliteNumberProcessor.toFlowable()
 
     /**
      * Get if RTK is enabled on supported aircraft as a boolean value.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val rtkEnabled: Flowable<Boolean>
         @JvmName("getRTKEnabled")
@@ -83,8 +78,6 @@ class GPSSignalWidgetModel(djiSdkModel: DJISDKModel,
 
     /**
      * Get whether an external GPS device is in use.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val isExternalGPSUsed: Flowable<Boolean>
         get() = redundancySensorUsedStateProcessor.toFlowable()
@@ -92,8 +85,6 @@ class GPSSignalWidgetModel(djiSdkModel: DJISDKModel,
 
     /**
      * Get whether RTK is using the most accurate positioning solution.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val isRTKAccurate: Flowable<Boolean>
         get() = rtkStateProcessor.toFlowable()

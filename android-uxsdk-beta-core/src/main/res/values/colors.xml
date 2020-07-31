@@ -19,7 +19,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
     <color name="uxsdk_transparent">#00000000</color>
     <color name="uxsdk_background">#33ffffff</color>
@@ -84,6 +86,8 @@
 
     <color name="uxsdk_orange_material_800">#EF6E10</color>
 
+    <color name="uxsdk_red_gimbal_pitch_end">#F25466</color>
+
     <color name="uxsdk_yellow">#FFC000</color>
     <color name="uxsdk_yellow_transparent">#00FFC000</color>
     <color name="uxsdk_yellow_500">#ffcc00</color>
@@ -98,6 +102,7 @@
 
     <color name="uxsdk_user_account_login_widget_background">#1FA3F6</color>
     <color name="uxsdk_user_account_login_widget_pressed_background">#801FA3F6</color>
+
 
     <!--BatteryWidget-->
     <color name="uxsdk_battery_healthy">@color/uxsdk_green</color>
@@ -121,6 +126,11 @@
     <color name="uxsdk_status_error">@color/uxsdk_red_500</color>
     <color name="uxsdk_status_offline">@color/uxsdk_gray_60</color>
     <color name="uxsdk_status_edit_text_color">#1fa3f6</color>
+
+    <!-- Slider Dialog-->
+    <color name="uxsdk_slider_text">#825100</color>
+    <color name="uxsdk_slider_filled">#0AEE8B</color>
+    <color name="uxsdk_slider_thumb_selected">#DBDDDC</color>
 
     <!--FPV-->
     <color name="uxsdk_fpv_text_background">#991c2831</color>

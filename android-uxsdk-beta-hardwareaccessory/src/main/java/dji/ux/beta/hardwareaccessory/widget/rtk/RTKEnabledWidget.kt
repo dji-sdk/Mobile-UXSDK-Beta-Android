@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.hardwareaccessory.widget.rtk
@@ -55,7 +56,7 @@ private const val TAG = "RTKEnabledWidget"
 /**
  * This widget displays a switch that will enable or disable RTK.
  */
-class RTKEnabledWidget @JvmOverloads constructor(
+open class RTKEnabledWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0

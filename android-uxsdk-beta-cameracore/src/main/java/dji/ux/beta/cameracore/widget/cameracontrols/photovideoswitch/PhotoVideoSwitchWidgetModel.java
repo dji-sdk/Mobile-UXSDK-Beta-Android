@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch;
@@ -46,7 +47,6 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
 
     //region fields
     private final DataProcessor<Boolean> isCameraConnectedDataProcessor;
-    private int cameraIndex = CameraIndex.CAMERA_INDEX_0.getIndex();
     private final DataProcessor<Boolean> isRecordingDataProcessor;
     private final DataProcessor<Boolean> isShootingDataProcessor;
     private final DataProcessor<Boolean> isShootingIntervalDataProcessor;
@@ -55,6 +55,7 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
     private final DataProcessor<Boolean> isShootingPanoramaDataProcessor;
     private final DataProcessor<CameraMode> cameraModeDataProcessor;
     private final DataProcessor<Boolean> isEnabledDataProcessor;
+    private int cameraIndex = CameraIndex.CAMERA_INDEX_0.getIndex();
     private CameraKey cameraModeKey;
     private SchedulerProviderInterface schedulerProvider;
     //endregion
@@ -154,16 +155,6 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
     }
 
     /**
-     * Set camera index to which the model should react.
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        this.cameraIndex = cameraIndex.getIndex();
-        restart();
-    }
-
-    /**
      * Get the camera index for which the model is reacting.
      *
      * @return current camera index.
@@ -171,6 +162,16 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
     @NonNull
     public CameraIndex getCameraIndex() {
         return CameraIndex.find(cameraIndex);
+    }
+
+    /**
+     * Set camera index to which the model should react.
+     *
+     * @param cameraIndex index of the camera.
+     */
+    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
+        this.cameraIndex = cameraIndex.getIndex();
+        restart();
     }
     //endregion
 }

@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.compass;
@@ -40,7 +41,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import dji.common.util.MobileGPSLocationUtil;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
@@ -50,6 +50,7 @@ import dji.ux.beta.R;
 import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.util.MobileGPSLocationUtil;
 
 /**
  * This widget aggregates the attitude and location data of the aircraft
@@ -429,6 +430,15 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Get the drawable resource for the home icon
+     *
+     * @return Drawable resource for the icon
+     */
+    public Drawable getHomeIcon() {
+        return homeImageView.getDrawable();
+    }
+
+    /**
      * Set the resource ID for the home icon
      *
      * @param resourceId Integer ID of the drawable resource
@@ -447,12 +457,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the home icon
+     * Get the drawable resource for the home icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource of the icon's background
      */
-    public Drawable getHomeIcon() {
-        return homeImageView.getDrawable();
+    public Drawable getHomeIconBackground() {
+        return homeImageView.getBackground();
     }
 
     /**
@@ -474,12 +484,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the home icon's background
+     * Get the drawable resource for the RC location icon
      *
-     * @return Drawable resource of the icon's background
+     * @return Drawable resource for the icon
      */
-    public Drawable getHomeIconBackground() {
-        return homeImageView.getBackground();
+    public Drawable getRCLocationIcon() {
+        return rcImageView.getDrawable();
     }
 
     /**
@@ -501,12 +511,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the RC location icon
+     * Get the drawable resource for the RC location icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource for the icon's background
      */
-    public Drawable getRCLocationIcon() {
-        return rcImageView.getDrawable();
+    public Drawable getRCLocationIconBackground() {
+        return rcImageView.getBackground();
     }
 
     /**
@@ -528,12 +538,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the RC location icon's background
+     * Get the drawable resource for the aircraft icon
      *
-     * @return Drawable resource for the icon's background
+     * @return Drawable resource for the icon
      */
-    public Drawable getRCLocationIconBackground() {
-        return rcImageView.getBackground();
+    public Drawable getAircraftIcon() {
+        return aircraftImageView.getDrawable();
     }
 
     /**
@@ -555,12 +565,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the aircraft icon
+     * Get the drawable resource for the aircraft icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource of the icon's background
      */
-    public Drawable getAircraftIcon() {
-        return aircraftImageView.getDrawable();
+    public Drawable getAircraftIconBackground() {
+        return aircraftImageView.getBackground();
     }
 
     /**
@@ -582,12 +592,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the aircraft icon's background
+     * Get the drawable resource for the gimbal yaw icon
      *
-     * @return Drawable resource of the icon's background
+     * @return Drawable resource for the icon
      */
-    public Drawable getAircraftIconBackground() {
-        return aircraftImageView.getBackground();
+    public Drawable getGimbalYawIcon() {
+        return gimbalYawImageView.getDrawable();
     }
 
     /**
@@ -609,12 +619,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the gimbal yaw icon
+     * Get the drawable resource for the gimbal yaw icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource of the icon's background
      */
-    public Drawable getGimbalYawIcon() {
-        return gimbalYawImageView.getDrawable();
+    public Drawable getGimbalYawIconBackground() {
+        return gimbalYawImageView.getBackground();
     }
 
     /**
@@ -636,12 +646,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the gimbal yaw icon's background
+     * Get the drawable resource for the north icon
      *
-     * @return Drawable resource of the icon's background
+     * @return Drawable resource for the icon
      */
-    public Drawable getGimbalYawIconBackground() {
-        return gimbalYawImageView.getBackground();
+    public Drawable getNorthIcon() {
+        return northImageView.getDrawable();
     }
 
     /**
@@ -663,12 +673,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the north icon
+     * Get the drawable resource for the north icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource of the icon's background
      */
-    public Drawable getNorthIcon() {
-        return northImageView.getDrawable();
+    public Drawable getNorthIconBackground() {
+        return northImageView.getBackground();
     }
 
     /**
@@ -690,12 +700,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the north icon's background
+     * Get the drawable resource for the inner circles icon
      *
-     * @return Drawable resource of the icon's background
+     * @return Drawable resource for the icon
      */
-    public Drawable getNorthIconBackground() {
-        return northImageView.getBackground();
+    public Drawable getInnerCirclesIcon() {
+        return innerCirclesImageView.getDrawable();
     }
 
     /**
@@ -717,12 +727,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the inner circles icon
+     * Get the drawable resource for the inner circles icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource of the icon's background
      */
-    public Drawable getInnerCirclesIcon() {
-        return innerCirclesImageView.getDrawable();
+    public Drawable getInnerCirclesIconBackground() {
+        return innerCirclesImageView.getBackground();
     }
 
     /**
@@ -744,12 +754,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the inner circles icon's background
+     * Get the drawable resource for the compass background icon
      *
-     * @return Drawable resource of the icon's background
+     * @return Drawable resource for the icon
      */
-    public Drawable getInnerCirclesIconBackground() {
-        return innerCirclesImageView.getBackground();
+    public Drawable getCompassBackgroundIcon() {
+        return compassBackgroundImageView.getDrawable();
     }
 
     /**
@@ -771,12 +781,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the compass background icon
+     * Get the drawable resource for the compass background icon's background
      *
-     * @return Drawable resource for the icon
+     * @return Drawable resource of the icon's background
      */
-    public Drawable getCompassBackgroundIcon() {
-        return compassBackgroundImageView.getDrawable();
+    public Drawable getCompassBackgroundIconBackground() {
+        return compassBackgroundImageView.getBackground();
     }
 
     /**
@@ -798,12 +808,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the compass background icon's background
+     * Get the drawable resource for the aircraft attitude icon
      *
-     * @return Drawable resource of the icon's background
+     * @return Drawable resource for the progress bar
      */
-    public Drawable getCompassBackgroundIconBackground() {
-        return compassBackgroundImageView.getBackground();
+    public Drawable getAircraftAttitudeIcon() {
+        return aircraftAttitudeProgressBar.getProgressDrawable();
     }
 
     /**
@@ -816,12 +826,12 @@ public class CompassWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the aircraft attitude icon
+     * Get the drawable resource for the aircraft attitude icon's background
      *
-     * @return Drawable resource for the progress bar
+     * @return Drawable resource of the icon's background
      */
-    public Drawable getAircraftAttitudeIcon() {
-        return aircraftAttitudeProgressBar.getProgressDrawable();
+    public Drawable getAircraftAttitudeIconBackground() {
+        return aircraftAttitudeProgressBar.getBackground();
     }
 
     /**
@@ -840,15 +850,6 @@ public class CompassWidget extends ConstraintLayoutWidget {
      */
     public void setAircraftAttitudeIconBackground(@Nullable Drawable background) {
         aircraftAttitudeProgressBar.setBackground(background);
-    }
-
-    /**
-     * Get the drawable resource for the aircraft attitude icon's background
-     *
-     * @return Drawable resource of the icon's background
-     */
-    public Drawable getAircraftAttitudeIconBackground() {
-        return aircraftAttitudeProgressBar.getBackground();
     }
 
     /**

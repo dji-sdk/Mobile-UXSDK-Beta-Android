@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 package dji.ux.beta.training.widget.simulatorcontrol
 
@@ -60,13 +61,13 @@ class SimulatorControlWidgetModel(djiSdkModel: DJISDKModel,
     private val satelliteCountDataProcessor: DataProcessor<Int> = DataProcessor.create(0)
     private val simulatorWindDataProcessor: DataProcessor<SimulatorWindData> = DataProcessor.create(windBuilder.build())
     private val simulatorActiveDataProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
-    private lateinit var simulatorWindDataKey: DJIKey
+    private val simulatorWindDataKey: DJIKey = FlightControllerKey.create(FlightControllerKey.SIMULATOR_WIND_DATA)
+
     override fun inSetup() {
         val simulatorStateKey: DJIKey = FlightControllerKey.create(FlightControllerKey.SIMULATOR_STATE)
         bindDataProcessor(simulatorStateKey, simulatorStateDataProcessor)
         val satelliteCountKey: DJIKey = FlightControllerKey.create(FlightControllerKey.SATELLITE_COUNT)
         bindDataProcessor(satelliteCountKey, satelliteCountDataProcessor)
-        simulatorWindDataKey = FlightControllerKey.create(FlightControllerKey.SIMULATOR_WIND_DATA)
         bindDataProcessor(simulatorWindDataKey, simulatorWindDataProcessor)
         val simulatorActiveKey: DJIKey = FlightControllerKey.create(FlightControllerKey.IS_SIMULATOR_ACTIVE)
         bindDataProcessor(simulatorActiveKey, simulatorActiveDataProcessor)
@@ -119,8 +120,6 @@ class SimulatorControlWidgetModel(djiSdkModel: DJISDKModel,
     /**
      * Get the current state of simulation. Includes
      * pitch, yaw, roll, world coordinates, location coordinates, areMotorsOn, isFlying
-     *
-     * @return [SimulatorState] instance representing the current state of simulator
      */
     val simulatorState: Flowable<SimulatorState>
         get() = simulatorStateDataProcessor.toFlowable()
@@ -128,25 +127,19 @@ class SimulatorControlWidgetModel(djiSdkModel: DJISDKModel,
     /**
      * Get the current wind simulation values. Includes
      * wind speed in x, y and z directions
-     *
-     * @return [SimulatorWindData] instance representing the current wind simulation state
      */
     val simulatorWindData: Flowable<SimulatorWindData>
         get() = simulatorWindDataProcessor.toFlowable()
 
     /**
      * Get the number of satellites being simulated
-     *
-     * @return Integer flowable value representing the number of satellites
      */
     val satelliteCount: Flowable<Int>
         get() = satelliteCountDataProcessor.toFlowable()
 
     /**
      * Check if the simulator is running
-     *
-     * @return Boolean flowable value to represent if the simulator is currently running
-     */ //endregion
+     */
     val isSimulatorActive: Flowable<Boolean>
         get() = simulatorActiveDataProcessor.toFlowable()
 

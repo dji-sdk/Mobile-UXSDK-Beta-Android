@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.focusexposureswitch;
@@ -35,6 +36,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import dji.ux.beta.cameracore.R;
+import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.FrameLayoutWidget;
 import dji.ux.beta.core.base.GlobalPreferencesManager;
@@ -42,7 +44,6 @@ import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
-import dji.ux.beta.core.widget.fpv.interaction.FPVInteractionWidget;
 
 /**
  * Focus Exposure Switch Widget
@@ -183,6 +184,16 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     }
 
     /**
+     * Gets the camera index used by the widget
+     *
+     * @return Camera index
+     */
+    @NonNull
+    public CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
+    }
+
+    /**
      * Set the camera key index for which this model should subscribe to.
      *
      * @param cameraIndex index of the camera.
@@ -194,13 +205,13 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     }
 
     /**
-     * Gets the camera index used by the widget
+     * Get current manual focus icon
      *
-     * @return Camera index
+     * @return Drawable
      */
-    @NonNull
-    public CameraIndex getCameraIndex() {
-        return widgetModel.getCameraIndex();
+    @Nullable
+    public Drawable getManualFocusIcon() {
+        return manualFocusDrawable;
     }
 
     /**
@@ -223,13 +234,13 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     }
 
     /**
-     * Get current manual focus icon
+     * Get current auto focus icon
      *
-     * @return Drawable
+     * @return drawable
      */
     @Nullable
-    public Drawable getManualFocusIcon() {
-        return manualFocusDrawable;
+    public Drawable getAutoFocusIcon() {
+        return autoFocusDrawable;
     }
 
     /**
@@ -252,13 +263,13 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     }
 
     /**
-     * Get current auto focus icon
+     * Get current metering/exposure mode icon
      *
-     * @return drawable
+     * @return Drawable
      */
     @Nullable
-    public Drawable getAutoFocusIcon() {
-        return autoFocusDrawable;
+    public Drawable getMeteringIcon() {
+        return spotMeterDrawable;
     }
 
     /**
@@ -281,13 +292,13 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     }
 
     /**
-     * Get current metering/exposure mode icon
+     * Get current icon background
      *
      * @return Drawable
      */
     @Nullable
-    public Drawable getMeteringIcon() {
-        return spotMeterDrawable;
+    public Drawable getIconBackground() {
+        return focusExposureSwitchImageView.getBackground();
     }
 
     /**
@@ -306,16 +317,6 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
      */
     public void setIconBackground(@Nullable Drawable drawable) {
         focusExposureSwitchImageView.setBackground(drawable);
-    }
-
-    /**
-     * Get current icon background
-     *
-     * @return Drawable
-     */
-    @Nullable
-    public Drawable getIconBackground() {
-        return focusExposureSwitchImageView.getBackground();
     }
     //endregion
 }

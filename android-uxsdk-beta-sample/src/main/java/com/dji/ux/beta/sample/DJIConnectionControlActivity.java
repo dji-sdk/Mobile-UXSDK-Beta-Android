@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample;
@@ -37,7 +36,7 @@ import android.view.View;
  */
 public class DJIConnectionControlActivity extends Activity {
 
-    public static final String ACCESSORY_ATTACHED = "com.dji.ux.beta.sample.ACCESSORY_ATTACHED";
+    public static final String ACCESSORY_ATTACHED = "dji.ux.beta.sample.ACCESSORY_ATTACHED";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

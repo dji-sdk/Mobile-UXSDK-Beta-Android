@@ -18,20 +18,23 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracapture.shootphoto;
 
 import dji.common.camera.SettingsDefinitions;
+import dji.common.camera.SettingsDefinitions.SDCardOperationState;
 
 /**
- * Class represents storage state for SD card and internal storage
- * when camera is in shoot photo mode
+ *  Class represents storage state for SD card and internal storage
+ *  when camera is in shoot photo mode
+ *
  */
 public class CameraSDPhotoStorageState extends CameraPhotoStorageState {
-    private SettingsDefinitions.SDCardOperationState storageOperationState;
+    private SDCardOperationState storageOperationState;
 
-    public CameraSDPhotoStorageState(SettingsDefinitions.StorageLocation storageLocation, long availableCaptureCount, SettingsDefinitions.SDCardOperationState storageOperationState) {
+    public CameraSDPhotoStorageState(SettingsDefinitions.StorageLocation storageLocation, long availableCaptureCount, SDCardOperationState storageOperationState) {
         super(storageLocation, availableCaptureCount);
         this.storageOperationState = storageOperationState;
     }
@@ -39,10 +42,10 @@ public class CameraSDPhotoStorageState extends CameraPhotoStorageState {
     /**
      * Get the operation state of current storage
      *
-     * @return instance of {@link SettingsDefinitions.SDCardOperationState}
-     * representing state for SDCard or internal Storage
+     * @return instance of {@link SDCardOperationState}
+     *  representing state for SDCard or internal Storage
      */
-    public SettingsDefinitions.SDCardOperationState getStorageOperationState() {
+    public SDCardOperationState getStorageOperationState() {
         return storageOperationState;
     }
 

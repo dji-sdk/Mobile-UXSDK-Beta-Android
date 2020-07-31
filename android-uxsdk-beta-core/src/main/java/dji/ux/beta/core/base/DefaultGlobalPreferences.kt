@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base
@@ -31,6 +32,7 @@ import dji.ux.beta.core.ui.CenterPointView
 import dji.ux.beta.core.ui.GridLineView.GridLineType
 import dji.ux.beta.core.util.SettingDefinitions
 import dji.ux.beta.core.util.UnitConversionUtil
+
 
 /**
  * Default implementation of the GlobalPreferencesInterface using SharedPreferences.
@@ -51,7 +53,6 @@ class DefaultGlobalPreferences(context: Context) : GlobalPreferencesInterface {
                 UnitConversionUtil.UnitType.METRIC.value()))
         set(unitType) = sharedPreferences.edit { putInt(PREF_GLOBAL_UNIT_TYPE, unitType.value()) }
 
-
     @Suppress("INAPPLICABLE_JVM_NAME")
     @get:JvmName("getAFCEnabled")
     @set:JvmName("setAFCEnabled")
@@ -66,16 +67,16 @@ class DefaultGlobalPreferences(context: Context) : GlobalPreferencesInterface {
 
     override var gridLineType: GridLineType
         get() = GridLineType.find(sharedPreferences.getInt(PREF_GRID_LINE_TYPE,
-                GridLineType.NONE.value()))
+                GridLineType.NONE.value))
         set(gridLineType) =
-            sharedPreferences.edit { putInt(PREF_GRID_LINE_TYPE, gridLineType.value()) }
+            sharedPreferences.edit { putInt(PREF_GRID_LINE_TYPE, gridLineType.value) }
 
 
     override var centerPointType: CenterPointView.CenterPointType
         get() = CenterPointView.CenterPointType.find(sharedPreferences.getInt(PREF_CENTER_POINT_TYPE,
-                CenterPointView.CenterPointType.NONE.value()))
+                CenterPointView.CenterPointType.NONE.value))
         set(centerPointType) =
-            sharedPreferences.edit { putInt(PREF_CENTER_POINT_TYPE, centerPointType.value()) }
+            sharedPreferences.edit { putInt(PREF_CENTER_POINT_TYPE, centerPointType.value) }
 
     @get:ColorInt
     @setparam:ColorInt
@@ -93,7 +94,10 @@ class DefaultGlobalPreferences(context: Context) : GlobalPreferencesInterface {
         //region Constants
         private const val PREF_IS_AFC_ENABLED: String = "afcEnabled"
         private const val PREF_GLOBAL_UNIT_TYPE: String = "globalUnitType"
+        private const val PREF_TEMPERATURE_UNIT_TYPE: String = "temperatureUnitType"
         private const val PREF_AIR_SENSE_TERMS_NEVER_SHOWN: String = "airSenseTerms"
+        private const val COLOR_WAVEFORM_ENABLED: String = "colorWaveformEnabled"
+        private const val COLOR_WAVEFORM_DISPLAY_STATE: String = "colorWaveformDisplayState"
         private const val PREF_GRID_LINE_TYPE: String = "gridLineType"
         private const val PREF_CENTER_POINT_TYPE: String = "centerPointType"
         private const val PREF_CENTER_POINT_COLOR: String = "centerPointColor"

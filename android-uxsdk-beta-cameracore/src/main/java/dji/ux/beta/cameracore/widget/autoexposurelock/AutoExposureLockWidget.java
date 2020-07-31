@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.autoexposurelock;
@@ -223,6 +224,16 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     }
 
     /**
+     * Get the index of the camera to which the widget is reacting
+     *
+     * @return instance of {@link CameraIndex}.
+     */
+    @NonNull
+    public CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
+    }
+
+    /**
      * Set the index of camera to which the widget should react
      *
      * @param cameraIndex index of the camera.
@@ -231,16 +242,6 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
         if (!isInEditMode()) {
             widgetModel.setCameraIndex(cameraIndex);
         }
-    }
-
-    /**
-     * Get the index of the camera to which the widget is reacting
-     *
-     * @return instance of {@link CameraIndex}.
-     */
-    @NonNull
-    public CameraIndex getCameraIndex() {
-        return widgetModel.getCameraIndex();
     }
 
     /**
@@ -302,24 +303,6 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     }
 
     /**
-     * Set text color state list to the widget title
-     *
-     * @param colorStateList to be used
-     */
-    public void setTitleTextColor(@Nullable ColorStateList colorStateList) {
-        titleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the color of title text
-     *
-     * @param color integer value
-     */
-    public void setTitleTextColor(@ColorInt int color) {
-        titleTextView.setTextColor(color);
-    }
-
-    /**
      * Get current text color state list of widget title
      *
      * @return ColorStateList used
@@ -340,12 +323,40 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     }
 
     /**
+     * Set text color state list to the widget title
+     *
+     * @param colorStateList to be used
+     */
+    public void setTitleTextColor(@Nullable ColorStateList colorStateList) {
+        titleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the color of title text
+     *
+     * @param color integer value
+     */
+    public void setTitleTextColor(@ColorInt int color) {
+        titleTextView.setTextColor(color);
+    }
+
+    /**
      * Set text appearance of the widget title
      *
      * @param textAppearance to be used
      */
     public void setTitleTextAppearance(@StyleRes int textAppearance) {
         titleTextView.setTextAppearance(getContext(), textAppearance);
+    }
+
+    /**
+     * Get current background of icon
+     *
+     * @return Drawable
+     */
+    @NonNull
+    public Drawable getIconBackground() {
+        return foregroundImageView.getBackground();
     }
 
     /**
@@ -367,13 +378,13 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     }
 
     /**
-     * Get current background of icon
+     * Get current background of title text
      *
      * @return Drawable
      */
-    @NonNull
-    public Drawable getIconBackground() {
-        return foregroundImageView.getBackground();
+    @Nullable
+    public Drawable getTitleBackground() {
+        return titleTextView.getBackground();
     }
 
     /**
@@ -394,21 +405,21 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
         titleTextView.setBackground(drawable);
     }
 
-    /**
-     * Get current background of title text
-     *
-     * @return Drawable
-     */
-    @Nullable
-    public Drawable getTitleBackground() {
-        return titleTextView.getBackground();
-    }
-
     @Override
     public void setEnabled(boolean enabled) {
         titleTextView.setEnabled(enabled);
         foregroundImageView.setEnabled(enabled);
         super.setEnabled(enabled);
+    }
+
+    /**
+     * Get the color tint for exposure settings unlocked icon
+     *
+     * @return ColorStateList used as color tint
+     */
+    @Nullable
+    public ColorStateList getAutoExposureUnlockIconTint() {
+        return unlockDrawableTint;
     }
 
     /**
@@ -431,13 +442,13 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     }
 
     /**
-     * Get the color tint for exposure settings unlocked icon
+     * Get the color tint for exposure settings locked icon
      *
      * @return ColorStateList used as color tint
      */
     @Nullable
-    public ColorStateList getAutoExposureUnlockIconTint() {
-        return unlockDrawableTint;
+    public ColorStateList getAutoExposureLockIconTint() {
+        return lockDrawableTint;
     }
 
     /**
@@ -457,16 +468,6 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     public void setAutoExposureLockIconTint(@Nullable ColorStateList colorStateList) {
         lockDrawableTint = colorStateList;
         checkAndUpdateAELock();
-    }
-
-    /**
-     * Get the color tint for exposure settings locked icon
-     *
-     * @return ColorStateList used as color tint
-     */
-    @Nullable
-    public ColorStateList getAutoExposureLockIconTint() {
-        return lockDrawableTint;
     }
     //endregion
 }

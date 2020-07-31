@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.vps;
@@ -223,24 +224,6 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set text color state list for the vision positioning system status title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setVPSTitleTextColor(@NonNull ColorStateList colorStateList) {
-        vpsTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the vision positioning system status title text view
-     *
-     * @param color color integer resource
-     */
-    public void setVPSTitleTextColor(@ColorInt int color) {
-        vpsTitleTextView.setTextColor(color);
-    }
-
-    /**
      * Get current text color state list of the vision positioning system status title text view
      *
      * @return ColorStateList resource
@@ -261,12 +244,21 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the vision positioning system status title text view
+     * Set text color state list for the vision positioning system status title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setVPSTitleTextSize(@Dimension float textSize) {
-        vpsTitleTextView.setTextSize(textSize);
+    public void setVPSTitleTextColor(@NonNull ColorStateList colorStateList) {
+        vpsTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the vision positioning system status title text view
+     *
+     * @param color color integer resource
+     */
+    public void setVPSTitleTextColor(@ColorInt int color) {
+        vpsTitleTextView.setTextColor(color);
     }
 
     /**
@@ -277,6 +269,25 @@ public class VPSWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getVPSTitleTextSize() {
         return vpsTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the vision positioning system status title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setVPSTitleTextSize(@Dimension float textSize) {
+        vpsTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the vision positioning system status title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getVPSTitleTextBackground() {
+        return vpsTitleTextView.getBackground();
     }
 
     /**
@@ -299,13 +310,13 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the vision positioning system status title text view
+     * Get the drawable resource for the vision positioning system enabled icon
      *
-     * @return Drawable resource of the background
+     * @return Drawable resource of the icon
      */
     @Nullable
-    public Drawable getVPSTitleTextBackground() {
-        return vpsTitleTextView.getBackground();
+    public Drawable getVPSEnabledIcon() {
+        return vpsEnabledDrawable;
     }
 
     /**
@@ -328,6 +339,16 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Get the drawable resource for the vision positioning system disabled icon
+     *
+     * @return Drawable resource for the icon
+     */
+    @Nullable
+    public Drawable getVPSDisabledIcon() {
+        return vpsDisabledDrawable;
+    }
+
+    /**
      * Set the resource ID for the vision positioning system disabled icon
      *
      * @param resourceId Integer ID of the drawable resource
@@ -347,23 +368,13 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the vision positioning system enabled icon
+     * Get the drawable resource for the vision positioning system icon's background
      *
-     * @return Drawable resource of the icon
+     * @return Drawable resource of the icon's background
      */
     @Nullable
-    public Drawable getVPSEnabledIcon() {
-        return vpsEnabledDrawable;
-    }
-
-    /**
-     * Get the drawable resource for the vision positioning system disabled icon
-     *
-     * @return Drawable resource for the icon
-     */
-    @Nullable
-    public Drawable getVPSDisabledIcon() {
-        return vpsDisabledDrawable;
+    public Drawable getVPSIconBackground() {
+        return vpsImageView.getBackground();
     }
 
     /**
@@ -385,32 +396,12 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the vision positioning system icon's background
-     *
-     * @return Drawable resource of the icon's background
-     */
-    @Nullable
-    public Drawable getVPSIconBackground() {
-        return vpsImageView.getBackground();
-    }
-
-    /**
      * Set text appearance of the vision positioning system status value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setVPSValueTextAppearance(@StyleRes int textAppearance) {
         vpsValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set the text color for the vision positioning system status enabled value text view
-     *
-     * @param color color integer resource
-     */
-    public void setVPSValueEnabledTextColor(@ColorInt int color) {
-        enabledColor = color;
-        checkAndUpdateUI();
     }
 
     /**
@@ -424,12 +415,12 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text color for the vision positioning system status disabled value text view
+     * Set the text color for the vision positioning system status enabled value text view
      *
      * @param color color integer resource
      */
-    public void setVPSValueDisabledTextColor(@ColorInt int color) {
-        disabledColor = color;
+    public void setVPSValueEnabledTextColor(@ColorInt int color) {
+        enabledColor = color;
         checkAndUpdateUI();
     }
 
@@ -444,12 +435,13 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the vision positioning system status value text view
+     * Set the text color for the vision positioning system status disabled value text view
      *
-     * @param textSize text size float value
+     * @param color color integer resource
      */
-    public void setVPSValueTextSize(@Dimension float textSize) {
-        vpsValueTextView.setTextSize(textSize);
+    public void setVPSValueDisabledTextColor(@ColorInt int color) {
+        disabledColor = color;
+        checkAndUpdateUI();
     }
 
     /**
@@ -460,6 +452,25 @@ public class VPSWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getVPSValueTextSize() {
         return vpsValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the vision positioning system status value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setVPSValueTextSize(@Dimension float textSize) {
+        vpsValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the vision positioning system status value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getVPSValueTextBackground() {
+        return vpsValueTextView.getBackground();
     }
 
     /**
@@ -482,40 +493,12 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the vision positioning system status value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getVPSValueTextBackground() {
-        return vpsValueTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the vision positioning system status unit text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setVPSUnitTextAppearance(@StyleRes int textAppearance) {
         vpsUnitTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the vision positioning system status  unit text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setVPSUnitTextColor(@NonNull ColorStateList colorStateList) {
-        vpsUnitTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the vision positioning system status unit text view
-     *
-     * @param color color integer resource
-     */
-    public void setVPSUnitTextColor(@ColorInt int color) {
-        vpsUnitTextView.setTextColor(color);
     }
 
     /**
@@ -539,12 +522,21 @@ public class VPSWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the vision positioning system status unit text view
+     * Set text color state list for the vision positioning system status  unit text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setVPSUnitTextSize(@Dimension float textSize) {
-        vpsUnitTextView.setTextSize(textSize);
+    public void setVPSUnitTextColor(@NonNull ColorStateList colorStateList) {
+        vpsUnitTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the vision positioning system status unit text view
+     *
+     * @param color color integer resource
+     */
+    public void setVPSUnitTextColor(@ColorInt int color) {
+        vpsUnitTextView.setTextColor(color);
     }
 
     /**
@@ -555,6 +547,25 @@ public class VPSWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getVPSUnitTextSize() {
         return vpsUnitTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the vision positioning system status unit text view
+     *
+     * @param textSize text size float value
+     */
+    public void setVPSUnitTextSize(@Dimension float textSize) {
+        vpsUnitTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the vision positioning system status unit text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getVPSUnitTextBackground() {
+        return vpsUnitTextView.getBackground();
     }
 
     /**
@@ -574,16 +585,6 @@ public class VPSWidget extends ConstraintLayoutWidget {
      */
     public void setVPSUnitTextBackground(@DrawableRes int resourceId) {
         vpsUnitTextView.setBackgroundResource(resourceId);
-    }
-
-    /**
-     * Get current background of the vision positioning system status unit text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getVPSUnitTextBackground() {
-        return vpsUnitTextView.getBackground();
     }
 
     //Initialize all customizable attributes

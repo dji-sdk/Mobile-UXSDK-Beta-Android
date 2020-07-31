@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.battery
@@ -77,8 +78,6 @@ class BatteryWidgetModel(
 
     /**
      * Get the current state of the battery of the connected product
-     *
-     * @returns Flowable with [BatteryState] instance
      */
     val batteryState: Flowable<BatteryState>
         get() = batteryStateProcessor.toFlowable()
@@ -309,7 +308,7 @@ class BatteryWidgetModel(
         UNKNOWN(5);
 
         companion object {
-
+            @JvmStatic
             fun find(@IntRange(from = 0, to = 5) index: Int): BatteryStatus {
                 for (batteryStatus in values()) {
                     if (batteryStatus.index == index) {

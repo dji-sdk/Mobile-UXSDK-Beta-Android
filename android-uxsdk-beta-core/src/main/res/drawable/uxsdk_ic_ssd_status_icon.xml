@@ -18,7 +18,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <vector android:height="5dp" android:viewportHeight="17"
     android:viewportWidth="17" android:width="5dp" xmlns:android="http://schemas.android.com/apk/res/android">
     <path android:fillColor="#F14443" android:fillType="evenOdd"

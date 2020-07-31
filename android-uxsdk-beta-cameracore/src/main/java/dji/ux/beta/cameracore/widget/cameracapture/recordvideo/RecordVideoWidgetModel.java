@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracapture.recordvideo;
@@ -59,11 +60,9 @@ public class RecordVideoWidgetModel extends WidgetModel {
     private final DataProcessor<String> cameraDisplayName;
     private final DataProcessor<Integer> recordingTimeInSeconds;
     private final DataProcessor<ResolutionAndFrameRate> recordedVideoParameters;
-    private int cameraIndex;
-    //endregion
-
     //region Internal data
     private final DataProcessor<CameraSSDVideoLicense> cameraSSDVideoLicenseDataProcessor;
+    //endregion
     private final DataProcessor<ResolutionAndFrameRate> nonSSDRecordedVideoParameters;
     private final DataProcessor<ResolutionAndFrameRate> ssdRecordedVideoParameters;
     private final DataProcessor<SettingsDefinitions.StorageLocation> storageLocation;
@@ -75,6 +74,7 @@ public class RecordVideoWidgetModel extends WidgetModel {
     private final DataProcessor<Integer> innerStorageRecordingTime;
     private final DataProcessor<Integer> ssdRecordingTime;
     private final DataProcessor<RecordingState> recordingStateProcessor;
+    private int cameraIndex;
     private DJIKey stopVideoRecordingKey;
     private DJIKey startVideoRecordingKey;
     private SchedulerProviderInterface schedulerProvider;
@@ -220,6 +220,15 @@ public class RecordVideoWidgetModel extends WidgetModel {
     }
 
     /**
+     * Get the current index of the camera the widget model is reacting to
+     *
+     * @return current camera index
+     */
+    public SettingDefinitions.CameraIndex getCameraIndex() {
+        return SettingDefinitions.CameraIndex.find(cameraIndex);
+    }
+
+    /**
      * Set the camera index to which the model should react
      *
      * @param cameraIndex camera index to set
@@ -227,15 +236,6 @@ public class RecordVideoWidgetModel extends WidgetModel {
     public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
         this.cameraIndex = cameraIndex.getIndex();
         restart();
-    }
-
-    /**
-     * Get the current index of the camera the widget model is reacting to
-     *
-     * @return current camera index
-     */
-    public SettingDefinitions.CameraIndex getCameraIndex() {
-        return SettingDefinitions.CameraIndex.find(cameraIndex);
     }
     //endregion
 

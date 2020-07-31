@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.verticalvelocity;
@@ -194,24 +195,6 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set text color state list for the vertical velocity title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setVerticalVelocityTitleTextColor(@NonNull ColorStateList colorStateList) {
-        verticalVelocityTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the vertical velocity title text view
-     *
-     * @param color color integer resource
-     */
-    public void setVerticalVelocityTitleTextColor(@ColorInt int color) {
-        verticalVelocityTitleTextView.setTextColor(color);
-    }
-
-    /**
      * Get current text color state list of the vertical velocity title text view
      *
      * @return ColorStateList resource
@@ -232,12 +215,21 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the vertical velocity title text view
+     * Set text color state list for the vertical velocity title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setVerticalVelocityTitleTextSize(@Dimension float textSize) {
-        verticalVelocityTitleTextView.setTextSize(textSize);
+    public void setVerticalVelocityTitleTextColor(@NonNull ColorStateList colorStateList) {
+        verticalVelocityTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the vertical velocity title text view
+     *
+     * @param color color integer resource
+     */
+    public void setVerticalVelocityTitleTextColor(@ColorInt int color) {
+        verticalVelocityTitleTextView.setTextColor(color);
     }
 
     /**
@@ -248,6 +240,25 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getVerticalVelocityTitleTextSize() {
         return verticalVelocityTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the vertical velocity title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setVerticalVelocityTitleTextSize(@Dimension float textSize) {
+        verticalVelocityTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the vertical velocity title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getVerticalVelocityTitleTextBackground() {
+        return verticalVelocityTitleTextView.getBackground();
     }
 
     /**
@@ -269,13 +280,13 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the vertical velocity title text view
+     * Get the drawable resource for the upward vertical velocity icon
      *
-     * @return Drawable resource of the background
+     * @return Drawable resource of the icon
      */
     @Nullable
-    public Drawable getVerticalVelocityTitleTextBackground() {
-        return verticalVelocityTitleTextView.getBackground();
+    public Drawable getUpwardVerticalVelocityIcon() {
+        return upwardVelocityDrawable;
     }
 
     /**
@@ -298,6 +309,16 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Get the drawable resource for the downward vertical velocity icon
+     *
+     * @return Drawable resource of the icon
+     */
+    @Nullable
+    public Drawable getDownwardVerticalVelocityIcon() {
+        return downwardVelocityDrawable;
+    }
+
+    /**
      * Set the resource ID for the downward vertical velocity icon
      *
      * @param resourceId Integer ID of the drawable resource
@@ -317,23 +338,13 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the upward vertical velocity icon
+     * Get the drawable resource for the vertical velocity icon's background
      *
-     * @return Drawable resource of the icon
+     * @return Drawable resource of the icon's background
      */
     @Nullable
-    public Drawable getUpwardVerticalVelocityIcon() {
-        return upwardVelocityDrawable;
-    }
-
-    /**
-     * Get the drawable resource for the downward vertical velocity icon
-     *
-     * @return Drawable resource of the icon
-     */
-    @Nullable
-    public Drawable getDownwardVerticalVelocityIcon() {
-        return downwardVelocityDrawable;
+    public Drawable getVerticalVelocityIconBackground() {
+        return verticalVelocityImageView.getBackground();
     }
 
     /**
@@ -355,40 +366,12 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the vertical velocity icon's background
-     *
-     * @return Drawable resource of the icon's background
-     */
-    @Nullable
-    public Drawable getVerticalVelocityIconBackground() {
-        return verticalVelocityImageView.getBackground();
-    }
-
-    /**
      * Set text appearance of the vertical velocity value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setVerticalVelocityValueTextAppearance(@StyleRes int textAppearance) {
         verticalVelocityValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the vertical velocity value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setVerticalVelocityValueTextColor(@NonNull ColorStateList colorStateList) {
-        verticalVelocityValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the vertical velocity value text view
-     *
-     * @param color color integer resource
-     */
-    public void setVerticalVelocityValueTextColor(@ColorInt int color) {
-        verticalVelocityValueTextView.setTextColor(color);
     }
 
     /**
@@ -412,12 +395,21 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the vertical velocity value text view
+     * Set text color state list for the vertical velocity value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setVerticalVelocityValueTextSize(@Dimension float textSize) {
-        verticalVelocityValueTextView.setTextSize(textSize);
+    public void setVerticalVelocityValueTextColor(@NonNull ColorStateList colorStateList) {
+        verticalVelocityValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the vertical velocity value text view
+     *
+     * @param color color integer resource
+     */
+    public void setVerticalVelocityValueTextColor(@ColorInt int color) {
+        verticalVelocityValueTextView.setTextColor(color);
     }
 
     /**
@@ -428,6 +420,25 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getVerticalVelocityValueTextSize() {
         return verticalVelocityValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the vertical velocity value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setVerticalVelocityValueTextSize(@Dimension float textSize) {
+        verticalVelocityValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the vertical velocity value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getVerticalVelocityValueTextBackground() {
+        return verticalVelocityValueTextView.getBackground();
     }
 
     /**
@@ -449,40 +460,12 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the vertical velocity value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getVerticalVelocityValueTextBackground() {
-        return verticalVelocityValueTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the vertical velocity unit text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setVerticalVelocityUnitTextAppearance(@StyleRes int textAppearance) {
         verticalVelocityUnitTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the vertical velocity  unit text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setVerticalVelocityUnitTextColor(@NonNull ColorStateList colorStateList) {
-        verticalVelocityUnitTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the vertical velocity unit text view
-     *
-     * @param color color integer resource
-     */
-    public void setVerticalVelocityUnitTextColor(@ColorInt int color) {
-        verticalVelocityUnitTextView.setTextColor(color);
     }
 
     /**
@@ -506,12 +489,21 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the vertical velocity unit text view
+     * Set text color state list for the vertical velocity  unit text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setVerticalVelocityUnitTextSize(@Dimension float textSize) {
-        verticalVelocityUnitTextView.setTextSize(textSize);
+    public void setVerticalVelocityUnitTextColor(@NonNull ColorStateList colorStateList) {
+        verticalVelocityUnitTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the vertical velocity unit text view
+     *
+     * @param color color integer resource
+     */
+    public void setVerticalVelocityUnitTextColor(@ColorInt int color) {
+        verticalVelocityUnitTextView.setTextColor(color);
     }
 
     /**
@@ -522,6 +514,25 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getVerticalVelocityUnitTextSize() {
         return verticalVelocityUnitTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the vertical velocity unit text view
+     *
+     * @param textSize text size float value
+     */
+    public void setVerticalVelocityUnitTextSize(@Dimension float textSize) {
+        verticalVelocityUnitTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the vertical velocity unit text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getVerticalVelocityUnitTextBackground() {
+        return verticalVelocityUnitTextView.getBackground();
     }
 
     /**
@@ -540,16 +551,6 @@ public class VerticalVelocityWidget extends ConstraintLayoutWidget {
      */
     public void setVerticalVelocityUnitTextBackground(@DrawableRes int resourceId) {
         verticalVelocityUnitTextView.setBackgroundResource(resourceId);
-    }
-
-    /**
-     * Get current background of the vertical velocity unit text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getVerticalVelocityUnitTextBackground() {
-        return verticalVelocityUnitTextView.getBackground();
     }
 
     //Initialize all customizable attributes

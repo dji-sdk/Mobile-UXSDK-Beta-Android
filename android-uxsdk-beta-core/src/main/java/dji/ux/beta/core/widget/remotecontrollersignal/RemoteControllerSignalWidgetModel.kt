@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.core.widget.remotecontrollersignal
@@ -50,8 +51,6 @@ class RemoteControllerSignalWidgetModel(
     //region Data
     /**
      * Get the value of the strength of the signal between the RC and the aircraft.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val rcSignalQuality: Flowable<Int>
         get() = rcSignalQualityProcessor.toFlowable()

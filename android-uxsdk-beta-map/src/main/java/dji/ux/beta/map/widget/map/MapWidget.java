@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.map.widget.map;
@@ -1144,6 +1145,16 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
+     * Gets the color of the flight path.
+     *
+     * @return The color of the flight path.
+     */
+    @ColorInt
+    public int getFlightPathColor() {
+        return flightPathColor;
+    }
+
+    /**
      * Sets the color of the flight path.
      *
      * @param color The color of the flight path.
@@ -1156,13 +1167,12 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
-     * Gets the color of the flight path.
+     * Gets the line width, in pixels, of the flight path. Valid range is 0-100.
      *
-     * @return The color of the flight path.
+     * @return The width in pixels of the flight path.
      */
-    @ColorInt
-    public int getFlightPathColor() {
-        return flightPathColor;
+    public float getFlightPathWidth() {
+        return flightPathWidth;
     }
 
     /**
@@ -1175,15 +1185,6 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         if (flightPathEnabled && flightPathLine != null) {
             flightPathLine.setWidth(flightPathWidth);
         }
-    }
-
-    /**
-     * Gets the line width, in pixels, of the flight path. Valid range is 0-100.
-     *
-     * @return The width in pixels of the flight path.
-     */
-    public float getFlightPathWidth() {
-        return flightPathWidth;
     }
 
     /**
@@ -1208,6 +1209,16 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
+     * Gets the color of the path from aircraft to home point.
+     *
+     * @return The color of the path.
+     */
+    @ColorInt
+    public int getDirectionToHomeColor() {
+        return homeDirectionColor;
+    }
+
+    /**
      * Sets the color of the path from aircraft to home point.
      *
      * @param color The new color of the path.
@@ -1220,13 +1231,12 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
-     * Gets the color of the path from aircraft to home point.
+     * Gets the width of the path from aircraft to home point.
      *
-     * @return The color of the path.
+     * @return The width of the path.
      */
-    @ColorInt
-    public int getDirectionToHomeColor() {
-        return homeDirectionColor;
+    public float getDirectionToHomeWidth() {
+        return homeDirectionWidth;
     }
 
     /**
@@ -1239,15 +1249,6 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         if (homeDirectionEnabled && homeLine != null) {
             homeLine.setWidth(width);
         }
-    }
-
-    /**
-     * Gets the width of the path from aircraft to home point.
-     *
-     * @return The width of the path.
-     */
-    public float getDirectionToHomeWidth() {
-        return homeDirectionWidth;
     }
 
     /**
@@ -1281,6 +1282,16 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
+     * Get the aircraft marker icon
+     *
+     * @return Drawable used as aircraft icon
+     */
+    @NonNull
+    public Drawable getAircraftMarkerIcon() {
+        return aircraftIcon;
+    }
+
+    /**
      * Changes the icon of the aircraft marker
      *
      * @param drawable The image to be set.
@@ -1291,16 +1302,6 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
             aircraftMarker.setIcon(DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(
                     aircraftIcon)));
         }
-    }
-
-    /**
-     * Get the aircraft marker icon
-     *
-     * @return Drawable used as aircraft icon
-     */
-    @NonNull
-    public Drawable getAircraftMarkerIcon() {
-        return aircraftIcon;
     }
 
     /**
@@ -1321,6 +1322,16 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
+     * Get the home marker icon
+     *
+     * @return Drawable used as home icon
+     */
+    @NonNull
+    public Drawable getHomeMarkerIcon() {
+        return homeIcon;
+    }
+
+    /**
      * Changes the icon of the home marker
      *
      * @param drawable The image to be set.
@@ -1330,16 +1341,6 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         if (homeMarker != null) {
             homeMarker.setIcon(DJIBitmapDescriptorFactory.fromBitmap(ViewUtil.getBitmapFromVectorDrawable(homeIcon)));
         }
-    }
-
-    /**
-     * Get the home marker icon
-     *
-     * @return Drawable used as home icon
-     */
-    @NonNull
-    public Drawable getHomeMarkerIcon() {
-        return homeIcon;
     }
 
     /**
@@ -1360,6 +1361,16 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
+     * Get the gimbal icon
+     *
+     * @return Drawable used as gimbal icon
+     */
+    @NonNull
+    public Drawable getGimbalMarkerIcon() {
+        return gimbalYawIcon;
+    }
+
+    /**
      * Changes the icon of the gimbal icon
      *
      * @param drawable The image to be set.
@@ -1373,13 +1384,12 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
-     * Get the gimbal icon
+     * Gets the visibility of the gimbal attitude marker.
      *
-     * @return Drawable used as gimbal icon
+     * @return `true` if the gimbal attitude marker is visible.
      */
-    @NonNull
-    public Drawable getGimbalMarkerIcon() {
-        return gimbalYawIcon;
+    public boolean isGimbalAttitudeEnabled() {
+        return gimbalYawMarkerEnabled;
     }
 
     /**
@@ -1395,12 +1405,12 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
-     * Gets the visibility of the gimbal attitude marker.
+     * Gets the visibility of the aircraft marker.
      *
-     * @return `true` if the gimbal attitude marker is visible.
+     * @return `true` if the aircraft marker is visible.
      */
-    public boolean isGimbalAttitudeEnabled() {
-        return gimbalYawMarkerEnabled;
+    public boolean isAircraftMarkerEnabled() {
+        return aircraftMarkerEnabled;
     }
 
     /**
@@ -1416,12 +1426,13 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
-     * Gets the visibility of the aircraft marker.
+     * `true` if the map displays the home point of the aircraft. The default value of
+     * this property is `true`.
      *
-     * @return `true` if the aircraft marker is visible.
+     * @return The icon of the home point marker.
      */
-    public boolean isAircraftMarkerEnabled() {
-        return aircraftMarkerEnabled;
+    public boolean isHomeMarkerEnabled() {
+        return homeMarkerEnabled;
     }
 
     /**
@@ -1434,16 +1445,6 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         if (homeMarker != null) {
             homeMarker.setVisible(isEnabled);
         }
-    }
-
-    /**
-     * `true` if the map displays the home point of the aircraft. The default value of
-     * this property is `true`.
-     *
-     * @return The icon of the home point marker.
-     */
-    public boolean isHomeMarkerEnabled() {
-        return homeMarkerEnabled;
     }
     //endregion
 
@@ -1469,6 +1470,15 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
+     * Check if auto frame map is enabled
+     *
+     * @return boolean val
+     */
+    public boolean isAutoFrameMapEnabled() {
+        return isAutoFrameMapBounds;
+    }
+
+    /**
      * Keeps the home location and the aircraft location visible and adjust the map
      * bounds when set `true`.
      *
@@ -1477,15 +1487,6 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     public void setAutoFrameMapEnabled(boolean isEnabled) {
         isAutoFrameMapBounds = isEnabled;
         autoFrameMapBounds();
-    }
-
-    /**
-     * Check if auto frame map is enabled
-     *
-     * @return boolean val
-     */
-    public boolean isAutoFrameMapEnabled() {
-        return isAutoFrameMapBounds;
     }
 
     /**
@@ -1534,15 +1535,6 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     }
 
     /**
-     * Show/Hide FlyZone legend
-     *
-     * @param isEnabled true - flyZone legend visible false - flyZone legend not visible
-     */
-    public void setFlyZoneLegendEnabled(boolean isEnabled) {
-        legendGroup.setVisibility(isEnabled ? VISIBLE : GONE);
-    }
-
-    /**
      * Check if FlyZone legend is enabled
      *
      * @return true - legend is visible false - legend is hidden
@@ -1551,23 +1543,16 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         return legendGroup.getVisibility() == VISIBLE;
     }
 
-    //endregion
-
     /**
-     * When added to the MapWidget, the OnMapReadyListener can be used to  determine
-     * when the map is ready to modify. No modifications should  be done to the
-     * MapWidget before the map is initialized using one  of the initialization
-     * methods.
+     * Show/Hide FlyZone legend
+     *
+     * @param isEnabled true - flyZone legend visible false - flyZone legend not visible
      */
-    public interface OnMapReadyListener {
-
-        /**
-         * A callback indicating that the map is finished initializing.
-         *
-         * @param map The object of <code>DJIMap</code>.
-         */
-        void onMapReady(@NonNull DJIMap map);
+    public void setFlyZoneLegendEnabled(boolean isEnabled) {
+        legendGroup.setVisibility(isEnabled ? VISIBLE : GONE);
     }
+
+    //endregion
 
     /**
      * Map Centering Options.
@@ -1609,5 +1594,21 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
             return index;
         }
 
+    }
+
+    /**
+     * When added to the MapWidget, the OnMapReadyListener can be used to  determine
+     * when the map is ready to modify. No modifications should  be done to the
+     * MapWidget before the map is initialized using one  of the initialization
+     * methods.
+     */
+    public interface OnMapReadyListener {
+
+        /**
+         * A callback indicating that the map is finished initializing.
+         *
+         * @param map The object of <code>DJIMap</code>.
+         */
+        void onMapReady(@NonNull DJIMap map);
     }
 }

@@ -19,7 +19,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -45,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_margin="5dp"
-        android:thumb="@drawable/uxsdk_switch_thumb"
+        android:thumb="@drawable/uxsdk_selector_switch_thumb"
         android:track="@drawable/uxsdk_switch_background"
         app:layout_constraintBottom_toBottomOf="@id/textview_rtk_title"
         app:layout_constraintDimensionRatio="2:1"

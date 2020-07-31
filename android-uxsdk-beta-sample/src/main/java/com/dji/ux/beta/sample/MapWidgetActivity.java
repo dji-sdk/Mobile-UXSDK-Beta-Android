@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample;
@@ -84,7 +83,7 @@ import dji.ux.beta.map.widget.map.MapWidget;
 import static com.here.android.mpa.common.MapSettings.setIsolatedDiskCacheRootPath;
 
 /**
- * Displays a {@link MapWidget} and controls to customize the look of
+ * Displays a {@link dji.ux.beta.map.widget.map.MapWidget} and controls to customize the look of
  * each of the components.
  */
 public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {

@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base;
@@ -52,24 +53,17 @@ public class DJISDKModel {
 
     //region Fields
     private static final String TAG = "DJISDKModel";
+    private static final int MAX_COMPONENT_INDEX = 10;
     private Map<Object, List<KeyListener>> keyListeners;
     //endregion
 
-    //region Constructors
-    private static class SingletonHolder {
-        private static DJISDKModel instance = new DJISDKModel();
+    private DJISDKModel() {
+        keyListeners = new ConcurrentHashMap<>();
     }
 
     public static DJISDKModel getInstance() {
         return DJISDKModel.SingletonHolder.instance;
     }
-
-    private DJISDKModel() {
-        keyListeners = new ConcurrentHashMap<>();
-    }
-    //endregion
-
-    //region DependentKeys Control
 
     /**
      * Check if DJISDKModel is available
@@ -79,6 +73,9 @@ public class DJISDKModel {
     public boolean isAvailable() {
         return isKeyManagerAvailable();
     }
+    //endregion
+
+    //region DependentKeys Control
 
     /**
      * Stops observing changes of all keys registered for the given listener.
@@ -149,6 +146,7 @@ public class DJISDKModel {
      * @param key An instance of DJIKey.
      * @return The value associated with the key.
      */
+    @Nullable
     public Object getCacheValue(@NonNull final DJIKey key) {
         if (!isKeyManagerAvailable()) {
             return null;
@@ -230,13 +228,13 @@ public class DJISDKModel {
 
         return false;
     }
-    //endregion
 
     //region Class Helpers
     @Nullable
     private KeyManager getKeyManager() {
         return KeyManager.getInstance();
     }
+    //endregion
 
     private void registerKey(@NonNull final FlowableEmitter<Object> emitter,
                              @NonNull final DJIKey key,
@@ -293,6 +291,11 @@ public class DJISDKModel {
 
     private IllegalStateException getKeyManagerException() {
         return new IllegalStateException("KeyManager is not available yet");
+    }
+
+    //region Constructors
+    private static class SingletonHolder {
+        private static DJISDKModel instance = new DJISDKModel();
     }
     //endregion
 }

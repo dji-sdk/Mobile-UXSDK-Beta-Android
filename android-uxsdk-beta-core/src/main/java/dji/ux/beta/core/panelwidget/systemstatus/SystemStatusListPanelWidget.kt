@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.panelwidget.systemstatus
@@ -34,6 +35,16 @@ import dji.ux.beta.core.base.panelwidget.PanelWidgetType
 import dji.ux.beta.core.base.panelwidget.WidgetID
 import dji.ux.beta.core.extension.getIntegerAndUse
 import dji.ux.beta.core.extension.toggleVisibility
+import dji.ux.beta.core.listitemwidget.emmcstatus.EMMCStatusListItemWidget
+import dji.ux.beta.core.listitemwidget.flightmode.FlightModeListItemWidget
+import dji.ux.beta.core.listitemwidget.maxaltitude.MaxAltitudeListItemWidget
+import dji.ux.beta.core.listitemwidget.maxflightdistance.MaxFlightDistanceListItemWidget
+import dji.ux.beta.core.listitemwidget.overviewstatus.OverviewListItemWidget
+import dji.ux.beta.core.listitemwidget.rcbattery.RCBatteryListItemWidget
+import dji.ux.beta.core.listitemwidget.rcstickmode.RCStickModeListItemWidget
+import dji.ux.beta.core.listitemwidget.returntohomealtitude.ReturnToHomeAltitudeListItemWidget
+import dji.ux.beta.core.listitemwidget.sdcardstatus.SDCardStatusListItemWidget
+import dji.ux.beta.core.listitemwidget.travelmode.TravelModeListItemWidget
 import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget
 
 /**
@@ -47,10 +58,12 @@ import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget
  * Customization:
  * Use the attribute "excludeItem" to permanently remove items from the list. This will prevent a
  * certain item from being created and shown throughout the lifecycle of the panel widget. Here are
- * all the flags: flight_mode, rc_stick_mode, sd_card_status, max_altitude.
+ * all the flags: flight_mode, compass, vision_sensor, radio_quality, rc_stick_mode, rc_battery,
+ * aircraft_battery_temperature, sd_card_status, emmc_status, max_altitude, max_flight_distance,
+ * travel_mode.
  *
  * Note that multiple flags can be used simultaneously by logically OR'ing
- * them. For example, to hide sd card status and rc stick mode, it can be done by the
+ * them. For example, to hide sd card status and rc srtick mode, it can be done by the
  * following two steps.
  * Define custom xmlns in its layout file:
  * xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -59,10 +72,16 @@ import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget
  *
  * This panel widget also passes attributes to each of the child widgets created. See each
  * widget for individual customizations:
- * [dji.ux.beta.core.listitemwidget.flightmode.FlightModeListItemWidget],
- * [dji.ux.beta.core.listitemwidget.rcstickmode.RCStickModeListItemWidget],
- * [dji.ux.beta.core.listitemwidget.sdcardstatus.SDCardStatusListItemWidget],
- * [dji.ux.beta.core.listitemwidget.maxaltitude.MaxAltitudeListItemWidget].
+ * [OverviewListItemWidget],
+ * [ReturnToHomeAltitudeListItemWidget],
+ * [FlightModeListItemWidget],
+ * [RCStickModeListItemWidget],
+ * [RCBatteryListItemWidget],
+ * [SDCardStatusListItemWidget],
+ * [EMMCStatusListItemWidget],
+ * [MaxAltitudeListItemWidget],
+ * [MaxFlightDistanceListItemWidget],
+ * [TravelModeListItemWidget].
  *
  * To customize the individual widgets, pass a theme in XML:
  * <code>android:theme="@style/UXSDKSystemStatusListTheme"</code
@@ -121,7 +140,7 @@ class SystemStatusListPanelWidget @JvmOverloads constructor(
     //region Helpers
     private fun getBlacklistSet(blacklistValue: Int?): Set<WidgetID>? {
         return if (blacklistValue != null) {
-            SystemStatusSmartListModel.WidgetOrder.values()
+            SystemStatusSmartListModel.SystemStatusListItem.values()
                     .filter { it.isItemExcluded(blacklistValue) }
                     .map { it.widgetID }
                     .toSet()

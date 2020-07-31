@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.vision
@@ -35,6 +36,7 @@ import androidx.core.content.res.use
 import dji.thirdparty.io.reactivex.Flowable
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
 import dji.thirdparty.io.reactivex.functions.Consumer
+import dji.thirdparty.io.reactivex.processors.PublishProcessor
 import dji.ux.beta.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.FrameLayoutWidget
@@ -62,7 +64,7 @@ open class VisionWidget @JvmOverloads constructor(
         context,
         attrs,
         defStyleAttr
-) {
+), View.OnClickListener {
     //region Fields
     private val schedulerProvider: SchedulerProvider = SchedulerProvider.getInstance()
     private val visionIconImageView: ImageView = findViewById(R.id.imageview_vision_icon)
@@ -77,6 +79,8 @@ open class VisionWidget @JvmOverloads constructor(
                     VisionWidgetModel.VisionSystemStatus.OMNI_VERTICAL to getDrawable(R.drawable.uxsdk_ic_omni_perception_vertical),
                     VisionWidgetModel.VisionSystemStatus.OMNI_DISABLED to getDrawable(R.drawable.uxsdk_ic_avoid_disable_all),
                     VisionWidgetModel.VisionSystemStatus.OMNI_CLOSED to getDrawable(R.drawable.uxsdk_ic_avoid_disable_all))
+    private val uiUpdateStateProcessor: PublishProcessor<VisionWidgetUIState> = PublishProcessor.create()
+
     private val widgetModel by lazy {
         VisionWidgetModel(DJISDKModel.getInstance(),
                 ObservableInMemoryKeyedStore.getInstance(),
@@ -109,6 +113,7 @@ open class VisionWidget @JvmOverloads constructor(
     }
 
     init {
+        setOnClickListener(this)
         attrs?.let { initAttributes(context, it) }
     }
     //endregion
@@ -126,6 +131,10 @@ open class VisionWidget @JvmOverloads constructor(
             widgetModel.cleanup()
         }
         super.onDetachedFromWindow()
+    }
+
+    override fun onClick(v: View?) {
+        uiUpdateStateProcessor.onNext(VisionWidgetUIState.WidgetClick)
     }
 
     override fun reactToModelChanges() {
@@ -152,7 +161,7 @@ open class VisionWidget @JvmOverloads constructor(
 
     private fun sendWarningMessage(isUserAvoidanceEnabled: Boolean) {
         addDisposable(widgetModel.sendWarningMessage(getString(R.string.uxsdk_visual_radar_avoidance_disabled_message_post),
-                        isUserAvoidanceEnabled)
+                isUserAvoidanceEnabled)
                 .subscribe())
         widgetStateDataProcessor.onNext(UserAvoidanceEnabledUpdate(isUserAvoidanceEnabled))
     }
@@ -271,6 +280,22 @@ open class VisionWidget @JvmOverloads constructor(
     //endregion
 
     //region Hooks
+    /**
+     * Get the [VisionWidgetUIState] updates
+     */
+    fun getUIStateUpdates(): Flowable<VisionWidgetUIState> {
+        return uiUpdateStateProcessor
+    }
+
+    /**
+     * Widget UI update State
+     */
+    sealed class VisionWidgetUIState {
+        /**
+         * Widget click update
+         */
+        object WidgetClick : VisionWidgetUIState()
+    }
 
     /**
      * Get the [VisionWidgetState] updates

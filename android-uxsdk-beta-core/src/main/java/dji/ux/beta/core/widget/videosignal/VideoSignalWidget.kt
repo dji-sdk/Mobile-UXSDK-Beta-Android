@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.videosignal
@@ -265,9 +266,9 @@ open class VideoSignalWidget @JvmOverloads constructor(
 
     private fun reactToOcuSyncFrequencyStateChange(): Disposable {
         return Flowable.combineLatest(
-                        widgetModel.ocuSyncFrequencyBand,
-                        widgetModel.ocuSyncFrequencyPointIndex,
-                        BiFunction<OcuSyncFrequencyBand, Int, Pair<OcuSyncFrequencyBand, Int>> { ocuSyncFrequencyBand, signalQuality -> Pair.create(ocuSyncFrequencyBand, signalQuality) })
+                widgetModel.ocuSyncFrequencyBand,
+                widgetModel.ocuSyncFrequencyPointIndex,
+                BiFunction<OcuSyncFrequencyBand, Int, Pair<OcuSyncFrequencyBand, Int>> { ocuSyncFrequencyBand, signalQuality -> Pair.create(ocuSyncFrequencyBand, signalQuality) })
                 .observeOn(schedulerProvider.ui())
                 .subscribe { values ->
                     widgetStateDataProcessor.onNext(OcuSyncFrequencyBandUpdate(values.first))
