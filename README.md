@@ -26,6 +26,7 @@ You can find the UX SDK documentation on the [wiki](https://github.com/dji-sdk/M
 
 As always, the DJI Dev Team is committed to improving your developer experience. Please follow our guidelines on the [How to Contribute](https://github.com/dji-sdk/Mobile-UXSDK-Beta-Android/wiki/How-to-Contribute) page on our wiki for filling out any bugs or feature requests, or contributing to the code base. 
 If you have any other questions, please send an email to dev@dji.com. We recommend frequently checking the Github repositories for changes and new releases.
+You can also post questions, keep up to date on DJI developer news and contribute to the community by visiting [DJI's Developer Forum](https://forum.dji.com/forum-139-1.html?from=developer)
 
 ## License
 
