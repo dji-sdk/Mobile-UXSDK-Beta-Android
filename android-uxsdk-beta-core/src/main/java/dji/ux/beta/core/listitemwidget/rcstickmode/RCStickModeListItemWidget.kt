@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.listitemwidget.rcstickmode
@@ -65,7 +66,6 @@ open class RCStickModeListItemWidget @JvmOverloads constructor(
     private var mode2ItemIndex: Int = INVALID_OPTION_INDEX
     private var mode3ItemIndex: Int = INVALID_OPTION_INDEX
     private var modeCustomItemIndex: Int = INVALID_OPTION_INDEX
-
 
     init {
         listItemTitleIcon = getDrawable(R.drawable.uxsdk_ic_rc_list_item)

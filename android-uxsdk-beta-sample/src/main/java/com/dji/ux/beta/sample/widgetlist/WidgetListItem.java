@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample.widgetlist;
@@ -40,7 +39,7 @@ public class WidgetListItem {
     /**
      * Create a new {@link WidgetListItem} with the given title and the given widgetViewHolders.
      *
-     * @param titleId           A resource ID of the title to display within the widget list.
+     * @param titleId A resource ID of the title to display within the widget list.
      * @param widgetViewHolders An array of {@link WidgetViewHolder} objects to display.
      */
     public WidgetListItem(@StringRes int titleId, WidgetViewHolder... widgetViewHolders) {

@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.util;
@@ -25,7 +26,7 @@ package dji.ux.beta.core.util;
 import android.text.InputFilter;
 import android.text.Spanned;
 
-public class EditTextNumberInputFilter implements InputFilter {
+public class EditTextNumberInputFilter implements InputFilter{
     private int min, max;
 
     public EditTextNumberInputFilter(int min, int max) {

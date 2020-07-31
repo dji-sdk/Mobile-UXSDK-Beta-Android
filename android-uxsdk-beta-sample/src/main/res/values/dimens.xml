@@ -20,23 +20,23 @@
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
   ~
-  ~
   -->
 
 <resources>
-    <!-- map activity -->
+    <dimen name="image_drop_down_height">30dp</dimen>
     <dimen name="map_settings_separator">15dp</dimen>
     <dimen name="map_settings_item_separator">5dp</dimen>
-
-    <!-- default layout activity -->
     <dimen name="mini_map_height">100dp</dimen>
     <dimen name="mini_map_width">150dp</dimen>
     <dimen name="mini_map_margin">12dp</dimen>
-    <dimen name="topbar_padding">2dp</dimen>
+
+    <dimen name="topbar_padding">3dp</dimen>
     <dimen name="topbar_text_size">16sp</dimen>
-    <dimen name="camera_config_height">28dp</dimen>
+    <dimen name="camera_config_height">35dp</dimen>
     <dimen name="camera_bar_height">35dp</dimen>
     <dimen name="camera_bar_padding">6dp</dimen>
     <dimen name="single_battery_text_size">14sp</dimen>
     <dimen name="dual_battery_text_size">8sp</dimen>
+    <dimen name="title_bar_size">56dp</dimen>
+    <dimen name="top_bar_percent_height">0.1</dimen>
 </resources>

@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator;
@@ -153,15 +154,6 @@ public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget impleme
     }
 
     /**
-     * Set the color of the widget label text
-     *
-     * @param color integer value to be used
-     */
-    public void setLabelTextColor(@ColorInt int color) {
-        foregroundTextView.setTextColor(color);
-    }
-
-    /**
      * Get the color of the widget label text
      *
      * @return integer color value
@@ -169,6 +161,15 @@ public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget impleme
     @ColorInt
     public int getLabelTextColor() {
         return foregroundTextView.getCurrentTextColor();
+    }
+
+    /**
+     * Set the color of the widget label text
+     *
+     * @param color integer value to be used
+     */
+    public void setLabelTextColor(@ColorInt int color) {
+        foregroundTextView.setTextColor(color);
     }
 
     /**
@@ -200,15 +201,6 @@ public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget impleme
     }
 
     /**
-     * Set the text size of the widget label
-     *
-     * @param textSize float value representing text size
-     */
-    public void setLabelTextSize(@Dimension float textSize) {
-        foregroundTextView.setTextSize(textSize);
-    }
-
-    /**
      * Get the text size of the widget label
      *
      * @return float value representing text size
@@ -216,6 +208,15 @@ public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget impleme
     @Dimension
     public float getLabelTextSize() {
         return foregroundTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the widget label
+     *
+     * @param textSize float value representing text size
+     */
+    public void setLabelTextSize(@Dimension float textSize) {
+        foregroundTextView.setTextSize(textSize);
     }
     //endregion
 }

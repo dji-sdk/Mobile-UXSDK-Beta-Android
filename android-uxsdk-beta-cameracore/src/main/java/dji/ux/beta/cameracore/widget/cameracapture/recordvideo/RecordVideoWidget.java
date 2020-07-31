@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracapture.recordvideo;
@@ -340,6 +341,16 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     //region customizations
 
     /**
+     * Get the index of the camera to which the widget is reacting
+     *
+     * @return {@link CameraIndex}
+     */
+    @NonNull
+    public CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
+    }
+
+    /**
      * Set the index of camera to which the widget should react
      *
      * @param cameraIndex {@link CameraIndex}
@@ -351,13 +362,13 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     }
 
     /**
-     * Get the index of the camera to which the widget is reacting
+     * Get the current start recording video icon
      *
-     * @return {@link CameraIndex}
+     * @return Drawable currently used
      */
-    @NonNull
-    public CameraIndex getCameraIndex() {
-        return widgetModel.getCameraIndex();
+    @Nullable
+    public Drawable getRecordVideoStartDrawable() {
+        return recordVideoStartDrawable;
     }
 
     /**
@@ -380,13 +391,13 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     }
 
     /**
-     * Get the current start recording video icon
+     * Get the current stop video recording icon
      *
      * @return Drawable currently used
      */
     @Nullable
-    public Drawable getRecordVideoStartDrawable() {
-        return recordVideoStartDrawable;
+    public Drawable getRecordVideoStopDrawable() {
+        return recordVideoStopDrawable;
     }
 
     /**
@@ -409,13 +420,13 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     }
 
     /**
-     * Get the current stop video recording icon
+     * Get the current icon for start video recording for Hasselblad camera
      *
      * @return Drawable currently used
      */
     @Nullable
-    public Drawable getRecordVideoStopDrawable() {
-        return recordVideoStopDrawable;
+    public Drawable getRecordVideoHasselbladDrawable() {
+        return recordVideoStartHasselbladDrawable;
     }
 
     /**
@@ -438,13 +449,14 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     }
 
     /**
-     * Get the current icon for start video recording for Hasselblad camera
+     * Get the current icon for stop video recording for Hasselblad camera
+     * Currently on Mavic 2 Pro
      *
      * @return Drawable currently used
      */
     @Nullable
-    public Drawable getRecordVideoHasselbladDrawable() {
-        return recordVideoStartHasselbladDrawable;
+    public Drawable getRecordVideoStopHasselbladDrawable() {
+        return recordVideoStopHasselbladDrawable;
     }
 
     /**
@@ -466,17 +478,6 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     public void setRecordVideoStopHasselbladDrawable(@Nullable Drawable drawable) {
         recordVideoStopHasselbladDrawable = drawable;
         checkAndUpdateCenterImageView();
-    }
-
-    /**
-     * Get the current icon for stop video recording for Hasselblad camera
-     * Currently on Mavic 2 Pro
-     *
-     * @return Drawable currently used
-     */
-    @Nullable
-    public Drawable getRecordVideoStopHasselbladDrawable() {
-        return recordVideoStopHasselbladDrawable;
     }
 
     /**
@@ -616,26 +617,8 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
      *
      * @param drawable to be used
      */
-    public void setVideoTimerTextBackground(@NonNull Drawable drawable) {
+    public void setVideoTimerTextBackground(@Nullable Drawable drawable) {
         videoTimerTextView.setBackground(drawable);
-    }
-
-    /**
-     * Set the color state list for video record duration text
-     *
-     * @param colorStateList to be used
-     */
-    public void setVideoTimerTextColors(@Nullable ColorStateList colorStateList) {
-        videoTimerTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color of video record duration text
-     *
-     * @param color integer value representing color
-     */
-    public void setVideoTimerTextColor(@ColorInt int color) {
-        videoTimerTextView.setTextColor(color);
     }
 
     /**
@@ -649,6 +632,15 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     }
 
     /**
+     * Set the color state list for video record duration text
+     *
+     * @param colorStateList to be used
+     */
+    public void setVideoTimerTextColors(@Nullable ColorStateList colorStateList) {
+        videoTimerTextView.setTextColor(colorStateList);
+    }
+
+    /**
      * Get the current text color of video record duration text
      *
      * @return integer value representing color
@@ -659,12 +651,12 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     }
 
     /**
-     * Set the text size of video record duration text
+     * Set the text color of video record duration text
      *
-     * @param textSize float value
+     * @param color integer value representing color
      */
-    public void setVideoTimerTextSize(@Dimension float textSize) {
-        videoTimerTextView.setTextSize(textSize);
+    public void setVideoTimerTextColor(@ColorInt int color) {
+        videoTimerTextView.setTextColor(color);
     }
 
     /**
@@ -675,6 +667,15 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     @Dimension
     public float getVideoTimerTextSize() {
         return videoTimerTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of video record duration text
+     *
+     * @param textSize float value
+     */
+    public void setVideoTimerTextSize(@Dimension float textSize) {
+        videoTimerTextView.setTextSize(textSize);
     }
 
     /**

@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.map.widget.map;
@@ -74,10 +75,10 @@ import dji.ux.beta.map.R;
  */
 public class FlyZoneHelper {
 
+    protected static final float DEFAULT_BORDER_WIDTH = 5;
     //region fields
     private static final int DEFAULT_ALPHA = 26;
     private static final float DEFAULT_ANCHOR = 0.5f;
-    protected static final float DEFAULT_BORDER_WIDTH = 5;
     private static final String TAG = "FlyZoneHelper";
     private Context context;
     private DJIMap map;
@@ -959,6 +960,15 @@ public class FlyZoneHelper {
     }
 
     /**
+     * Get the border width of all fly zones.
+     *
+     * @return The width in pixels of the fly zone borders.
+     */
+    public float getFlyZoneBorderWidth() {
+        return flyZoneBorderWidth;
+    }
+
+    /**
      * Set the border width of all fly zones.
      *
      * @param width The width in pixels of the fly zone borders.
@@ -969,12 +979,13 @@ public class FlyZoneHelper {
     }
 
     /**
-     * Get the border width of all fly zones.
+     * Get the color of the custom unlock zone.
      *
-     * @return The width in pixels of the fly zone borders.
+     * @return A color int.
      */
-    public float getFlyZoneBorderWidth() {
-        return flyZoneBorderWidth;
+    @ColorInt
+    public int getCustomUnlockFlyZoneColor() {
+        return customUnlockColor;
     }
 
     /**
@@ -986,6 +997,16 @@ public class FlyZoneHelper {
         this.customUnlockColor = customUnlockColor;
         updateLegendColor(customUnlockLegend, customUnlockColor);
         updateCustomFlyZoneViews();
+    }
+
+    /**
+     * Get the color of the custom unlock zones sent to the aircraft.
+     *
+     * @return A color int.
+     */
+    @ColorInt
+    public int getCustomUnlockFlyZoneSentToAircraftColor() {
+        return customUnlockSentToAircraftColor;
     }
 
     /**
@@ -1001,6 +1022,16 @@ public class FlyZoneHelper {
     }
 
     /**
+     * Get the color of the currently enabled custom unlock fly zone.
+     *
+     * @return A color int.
+     */
+    @ColorInt
+    public int getCustomUnlockFlyZoneEnabledColor() {
+        return customUnlockEnabledColor;
+    }
+
+    /**
      * Set the color of the currently enabled custom unlock fly zones.
      *
      * @param customUnlockEnabledColor The new color.
@@ -1009,36 +1040,6 @@ public class FlyZoneHelper {
         this.customUnlockEnabledColor = customUnlockEnabledColor;
         updateLegendColor(customUnlockEnabledLegend, customUnlockEnabledColor);
         updateCustomFlyZoneViews();
-    }
-
-    /**
-     * Get the color of the custom unlock zone.
-     *
-     * @return A color int.
-     */
-    @ColorInt
-    public int getCustomUnlockFlyZoneColor() {
-        return customUnlockColor;
-    }
-
-    /**
-     * Get the color of the custom unlock zones sent to the aircraft.
-     *
-     * @return A color int.
-     */
-    @ColorInt
-    public int getCustomUnlockFlyZoneSentToAircraftColor() {
-        return customUnlockSentToAircraftColor;
-    }
-
-    /**
-     * Get the color of the currently enabled custom unlock fly zone.
-     *
-     * @return A color int.
-     */
-    @ColorInt
-    public int getCustomUnlockFlyZoneEnabledColor() {
-        return customUnlockEnabledColor;
     }
 
     /**
@@ -1099,19 +1100,6 @@ public class FlyZoneHelper {
     }
 
     /**
-     * Set maximum height color
-     *
-     * @param color integer value for maximum height color
-     */
-    public void setMaximumHeightColor(@ColorInt int color) {
-        this.maximumHeightColor = color;
-        updateFlyZoneViews(FlyZoneCategory.WARNING);
-        updateFlyZoneViews(FlyZoneCategory.ENHANCED_WARNING);
-        updateFlyZoneViews(FlyZoneCategory.AUTHORIZATION);
-        updateFlyZoneViews(FlyZoneCategory.RESTRICTED);
-    }
-
-    /**
      * Get maximum height color
      *
      * @return integer value representing color
@@ -1122,12 +1110,12 @@ public class FlyZoneHelper {
     }
 
     /**
-     * Set maximum height alpha
+     * Set maximum height color
      *
-     * @param alpha integer value for alpha
+     * @param color integer value for maximum height color
      */
-    public void setMaximumHeightAlpha(@IntRange(from = 0, to = 255) int alpha) {
-        this.maximumHeightAlpha = alpha;
+    public void setMaximumHeightColor(@ColorInt int color) {
+        this.maximumHeightColor = color;
         updateFlyZoneViews(FlyZoneCategory.WARNING);
         updateFlyZoneViews(FlyZoneCategory.ENHANCED_WARNING);
         updateFlyZoneViews(FlyZoneCategory.AUTHORIZATION);
@@ -1142,6 +1130,19 @@ public class FlyZoneHelper {
     @IntRange(from = 0, to = 255)
     public int getMaximumHeightAlpha() {
         return maximumHeightAlpha;
+    }
+
+    /**
+     * Set maximum height alpha
+     *
+     * @param alpha integer value for alpha
+     */
+    public void setMaximumHeightAlpha(@IntRange(from = 0, to = 255) int alpha) {
+        this.maximumHeightAlpha = alpha;
+        updateFlyZoneViews(FlyZoneCategory.WARNING);
+        updateFlyZoneViews(FlyZoneCategory.ENHANCED_WARNING);
+        updateFlyZoneViews(FlyZoneCategory.AUTHORIZATION);
+        updateFlyZoneViews(FlyZoneCategory.RESTRICTED);
     }
 
     /**
@@ -1252,6 +1253,15 @@ public class FlyZoneHelper {
     }
 
     /**
+     * Gets whether tap to unlock is enabled.
+     *
+     * @return `true` if tapping to unlock select fly zones is enabled.
+     */
+    public boolean isTapToUnlockEnabled() {
+        return isFlyZoneUnlockingEnabled;
+    }
+
+    /**
      * This will enable the unlocking of fly zones by clicking on them.
      *
      * @param isFlyZonesUnlockingEnabled A boolean value that determines whether to enable Fly Zones Unlocking.
@@ -1269,12 +1279,12 @@ public class FlyZoneHelper {
     }
 
     /**
-     * Gets whether tap to unlock is enabled.
+     * Get the visibility of custom unlock zones
      *
-     * @return `true` if tapping to unlock select fly zones is enabled.
+     * @return true - custom unlock zones visible
      */
-    public boolean isTapToUnlockEnabled() {
-        return isFlyZoneUnlockingEnabled;
+    public boolean isCustomUnlockZonesVisible() {
+        return customUnlockZonesVisibility;
     }
 
     /**
@@ -1291,15 +1301,6 @@ public class FlyZoneHelper {
         for (DJIMarker djiMarker : customUnlockMarkersSet) {
             djiMarker.setVisible(isVisible);
         }
-    }
-
-    /**
-     * Get the visibility of custom unlock zones
-     *
-     * @return true - custom unlock zones visible
-     */
-    public boolean isCustomUnlockZonesVisible() {
-        return customUnlockZonesVisibility;
     }
 
     //endregion

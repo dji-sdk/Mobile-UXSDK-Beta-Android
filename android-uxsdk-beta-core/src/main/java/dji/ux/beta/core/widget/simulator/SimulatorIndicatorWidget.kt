@@ -18,10 +18,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.simulator
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
@@ -151,7 +153,7 @@ open class SimulatorIndicatorWidget @JvmOverloads constructor(
 
     private fun reactToSimulatorStateChange(): Disposable {
         return Flowable.combineLatest(widgetModel.productConnection, widgetModel.isSimulatorActive,
-                        BiFunction<Boolean, Boolean, Pair<Boolean, Boolean>> { first: Boolean, second: Boolean -> Pair(first, second) })
+                BiFunction<Boolean, Boolean, Pair<Boolean, Boolean>> { first: Boolean, second: Boolean -> Pair(first, second) })
                 .observeOn(schedulerProvider.ui())
                 .subscribe(Consumer { values: Pair<Boolean, Boolean> -> updateUI(values.first, values.second) },
                         logErrorConsumer(TAG, "react to Focus Mode Change: "))
@@ -192,6 +194,7 @@ open class SimulatorIndicatorWidget @JvmOverloads constructor(
         stateChangeCallback = null
     }
 
+    @SuppressLint("Recycle")
     private fun initAttributes(context: Context, attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.SimulatorIndicatorWidget).use { typedArray ->
             typedArray.getResourceIdAndUse(R.styleable.SimulatorIndicatorWidget_uxsdk_onStateChange) {

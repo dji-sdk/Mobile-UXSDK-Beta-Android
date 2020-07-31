@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.focusmode;
@@ -139,9 +140,11 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
 
     @Override
     public void onClick(View v) {
-        addDisposable(widgetModel.toggleFocusMode().subscribe(() -> {
-            // Do nothing
-        }, logErrorConsumer(TAG, "switch focus mode: ")));
+        addDisposable(widgetModel.toggleFocusMode()
+                .observeOn(schedulerProvider.ui())
+                .subscribe(() -> {
+                    // Do nothing
+                }, logErrorConsumer(TAG, "switch focus mode: ")));
     }
 
     //endregion
@@ -223,17 +226,6 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     //region customizations
 
     /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
-    }
-
-    /**
      * Get the index of the camera to which the widget is reacting
      *
      * @return {@link SettingDefinitions.CameraIndex}
@@ -244,13 +236,14 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     }
 
     /**
-     * Set active mode text color
+     * Set the index of camera to which the widget should react
      *
-     * @param color color integer
+     * @param cameraIndex index of the camera.
      */
-    public void setActiveModeTextColor(@ColorInt int color) {
-        activeColor = color;
-        checkAndUpdateUI();
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        if (!isInEditMode()) {
+            widgetModel.setCameraIndex(cameraIndex);
+        }
     }
 
     /**
@@ -264,12 +257,12 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     }
 
     /**
-     * Set in-active mode text color
+     * Set active mode text color
      *
      * @param color color integer
      */
-    public void setInactiveModeTextColor(@ColorInt int color) {
-        inactiveColor = color;
+    public void setActiveModeTextColor(@ColorInt int color) {
+        activeColor = color;
         checkAndUpdateUI();
     }
 
@@ -281,6 +274,26 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     @ColorInt
     public int getInactiveModeTextColor() {
         return inactiveColor;
+    }
+
+    /**
+     * Set in-active mode text color
+     *
+     * @param color color integer
+     */
+    public void setInactiveModeTextColor(@ColorInt int color) {
+        inactiveColor = color;
+        checkAndUpdateUI();
+    }
+
+    /**
+     * Get current background of title text
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getTitleBackground() {
+        return titleTextView.getBackground();
     }
 
     /**
@@ -302,13 +315,13 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     }
 
     /**
-     * Get current background of title text
+     * Get current text size
      *
-     * @return Drawable resource of the background
+     * @return text size of the title
      */
-    @Nullable
-    public Drawable getTitleBackground() {
-        return titleTextView.getBackground();
+    @Dimension
+    public float getTitleTextSize() {
+        return titleTextView.getTextSize();
     }
 
     /**
@@ -318,16 +331,6 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
      */
     public void setTitleTextSize(@Dimension float textSize) {
         titleTextView.setTextSize(textSize);
-    }
-
-    /**
-     * Get current text size
-     *
-     * @return text size of the title
-     */
-    @Dimension
-    public float getTitleTextSize() {
-        return titleTextView.getTextSize();
     }
 
     //endregion

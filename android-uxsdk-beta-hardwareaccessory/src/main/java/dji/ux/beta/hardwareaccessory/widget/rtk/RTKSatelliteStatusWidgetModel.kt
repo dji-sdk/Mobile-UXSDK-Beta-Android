@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.hardwareaccessory.widget.rtk
@@ -78,8 +79,6 @@ class RTKSatelliteStatusWidgetModel(djiSdkModel: DJISDKModel,
     //region Data
     /**
      * Get whether the RTK is connected.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val isRTKConnected: Flowable<Boolean>
         get() = Flowable.combineLatest(isRTKConnectedProcessor.toFlowable(), productConnection,
@@ -87,8 +86,6 @@ class RTKSatelliteStatusWidgetModel(djiSdkModel: DJISDKModel,
 
     /**
      * Get the RTK state.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     @get:JvmName("getRTKState")
     val rtkState: Flowable<RTKState>
@@ -96,16 +93,12 @@ class RTKSatelliteStatusWidgetModel(djiSdkModel: DJISDKModel,
 
     /**
      * Get the model of the product.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val model: Flowable<Model>
         get() = modelProcessor.toFlowable()
 
     /**
      * Get the source of the RTK signal.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     @get:JvmName("getRTKSignal")
     val rtkSignal: Flowable<RTKSignal>
@@ -113,16 +106,12 @@ class RTKSatelliteStatusWidgetModel(djiSdkModel: DJISDKModel,
 
     /**
      * Get the standard deviation of the location accuracy.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val standardDeviation: Flowable<StandardDeviation>
         get() = standardDeviationProcessor.toFlowable()
 
     /**
      * Get the status of the RTK base station.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     @get:JvmName("getRTKBaseStationStatus")
     val rtkBaseStationStatus: Flowable<RTKBaseStationStatus>
@@ -130,8 +119,6 @@ class RTKSatelliteStatusWidgetModel(djiSdkModel: DJISDKModel,
 
     /**
      * Get the status of the network service.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     @get:JvmName("getRTKNetworkServiceStatus")
     val rtkNetworkServiceStatus: Flowable<RTKNetworkServiceStatus>

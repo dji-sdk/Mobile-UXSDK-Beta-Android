@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base.widget
@@ -40,6 +41,7 @@ import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.ViewIDGenerator
 import kotlin.math.roundToInt
 
+
 /**
  * This is the base class used for list item. The class represents
  * the item title and item icon.
@@ -48,7 +50,7 @@ abstract class ListItemTitleWidget<T> @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<T>(context, attrs, defStyleAttr) {
+) : ConstraintLayoutWidget<T>(context, attrs, defStyleAttr), View.OnClickListener {
 
     private val listItemTitleTextView = findViewById<TextView>(R.id.text_view_list_item_title)
     private val listItemTitleImageView = findViewById<ImageView>(R.id.image_view_title_icon)
@@ -57,6 +59,34 @@ abstract class ListItemTitleWidget<T> @JvmOverloads constructor(
     protected val guidelineRight: Guideline = findViewById(R.id.guideline_right)
     protected val guidelineBottom: Guideline = findViewById(R.id.guideline_bottom)
     protected val guidelineCenter: Guideline = findViewById(R.id.guideline_column)
+    private val clickIndicatorImageView: ImageView = findViewById(R.id.image_view_chevron)
+
+    /**
+     * ID of the click indicator view
+     */
+    val clickIndicatorId = clickIndicatorImageView.id
+
+    /**
+     * Icon for showing the click indicator
+     */
+    var clickIndicatorIcon: Drawable?
+        get() = clickIndicatorImageView.imageDrawable
+        set(@Nullable value) {
+            clickIndicatorImageView.imageDrawable = value
+        }
+
+    /**
+     * Toggle clickable functionality of the list item
+     */
+    var listItemClickable: Boolean = false
+        set(value) {
+            field = value
+            if (value) {
+                clickIndicatorImageView.visibility = View.VISIBLE
+            } else {
+                clickIndicatorImageView.visibility = View.INVISIBLE
+            }
+        }
 
     /**
      * Color of label text when disconnected
@@ -191,6 +221,8 @@ abstract class ListItemTitleWidget<T> @JvmOverloads constructor(
         if (id == View.NO_ID) {
             id = ViewIDGenerator.generateViewId()
         }
+        isClickable = true
+        setOnClickListener(this)
         val padding = (getDimension(R.dimen.uxsdk_pre_flight_checklist_item_padding)).roundToInt()
         setPadding(padding, 0, padding, 0)
         attrs?.let { initAttributes(context, it) }
@@ -247,11 +279,32 @@ abstract class ListItemTitleWidget<T> @JvmOverloads constructor(
             listItemTitle =
                     typedArray.getString(R.styleable.ListItemTitleWidget_uxsdk_list_item_title,
                             getString(R.string.uxsdk_string_default_value))
+            typedArray.getDrawableAndUse(R.styleable.ListItemTitleWidget_uxsdk_list_item_click_indicator_icon) {
+                clickIndicatorIcon = it
+            }
+            typedArray.getBooleanAndUse(R.styleable.ListItemTitleWidget_uxsdk_list_item_clickable, false) {
+                listItemClickable = it
+            }
         }
     }
 
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        clickIndicatorImageView.isEnabled = enabled
+    }
+
+    override fun onClick(v: View?) {
+        if (v?.id == id && listItemClickable) {
+            onListItemClick()
+        }
+    }
+
+    abstract fun onListItemClick()
+
     /**
      * Set the background of the list item title
+     *
+     * @param resourceId Integer ID of the background resource
      */
     fun setListItemTitleBackground(@DrawableRes resourceId: Int) {
         listItemTitleBackground = getDrawable(resourceId)
@@ -259,6 +312,8 @@ abstract class ListItemTitleWidget<T> @JvmOverloads constructor(
 
     /**
      * Set the text appearance of the title
+     *
+     * @param textAppearanceResId Style resource for text appearance
      */
     fun setListItemTitleTextAppearance(@StyleRes textAppearanceResId: Int) {
         listItemTitleTextView.setTextAppearance(context, textAppearanceResId)

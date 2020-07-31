@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample.widgetlist;
@@ -38,6 +37,7 @@ import com.dji.ux.beta.sample.R;
 
 import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget;
 import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget;
+
 
 /**
  * A fragment that shows a single widget or a set of coupled widgets.

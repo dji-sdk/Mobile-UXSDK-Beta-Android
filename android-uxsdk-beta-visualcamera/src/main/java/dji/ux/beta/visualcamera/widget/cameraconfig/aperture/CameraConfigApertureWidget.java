@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.visualcamera.widget.cameraconfig.aperture;
@@ -126,15 +127,6 @@ public class CameraConfigApertureWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
-    }
-
-    /**
      * Get the index of the camera to which the widget is reacting
      *
      * @return {@link SettingDefinitions.CameraIndex}
@@ -145,30 +137,21 @@ public class CameraConfigApertureWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Set the index of camera to which the widget should react
+     *
+     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
+     */
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        widgetModel.setCameraIndex(cameraIndex);
+    }
+
+    /**
      * Set text appearance of the aperture title text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setApertureTitleTextAppearance(@StyleRes int textAppearance) {
         apertureTitleTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the aperture title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setApertureTitleTextColor(@NonNull ColorStateList colorStateList) {
-        apertureTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the aperture title text view
-     *
-     * @param color color integer resource
-     */
-    public void setApertureTitleTextColor(@ColorInt int color) {
-        apertureTitleTextView.setTextColor(color);
     }
 
     /**
@@ -192,12 +175,21 @@ public class CameraConfigApertureWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the aperture title text view
+     * Set text color state list for the aperture title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setApertureTitleTextSize(@Dimension float textSize) {
-        apertureTitleTextView.setTextSize(textSize);
+    public void setApertureTitleTextColor(@NonNull ColorStateList colorStateList) {
+        apertureTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the aperture title text view
+     *
+     * @param color color integer resource
+     */
+    public void setApertureTitleTextColor(@ColorInt int color) {
+        apertureTitleTextView.setTextColor(color);
     }
 
     /**
@@ -208,6 +200,25 @@ public class CameraConfigApertureWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getApertureTitleTextSize() {
         return apertureTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the aperture title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setApertureTitleTextSize(@Dimension float textSize) {
+        apertureTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the aperture title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getApertureTitleTextBackground() {
+        return apertureTitleTextView.getBackground();
     }
 
     /**
@@ -229,40 +240,12 @@ public class CameraConfigApertureWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the aperture title text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getApertureTitleTextBackground() {
-        return apertureTitleTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the aperture value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setApertureValueTextAppearance(@StyleRes int textAppearance) {
         apertureValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the aperture value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setApertureValueTextColor(@NonNull ColorStateList colorStateList) {
-        apertureValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the aperture value text view
-     *
-     * @param color color integer resource
-     */
-    public void setApertureValueTextColor(@ColorInt int color) {
-        apertureValueTextView.setTextColor(color);
     }
 
     /**
@@ -286,12 +269,21 @@ public class CameraConfigApertureWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the aperture value text view
+     * Set text color state list for the aperture value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setApertureValueTextSize(@Dimension float textSize) {
-        apertureValueTextView.setTextSize(textSize);
+    public void setApertureValueTextColor(@NonNull ColorStateList colorStateList) {
+        apertureValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the aperture value text view
+     *
+     * @param color color integer resource
+     */
+    public void setApertureValueTextColor(@ColorInt int color) {
+        apertureValueTextView.setTextColor(color);
     }
 
     /**
@@ -302,6 +294,25 @@ public class CameraConfigApertureWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getApertureValueTextSize() {
         return apertureValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the aperture value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setApertureValueTextSize(@Dimension float textSize) {
+        apertureValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the aperture value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getApertureValueTextBackground() {
+        return apertureValueTextView.getBackground();
     }
 
     /**
@@ -320,16 +331,6 @@ public class CameraConfigApertureWidget extends ConstraintLayoutWidget {
      */
     public void setApertureValueTextBackground(@Nullable Drawable drawable) {
         apertureValueTextView.setBackground(drawable);
-    }
-
-    /**
-     * Get current background of the aperture value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getApertureValueTextBackground() {
-        return apertureValueTextView.getBackground();
     }
     //endregion
 

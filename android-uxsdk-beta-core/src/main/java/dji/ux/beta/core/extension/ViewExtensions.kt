@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 @file:JvmName("ViewExtensions")
@@ -84,9 +85,9 @@ fun View.toggleVisibility() {
  */
 fun View.showShortToast(@StringRes messageResId: Int) {
     Toast.makeText(
-                    context,
-                    messageResId,
-                    Toast.LENGTH_SHORT)
+            context,
+            messageResId,
+            Toast.LENGTH_SHORT)
             .show()
 }
 
@@ -95,9 +96,9 @@ fun View.showShortToast(@StringRes messageResId: Int) {
  */
 fun View.showLongToast(@StringRes messageResId: Int) {
     Toast.makeText(
-                    context,
-                    messageResId,
-                    Toast.LENGTH_LONG)
+            context,
+            messageResId,
+            Toast.LENGTH_LONG)
             .show()
 }
 
@@ -106,9 +107,9 @@ fun View.showLongToast(@StringRes messageResId: Int) {
  */
 fun View.showShortToast(message: String?) {
     Toast.makeText(
-                    context,
-                    message,
-                    Toast.LENGTH_SHORT)
+            context,
+            message,
+            Toast.LENGTH_SHORT)
             .show()
 }
 
@@ -117,9 +118,9 @@ fun View.showShortToast(message: String?) {
  */
 fun View.showLongToast(message: String?) {
     Toast.makeText(
-                    context,
-                    message,
-                    Toast.LENGTH_LONG)
+            context,
+            message,
+            Toast.LENGTH_LONG)
             .show()
 }
 

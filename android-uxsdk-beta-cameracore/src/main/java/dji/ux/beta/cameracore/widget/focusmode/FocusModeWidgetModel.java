@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.focusmode;
@@ -58,9 +59,9 @@ public class FocusModeWidgetModel extends WidgetModel {
     private final DataProcessor<Boolean> isAFCEnabledProcessor;
     private final DataProcessor<SettingDefinitions.ControlMode> controlModeProcessor;
     private final ObservableInMemoryKeyedStore keyedStore;
+    private final GlobalPreferencesInterface preferencesManager;
     private DJIKey focusModeKey;
     private UXKey controlModeKey;
-    private final GlobalPreferencesInterface preferencesManager;
     private int cameraIndex = CameraIndex.CAMERA_INDEX_0.getIndex();
     private SchedulerProviderInterface schedulerProvider;
     //endregion
@@ -124,16 +125,6 @@ public class FocusModeWidgetModel extends WidgetModel {
     //region Actions
 
     /**
-     * Set the camera index for which the widget model should react to.
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        this.cameraIndex = cameraIndex.getIndex();
-        restart();
-    }
-
-    /**
      * Get the camera index for which the model is reacting.
      *
      * @return current camera index.
@@ -141,6 +132,16 @@ public class FocusModeWidgetModel extends WidgetModel {
     @NonNull
     public CameraIndex getCameraIndex() {
         return CameraIndex.find(cameraIndex);
+    }
+
+    /**
+     * Set the camera index for which the widget model should react to.
+     *
+     * @param cameraIndex index of the camera.
+     */
+    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
+        this.cameraIndex = cameraIndex.getIndex();
+        restart();
     }
 
     /**

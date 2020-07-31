@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 apply plugin: 'com.android.library'
@@ -28,7 +29,7 @@ android {
         abortOnError = false
     }
     compileSdkVersion 29
-    buildToolsVersion "29.0.1"
+    buildToolsVersion "29.0.3"
     publishNonDefault true
     resourcePrefix "uxsdk_"
     defaultConfig {
@@ -68,7 +69,7 @@ android {
 dependencies {
     api project(path: ':android-uxsdk-beta-core')
 
-    implementation ('com.dji:dji-sdk:4.12', {
+    implementation ('com.dji:dji-sdk:4.13', {
         /**
          * Comment the "library-anti-distortion" if your app needs Anti Distortion for Mavic 2 Pro
          * and Mavic 2 Zoom.
@@ -80,7 +81,7 @@ dependencies {
         exclude module: 'library-anti-distortion'
         exclude module: 'fly-safe-database'
     })
-    compileOnly ('com.dji:dji-sdk-provided:4.12')
+    compileOnly ('com.dji:dji-sdk-provided:4.13')
 
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'

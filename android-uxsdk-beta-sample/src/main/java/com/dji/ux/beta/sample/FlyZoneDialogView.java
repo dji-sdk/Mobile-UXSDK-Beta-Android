@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample;
@@ -103,7 +102,6 @@ public class FlyZoneDialogView extends ScrollView {
                         restricted.setChecked(isChecked);
                         break;
                     case R.id.custom_unlock_switch:
-                        mapWidget.requestCustomUnlockZonesFromServer();
                         btnCustomUnlockColor.setEnabled(isChecked);
                         btnCustomUnlockSync.setEnabled(isChecked);
                         if (isChecked) {

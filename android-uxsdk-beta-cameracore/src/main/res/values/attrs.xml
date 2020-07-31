@@ -19,7 +19,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
 
     <declare-styleable name="AutoExposureLockWidget">
@@ -120,6 +122,29 @@
         <attr name="uxsdk_internalStorageSlowIcon" />
         <attr name="uxsdk_internalStorageNotInsertedIcon" />
         <attr name="uxsdk_foregroundIconBackground" />
+    </declare-styleable>
+
+    <declare-styleable name="FPVInteractionWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_gimbalIndex" />
+        <attr name="uxsdk_manualFocusIcon" format="reference" />
+        <attr name="uxsdk_autoFocusIcon" format="reference" />
+        <attr name="uxsdk_autoFocusContinuousIcon" format="reference" />
+        <attr name="uxsdk_focusTargetDuration" format="integer" />
+        <attr name="uxsdk_centerMeterIcon" format="reference" />
+        <attr name="uxsdk_spotMeterIcon" format="reference" />
+        <attr name="uxsdk_centerMeterScaleX" format="float" />
+        <attr name="uxsdk_centerMeterScaleY" format="float" />
+        <attr name="uxsdk_gimbalPointIcon" format="reference" />
+        <attr name="uxsdk_gimbalMoveIcon" format="reference" />
+        <attr name="uxsdk_gimbalArrowIcon" format="reference" />
+        <attr name="uxsdk_gimbalVelocityFactor" format="float" />
+        <attr name="uxsdk_vibrationEnabled" format="boolean" />
+        <attr name="uxsdk_vibrationDuration" format="integer" />
+        <attr name="uxsdk_touchFocusEnabled" format="boolean" />
+        <attr name="uxsdk_spotMeteringEnabled" format="boolean" />
+        <attr name="uxsdk_gimbalControlEnabled" format="boolean" />
+        <attr name="uxsdk_interactionEnabled" format="boolean" />
     </declare-styleable>
 
 </resources>

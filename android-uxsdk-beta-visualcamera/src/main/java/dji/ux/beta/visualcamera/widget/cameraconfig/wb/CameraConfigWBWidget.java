@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.visualcamera.widget.cameraconfig.wb;
@@ -141,15 +142,6 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
-    }
-
-    /**
      * Get the index of the camera to which the widget is reacting
      *
      * @return {@link SettingDefinitions.CameraIndex}
@@ -160,30 +152,21 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Set the index of camera to which the widget should react
+     *
+     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
+     */
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        widgetModel.setCameraIndex(cameraIndex);
+    }
+
+    /**
      * Set text appearance of the white balance title text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setWBTitleTextAppearance(@StyleRes int textAppearance) {
         wbTitleTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the white balance title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setWBTitleTextColor(@NonNull ColorStateList colorStateList) {
-        wbTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the white balance title text view
-     *
-     * @param color color integer resource
-     */
-    public void setWBTitleTextColor(@ColorInt int color) {
-        wbTitleTextView.setTextColor(color);
     }
 
     /**
@@ -207,12 +190,21 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the white balance title text view
+     * Set text color state list for the white balance title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setWBTitleTextSize(@Dimension float textSize) {
-        wbTitleTextView.setTextSize(textSize);
+    public void setWBTitleTextColor(@NonNull ColorStateList colorStateList) {
+        wbTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the white balance title text view
+     *
+     * @param color color integer resource
+     */
+    public void setWBTitleTextColor(@ColorInt int color) {
+        wbTitleTextView.setTextColor(color);
     }
 
     /**
@@ -223,6 +215,25 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getWBTitleTextSize() {
         return wbTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the white balance title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setWBTitleTextSize(@Dimension float textSize) {
+        wbTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the white balance title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getWBTitleTextBackground() {
+        return wbTitleTextView.getBackground();
     }
 
     /**
@@ -244,40 +255,12 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the white balance title text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getWBTitleTextBackground() {
-        return wbTitleTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the white balance value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setWBValueTextAppearance(@StyleRes int textAppearance) {
         wbValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the white balance value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setWBValueTextColor(@NonNull ColorStateList colorStateList) {
-        wbValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the white balance value text view
-     *
-     * @param color color integer resource
-     */
-    public void setWBValueTextColor(@ColorInt int color) {
-        wbValueTextView.setTextColor(color);
     }
 
     /**
@@ -301,12 +284,21 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the white balance value text view
+     * Set text color state list for the white balance value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setWBValueTextSize(@Dimension float textSize) {
-        wbValueTextView.setTextSize(textSize);
+    public void setWBValueTextColor(@NonNull ColorStateList colorStateList) {
+        wbValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the white balance value text view
+     *
+     * @param color color integer resource
+     */
+    public void setWBValueTextColor(@ColorInt int color) {
+        wbValueTextView.setTextColor(color);
     }
 
     /**
@@ -317,6 +309,25 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getWBValueTextSize() {
         return wbValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the white balance value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setWBValueTextSize(@Dimension float textSize) {
+        wbValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the white balance value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getWBValueTextBackground() {
+        return wbValueTextView.getBackground();
     }
 
     /**
@@ -335,16 +346,6 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
      */
     public void setWBValueTextBackground(@Nullable Drawable drawable) {
         wbValueTextView.setBackground(drawable);
-    }
-
-    /**
-     * Get current background of the white balance value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getWBValueTextBackground() {
-        return wbValueTextView.getBackground();
     }
     //endregion
 

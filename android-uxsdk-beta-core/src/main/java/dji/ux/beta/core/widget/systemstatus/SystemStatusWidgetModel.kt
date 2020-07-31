@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.systemstatus
@@ -52,30 +53,24 @@ class SystemStatusWidgetModel(djiSdkModel: DJISDKModel,
     private val maxHeightProcessor: DataProcessor<Int> = DataProcessor.create(0)
     private val unitTypeProcessor: DataProcessor<UnitConversionUtil.UnitType> = DataProcessor.create(UnitConversionUtil.UnitType.METRIC)
     private val warningStatusMessageProcessor: DataProcessor<WarningStatusMessageData> = DataProcessor.create(WarningStatusMessageData("", 0f, UnitConversionUtil.UnitType.METRIC))
-    private lateinit var sendVoiceNotificationKey: UXKey
+    private val sendVoiceNotificationKey: UXKey = UXKeys.create(MessagingKeys.SEND_VOICE_NOTIFICATION)
     //endregion
 
     //region Data
     /**
      * Get the system status of the aircraft as a WarningStatusItem.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val systemStatus: Flowable<WarningStatusItem>
         get() = systemStatusProcessor.toFlowable()
 
     /**
      * Get whether the motors are on.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val isMotorOn: Flowable<Boolean>
         get() = areMotorsOnDataProcessor.toFlowable()
 
     /**
      * Get the data required for displaying the warning status message.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val warningStatusMessageData: Flowable<WarningStatusMessageData>
         get() = warningStatusMessageProcessor.toFlowable()
@@ -105,7 +100,6 @@ class SystemStatusWidgetModel(djiSdkModel: DJISDKModel,
         bindDataProcessor(maxHeightKey, maxHeightProcessor)
         val unitKey = UXKeys.create(GlobalPreferenceKeys.UNIT_TYPE)
         bindDataProcessor(unitKey, unitTypeProcessor)
-        sendVoiceNotificationKey = UXKeys.create(MessagingKeys.SEND_VOICE_NOTIFICATION)
 
         preferencesManager?.setUpListener()
     }

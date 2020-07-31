@@ -18,7 +18,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
     <!-- white balance -->
     <string name="uxsdk_camera_wb_auto">Auto</string>
@@ -30,6 +32,7 @@
     <string name="uxsdk_camera_wb_custom">Custom</string>
     <string name="uxsdk_camera_wb_neutral">Neutral</string>
 
+    <string name="uxsdk_ei_title">EI</string>
 
     <!-- video resolution -->
     <string name="uxsdk_camera_video_resolution_640_480p">640x480</string>
@@ -79,8 +82,11 @@
     <string name="uxsdk_camera_ssd_color_raw_color">RAW</string>
 
     <!-- Storage -->
+    <string name="uxsdk_storage_title_time">TIME</string>
     <string name="uxsdk_storage_title_capacity">CAPACITY</string>
     <string name="uxsdk_storage_title_status">STATUS</string>
+    <string name="uxsdk_storage_value_full">Full</string>
+    <string name="uxsdk_storage_remaining_space">%1$d MB</string>
 
     <!-- SD Status -->
     <string name="uxsdk_sd_card_usb_connected">USB Connected</string>
@@ -166,7 +172,6 @@
     <string name="uxsdk_aperture_title">F</string>
     <string name="uxsdk_shutter_title">SHUTTER</string>
     <string name="uxsdk_ev_title">EV</string>
-    <string name="uxsdk_ei_title">EI</string>
     <string name="uxsdk_exposure_auto_iso_title">AUTO ISO</string>
     <string name="uxsdk_exposure_locked_iso_title">LOCKED ISO</string>
     <string name="uxsdk_exposure_iso_title">ISO</string>

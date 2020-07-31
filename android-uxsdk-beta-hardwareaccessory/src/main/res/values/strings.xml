@@ -18,13 +18,13 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
     <!-- RTK Widget -->
     <string name="uxsdk_rtk_panel_antenna_1">Antenna 1</string>
     <string name="uxsdk_rtk_panel_antenna_2">Antenna 2</string>
-    <string name="uxsdk_rtk_panel_base_station">Base Station</string>
-    <string name="uxsdk_rtk_panel_satellite_num">Satellites#</string>
     <string name="uxsdk_rtk_panel_gps_num">GPS:</string>
     <string name="uxsdk_rtk_panel_beidou_num">BeiDou:</string>
     <string name="uxsdk_rtk_panel_glonass_num">GLONASS:</string>
@@ -60,7 +60,6 @@
     <string name="uxsdk_rtk_state_account_expire">Time verification failed</string>
     <string name="uxsdk_rtk_state_network_err">Network unavailable</string>
     <string name="uxsdk_rtk_state_auth_failed">Verification failed</string>
-    <string name="uxsdk_rtk_state_unknown">Unknown error</string>
     <string name="uxsdk_rtk_nrtk_state_inner_error">%sInternal error</string>
     <string name="uxsdk_rtk_nrtk_state_unknown">Unknown error</string>
     <string name="uxsdk_rtk_nrtk_account_error">Account error</string>

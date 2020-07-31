@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.listitemwidget.sdcardstatus
@@ -94,13 +95,13 @@ open class SDCardStatusListItemWidget @JvmOverloads constructor(
     @SuppressLint("Recycle")
     private fun initAttributes(context: Context, attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.SDCardStatusListItemWidget).use { typedArray ->
-            typedArray.getDrawableAndUse(R.styleable.SDCardStatusListItemWidget_uxsdk_format_confirmation_dialog_icon) {
+            typedArray.getDrawableAndUse(R.styleable.SDCardStatusListItemWidget_uxsdk_list_item_confirmation_dialog_icon) {
                 formatConfirmationDialogIcon = it
             }
-            typedArray.getDrawableAndUse(R.styleable.SDCardStatusListItemWidget_uxsdk_format_success_dialog_icon) {
+            typedArray.getDrawableAndUse(R.styleable.SDCardStatusListItemWidget_uxsdk_list_item_success_dialog_icon) {
                 formatSuccessDialogIcon = it
             }
-            typedArray.getDrawableAndUse(R.styleable.SDCardStatusListItemWidget_uxsdk_format_error_dialog_icon) {
+            typedArray.getDrawableAndUse(R.styleable.SDCardStatusListItemWidget_uxsdk_list_item_error_dialog_icon) {
                 formatErrorDialogIcon = it
             }
             typedArray.getResourceIdAndUse(R.styleable.SDCardStatusListItemWidget_uxsdk_list_item_dialog_theme) {
@@ -119,7 +120,7 @@ open class SDCardStatusListItemWidget @JvmOverloads constructor(
             dialogInterface.dismiss()
             uiUpdateStateProcessor.onNext(WidgetUIState.DialogActionDismiss(FormatConfirmationDialog))
         }
-        showConfirmationDialog(title = getString(R.string.uxsdk_tips),
+        showConfirmationDialog(title = getString(R.string.uxsdk_sd_card_dialog_title),
                 icon = formatConfirmationDialogIcon,
                 dialogTheme = dialogTheme,
                 message = getString(R.string.uxsdk_sd_card_format_confirmation),
@@ -131,17 +132,18 @@ open class SDCardStatusListItemWidget @JvmOverloads constructor(
         addDisposable(widgetModel.formatSDCard()
                 .observeOn(schedulerProvider.ui())
                 .subscribe({
-                    showAlertDialog(title = getString(R.string.uxsdk_tips),
+                    showAlertDialog(title = getString(R.string.uxsdk_sd_card_dialog_title),
                             icon = formatSuccessDialogIcon,
                             dialogTheme = dialogTheme,
                             message = getString(R.string.uxsdk_sd_card_format_complete))
                     uiUpdateStateProcessor.onNext(WidgetUIState.DialogDisplayed(FormatSuccessDialog))
                 }, { error ->
                     if (error is UXSDKError) {
-                        showAlertDialog(title = getString(R.string.uxsdk_error),
+                        showAlertDialog(title = getString(R.string.uxsdk_sd_card_dialog_title),
                                 icon = formatErrorDialogIcon,
                                 dialogTheme = dialogTheme,
-                                message = error.djiError.description)
+                                message = String.format(getString(R.string.uxsdk_sd_card_format_error),
+                                        error.djiError.description))
                         uiUpdateStateProcessor.onNext(WidgetUIState.DialogDisplayed(FormatErrorDialog))
                     }
                 }))

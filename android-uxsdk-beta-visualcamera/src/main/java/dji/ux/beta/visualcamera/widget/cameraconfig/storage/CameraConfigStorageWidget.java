@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.visualcamera.widget.cameraconfig.storage;
@@ -204,7 +205,10 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     private void updateColor(CameraColor cameraColor) {
-        if (cameraColor.value() < cameraColorNameArray.length) {
+        if (cameraColor == CameraColor.NONE || cameraColor == CameraColor.UNKNOWN) {
+            cameraColorTextView.setVisibility(GONE);
+        } else if (cameraColor.value() < cameraColorNameArray.length) {
+            cameraColorTextView.setVisibility(VISIBLE);
             cameraColorTextView.setText(cameraColorNameArray[cameraColor.value()]);
         }
     }
@@ -336,15 +340,6 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
-    }
-
-    /**
      * Get the index of the camera to which the widget is reacting
      *
      * @return {@link SettingDefinitions.CameraIndex}
@@ -352,6 +347,15 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     @NonNull
     public SettingDefinitions.CameraIndex getCameraIndex() {
         return widgetModel.getCameraIndex();
+    }
+
+    /**
+     * Set the index of camera to which the widget should react
+     *
+     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
+     */
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        widgetModel.setCameraIndex(cameraIndex);
     }
 
     /**
@@ -419,6 +423,16 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Get the drawable resource for the storage icon's background
+     *
+     * @return Drawable resource for the icon's background
+     */
+    @Nullable
+    public Drawable getStorageIconBackground() {
+        return storageIconImageView.getBackground();
+    }
+
+    /**
      * Set the resource ID for the storage icon's background
      *
      * @param resourceId Integer ID of the background resource
@@ -437,40 +451,12 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the drawable resource for the storage icon's background
-     *
-     * @return Drawable resource for the icon's background
-     */
-    @Nullable
-    public Drawable getStorageIconBackground() {
-        return storageIconImageView.getBackground();
-    }
-
-    /**
      * Set text appearance of the camera color text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setCameraColorTextAppearance(@StyleRes int textAppearance) {
         cameraColorTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the camera color text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setCameraColorTextColor(@NonNull ColorStateList colorStateList) {
-        cameraColorTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the camera color text view
-     *
-     * @param color color integer resource
-     */
-    public void setCameraColorTextColor(@ColorInt int color) {
-        cameraColorTextView.setTextColor(color);
     }
 
     /**
@@ -494,12 +480,21 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the camera color text view
+     * Set text color state list for the camera color text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setCameraColorTextSize(@Dimension float textSize) {
-        cameraColorTextView.setTextSize(textSize);
+    public void setCameraColorTextColor(@NonNull ColorStateList colorStateList) {
+        cameraColorTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the camera color text view
+     *
+     * @param color color integer resource
+     */
+    public void setCameraColorTextColor(@ColorInt int color) {
+        cameraColorTextView.setTextColor(color);
     }
 
     /**
@@ -510,6 +505,25 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getCameraColorTextSize() {
         return cameraColorTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the camera color text view
+     *
+     * @param textSize text size float value
+     */
+    public void setCameraColorTextSize(@Dimension float textSize) {
+        cameraColorTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the camera color text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getCameraColorTextBackground() {
+        return cameraColorTextView.getBackground();
     }
 
     /**
@@ -531,40 +545,12 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the camera color text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getCameraColorTextBackground() {
-        return cameraColorTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the image format text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setImageFormatTextAppearance(@StyleRes int textAppearance) {
         imageFormatTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the image format text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setImageFormatTextColor(@NonNull ColorStateList colorStateList) {
-        imageFormatTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the image format text view
-     *
-     * @param color color integer resource
-     */
-    public void setImageFormatTextColor(@ColorInt int color) {
-        imageFormatTextView.setTextColor(color);
     }
 
     /**
@@ -588,12 +574,21 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the image format text view
+     * Set text color state list for the image format text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setImageFormatTextSize(float textSize) {
-        imageFormatTextView.setTextSize(textSize);
+    public void setImageFormatTextColor(@NonNull ColorStateList colorStateList) {
+        imageFormatTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the image format text view
+     *
+     * @param color color integer resource
+     */
+    public void setImageFormatTextColor(@ColorInt int color) {
+        imageFormatTextView.setTextColor(color);
     }
 
     /**
@@ -604,6 +599,25 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getImageFormatTextSize() {
         return imageFormatTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the image format text view
+     *
+     * @param textSize text size float value
+     */
+    public void setImageFormatTextSize(float textSize) {
+        imageFormatTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the image format text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getImageFormatTextBackground() {
+        return imageFormatTextView.getBackground();
     }
 
     /**
@@ -625,40 +639,12 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the image format text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getImageFormatTextBackground() {
-        return imageFormatTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the text view with the status or capacity title
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setStatusCapacityTitleTextAppearance(@StyleRes int textAppearance) {
         statusCapacityTitleTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the text view with the status or capacity title
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setStatusCapacityTitleTextColor(@NonNull ColorStateList colorStateList) {
-        statusCapacityTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the text view with the status or capacity title
-     *
-     * @param color color integer resource
-     */
-    public void setStatusCapacityTitleTextColor(@ColorInt int color) {
-        statusCapacityTitleTextView.setTextColor(color);
     }
 
     /**
@@ -682,12 +668,21 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the text view with the status or capacity title
+     * Set text color state list for the text view with the status or capacity title
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setStatusCapacityTitleTextSize(float textSize) {
-        statusCapacityTitleTextView.setTextSize(textSize);
+    public void setStatusCapacityTitleTextColor(@NonNull ColorStateList colorStateList) {
+        statusCapacityTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the text view with the status or capacity title
+     *
+     * @param color color integer resource
+     */
+    public void setStatusCapacityTitleTextColor(@ColorInt int color) {
+        statusCapacityTitleTextView.setTextColor(color);
     }
 
     /**
@@ -698,6 +693,25 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getStatusCapacityTitleTextSize() {
         return statusCapacityTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the text view with the status or capacity title
+     *
+     * @param textSize text size float value
+     */
+    public void setStatusCapacityTitleTextSize(float textSize) {
+        statusCapacityTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the text view with the status or capacity title
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getStatusCapacityTitleTextBackground() {
+        return statusCapacityTitleTextView.getBackground();
     }
 
     /**
@@ -719,40 +733,12 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the text view with the status or capacity title
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getStatusCapacityTitleTextBackground() {
-        return statusCapacityTitleTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the text view with the status or capacity value
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setStatusCapacityValueTextAppearance(@StyleRes int textAppearance) {
         statusCapacityValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the text view with the status or capacity value
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setStatusCapacityValueTextColor(@NonNull ColorStateList colorStateList) {
-        statusCapacityValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the text view with the status or capacity value
-     *
-     * @param color color integer resource
-     */
-    public void setStatusCapacityValueTextColor(@ColorInt int color) {
-        statusCapacityValueTextView.setTextColor(color);
     }
 
     /**
@@ -776,12 +762,21 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the text view with the status or capacity value
+     * Set text color state list for the text view with the status or capacity value
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setStatusCapacityValueTextSize(float textSize) {
-        statusCapacityValueTextView.setTextSize(textSize);
+    public void setStatusCapacityValueTextColor(@NonNull ColorStateList colorStateList) {
+        statusCapacityValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the text view with the status or capacity value
+     *
+     * @param color color integer resource
+     */
+    public void setStatusCapacityValueTextColor(@ColorInt int color) {
+        statusCapacityValueTextView.setTextColor(color);
     }
 
     /**
@@ -792,6 +787,25 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getStatusCapacityValueTextSize() {
         return statusCapacityValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the text view with the status or capacity value
+     *
+     * @param textSize text size float value
+     */
+    public void setStatusCapacityValueTextSize(float textSize) {
+        statusCapacityValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the text view with the status or capacity value
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getStatusCapacityValueTextBackground() {
+        return statusCapacityValueTextView.getBackground();
     }
 
     /**
@@ -810,16 +824,6 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
      */
     public void setStatusCapacityValueTextBackground(@DrawableRes int resourceId) {
         statusCapacityValueTextView.setBackgroundResource(resourceId);
-    }
-
-    /**
-     * Get current background of the text view with the status or capacity value
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getStatusCapacityValueTextBackground() {
-        return statusCapacityValueTextView.getBackground();
     }
 
     //endregion

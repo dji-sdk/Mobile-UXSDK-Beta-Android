@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -20,8 +19,8 @@
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
   ~
-  ~
   -->
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -32,6 +31,14 @@
 
     <dji.ux.beta.core.widget.fpv.FPVWidget
         android:id="@+id/widget_fpv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:uxsdk_onStateChange="@+id/widget_fpv_interaction" />
+
+    <dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget
+        android:id="@+id/widget_fpv_interaction"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -69,7 +76,7 @@
         android:id="@+id/widget_camera_config_iso_and_ei"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/camera_config_height"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         app:layout_constraintEnd_toStartOf="@+id/widget_camera_config_shutter"
@@ -207,9 +214,11 @@
         android:layout_height="0dp"
         android:background="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintHeight_percent="@dimen/top_bar_percent_height"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:paddingTop="@dimen/topbar_padding"
+        android:paddingBottom="@dimen/topbar_padding"
         app:uxsdk_itemsMarginRight="@dimen/uxsdk_spacing_normal"
         app:uxsdk_itemsSpacing="@dimen/uxsdk_spacing_normal" />
 
@@ -220,8 +229,38 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.04"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/panel_top_bar"
         app:layout_constraintTop_toBottomOf="@+id/panel_top_bar" />
     <!-- end top bar -->
+
+    <dji.ux.beta.intelligentflight.widget.takeoff.TakeOffWidget
+        android:id="@+id/widget_take_off"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:padding="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/widget_return_to_home"
+        app:layout_constraintDimensionRatio="@string/uxsdk_widget_default_ratio"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/widget_focus_exposure_switch"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <dji.ux.beta.intelligentflight.widget.returnhome.ReturnHomeWidget
+        android:id="@+id/widget_return_to_home"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:padding="3dp"
+        app:layout_constraintBottom_toTopOf="@+id/widget_dashboard"
+        app:layout_constraintDimensionRatio="@string/uxsdk_widget_default_ratio"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/widget_take_off" />
 
     <dji.ux.beta.core.widget.dashboard.DashboardWidget
         android:id="@+id/widget_dashboard"
@@ -238,38 +277,39 @@
     <dji.ux.beta.hardwareaccessory.widget.rtk.RTKWidget
         android:id="@+id/widget_rtk"
         android:layout_width="500dp"
-        android:layout_height="350dp"
+        android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/panel_top_bar" />
 
     <dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget
         android:id="@+id/widget_simulator_control"
         android:layout_width="330dp"
         android:layout_height="0dp"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/panel_top_bar" />
 
     <dji.ux.beta.core.panelwidget.systemstatus.SystemStatusListPanelWidget
         android:id="@+id/widget_panel_system_status_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:visibility="gone"
         android:background="@color/uxsdk_black_70_percent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:divider="@color/uxsdk_light_gray_900"
         android:dividerHeight="0.5dp"
         android:paddingStart="@dimen/uxsdk_spacing_normal"
         android:paddingLeft="@dimen/uxsdk_spacing_normal"
         android:paddingEnd="@dimen/uxsdk_spacing_normal"
         android:paddingRight="@dimen/uxsdk_spacing_normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintWidth_percent="0.95"
         app:uxsdk_titleBarBackgroundColor="@color/uxsdk_black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

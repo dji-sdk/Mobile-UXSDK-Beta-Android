@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base.uxsdkkeys;
@@ -46,36 +47,6 @@ public class UXKeys {
     private static Map<String, UXKey> keysPathMap = new ConcurrentHashMap<>();
     private static Map<String, Class> keyValueMap = new ConcurrentHashMap<>();
     private static Map<String, UpdateType> keyUpdateTypeMap = new ConcurrentHashMap<>();
-
-    @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.FIELD, ElementType.PARAMETER})
-    protected @interface UXParamKey {
-        /**
-         * The type of param that the method associated to this key will take or return
-         *
-         * @return The class type of the param
-         */
-        @NonNull Class type();
-
-        /**
-         * The update type of this key.
-         *
-         * @return UpdateType type for this key.
-         */
-        @NonNull UpdateType updateType();
-    }
-
-    public enum UpdateType {
-        /**
-         * The key will update its listeners only when there is a change in the value
-         */
-        ON_CHANGE,
-
-        /**
-         * The key will update its listeners every time a value is received
-         */
-        ON_EVENT
-    }
 
     protected UXKeys() {
         //Do Nothing
@@ -178,5 +149,35 @@ public class UXKeys {
 
     private static boolean isStatic(int modifiers) {
         return ((modifiers & Modifier.STATIC) != 0);
+    }
+
+    public enum UpdateType {
+        /**
+         * The key will update its listeners only when there is a change in the value
+         */
+        ON_CHANGE,
+
+        /**
+         * The key will update its listeners every time a value is received
+         */
+        ON_EVENT
+    }
+
+    @Retention(RetentionPolicy.RUNTIME)
+    @Target({ElementType.FIELD, ElementType.PARAMETER})
+    protected @interface UXParamKey {
+        /**
+         * The type of param that the method associated to this key will take or return
+         *
+         * @return The class type of the param
+         */
+        @NonNull Class type();
+
+        /**
+         * The update type of this key.
+         *
+         * @return UpdateType type for this key.
+         */
+        @NonNull UpdateType updateType();
     }
 }

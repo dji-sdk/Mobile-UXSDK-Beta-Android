@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch;
@@ -126,6 +127,7 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
     @Override
     public void onClick(View v) {
         addDisposable(widgetModel.toggleCameraMode()
+                .observeOn(schedulerProvider.ui())
                 .subscribe(
                         () -> {
                         }, logErrorConsumer(TAG, "Switch camera Mode")
@@ -174,6 +176,16 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
     //region customization
 
     /**
+     * Get the index of the camera to which the widget is reacting
+     *
+     * @return instance of {@link CameraIndex}
+     */
+    @NonNull
+    public CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
+    }
+
+    /**
      * Set the index of camera to which the widget should react
      *
      * @param cameraIndex index of the camera.
@@ -185,13 +197,13 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
     }
 
     /**
-     * Get the index of the camera to which the widget is reacting
+     * Get photo mode icon
      *
-     * @return instance of {@link CameraIndex}
+     * @return Drawable
      */
-    @NonNull
-    public CameraIndex getCameraIndex() {
-        return widgetModel.getCameraIndex();
+    @Nullable
+    public Drawable getPhotoModeIcon() {
+        return photoModeDrawable;
     }
 
     /**
@@ -214,13 +226,13 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
     }
 
     /**
-     * Get photo mode icon
+     * Get video mode icon
      *
      * @return Drawable
      */
     @Nullable
-    public Drawable getPhotoModeIcon() {
-        return photoModeDrawable;
+    public Drawable getVideoModeIcon() {
+        return videoModeDrawable;
     }
 
     /**
@@ -243,13 +255,13 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
     }
 
     /**
-     * Get video mode icon
+     * Get current background of icon
      *
      * @return Drawable
      */
     @Nullable
-    public Drawable getVideoModeIcon() {
-        return videoModeDrawable;
+    public Drawable getIconBackground() {
+        return foregroundImageView.getBackground();
     }
 
     /**
@@ -268,16 +280,6 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
      */
     public void setIconBackground(@Nullable Drawable drawable) {
         foregroundImageView.setBackground(drawable);
-    }
-
-    /**
-     * Get current background of icon
-     *
-     * @return Drawable
-     */
-    @Nullable
-    public Drawable getIconBackground() {
-        return foregroundImageView.getBackground();
     }
     //endregion
 }

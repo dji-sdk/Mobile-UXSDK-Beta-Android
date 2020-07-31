@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracontrols.exposuresettingsindicator;
@@ -212,6 +213,16 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     //region customizations
 
     /**
+     * Get the index of the camera to which the widget is reacting
+     *
+     * @return instance of {@link CameraIndex}
+     */
+    @NonNull
+    public CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
+    }
+
+    /**
      * Set the index of camera to which the widget should react
      *
      * @param cameraIndex index of the camera.
@@ -220,16 +231,6 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
         if (!isInEditMode()) {
             widgetModel.setCameraIndex(cameraIndex);
         }
-    }
-
-    /**
-     * Get the index of the camera to which the widget is reacting
-     *
-     * @return instance of {@link CameraIndex}
-     */
-    @NonNull
-    public CameraIndex getCameraIndex() {
-        return widgetModel.getCameraIndex();
     }
 
     /**
@@ -265,6 +266,15 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     }
 
     /**
+     * Get current background of icon
+     *
+     * @return Drawable resource of the background
+     */
+    public Drawable getIconBackground() {
+        return foregroundImageView.getBackground();
+    }
+
+    /**
      * Set background to icon
      *
      * @param resourceId resource id of background
@@ -280,15 +290,6 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
      */
     public void setIconBackground(@Nullable Drawable drawable) {
         foregroundImageView.setBackground(drawable);
-    }
-
-    /**
-     * Get current background of icon
-     *
-     * @return Drawable resource of the background
-     */
-    public Drawable getIconBackground() {
-        return foregroundImageView.getBackground();
     }
 
     /**

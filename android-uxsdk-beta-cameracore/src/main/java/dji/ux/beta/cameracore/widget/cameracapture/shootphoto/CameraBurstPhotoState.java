@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracapture.shootphoto;
@@ -54,7 +55,7 @@ public class CameraBurstPhotoState extends CameraPhotoState {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj != null && obj instanceof CameraBurstPhotoState) {
+        if (obj instanceof CameraBurstPhotoState) {
             return ((CameraBurstPhotoState) obj).getShootPhotoMode() == this.getShootPhotoMode()
                     && ((CameraBurstPhotoState) obj).getPhotoBurstCount() == this.getPhotoBurstCount();
         }

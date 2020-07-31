@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.visualcamera.widget.cameraconfig.ev;
@@ -139,15 +140,6 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
-    }
-
-    /**
      * Get the index of the camera to which the widget is reacting
      *
      * @return {@link SettingDefinitions.CameraIndex}
@@ -158,30 +150,21 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Set the index of camera to which the widget should react
+     *
+     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
+     */
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        widgetModel.setCameraIndex(cameraIndex);
+    }
+
+    /**
      * Set text appearance of the exposure compensation value title text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setEVTitleTextAppearance(@StyleRes int textAppearance) {
         evTitleTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the exposure compensation value title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setEVTitleTextColor(@NonNull ColorStateList colorStateList) {
-        evTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the exposure compensation value title text view
-     *
-     * @param color color integer resource
-     */
-    public void setEVTitleTextColor(@ColorInt int color) {
-        evTitleTextView.setTextColor(color);
     }
 
     /**
@@ -205,12 +188,21 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the exposure compensation value title text view
+     * Set text color state list for the exposure compensation value title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setEVTitleTextSize(@Dimension float textSize) {
-        evTitleTextView.setTextSize(textSize);
+    public void setEVTitleTextColor(@NonNull ColorStateList colorStateList) {
+        evTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the exposure compensation value title text view
+     *
+     * @param color color integer resource
+     */
+    public void setEVTitleTextColor(@ColorInt int color) {
+        evTitleTextView.setTextColor(color);
     }
 
     /**
@@ -221,6 +213,25 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getEVTitleTextSize() {
         return evTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the exposure compensation value title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setEVTitleTextSize(@Dimension float textSize) {
+        evTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the exposure compensation value title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getEVTitleTextBackground() {
+        return evTitleTextView.getBackground();
     }
 
     /**
@@ -242,40 +253,12 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the exposure compensation value title text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getEVTitleTextBackground() {
-        return evTitleTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the exposure compensation value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setEVValueTextAppearance(@StyleRes int textAppearance) {
         evValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the exposure compensation value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setEVValueTextColor(@NonNull ColorStateList colorStateList) {
-        evValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the exposure compensation value text view
-     *
-     * @param color color integer resource
-     */
-    public void setEVValueTextColor(@ColorInt int color) {
-        evValueTextView.setTextColor(color);
     }
 
     /**
@@ -299,12 +282,21 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the exposure compensation value text view
+     * Set text color state list for the exposure compensation value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setEVValueTextSize(@Dimension float textSize) {
-        evValueTextView.setTextSize(textSize);
+    public void setEVValueTextColor(@NonNull ColorStateList colorStateList) {
+        evValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the exposure compensation value text view
+     *
+     * @param color color integer resource
+     */
+    public void setEVValueTextColor(@ColorInt int color) {
+        evValueTextView.setTextColor(color);
     }
 
     /**
@@ -315,6 +307,25 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getEVValueTextSize() {
         return evValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the exposure compensation value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setEVValueTextSize(@Dimension float textSize) {
+        evValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the exposure compensation value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getEVValueTextBackground() {
+        return evValueTextView.getBackground();
     }
 
     /**
@@ -333,16 +344,6 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
      */
     public void setEVValueTextBackground(@Nullable Drawable drawable) {
         evValueTextView.setBackground(drawable);
-    }
-
-    /**
-     * Get current background of the exposure compensation value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getEVValueTextBackground() {
-        return evValueTextView.getBackground();
     }
     //endregion
 

@@ -18,12 +18,11 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.util
 
-import android.annotation.SuppressLint
-import android.os.Build
 import android.view.View
 
 import java.util.concurrent.atomic.AtomicInteger
@@ -35,20 +34,15 @@ object ViewIDGenerator {
      * Generates a unique ID that can be assigned to a @see[View].
      * Backwards compatible to any Android version.
      */
-    @SuppressLint("NewApi")
     fun generateViewId(): Int {
-        if (Build.VERSION.SDK_INT < 17) {
-            while (true) {
-                val result = nextGeneratedID.get()
-                var newValue = result + 1
-                if (newValue > 0x00FFFFFF)
-                    newValue = 1 // Roll over to 1, not 0.
-                if (nextGeneratedID.compareAndSet(result, newValue)) {
-                    return result
-                }
+        while (true) {
+            val result = nextGeneratedID.get()
+            var newValue = result + 1
+            if (newValue > 0x00FFFFFF)
+                newValue = 1 // Roll over to 1, not 0.
+            if (nextGeneratedID.compareAndSet(result, newValue)) {
+                return result
             }
-        } else {
-            return View.generateViewId()
         }
     }
 }

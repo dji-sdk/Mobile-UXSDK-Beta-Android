@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.panelwidget.topbar
@@ -89,48 +90,39 @@ open class TopBarPanelWidget @JvmOverloads constructor(
      * Getter for [SystemStatusWidget]. Null when excluded from the bar panel.
      */
     val systemStatusWidget: SystemStatusWidget?
-
     /**
      * Getter for [FlightModeWidget]. Null when excluded from the bar panel.
      */
     val flightModeWidget: FlightModeWidget?
-
     /**
      * Getter for [SimulatorIndicatorWidget]. Null when excluded from the bar panel.
      */
     val simulatorIndicatorWidget: SimulatorIndicatorWidget?
-
     /**
      * Getter for [AirSenseWidget]. Null when excluded from the bar panel.
      */
     val airSenseWidget: AirSenseWidget?
-
     /**
      * Getter for [GPSSignalWidget]. Null when excluded from the bar panel.
      */
     @get:JvmName("getGPSSignalWidget")
     val gpsSignalWidget: GPSSignalWidget?
-
     /**
      * Getter for [VisionWidget]. Null when excluded from the bar panel.
      */
     val visionWidget: VisionWidget?
-
     /**
      * Getter for [RemoteControllerSignalWidget]. Null when excluded from the bar panel.
      */
     val remoteControllerSignalWidget: RemoteControllerSignalWidget?
-
     /**
      * Getter for [VideoSignalWidget]. Null when excluded from the bar panel.
      */
     val videoSignalWidget: VideoSignalWidget?
-
     /**
      * Getter for [BatteryWidget]. Null when excluded from the bar panel.
      */
     val batteryWidget: BatteryWidget?
-
     /**
      * Getter for [ConnectionWidget]. Null when excluded from the bar panel.
      */

@@ -20,12 +20,11 @@
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
   ~
-  ~
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_checked="true" android:color="@color/light_gray"/>
-    <item android:color="@color/blue"/>
+    <item android:color="@color/colorAccent"/>
 
 </selector>

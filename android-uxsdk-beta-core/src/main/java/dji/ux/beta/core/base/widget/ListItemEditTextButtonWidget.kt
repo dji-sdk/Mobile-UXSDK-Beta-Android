@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base.widget
@@ -46,6 +47,7 @@ import dji.thirdparty.io.reactivex.processors.PublishProcessor
 import dji.ux.beta.R
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.ViewIDGenerator
+
 
 /**
  * This is the base class to be used for list item
@@ -379,6 +381,7 @@ abstract class ListItemEditTextButtonWidget<T> @JvmOverloads constructor(
         listItemEditTextView.width = getDimension(R.dimen.uxsdk_list_item_edit_min_width).toInt()
         listItemEditTextView.inputType = InputType.TYPE_CLASS_PHONE
         listItemEditTextView.imeOptions = EditorInfo.IME_FLAG_NO_EXTRACT_UI
+        listItemEditTextSize = getDimension(R.dimen.uxsdk_list_item_edit_text_size)
         val verticalPadding = getDimension(R.dimen.uxsdk_list_item_button_padding_vertical).toInt()
         listItemEditTextView.setPadding(0, verticalPadding, 0, verticalPadding)
         listItemEditTextView.background = getDrawable(R.drawable.uxsdk_system_status_edit_background_selector)
@@ -423,6 +426,7 @@ abstract class ListItemEditTextButtonWidget<T> @JvmOverloads constructor(
         listItemButtonBackground = getDrawable(R.drawable.uxsdk_system_status_button_background_selector)
         listItemButtonTextColors = resources.getColorStateList(R.color.uxsdk_selector_text_color)
         listItemButtonText = getString(R.string.uxsdk_string_default_value)
+        listItemButtonTextSize = getDimension(R.dimen.uxsdk_list_item_button_text_size)
         listItemButton.setOnClickListener(this)
         listItemButton.gravity = Gravity.CENTER
         listItemButton.minWidth = getDimension(R.dimen.uxsdk_list_item_button_min_width).toInt()
@@ -436,7 +440,7 @@ abstract class ListItemEditTextButtonWidget<T> @JvmOverloads constructor(
         initHint()
         val layoutParams = LayoutParams(getDimension(R.dimen.uxsdk_list_item_edit_min_width).toInt(), ConstraintSet.WRAP_CONTENT)
         layoutParams.leftMargin = getDimension(R.dimen.uxsdk_list_item_button_padding_horizontal).toInt()
-        layoutParams.rightToRight = guidelineRight.id
+        layoutParams.rightToLeft = clickIndicatorId
         layoutParams.topToTop = guidelineTop.id
         layoutParams.bottomToBottom = guidelineBottom.id
         layoutParams.leftToRight = listItemHintTextView.id
@@ -460,7 +464,7 @@ abstract class ListItemEditTextButtonWidget<T> @JvmOverloads constructor(
         initButton()
         val layoutParams = LayoutParams(getDimension(R.dimen.uxsdk_list_item_edit_min_width).toInt(), ConstraintSet.WRAP_CONTENT)
         layoutParams.leftMargin = getDimension(R.dimen.uxsdk_list_item_button_padding_horizontal).toInt()
-        layoutParams.rightToRight = guidelineRight.id
+        layoutParams.rightToLeft = clickIndicatorId
         layoutParams.topToTop = guidelineTop.id
         layoutParams.bottomToBottom = guidelineBottom.id
         layoutParams.leftToRight = listItemHintTextView.id
@@ -487,7 +491,9 @@ abstract class ListItemEditTextButtonWidget<T> @JvmOverloads constructor(
 
 
     /**
-     * Set the background of the item hint
+     * Set the background of the item button
+     *
+     * @param resourceId Integer ID of the background resource
      */
     fun setListItemButtonBackground(@DrawableRes resourceId: Int) {
         listItemButtonBackground = getDrawable(resourceId)
@@ -495,6 +501,8 @@ abstract class ListItemEditTextButtonWidget<T> @JvmOverloads constructor(
 
     /**
      * Set the background of the item hint
+     *
+     * @param resourceId Integer ID of the background resource
      */
     fun setListItemHintBackground(@DrawableRes resourceId: Int) {
         listItemHintBackground = getDrawable(resourceId)
@@ -502,27 +510,35 @@ abstract class ListItemEditTextButtonWidget<T> @JvmOverloads constructor(
 
     /**
      * Set the background of the item edit text
+     *
+     * @param resourceId Integer ID of the background resource
      */
     fun setListItemEditTextBackground(@DrawableRes resourceId: Int) {
         listItemEditTextBackground = getDrawable(resourceId)
     }
 
     /**
-     * Set the text appearance of the hint
+     * Set the text appearance of the item hint
+     *
+     * @param textAppearanceResId Style resource for text appearance
      */
     fun setListItemHintTextAppearance(@StyleRes textAppearanceResId: Int) {
         listItemHintTextView.setTextAppearance(context, textAppearanceResId)
     }
 
     /**
-     * Set the text appearance of the button
+     * Set the text appearance of the item button
+     *
+     * @param textAppearanceResId Style resource for text appearance
      */
     fun setListItemButtonTextAppearance(@StyleRes textAppearanceResId: Int) {
         listItemButton.setTextAppearance(context, textAppearanceResId)
     }
 
     /**
-     * Set the text appearance of the button
+     * Set the text appearance of the item edit text
+     *
+     * @param textAppearanceResId Style resource for text appearance
      */
     fun setListItemEditTextTextAppearance(@StyleRes textAppearanceResId: Int) {
         listItemEditTextView.setTextAppearance(context, textAppearanceResId)
@@ -537,14 +553,19 @@ abstract class ListItemEditTextButtonWidget<T> @JvmOverloads constructor(
 
     @CallSuper
     override fun onClick(view: View?) {
+        super.onClick(view)
         if (view == listItemButton) {
             uiUpdateStateProcessor.onNext(WidgetUIState.ButtonClick)
             onButtonClick()
         } else if (view == listItemEditTextView) {
-            uiUpdateStateProcessor.onNext(WidgetUIState.EditBeginsUpdate
-            )
+            uiUpdateStateProcessor.onNext(WidgetUIState.EditBeginsUpdate)
             listItemEditTextView.isCursorVisible = true
         }
+    }
+
+    @CallSuper
+    override fun onListItemClick() {
+        uiUpdateStateProcessor.onNext(WidgetUIState.ListItemClick)
     }
 
     private fun isDoneActionClicked(actionId: Int, keyEvent: KeyEvent?): Boolean {
@@ -583,6 +604,11 @@ abstract class ListItemEditTextButtonWidget<T> @JvmOverloads constructor(
      * Widget UI update State
      */
     sealed class WidgetUIState {
+        /**
+         * List Item click update
+         */
+        object ListItemClick : WidgetUIState()
+
         /**
          * Button click update
          */

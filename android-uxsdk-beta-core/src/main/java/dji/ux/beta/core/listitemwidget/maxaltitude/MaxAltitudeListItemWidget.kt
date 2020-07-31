@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.listitemwidget.maxaltitude
@@ -25,6 +26,7 @@ package dji.ux.beta.core.listitemwidget.maxaltitude
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.annotation.StyleRes
 import androidx.core.content.res.use
@@ -64,6 +66,16 @@ open class MaxAltitudeListItemWidget @JvmOverloads constructor(
     private val schedulerProvider = SchedulerProvider.getInstance()
 
     /**
+     * Icon for confirmation dialog
+     */
+    var confirmationDialogIcon: Drawable? = getDrawable(R.drawable.uxsdk_ic_alert_yellow)
+
+    /**
+     * Icon for error dialog
+     */
+    var errorDialogIcon: Drawable? = getDrawable(R.drawable.uxsdk_ic_alert_error)
+
+    /**
      * Enable/Disable toast messages in the widget
      */
     var toastMessagesEnabled: Boolean = true
@@ -87,7 +99,12 @@ open class MaxAltitudeListItemWidget @JvmOverloads constructor(
             typedArray.getResourceIdAndUse(R.styleable.MaxAltitudeListItemWidget_uxsdk_list_item_dialog_theme) {
                 dialogTheme = it
             }
-
+            typedArray.getDrawableAndUse(R.styleable.SDCardStatusListItemWidget_uxsdk_list_item_confirmation_dialog_icon) {
+                confirmationDialogIcon = it
+            }
+            typedArray.getDrawableAndUse(R.styleable.SDCardStatusListItemWidget_uxsdk_list_item_error_dialog_icon) {
+                errorDialogIcon = it
+            }
         }
     }
 
@@ -120,14 +137,16 @@ open class MaxAltitudeListItemWidget @JvmOverloads constructor(
     override fun reactToModelChanges() {
         addReaction(widgetModel.maxAltitudeState
                 .observeOn(schedulerProvider.ui())
-                .subscribe { this.updateUI(it) })
+                .subscribe {
+                    widgetStateDataProcessor.onNext(CurrentMaxAltitudeState(it))
+                    updateUI(it)
+                })
         addReaction(widgetModel.productConnection
                 .observeOn(schedulerProvider.ui())
                 .subscribe { widgetStateDataProcessor.onNext(ProductConnected(it)) })
     }
 
     private fun updateUI(maxAltitudeState: MaxAltitudeState) {
-        widgetStateDataProcessor.onNext(CurrentMaxAltitudeState(maxAltitudeState))
         when (maxAltitudeState) {
             MaxAltitudeState.ProductDisconnected -> updateProductDisconnectedState()
             is MaxAltitudeState.NoviceMode -> updateNoviceMode(maxAltitudeState.unitType)
@@ -138,7 +157,6 @@ open class MaxAltitudeListItemWidget @JvmOverloads constructor(
     private fun updateMaxAltitudeValue(maxAltitudeListItemState: MaxAltitudeState.MaxAltitudeValue) {
         listItemEditTextVisibility = true
         listItemHintVisibility = true
-        listItemHintTextSize = getDimension(R.dimen.uxsdk_list_item_hint_text_size)
         listItemHint = if (maxAltitudeListItemState.unitType == UnitType.METRIC) {
             String.format(getString(R.string.uxsdk_altitude_range_meters),
                     maxAltitudeListItemState.minAltitudeLimit,
@@ -156,16 +174,15 @@ open class MaxAltitudeListItemWidget @JvmOverloads constructor(
 
 
     private fun updateNoviceMode(unitType: UnitType) {
-        listItemEditTextVisibility = false
-        listItemHintVisibility = true
-        listItemHintTextSize = DisplayUtil.pxToSp(context, listItemEditTextSize)
-        listItemHint = if (unitType == UnitType.METRIC) {
+        listItemEditTextVisibility = true
+        listItemHintVisibility = false
+        listItemEditTextValue = if (unitType == UnitType.METRIC) {
             getString(R.string.uxsdk_novice_mode_altitude_meters)
         } else {
             getString(R.string.uxsdk_novice_mode_altitude_feet)
         }
         isEnabled = false
-        listItemEditTextColor = editTextNormalColor
+        listItemEditTextColor = disconnectedValueColor
     }
 
     private fun updateProductDisconnectedState() {
@@ -203,10 +220,11 @@ open class MaxAltitudeListItemWidget @JvmOverloads constructor(
                             when {
                                 it.needFlightLimit && isOverAlarmLimit(currentValue, it.unitType) -> {
                                     showAlertDialog(dialogTheme = dialogTheme,
-                                            title = getString(R.string.uxsdk_tips),
-                                            icon = getDrawable(R.drawable.uxsdk_ic_alert_yellow),
+                                            title = getString(R.string.uxsdk_list_item_max_flight_altitude),
+                                            icon = errorDialogIcon,
                                             message = getString(R.string.uxsdk_limit_required_error))
                                     uiUpdateStateProcessor.onNext(DialogDisplayed(FlightLimitNeededErrorDialog))
+                                    resetToDefaultValue()
                                 }
                                 isOverAlarmLimit(currentValue, it.unitType) -> {
                                     showOverAlarmLimitDialog(currentValue, it.returnToHomeHeight, it.unitType)
@@ -222,6 +240,7 @@ open class MaxAltitudeListItemWidget @JvmOverloads constructor(
 
         } else {
             showToast(getString(R.string.uxsdk_list_item_value_out_of_range))
+            resetToDefaultValue()
         }
 
     }
@@ -231,14 +250,16 @@ open class MaxAltitudeListItemWidget @JvmOverloads constructor(
             if (buttonId == DialogInterface.BUTTON_POSITIVE) {
                 verifyReturnHomeAltitudeValue(currentValue, currentReturnToHomeValue, unitType)
                 uiUpdateStateProcessor.onNext(DialogActionConfirm(MaxAltitudeOverAlarmConfirmationDialog))
+            } else {
+                resetToDefaultValue()
             }
             dialogInterface.dismiss()
             uiUpdateStateProcessor.onNext(DialogActionDismiss(MaxAltitudeOverAlarmConfirmationDialog))
 
         }
         showConfirmationDialog(dialogTheme = dialogTheme,
-                title = getString(R.string.uxsdk_tips),
-                icon = getDrawable(R.drawable.uxsdk_ic_alert_yellow),
+                title = getString(R.string.uxsdk_list_item_max_flight_altitude),
+                icon = confirmationDialogIcon,
                 message = getString(R.string.uxsdk_limit_high_notice),
                 dialogClickListener = dialogListener)
         uiUpdateStateProcessor.onNext(DialogDisplayed(MaxAltitudeOverAlarmConfirmationDialog))
@@ -270,18 +291,20 @@ open class MaxAltitudeListItemWidget @JvmOverloads constructor(
                 if (buttonId == DialogInterface.BUTTON_POSITIVE) {
                     setMaxAltitudeValue(currentValue)
                     uiUpdateStateProcessor.onNext(DialogActionConfirm(ReturnHomeAltitudeUpdateDialog))
+                } else {
+                    resetToDefaultValue()
                 }
                 dialogInterface.dismiss()
                 uiUpdateStateProcessor.onNext(DialogActionDismiss(ReturnHomeAltitudeUpdateDialog))
 
             }
             showConfirmationDialog(dialogTheme = dialogTheme,
-                    title = null,
+                    icon = confirmationDialogIcon,
+                    title = getString(R.string.uxsdk_list_item_max_flight_altitude),
                     message = String.format(getString(R.string.uxsdk_limit_return_home_warning),
                             imperialHeight, metricHeight),
                     dialogClickListener = dialogListener)
             uiUpdateStateProcessor.onNext(DialogDisplayed(ReturnHomeAltitudeUpdateDialog))
-
         } else {
             setMaxAltitudeValue(currentValue)
         }
@@ -295,10 +318,21 @@ open class MaxAltitudeListItemWidget @JvmOverloads constructor(
                     showToast(getString(R.string.uxsdk_success))
                     widgetStateDataProcessor.onNext(MaxAltitudeItemState.SetMaxAltitudeSuccess)
                 }, { error ->
+                    resetToDefaultValue()
                     if (error is UXSDKError) {
                         showToast(error.djiError.description)
                         widgetStateDataProcessor.onNext(MaxAltitudeItemState.SetMaxAltitudeFailed(error))
                     }
+                }))
+    }
+
+    private fun resetToDefaultValue() {
+        addDisposable(widgetModel.maxAltitudeState.firstOrError()
+                .observeOn(schedulerProvider.ui())
+                .subscribe({
+                    updateUI(it)
+                }, {
+                    DJILog.e(TAG, it.message)
                 }))
     }
 

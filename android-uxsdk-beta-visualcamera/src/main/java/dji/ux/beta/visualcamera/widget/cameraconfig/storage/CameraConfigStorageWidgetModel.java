@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.visualcamera.widget.cameraconfig.storage;
@@ -67,12 +68,11 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
     private final DataProcessor<Integer> sdCardRecordingTime;
     private final DataProcessor<Integer> innerStorageRecordingTime;
     private final DataProcessor<SettingsDefinitions.CameraColor> cameraColorProcessor;
-    private int cameraIndex;
-    //endregion
-
     //region Public Data
     private final DataProcessor<ImageFormat> imageFormatProcessor;
+    //endregion
     private final DataProcessor<CameraStorageState> cameraStorageState;
+    private int cameraIndex;
     //endregion
 
     //region Constructor
@@ -113,16 +113,6 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
     //region Data
 
     /**
-     * Set the index of the camera for which the widget model should react
-     *
-     * @param cameraIndex camera index
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        this.cameraIndex = cameraIndex.getIndex();
-        restart();
-    }
-
-    /**
      * Get the current index of the camera the widget model is reacting to
      *
      * @return current camera index
@@ -130,6 +120,16 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
     @NonNull
     public SettingDefinitions.CameraIndex getCameraIndex() {
         return SettingDefinitions.CameraIndex.find(cameraIndex);
+    }
+
+    /**
+     * Set the index of the camera for which the widget model should react
+     *
+     * @param cameraIndex camera index
+     */
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        this.cameraIndex = cameraIndex.getIndex();
+        restart();
     }
 
     /**
@@ -325,15 +325,15 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
      */
     public static class CameraStorageState {
         private final SettingsDefinitions.CameraMode cameraMode;
-        private SettingsDefinitions.StorageLocation storageLocation;
-        private SettingsDefinitions.SDCardOperationState storageOperationState;
         private final long availableCaptureCount;
         private final int availableRecordingTime;
+        private SettingsDefinitions.StorageLocation storageLocation;
+        private SettingsDefinitions.SDCardOperationState storageOperationState;
 
         @VisibleForTesting
-        protected CameraStorageState(@Nullable SettingsDefinitions.CameraMode cameraMode,
-                                     @Nullable SettingsDefinitions.StorageLocation storageLocation,
-                                     @Nullable SettingsDefinitions.SDCardOperationState storageOperationState,
+        protected CameraStorageState(@NonNull SettingsDefinitions.CameraMode cameraMode,
+                                     @NonNull SettingsDefinitions.StorageLocation storageLocation,
+                                     @NonNull SettingsDefinitions.SDCardOperationState storageOperationState,
                                      long availableCaptureCount, int availableRecordingTime) {
             this.cameraMode = cameraMode;
             this.storageLocation = storageLocation;
@@ -347,7 +347,7 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
          *
          * @return The current camera mode.
          */
-        @Nullable
+        @NonNull
         public SettingsDefinitions.CameraMode getCameraMode() {
             return cameraMode;
         }
@@ -357,7 +357,7 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
          *
          * @return The current storage location.
          */
-        @Nullable
+        @NonNull
         public SettingsDefinitions.StorageLocation getStorageLocation() {
             return storageLocation;
         }
@@ -367,7 +367,7 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
          *
          * @return The current storage operation state.
          */
-        @Nullable
+        @NonNull
         public SettingsDefinitions.SDCardOperationState getStorageOperationState() {
             return storageOperationState;
         }

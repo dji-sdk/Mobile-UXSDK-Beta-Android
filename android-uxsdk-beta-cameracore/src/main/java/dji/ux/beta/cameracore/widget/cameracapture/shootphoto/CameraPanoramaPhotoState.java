@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.cameracapture.shootphoto;
@@ -52,7 +53,7 @@ public class CameraPanoramaPhotoState extends CameraPhotoState {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj != null && obj instanceof CameraPanoramaPhotoState) {
+        if (obj instanceof CameraPanoramaPhotoState) {
             return ((CameraPanoramaPhotoState) obj).getShootPhotoMode() == this.getShootPhotoMode()
                     && ((CameraPanoramaPhotoState) obj).getPhotoPanoramaMode() == this.getPhotoPanoramaMode();
         }

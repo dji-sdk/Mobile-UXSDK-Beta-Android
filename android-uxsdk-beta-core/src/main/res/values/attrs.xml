@@ -19,9 +19,10 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
-<resources>
 
+<resources>
 
     <declare-styleable name="SeekBarView">
         <attr name="uxsdk_minValueVisible" format="boolean" />
@@ -30,7 +31,6 @@
         <attr name="uxsdk_plusVisible" format="boolean" />
         <attr name="uxsdk_baselineVisible" format="boolean" />
     </declare-styleable>
-
 
     <declare-styleable name="IconButtonWidget">
         <attr name="uxsdk_iconBackground" />
@@ -79,8 +79,6 @@
     <attr name="uxsdk_labelsTextColor" format="color" />
     <attr name="uxsdk_labelsBackground" format="reference" />
     <attr name="uxsdk_labelsTextAppearance" format="reference" />
-    <attr name="uxsdk_switchThumbIcon" format="reference" />
-    <attr name="uxsdk_seekbarThumbIcon" format="reference" />
     <attr name="uxsdk_messageTextSize" format="dimension" />
     <attr name="uxsdk_messageTextAppearance" format="reference" />
     <attr name="uxsdk_messageTextBackground" format="reference" />
@@ -103,8 +101,6 @@
     <attr name="uxsdk_evValueTextSize" format="dimension" />
     <attr name="uxsdk_evValueTextColor" format="color|reference" />
     <attr name="uxsdk_evValueBackgroundDrawable" format="reference" />
-
-    <attr name="uxsdk_rtkSeparatorsColor" format="color" />
 
     <attr name="uxsdk_titleText" format="string|reference" />
     <attr name="uxsdk_titleTextAppearance" format="reference" />
@@ -166,6 +162,32 @@
         <attr name="uxsdk_connectedStateTextColor" format="color" />
         <attr name="uxsdk_disconnectedStateTextColor" format="color" />
     </declare-styleable>
+
+    <attr name="uxsdk_dialogTitleTextAppearance" format="reference" />
+    <attr name="uxsdk_dialogTitleTextSize" format="dimension" />
+    <attr name="uxsdk_dialogTitleTextColor" format="color" />
+    <attr name="uxsdk_dialogTitleBackground" format="reference" />
+    <attr name="uxsdk_dialogMessageTextAppearance" format="reference" />
+    <attr name="uxsdk_dialogMessageTextSize" format="dimension" />
+    <attr name="uxsdk_dialogMessageTextColor" format="color" />
+    <attr name="uxsdk_dialogMessageBackground" format="reference" />
+    <attr name="uxsdk_dialogCheckBoxMessageTextAppearance" format="reference" />
+    <attr name="uxsdk_dialogCheckBoxMessageTextSize" format="dimension" />
+    <attr name="uxsdk_dialogCheckBoxMessageTextColor" format="color" />
+    <attr name="uxsdk_dialogCheckBoxMessageBackground" format="reference" />
+    <attr name="uxsdk_dialogCancelTextAppearance" format="reference" />
+    <attr name="uxsdk_dialogCancelTextSize" format="dimension" />
+    <attr name="uxsdk_dialogCancelTextColor" format="color" />
+    <attr name="uxsdk_dialogCancelBackground" format="reference" />
+    <attr name="uxsdk_dialogSliderMessageTextAppearance" format="reference" />
+    <attr name="uxsdk_dialogSliderMessageTextSize" format="dimension" />
+    <attr name="uxsdk_dialogSliderMessageTextColor" format="color" />
+    <attr name="uxsdk_dialogSliderMessageBackground" format="reference" />
+    <attr name="uxsdk_dialogSliderIcon" format="reference" />
+    <attr name="uxsdk_dialogSliderThumbColor" format="color" />
+    <attr name="uxsdk_dialogSliderThumbSelectedColor" format="color" />
+    <attr name="uxsdk_dialogSliderFillColor" format="color" />
+    <attr name="uxsdk_dialogBackground" format="reference" />
 
     <declare-styleable name="UserAccountLoginWidget">
         <attr name="uxsdk_messageTextAppearance" />
@@ -376,6 +398,10 @@
         <attr name="uxsdk_systemStatusWarningBackgroundDrawable" format="reference" />
         <attr name="uxsdk_systemStatusGoodBackgroundDrawable" format="reference" />
         <attr name="uxsdk_systemStatusOfflineBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_defaultMode" format="enum">
+            <enum name="color" value="0" />
+            <enum name="gradient" value="1" />
+        </attr>
         <!-- Insert ID of the spotlight widget that needs to react to a state change on this widget.
         See {@link dji.ux.beta.core.widget.systemstatus.SystemStatusWidget.setStateChangeCallback}
         and {@link dji.ux.beta.core.panelwidget.systemstatus.SystemStatusListPanelWidget}. -->
@@ -410,6 +436,8 @@
         <attr name="uxsdk_cameraSideTextSize" format="dimension" />
         <attr name="uxsdk_cameraSideTextColor" format="color" />
         <attr name="uxsdk_cameraSideBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_cameraDetailsVerticalAlignment" format="float" />
+        <attr name="uxsdk_cameraDetailsHorizontalAlignment" format="float" />
         <attr name="uxsdk_gridLineType" format="enum">
             <enum name="none" value="0" />
             <enum name="parallel" value="1" />
@@ -431,29 +459,12 @@
         </attr>
         <attr name="uxsdk_centerPointColor" format="color" />
         <attr name="uxsdk_centerPointEnabled" format="boolean" />
-        <attr name="uxsdk_interactionEnabled" format="boolean" />
+        <!-- Insert ID of the FPV interaction widget that needs to react to a state change on this widget.
+        See {@link dji.ux.beta.core.widget.fpv.FPVWidget.setCameraNameStateChangeCallback}
+        and {@link dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget}. -->
+        <attr name="uxsdk_onStateChange" />
     </declare-styleable>
-    <declare-styleable name="FPVInteractionWidget">
-        <attr name="uxsdk_cameraIndex" />
-        <attr name="uxsdk_gimbalIndex" />
-        <attr name="uxsdk_manualFocusIcon" format="reference" />
-        <attr name="uxsdk_autoFocusIcon" format="reference" />
-        <attr name="uxsdk_autoFocusContinuousIcon" format="reference" />
-        <attr name="uxsdk_focusTargetDuration" format="integer" />
-        <attr name="uxsdk_centerMeterIcon" format="reference" />
-        <attr name="uxsdk_spotMeterIcon" format="reference" />
-        <attr name="uxsdk_centerMeterScaleX" format="float" />
-        <attr name="uxsdk_centerMeterScaleY" format="float" />
-        <attr name="uxsdk_gimbalPointIcon" format="reference" />
-        <attr name="uxsdk_gimbalMoveIcon" format="reference" />
-        <attr name="uxsdk_gimbalArrowIcon" format="reference" />
-        <attr name="uxsdk_gimbalVelocityFactor" format="float" />
-        <attr name="uxsdk_vibrationEnabled" format="boolean" />
-        <attr name="uxsdk_vibrationDuration" format="integer" />
-        <attr name="uxsdk_touchFocusEnabled" format="boolean" />
-        <attr name="uxsdk_spotMeteringEnabled" format="boolean" />
-        <attr name="uxsdk_gimbalControlEnabled" format="boolean" />
-    </declare-styleable>
+
     <declare-styleable name="AirSenseWidget">
         <attr name="uxsdk_airSenseConnectedStateIcon" format="reference" />
         <attr name="uxsdk_airSenseDisconnectedStateIcon" format="reference" />
@@ -490,7 +501,6 @@
     </declare-styleable>
 
     <declare-styleable name="PanelWidget">
-        <!-- TODO uxsdk_titleBarBackgroundColor not working-->
         <attr name="uxsdk_titleBarBackgroundColor" format="color|reference" />
         <attr name="uxsdk_backButtonIcon" format="reference" />
         <attr name="uxsdk_backButtonIconBackground" format="reference" />
@@ -542,9 +552,11 @@
     <attr name="uxsdk_list_item_button_enabled" format="boolean" />
     <attr name="uxsdk_list_item_button_visibility" format="boolean" />
     <attr name="uxsdk_list_item_dialog_theme" format="integer|reference"/>
-    <attr name="uxsdk_format_confirmation_dialog_icon" format="reference" />
-    <attr name="uxsdk_format_success_dialog_icon" format="reference"/>
-    <attr name="uxsdk_format_error_dialog_icon" format="reference"/>
+    <attr name="uxsdk_list_item_confirmation_dialog_icon" format="reference" />
+    <attr name="uxsdk_list_item_success_dialog_icon" format="reference"/>
+    <attr name="uxsdk_list_item_error_dialog_icon" format="reference"/>
+    <attr name="uxsdk_toast_messages_enabled" format="boolean" />
+
 
     <declare-styleable name="ListItemTitleWidget">
         <attr name="uxsdk_list_item_title" format="string|reference" />
@@ -562,6 +574,8 @@
         <attr name="uxsdk_list_item_normal_color" format="color|reference" />
         <attr name="uxsdk_list_item_warning_color" format="color|reference" />
         <attr name="uxsdk_list_item_error_color" format="color|reference" />
+        <attr name="uxsdk_list_item_click_indicator_icon" format="reference" />
+        <attr name="uxsdk_list_item_clickable" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="ListItemLabelButtonWidget">
@@ -613,16 +627,71 @@
         <attr name="uxsdk_option_text_appearance" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="ListItemSwitchWidget">
+        <attr name="uxsdk_list_item_switch_thumb_icon" format="reference" />
+        <attr name="uxsdk_list_item_switch_track_icon" format="reference" />
+        <attr name="uxsdk_list_item_switch_background" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="NoviceModeListItemWidget">
+        <attr name="uxsdk_list_item_dialog_theme" />
+        <attr name="uxsdk_list_item_confirmation_dialog_icon" />
+        <attr name="uxsdk_list_item_success_dialog_icon" />
+    </declare-styleable>
+
     <declare-styleable name="SDCardStatusListItemWidget">
         <attr name="uxsdk_list_item_dialog_theme" />
-        <attr name="uxsdk_format_confirmation_dialog_icon" />
-        <attr name="uxsdk_format_success_dialog_icon" />
-        <attr name="uxsdk_format_error_dialog_icon" />
+        <attr name="uxsdk_list_item_confirmation_dialog_icon" />
+        <attr name="uxsdk_list_item_success_dialog_icon" />
+        <attr name="uxsdk_list_item_error_dialog_icon" />
+
+    </declare-styleable>
+
+    <declare-styleable name="EMMCStatusListItemWidget">
+        <attr name="uxsdk_list_item_dialog_theme" />
+        <attr name="uxsdk_list_item_confirmation_dialog_icon" />
+        <attr name="uxsdk_list_item_success_dialog_icon" />
+        <attr name="uxsdk_list_item_error_dialog_icon" />
+
+    </declare-styleable>
+
+    <declare-styleable name="SSDStatusListItemWidget">
+        <attr name="uxsdk_list_item_dialog_theme" />
+        <attr name="uxsdk_list_item_confirmation_dialog_icon" />
+        <attr name="uxsdk_list_item_success_dialog_icon" />
+        <attr name="uxsdk_list_item_error_dialog_icon" />
+
+    </declare-styleable>
+
+    <declare-styleable name="TravelModeListItemWidget">
+        <attr name="uxsdk_list_item_dialog_theme" />
+        <attr name="uxsdk_travel_mode_active_icon" format="reference" />
+        <attr name="uxsdk_travel_mode_inactive_icon" format="reference" />
+        <attr name="uxsdk_enter_travel_mode_button_string" format="string"/>
+        <attr name="uxsdk_exit_travel_mode_button_string" format="string"/>
+        <attr name="uxsdk_list_item_confirmation_dialog_icon" />
+        <attr name="uxsdk_list_item_error_dialog_icon" />
+        <attr name="uxsdk_list_item_success_dialog_icon" />
     </declare-styleable>
     
     <declare-styleable name="MaxAltitudeListItemWidget">
         <attr name="uxsdk_list_item_dialog_theme" />
-        <attr name="uxsdk_toast_messages_enabled" format="boolean" />
+        <attr name="uxsdk_toast_messages_enabled"/>
+        <attr name="uxsdk_list_item_error_dialog_icon" />
+        <attr name="uxsdk_list_item_confirmation_dialog_icon" />
+    </declare-styleable>
+
+    <declare-styleable name="ReturnToHomeAltitudeListItemWidget">
+        <attr name="uxsdk_list_item_dialog_theme" />
+        <attr name="uxsdk_toast_messages_enabled" />
+        <attr name="uxsdk_list_item_error_dialog_icon" />
+        <attr name="uxsdk_list_item_success_dialog_icon" />
+    </declare-styleable>
+
+    <declare-styleable name="MaxFlightDistanceListItemWidget">
+        <attr name="uxsdk_toast_messages_enabled" />
+        <attr name="uxsdk_enable_action_button_string" format="string"/>
+        <attr name="uxsdk_disable_action_button_string" format="string"/>
     </declare-styleable>
 
     <attr name="uxsdk_simulatorActiveDrawable" format="reference" />
@@ -648,9 +717,18 @@
         <!-- E.g., app:excludeItem="flight_mode|radio_quality" -->
         <attr name="uxsdk_excludeItem">
             <flag name="flight_mode" value="1"/>
-            <flag name="rc_stick_mode" value="2"/>
-            <flag name="sd_card_status" value="4"/>
-            <flag name="max_altitude" value="8"/>
+            <flag name="rc_stick_mode" value="16"/>
+            <flag name="rc_battery" value="32"/>
+            <flag name="sd_card_status" value="128"/>
+            <flag name="emmc_status" value="256"/>
+            <flag name="max_altitude" value="512"/>
+            <flag name="max_flight_distance" value="1024"/>
+            <flag name="travel_mode" value="2048"/>
+            <flag name="unit_type" value="4096"/>
+            <flag name="ssd_status" value="8192"/>
+            <flag name="novice_mode" value="16384"/>
+            <flag name="overview_status" value="32768"/>
+            <flag name="rth_altitude" value="65536"/>
         </attr>
     </declare-styleable>
 
@@ -670,4 +748,5 @@
             <flag name="connection" value="512"/>
         </attr>
     </declare-styleable>
+
 </resources>

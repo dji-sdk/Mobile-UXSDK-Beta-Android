@@ -19,27 +19,22 @@
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
   ~
-  ~
   -->
 
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/background_blue</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="MapTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorAccent">@color/blue</item>
-        <item name="android:textColorSecondary">@color/blue</item>
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="DefaultLayoutTheme" parent="MapTheme">
-        <item name="android:windowBackground">@color/dark_theme_background</item>
+    <style name="MapTheme" parent="AppTheme">
+        <item name="android:textColorSecondary">@color/colorAccent</item>
     </style>
 
 </resources>

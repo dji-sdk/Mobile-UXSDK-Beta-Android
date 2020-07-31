@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.hardwareaccessory.widget.rtk
@@ -52,8 +53,6 @@ class RTKWidgetModel(djiSdkModel: DJISDKModel,
     //region Data
     /**
      * Get whether the RTK is enabled.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val rtkEnabled: Flowable<Boolean>
         @JvmName("getRTKEnabled")
@@ -61,8 +60,6 @@ class RTKWidgetModel(djiSdkModel: DJISDKModel,
 
     /**
      * Get whether the RTK is supported.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val rtkSupported: Flowable<Boolean>
         @JvmName("getRTKSupported")

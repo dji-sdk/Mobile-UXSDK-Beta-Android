@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.training.widget.simulatorcontrol.preset
@@ -39,7 +40,6 @@ import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget
 /**
  * Preset List Dialog
  *
- *
  * Dialog shows a list of saved presets.
  * Tapping on the preset name will load the values saved in the [SimulatorControlWidget]
  */
@@ -48,30 +48,32 @@ class PresetListDialog @JvmOverloads constructor(
         private val loadPresetListener: OnLoadPresetListener,
         private val dialogHeight: Int = context.resources.getDimension(R.dimen.uxsdk_simulator_dialog_height).toInt()
 ) : Dialog(context), View.OnClickListener {
-    private lateinit var presetListContainerLinearLayout: LinearLayout
-    private lateinit var emptyPresetListTextView: TextView
-    private lateinit var confirmDeleteTextView: TextView
-    private lateinit var cancelDialogTextView: TextView
-    private lateinit var deletePresetYesTextView: TextView
-    private lateinit var deletePresetNoTextView: TextView
-
 
     //region fields
-
+    private val presetListContainerLinearLayout: LinearLayout
+    private val emptyPresetListTextView: TextView
+    private val confirmDeleteTextView: TextView
+    private val cancelDialogTextView: TextView
+    private val deletePresetYesTextView: TextView
+    private val deletePresetNoTextView: TextView
     private var keyToDelete: String? = null
+    //endregion
+
+    //region lifecycle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        window?.setBackgroundDrawableResource(R.drawable.uxsdk_background_dialog_rounded_corners)
+    }
+
+    init {
+
         setContentView(R.layout.uxsdk_dialog_simulator_load_preset)
-        if (window != null) {
-            window?.setBackgroundDrawableResource(R.drawable.uxsdk_background_dialog_rounded_corners)
-        }
         presetListContainerLinearLayout = findViewById(R.id.linear_layout_preset_list_container)
         emptyPresetListTextView = findViewById(R.id.textview_empty_list)
         confirmDeleteTextView = findViewById(R.id.textview_confirmation_delete)
         cancelDialogTextView = findViewById(R.id.textview_cancel_simulator_dialog)
         deletePresetYesTextView = findViewById(R.id.textview_delete_yes)
         deletePresetNoTextView = findViewById(R.id.textview_delete_no)
-        emptyPresetListTextView = findViewById(R.id.textview_empty_list)
         cancelDialogTextView.setOnClickListener(this)
         deletePresetYesTextView.setOnClickListener(this)
         deletePresetNoTextView.setOnClickListener(this)

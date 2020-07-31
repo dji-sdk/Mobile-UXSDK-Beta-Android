@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.listitemwidget.sdcardstatus
@@ -32,6 +33,7 @@ import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.SettingDefinitions
+
 
 /**
  * Widget Model for the [SDCardStatusListItemWidget] used to define
@@ -59,8 +61,6 @@ class SDCardStatusListItemWidgetModel(
 
     /**
      * Get the sd card state
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val sdCardState: Flowable<SDCardState> = sdCardStateProcessor.toFlowable()
 

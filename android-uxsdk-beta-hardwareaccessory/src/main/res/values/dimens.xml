@@ -19,8 +19,10 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
-    <!-- RTK Satellite Status Widget -->
+    <!-- RTK Widget -->
     <dimen name="uxsdk_setting_rtk_satellite_item_desc_width">120dp</dimen>
 </resources>

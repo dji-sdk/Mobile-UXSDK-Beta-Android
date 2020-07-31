@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.core.widget.videosignal
@@ -56,16 +57,12 @@ class VideoSignalWidgetModel(
     //region Data
     /**
      * Get the value of the strength of the video signal as an integer.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val videoSignalQuality: Flowable<Int>
         get() = videoSignalQualityProcessor.toFlowable()
 
     /**
      * Get the frequency band of the video signal as a [LightbridgeFrequencyBand] value.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val lightBridgeFrequencyBand: Flowable<LightbridgeFrequencyBand>
         get() = lightbridgeFrequencyBandProcessor.toFlowable()

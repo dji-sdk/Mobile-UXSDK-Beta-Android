@@ -18,8 +18,15 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
+    <style name="UXSDKDialogWindowAnim"  mce_bogus="1">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
     <style name="UXSDKBatteryWidgetVoltageDefault">
         <item name="android:textSize">@dimen/uxsdk_text_size_between_small_tiny</item>
         <item name="android:textColor">@color/uxsdk_battery_healthy</item>
@@ -49,7 +56,7 @@
         <item name="android:background">@drawable/uxsdk_ic_dashboard_background</item>
     </style>
 
-    <style name="UXSDKAirSenseWarningDialogTheme" parent="Theme.AppCompat.Dialog.Alert">
+    <style name="UXSDKAirSenseWarningDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">@color/uxsdk_blue</item>
     </style>
 
@@ -57,4 +64,5 @@
         <item name="colorAccent">@color/uxsdk_blue</item>
         <item name="android:background">@color/uxsdk_black_70_percent</item>
     </style>
+
 </resources>

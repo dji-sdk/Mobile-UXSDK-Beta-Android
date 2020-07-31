@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.compass;
@@ -36,7 +37,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import dji.common.remotecontroller.GPSData;
-import dji.common.util.MobileGPSLocationUtil;
 import dji.keysdk.DJIKey;
 import dji.keysdk.FlightControllerKey;
 import dji.keysdk.GimbalKey;
@@ -48,6 +48,7 @@ import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.LocationUtil;
 import dji.ux.beta.core.util.MathUtil;
+import dji.ux.beta.core.util.MobileGPSLocationUtil;
 
 /**
  * Widget Model for the {@link CompassWidget} used to define
@@ -413,6 +414,22 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
     //endregion
 
     /**
+     * Enum for the center type used in the calculations
+     */
+    public enum CenterType {
+        /**
+         * The center is determined by RC location data or mobile device
+         * location data
+         */
+        RC_MOBILE_GPS,
+
+        /**
+         * The center is determined by the home location's data
+         */
+        HOME_GPS
+    }
+
+    /**
      * Class that holds the aircraft's attitude with getters and setters
      * for the roll, pitch and yaw of the aircraft
      */
@@ -431,20 +448,20 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
             return roll;
         }
 
-        public double getPitch() {
-            return pitch;
-        }
-
-        public double getYaw() {
-            return yaw;
-        }
-
         public void setRoll(double roll) {
             this.roll = roll;
         }
 
+        public double getPitch() {
+            return pitch;
+        }
+
         public void setPitch(double pitch) {
             this.pitch = pitch;
+        }
+
+        public double getYaw() {
+            return yaw;
         }
 
         public void setYaw(double yaw) {
@@ -469,12 +486,12 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
             return angle;
         }
 
-        public float getDistance() {
-            return distance;
-        }
-
         public void setAngle(float angle) {
             this.angle = angle;
+        }
+
+        public float getDistance() {
+            return distance;
         }
 
         public void setDistance(float distance) {
@@ -499,32 +516,16 @@ public class CompassWidgetModel extends WidgetModel implements SensorEventListen
             return angle;
         }
 
-        public float getDistance() {
-            return distance;
-        }
-
         public void setAngle(float angle) {
             this.angle = angle;
+        }
+
+        public float getDistance() {
+            return distance;
         }
 
         public void setDistance(float distance) {
             this.distance = distance;
         }
-    }
-
-    /**
-     * Enum for the center type used in the calculations
-     */
-    public enum CenterType {
-        /**
-         * The center is determined by RC location data or mobile device
-         * location data
-         */
-        RC_MOBILE_GPS,
-
-        /**
-         * The center is determined by the home location's data
-         */
-        HOME_GPS
     }
 }

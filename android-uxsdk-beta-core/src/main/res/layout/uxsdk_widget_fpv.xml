@@ -19,7 +19,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -37,11 +39,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
+        android:id="@+id/vertical_offset"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.20" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/horizontal_offset"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.50" />
 
     <TextView
         android:id="@+id/textview_camera_name"
@@ -51,9 +60,9 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
         android:textColor="@color/uxsdk_white"
-        app:layout_constraintEnd_toEndOf="@id/textureview_fpv"
-        app:layout_constraintStart_toStartOf="@id/textureview_fpv"
-        app:layout_constraintTop_toTopOf="@id/guideline" />
+        app:layout_constraintEnd_toEndOf="@id/horizontal_offset"
+        app:layout_constraintStart_toStartOf="@id/horizontal_offset"
+        app:layout_constraintTop_toTopOf="@id/vertical_offset" />
 
     <TextView
         android:id="@+id/textview_camera_side"
@@ -65,8 +74,8 @@
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
         android:textColor="@color/uxsdk_white"
-        app:layout_constraintEnd_toEndOf="@id/textureview_fpv"
-        app:layout_constraintStart_toStartOf="@id/textureview_fpv"
+        app:layout_constraintEnd_toEndOf="@id/horizontal_offset"
+        app:layout_constraintStart_toStartOf="@id/horizontal_offset"
         app:layout_constraintTop_toBottomOf="@id/textview_camera_name" />
 
     <dji.ux.beta.core.ui.GridLineView
@@ -88,14 +97,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.1" />
-
-    <dji.ux.beta.core.widget.fpv.interaction.FPVInteractionWidget
-        android:id="@+id/widget_fpv_interaction"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </merge>

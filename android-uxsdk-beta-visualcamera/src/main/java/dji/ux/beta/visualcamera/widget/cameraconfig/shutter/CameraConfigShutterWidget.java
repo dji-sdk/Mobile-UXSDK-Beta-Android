@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.visualcamera.widget.cameraconfig.shutter;
@@ -126,15 +127,6 @@ public class CameraConfigShutterWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
-    }
-
-    /**
      * Get the index of the camera to which the widget is reacting
      *
      * @return {@link SettingDefinitions.CameraIndex}
@@ -145,30 +137,21 @@ public class CameraConfigShutterWidget extends ConstraintLayoutWidget {
     }
 
     /**
+     * Set the index of camera to which the widget should react
+     *
+     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
+     */
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        widgetModel.setCameraIndex(cameraIndex);
+    }
+
+    /**
      * Set text appearance of the shutter title text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setShutterTitleTextAppearance(@StyleRes int textAppearance) {
         shutterTitleTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the shutter title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setShutterTitleTextColor(@NonNull ColorStateList colorStateList) {
-        shutterTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the shutter title text view
-     *
-     * @param color color integer resource
-     */
-    public void setShutterTitleTextColor(@ColorInt int color) {
-        shutterTitleTextView.setTextColor(color);
     }
 
     /**
@@ -192,12 +175,21 @@ public class CameraConfigShutterWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the shutter title text view
+     * Set text color state list for the shutter title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setShutterTitleTextSize(@Dimension float textSize) {
-        shutterTitleTextView.setTextSize(textSize);
+    public void setShutterTitleTextColor(@NonNull ColorStateList colorStateList) {
+        shutterTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the shutter title text view
+     *
+     * @param color color integer resource
+     */
+    public void setShutterTitleTextColor(@ColorInt int color) {
+        shutterTitleTextView.setTextColor(color);
     }
 
     /**
@@ -208,6 +200,25 @@ public class CameraConfigShutterWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getShutterTitleTextSize() {
         return shutterTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the shutter title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setShutterTitleTextSize(@Dimension float textSize) {
+        shutterTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the shutter title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getShutterTitleTextBackground() {
+        return shutterTitleTextView.getBackground();
     }
 
     /**
@@ -229,40 +240,12 @@ public class CameraConfigShutterWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the shutter title text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getShutterTitleTextBackground() {
-        return shutterTitleTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the shutter value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setShutterValueTextAppearance(@StyleRes int textAppearance) {
         shutterValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the shutter value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setShutterValueTextColor(@NonNull ColorStateList colorStateList) {
-        shutterValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the shutter value text view
-     *
-     * @param color color integer resource
-     */
-    public void setShutterValueTextColor(@ColorInt int color) {
-        shutterValueTextView.setTextColor(color);
     }
 
     /**
@@ -286,12 +269,21 @@ public class CameraConfigShutterWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the shutter value text view
+     * Set text color state list for the shutter value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setShutterValueTextSize(@Dimension float textSize) {
-        shutterValueTextView.setTextSize(textSize);
+    public void setShutterValueTextColor(@NonNull ColorStateList colorStateList) {
+        shutterValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the shutter value text view
+     *
+     * @param color color integer resource
+     */
+    public void setShutterValueTextColor(@ColorInt int color) {
+        shutterValueTextView.setTextColor(color);
     }
 
     /**
@@ -302,6 +294,25 @@ public class CameraConfigShutterWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getShutterValueTextSize() {
         return shutterValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the shutter value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setShutterValueTextSize(@Dimension float textSize) {
+        shutterValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the shutter value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getShutterValueTextBackground() {
+        return shutterValueTextView.getBackground();
     }
 
     /**
@@ -320,16 +331,6 @@ public class CameraConfigShutterWidget extends ConstraintLayoutWidget {
      */
     public void setShutterValueTextBackground(@Nullable Drawable drawable) {
         shutterValueTextView.setBackground(drawable);
-    }
-
-    /**
-     * Get current background of the shutter value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getShutterValueTextBackground() {
-        return shutterValueTextView.getBackground();
     }
     //endregion
 

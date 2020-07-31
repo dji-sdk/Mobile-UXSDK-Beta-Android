@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.remainingflighttime
@@ -355,8 +356,8 @@ open class RemainingFlightTimeWidget @JvmOverloads constructor(
 
     private fun reactToRemainingFlightTimeChange(): Disposable {
         return Flowable.combineLatest(widgetModel.isAircraftFlying,
-                        widgetModel.remainingFlightTimeData,
-                        BiFunction { first: Boolean, second: RemainingFlightTimeData -> Pair(first, second) })
+                widgetModel.remainingFlightTimeData,
+                BiFunction { first: Boolean, second: RemainingFlightTimeData -> Pair(first, second) })
                 .observeOn(schedulerProvider.ui())
                 .subscribe(Consumer { values: Pair<Boolean, RemainingFlightTimeData> -> onRemainingFlightTimeChange(values.first, values.second) },
                         logErrorConsumer(TAG, "react to flight time update: "))

@@ -19,7 +19,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -68,6 +70,13 @@
         app:layout_constraintStart_toEndOf="@id/imageview_battery_icon"
         app:layout_constraintTop_toBottomOf="@+id/textview_battery1_value" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_value_voltage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="textview_battery1_value,textview_battery2_value" />
+
     <TextView
         android:id="@+id/textview_battery1_voltage"
         style="@style/UXSDKBatteryWidgetVoltageDefault"
@@ -75,7 +84,7 @@
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         app:layout_constraintBottom_toTopOf="@+id/textview_battery2_voltage"
-        app:layout_constraintStart_toEndOf="@+id/textview_battery1_value"
+        app:layout_constraintStart_toEndOf="@+id/barrier_value_voltage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -85,7 +94,7 @@
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textview_battery2_value"
+        app:layout_constraintStart_toEndOf="@+id/barrier_value_voltage"
         app:layout_constraintTop_toBottomOf="@+id/textview_battery1_voltage" />
 
 </merge>

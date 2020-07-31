@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.useraccount;
@@ -434,6 +435,16 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     /**
+     * Get the current background of the widget state text
+     *
+     * @return Drawable representing widget state text background
+     */
+    @Nullable
+    public Drawable getWidgetStateBackground() {
+        return widgetStateTextView.getBackground();
+    }
+
+    /**
      * Set the background resource of the widget state text
      *
      * @param resourceId to be used as background of widget state text
@@ -452,13 +463,13 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     /**
-     * Get the current background of the widget state text
+     * Get the current text size of the widget state text
      *
-     * @return Drawable representing widget state text background
+     * @return float value representing text size
      */
-    @Nullable
-    public Drawable getWidgetStateBackground() {
-        return widgetStateTextView.getBackground();
+    @Dimension
+    public float getWidgetStateTextSize() {
+        return widgetStateTextView.getTextSize();
     }
 
     /**
@@ -468,16 +479,6 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      */
     public void setWidgetStateTextSize(@Dimension float textSize) {
         widgetStateTextView.setTextSize(textSize);
-    }
-
-    /**
-     * Get the current text size of the widget state text
-     *
-     * @return float value representing text size
-     */
-    @Dimension
-    public float getWidgetStateTextSize() {
-        return widgetStateTextView.getTextSize();
     }
 
     /**
@@ -512,6 +513,16 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     /**
+     * Get the current background of the widget message text
+     *
+     * @return Drawable representing widget message text background
+     */
+    @Nullable
+    public Drawable getWidgetMessageBackground() {
+        return widgetMessageTextView.getBackground();
+    }
+
+    /**
      * Set the background resource of the widget message text
      *
      * @param resourceId to be used as background of widget message text
@@ -530,13 +541,13 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     /**
-     * Get the current background of the widget message text
+     * Get the current text size of the widget message text
      *
-     * @return Drawable representing widget message text background
+     * @return float value representing text size
      */
-    @Nullable
-    public Drawable getWidgetMessageBackground() {
-        return widgetMessageTextView.getBackground();
+    @Dimension
+    public float getWidgetMessageTextSize() {
+        return widgetMessageTextView.getTextSize();
     }
 
     /**
@@ -546,16 +557,6 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      */
     public void setWidgetMessageTextSize(@Dimension float textSize) {
         widgetMessageTextView.setTextSize(textSize);
-    }
-
-    /**
-     * Get the current text size of the widget message text
-     *
-     * @return float value representing text size
-     */
-    @Dimension
-    public float getWidgetMessageTextSize() {
-        return widgetMessageTextView.getTextSize();
     }
 
     /**
@@ -590,6 +591,15 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     /**
+     * Get current background of action icon
+     *
+     * @return drawable used as background of icon
+     */
+    public Drawable getActionIconBackground() {
+        return widgetActionImageView.getBackground();
+    }
+
+    /**
      * Set the background of the action icon
      *
      * @param resourceId to be used as background of action icon
@@ -605,15 +615,6 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      */
     public void setActionIconBackground(@Nullable Drawable drawable) {
         widgetActionImageView.setBackground(drawable);
-    }
-
-    /**
-     * Get current background of action icon
-     *
-     * @return drawable used as background of icon
-     */
-    public Drawable getActionIconBackground() {
-        return widgetActionImageView.getBackground();
     }
 
     /**
@@ -648,6 +649,15 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     /**
+     * Get current background of user icon
+     *
+     * @return drawable used as background of icon
+     */
+    public Drawable getUserIconBackground() {
+        return widgetUserImageView.getBackground();
+    }
+
+    /**
      * Set the background of the user icon
      *
      * @param resourceId to be used as background of user icon
@@ -666,12 +676,12 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     /**
-     * Get current background of user icon
+     * Check if action icon is enabled
      *
-     * @return drawable used as background of icon
+     * @return boolean value true - visible  false - not visible
      */
-    public Drawable getUserIconBackground() {
-        return widgetUserImageView.getBackground();
+    public boolean isActionIconEnabled() {
+        return widgetActionImageView.getVisibility() == VISIBLE;
     }
 
     /**
@@ -685,12 +695,12 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     /**
-     * Check if action icon is enabled
+     * Check if user icon is enabled
      *
      * @return boolean value true - visible  false - not visible
      */
-    public boolean isActionIconEnabled() {
-        return widgetActionImageView.getVisibility() == VISIBLE;
+    public boolean isUserIconEnabled() {
+        return widgetUserImageView.getVisibility() == VISIBLE;
     }
 
     /**
@@ -704,12 +714,12 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     /**
-     * Check if user icon is enabled
+     * Check if message text is enabled
      *
      * @return boolean value true - visible  false - not visible
      */
-    public boolean isUserIconEnabled() {
-        return widgetUserImageView.getVisibility() == VISIBLE;
+    public boolean isMessageTextEnabled() {
+        return widgetMessageTextView.getVisibility() == VISIBLE;
     }
 
     /**
@@ -720,12 +730,12 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     /**
-     * Check if message text is enabled
+     * Check if widget state text is enabled
      *
      * @return boolean value true - visible  false - not visible
      */
-    public boolean isMessageTextEnabled() {
-        return widgetMessageTextView.getVisibility() == VISIBLE;
+    public boolean isWidgetStateTextEnabled() {
+        return widgetStateTextView.getVisibility() == VISIBLE;
     }
 
     /**
@@ -735,15 +745,6 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
      */
     public void setWidgetStateTextEnabled(boolean isEnabled) {
         widgetStateTextView.setVisibility(isEnabled ? VISIBLE : GONE);
-    }
-
-    /**
-     * Check if widget state text is enabled
-     *
-     * @return boolean value true - visible  false - not visible
-     */
-    public boolean isWidgetStateTextEnabled() {
-        return widgetStateTextView.getVisibility() == VISIBLE;
     }
 
     //endregion

@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.training.widget.simulatorcontrol
@@ -55,6 +56,10 @@ import dji.ux.beta.training.util.SimulatorPresetUtils
 import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget.SimulatorControlWidgetState
 import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget.SimulatorControlWidgetState.*
 import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget.SimulatorControlWidgetUIUpdate.*
+import dji.ux.beta.training.widget.simulatorcontrol.preset.OnLoadPresetListener
+import dji.ux.beta.training.widget.simulatorcontrol.preset.PresetListDialog
+import dji.ux.beta.training.widget.simulatorcontrol.preset.SavePresetDialog
+import dji.ux.beta.training.widget.simulatorcontrol.preset.SimulatorPresetData
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -69,7 +74,7 @@ import kotlin.math.max
  * data frequency. The user has the option to save presets to reuse simulation
  * configuration.
  */
-class SimulatorControlWidget @JvmOverloads constructor(
+open class SimulatorControlWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
@@ -77,7 +82,7 @@ class SimulatorControlWidget @JvmOverloads constructor(
         context,
         attrs,
         defStyleAttr),
-        View.OnClickListener, OnStateChangeCallback<Any?>, dji.ux.beta.training.widget.simulatorcontrol.preset.OnLoadPresetListener {
+        View.OnClickListener, OnStateChangeCallback<Any?>, OnLoadPresetListener {
 
     //region fields
     private val schedulerProvider: SchedulerProvider = SchedulerProvider.getInstance()
@@ -143,7 +148,6 @@ class SimulatorControlWidget @JvmOverloads constructor(
             } else if (seekBarView == frequencySeekBar) {
                 frequencySeekBar.setText(max(MIN_FREQUENCY, frequencySeekBar.progress).toString())
             }
-
         }
 
         override fun onMinusClicked(seekBarView: SeekBarView) {
@@ -624,7 +628,7 @@ class SimulatorControlWidget @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
-    override fun onLoadPreset(simulatorPresetData: dji.ux.beta.training.widget.simulatorcontrol.preset.SimulatorPresetData?) {
+    override fun onLoadPreset(simulatorPresetData: SimulatorPresetData?) {
         if (simulatorPresetData != null) {
             latitudeEditText.setText(simulatorPresetData.latitude.toString())
             longitudeEditText.setText(simulatorPresetData.longitude.toString())
@@ -789,14 +793,10 @@ class SimulatorControlWidget @JvmOverloads constructor(
             currentValue = SIMULATION_MIN_WIND_SPEED
         }
         textView.text = currentValue.toString()
-        addDisposable(widgetModel.setSimulatorWindData(SimulatorWindData.Builder().windSpeedX(
-                                windXTextView.text.toString().toInt())
-                        .windSpeedY(
-                                windYTextView.text
-                                        .toString().toInt())
-                        .windSpeedZ(
-                                windZTextView.text
-                                        .toString().toInt())
+        addDisposable(widgetModel.setSimulatorWindData(SimulatorWindData.Builder()
+                        .windSpeedX(windXTextView.text.toString().toInt())
+                        .windSpeedY(windYTextView.text.toString().toInt())
+                        .windSpeedZ(windZTextView.text.toString().toInt())
                         .build())
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
@@ -846,7 +846,7 @@ class SimulatorControlWidget @JvmOverloads constructor(
         val otherSymbols = DecimalFormatSymbols(Locale.getDefault())
         otherSymbols.decimalSeparator = '.'
         otherSymbols.groupingSeparator = ','
-        df = DecimalFormat("#.######", otherSymbols)
+        df = DecimalFormat("#00.000000", otherSymbols)
         latitudeEditText.filters = arrayOf<InputFilter>(EditTextNumberInputFilter("-90", "90"))
         longitudeEditText.filters = arrayOf<InputFilter>(EditTextNumberInputFilter("-180", "180"))
         loadPresetTextView.setOnClickListener(this)
@@ -940,12 +940,12 @@ class SimulatorControlWidget @JvmOverloads constructor(
         latitudeTextView.text = if (latitudeEditText.text.toString().isEmpty()) {
             getString(R.string.uxsdk_simulator_null_string)
         } else {
-            latitudeEditText.text
+            df.format(latitudeEditText.text.toString().toDouble())
         }
         longitudeTextView.text = if (longitudeEditText.text.toString().isEmpty()) {
             getString(R.string.uxsdk_simulator_null_string)
         } else {
-            longitudeEditText.text
+            df.format(longitudeEditText.text.toString().toDouble())
         }
         val simulatorFrequency = SimulatorPresetUtils.currentSimulatorFrequency
         frequencyTextView.text = if (simulatorFrequency > 0) {
@@ -1035,23 +1035,21 @@ class SimulatorControlWidget @JvmOverloads constructor(
     private fun showSavePresetDialog() {
         if (TextUtils.isEmpty(latitudeEditText.text.toString())
                 || TextUtils.isEmpty(longitudeEditText.text.toString())) return
-        val presetData = dji.ux.beta.training.widget.simulatorcontrol.preset.SimulatorPresetData(latitudeEditText.text.toString().toDouble(),
+        val presetData = SimulatorPresetData(latitudeEditText.text.toString().toDouble(),
                 longitudeEditText.text.toString().toDouble(),
                 satelliteCountSeekBar.progress,
                 max(MIN_FREQUENCY, frequencySeekBar.progress))
-        dji.ux.beta.training.widget.simulatorcontrol.preset.SavePresetDialog(context, true, presetData).show()
+        SavePresetDialog(context, true, presetData).show()
     }
 
     private fun showPresetListDialog() {
-        dji.ux.beta.training.widget.simulatorcontrol.preset.PresetListDialog(context, this, height).show()
+        PresetListDialog(context, this, height).show()
     }
 
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         simulatorSwitch.isEnabled = enabled
     }
-
-
     //endregion
 
     //region customizations

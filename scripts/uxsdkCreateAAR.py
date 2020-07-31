@@ -18,7 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import git 
+import git
 from argparse import ArgumentParser
 import subprocess as sp
 import shutil
@@ -52,7 +52,7 @@ gradleWrapper = "../"
 
 if branchName:
 	print ("************ Checking out Branch " + branchName + " **************")
-	# Internal folder config 
+	# Internal folder config
 	g = git.cmd.Git("../../" + directoryName)
 	# External folder config
 	#g = git.cmd.Git("../../android-uxsdk-beta")

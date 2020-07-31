@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.util;
@@ -25,8 +26,6 @@ package dji.ux.beta.core.util;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import dji.ux.beta.core.widget.fpv.interaction.FPVInteractionWidget;
 
 /**
  * This class contains enums for UX SDK settings.
@@ -148,14 +147,6 @@ public final class SettingDefinitions {
             this.value = value;
         }
 
-        public int value() {
-            return this.value;
-        }
-
-        private boolean _equals(int b) {
-            return value == b;
-        }
-
         public static VideoSource find(int value) {
             VideoSource result = UNKNOWN;
             for (int i = 0; i < values().length; i++) {
@@ -165,6 +156,14 @@ public final class SettingDefinitions {
                 }
             }
             return result;
+        }
+
+        public int value() {
+            return this.value;
+        }
+
+        private boolean _equals(int b) {
+            return value == b;
         }
     }
 
@@ -211,12 +210,12 @@ public final class SettingDefinitions {
 
     /**
      * The mode which will be controlled by tapping the
-     * {@link FPVInteractionWidget}.
+     * FPVInteractionWidget.
      */
     public enum ControlMode {
         /**
          * The camera will perform spot metering when the
-         * {@link FPVInteractionWidget} is tapped.
+         * FPVInteractionWidget is tapped.
          */
         SPOT_METER(0),
         /**
@@ -225,17 +224,17 @@ public final class SettingDefinitions {
         CENTER_METER(1),
         /**
          * The camera will set an auto focus target
-         * {@link FPVInteractionWidget} is tapped.
+         * FPVInteractionWidget is tapped.
          */
         AUTO_FOCUS(2),
         /**
          * The camera will set a manual focus target when the
-         * {@link FPVInteractionWidget} is tapped.
+         * FPVInteractionWidget is tapped.
          */
         MANUAL_FOCUS(3),
         /**
          * The camera will set an auto focus continuous target when the
-         * {@link FPVInteractionWidget} is tapped.
+         * FPVInteractionWidget is tapped.
          */
         AUTO_FOCUS_CONTINUE(4);
 
@@ -243,14 +242,6 @@ public final class SettingDefinitions {
 
         ControlMode(int value) {
             this.value = value;
-        }
-
-        public int value() {
-            return this.value;
-        }
-
-        private boolean _equals(int b) {
-            return value == b;
         }
 
         public static ControlMode find(int value) {
@@ -262,6 +253,14 @@ public final class SettingDefinitions {
                 }
             }
             return result;
+        }
+
+        public int value() {
+            return this.value;
+        }
+
+        private boolean _equals(int b) {
+            return value == b;
         }
     }
 

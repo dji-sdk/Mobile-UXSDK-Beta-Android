@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.visualcamera.widget.cameraconfig.wb;
@@ -57,16 +58,6 @@ public class CameraConfigWBWidgetModel extends WidgetModel {
     //region Data
 
     /**
-     * Set the index of the camera for which the widget model should react
-     *
-     * @param cameraIndex camera index
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        this.cameraIndex = cameraIndex.getIndex();
-        restart();
-    }
-
-    /**
      * Get the current index of the camera the widget model is reacting to
      *
      * @return current camera index
@@ -74,6 +65,16 @@ public class CameraConfigWBWidgetModel extends WidgetModel {
     @NonNull
     public SettingDefinitions.CameraIndex getCameraIndex() {
         return SettingDefinitions.CameraIndex.find(cameraIndex);
+    }
+
+    /**
+     * Set the index of the camera for which the widget model should react
+     *
+     * @param cameraIndex camera index
+     */
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        this.cameraIndex = cameraIndex.getIndex();
+        restart();
     }
 
     /**

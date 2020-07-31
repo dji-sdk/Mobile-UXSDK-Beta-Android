@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.horizontalvelocity;
@@ -187,24 +188,6 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set text color state list for the horizontal velocity title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setHorizontalVelocityTitleTextColor(@NonNull ColorStateList colorStateList) {
-        horizontalVelocityTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the horizontal velocity title text view
-     *
-     * @param color color integer resource
-     */
-    public void setHorizontalVelocityTitleTextColor(@ColorInt int color) {
-        horizontalVelocityTitleTextView.setTextColor(color);
-    }
-
-    /**
      * Get current text color state list of the horizontal velocity title text view
      *
      * @return ColorStateList resource
@@ -225,12 +208,21 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the horizontal velocity title text view
+     * Set text color state list for the horizontal velocity title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setHorizontalVelocityTitleTextSize(@Dimension float textSize) {
-        horizontalVelocityTitleTextView.setTextSize(textSize);
+    public void setHorizontalVelocityTitleTextColor(@NonNull ColorStateList colorStateList) {
+        horizontalVelocityTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the horizontal velocity title text view
+     *
+     * @param color color integer resource
+     */
+    public void setHorizontalVelocityTitleTextColor(@ColorInt int color) {
+        horizontalVelocityTitleTextView.setTextColor(color);
     }
 
     /**
@@ -241,6 +233,25 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getHorizontalVelocityTitleTextSize() {
         return horizontalVelocityTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the horizontal velocity title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setHorizontalVelocityTitleTextSize(@Dimension float textSize) {
+        horizontalVelocityTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the horizontal velocity title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getHorizontalVelocityTitleTextBackground() {
+        return horizontalVelocityTitleTextView.getBackground();
     }
 
     /**
@@ -262,40 +273,12 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the horizontal velocity title text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getHorizontalVelocityTitleTextBackground() {
-        return horizontalVelocityTitleTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the horizontal velocity value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setHorizontalVelocityValueTextAppearance(@StyleRes int textAppearance) {
         horizontalVelocityValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the horizontal velocity value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setHorizontalVelocityValueTextColor(@NonNull ColorStateList colorStateList) {
-        horizontalVelocityValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the horizontal velocity value text view
-     *
-     * @param color color integer resource
-     */
-    public void setHorizontalVelocityValueTextColor(@ColorInt int color) {
-        horizontalVelocityValueTextView.setTextColor(color);
     }
 
     /**
@@ -319,12 +302,21 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the horizontal velocity value text view
+     * Set text color state list for the horizontal velocity value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setHorizontalVelocityValueTextSize(@Dimension float textSize) {
-        horizontalVelocityValueTextView.setTextSize(textSize);
+    public void setHorizontalVelocityValueTextColor(@NonNull ColorStateList colorStateList) {
+        horizontalVelocityValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the horizontal velocity value text view
+     *
+     * @param color color integer resource
+     */
+    public void setHorizontalVelocityValueTextColor(@ColorInt int color) {
+        horizontalVelocityValueTextView.setTextColor(color);
     }
 
     /**
@@ -335,6 +327,25 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getHorizontalVelocityValueTextSize() {
         return horizontalVelocityValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the horizontal velocity value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setHorizontalVelocityValueTextSize(@Dimension float textSize) {
+        horizontalVelocityValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the horizontal velocity value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getHorizontalVelocityValueTextBackground() {
+        return horizontalVelocityValueTextView.getBackground();
     }
 
     /**
@@ -356,40 +367,12 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the horizontal velocity value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getHorizontalVelocityValueTextBackground() {
-        return horizontalVelocityValueTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the horizontal velocity unit text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setHorizontalVelocityUnitTextAppearance(@StyleRes int textAppearance) {
         horizontalVelocityUnitTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the horizontal velocity  unit text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setHorizontalVelocityUnitTextColor(@NonNull ColorStateList colorStateList) {
-        horizontalVelocityUnitTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the horizontal velocity unit text view
-     *
-     * @param color color integer resource
-     */
-    public void setHorizontalVelocityUnitTextColor(@ColorInt int color) {
-        horizontalVelocityUnitTextView.setTextColor(color);
     }
 
     /**
@@ -413,12 +396,21 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the horizontal velocity unit text view
+     * Set text color state list for the horizontal velocity  unit text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setHorizontalVelocityUnitTextSize(@Dimension float textSize) {
-        horizontalVelocityUnitTextView.setTextSize(textSize);
+    public void setHorizontalVelocityUnitTextColor(@NonNull ColorStateList colorStateList) {
+        horizontalVelocityUnitTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the horizontal velocity unit text view
+     *
+     * @param color color integer resource
+     */
+    public void setHorizontalVelocityUnitTextColor(@ColorInt int color) {
+        horizontalVelocityUnitTextView.setTextColor(color);
     }
 
     /**
@@ -429,6 +421,25 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getHorizontalVelocityUnitTextSize() {
         return horizontalVelocityUnitTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the horizontal velocity unit text view
+     *
+     * @param textSize text size float value
+     */
+    public void setHorizontalVelocityUnitTextSize(@Dimension float textSize) {
+        horizontalVelocityUnitTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the horizontal velocity unit text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getHorizontalVelocityUnitTextBackground() {
+        return horizontalVelocityUnitTextView.getBackground();
     }
 
     /**
@@ -447,16 +458,6 @@ public class HorizontalVelocityWidget extends ConstraintLayoutWidget {
      */
     public void setHorizontalVelocityUnitTextBackground(@DrawableRes int resourceId) {
         horizontalVelocityUnitTextView.setBackgroundResource(resourceId);
-    }
-
-    /**
-     * Get current background of the horizontal velocity unit text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getHorizontalVelocityUnitTextBackground() {
-        return horizontalVelocityUnitTextView.getBackground();
     }
 
     //Initialize all customizable attributes

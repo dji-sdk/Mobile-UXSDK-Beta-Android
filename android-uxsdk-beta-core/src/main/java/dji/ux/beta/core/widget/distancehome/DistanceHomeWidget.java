@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.distancehome;
@@ -164,24 +165,6 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set text color state list for the distance from home title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setDistanceHomeTitleTextColor(@NonNull ColorStateList colorStateList) {
-        distanceHomeTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the distance from home title text view
-     *
-     * @param color color integer resource
-     */
-    public void setDistanceHomeTitleTextColor(@ColorInt int color) {
-        distanceHomeTitleTextView.setTextColor(color);
-    }
-
-    /**
      * Get current text color state list of the distance from home title text view
      *
      * @return ColorStateList resource
@@ -202,12 +185,21 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the distance from home title text view
+     * Set text color state list for the distance from home title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setDistanceHomeTitleTextSize(@Dimension float textSize) {
-        distanceHomeTitleTextView.setTextSize(textSize);
+    public void setDistanceHomeTitleTextColor(@NonNull ColorStateList colorStateList) {
+        distanceHomeTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the distance from home title text view
+     *
+     * @param color color integer resource
+     */
+    public void setDistanceHomeTitleTextColor(@ColorInt int color) {
+        distanceHomeTitleTextView.setTextColor(color);
     }
 
     /**
@@ -218,6 +210,25 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getDistanceHomeTitleTextSize() {
         return distanceHomeTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the distance from home title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setDistanceHomeTitleTextSize(@Dimension float textSize) {
+        distanceHomeTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the distance from home title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getDistanceHomeTitleTextBackground() {
+        return distanceHomeTitleTextView.getBackground();
     }
 
     /**
@@ -239,40 +250,12 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the distance from home title text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getDistanceHomeTitleTextBackground() {
-        return distanceHomeTitleTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the distance from home value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setDistanceHomeValueTextAppearance(@StyleRes int textAppearance) {
         distanceHomeValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the distance from home value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setDistanceHomeValueTextColor(@NonNull ColorStateList colorStateList) {
-        distanceHomeValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the distance from home value text view
-     *
-     * @param color color integer resource
-     */
-    public void setDistanceHomeValueTextColor(@ColorInt int color) {
-        distanceHomeValueTextView.setTextColor(color);
     }
 
     /**
@@ -296,12 +279,21 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the distance from home value text view
+     * Set text color state list for the distance from home value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setDistanceHomeValueTextSize(@Dimension float textSize) {
-        distanceHomeValueTextView.setTextSize(textSize);
+    public void setDistanceHomeValueTextColor(@NonNull ColorStateList colorStateList) {
+        distanceHomeValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the distance from home value text view
+     *
+     * @param color color integer resource
+     */
+    public void setDistanceHomeValueTextColor(@ColorInt int color) {
+        distanceHomeValueTextView.setTextColor(color);
     }
 
     /**
@@ -312,6 +304,25 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getDistanceHomeValueTextSize() {
         return distanceHomeValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the distance from home value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setDistanceHomeValueTextSize(@Dimension float textSize) {
+        distanceHomeValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the distance from home value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getDistanceHomeValueTextBackground() {
+        return distanceHomeValueTextView.getBackground();
     }
 
     /**
@@ -333,40 +344,12 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the distance from home value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getDistanceHomeValueTextBackground() {
-        return distanceHomeValueTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the distance from home unit text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setDistanceHomeUnitTextAppearance(@StyleRes int textAppearance) {
         distanceHomeUnitTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the distance from home unit text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setDistanceHomeUnitTextColor(@NonNull ColorStateList colorStateList) {
-        distanceHomeUnitTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the distance from home unit text view
-     *
-     * @param color color integer resource
-     */
-    public void setDistanceHomeUnitTextColor(@ColorInt int color) {
-        distanceHomeUnitTextView.setTextColor(color);
     }
 
     /**
@@ -390,12 +373,21 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the distance from home unit text view
+     * Set text color state list for the distance from home unit text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setDistanceHomeUnitTextSize(@Dimension float textSize) {
-        distanceHomeUnitTextView.setTextSize(textSize);
+    public void setDistanceHomeUnitTextColor(@NonNull ColorStateList colorStateList) {
+        distanceHomeUnitTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the distance from home unit text view
+     *
+     * @param color color integer resource
+     */
+    public void setDistanceHomeUnitTextColor(@ColorInt int color) {
+        distanceHomeUnitTextView.setTextColor(color);
     }
 
     /**
@@ -406,6 +398,25 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getDistanceHomeUnitTextSize() {
         return distanceHomeUnitTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the distance from home unit text view
+     *
+     * @param textSize text size float value
+     */
+    public void setDistanceHomeUnitTextSize(@Dimension float textSize) {
+        distanceHomeUnitTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the distance from home unit text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getDistanceHomeUnitTextBackground() {
+        return distanceHomeUnitTextView.getBackground();
     }
 
     /**
@@ -424,16 +435,6 @@ public class DistanceHomeWidget extends ConstraintLayoutWidget {
      */
     public void setDistanceHomeUnitTextBackground(@DrawableRes int resourceId) {
         distanceHomeTitleTextView.setBackgroundResource(resourceId);
-    }
-
-    /**
-     * Get current background of the distance from home unit text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getDistanceHomeUnitTextBackground() {
-        return distanceHomeUnitTextView.getBackground();
     }
 
     //Initialize all customizable attributes

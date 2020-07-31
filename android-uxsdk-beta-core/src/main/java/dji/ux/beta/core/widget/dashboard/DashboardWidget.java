@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.dashboard;
@@ -311,12 +312,12 @@ public class DashboardWidget extends ConstraintLayoutWidget {
             this.value = value;
         }
 
-        public int value() {
-            return this.value;
-        }
-
         protected static boolean isWidgetHidden(int hiddenWidgets, HideWidget widget) {
             return (hiddenWidgets & widget.value()) == widget.value;
+        }
+
+        public int value() {
+            return this.value;
         }
     }
     //endregion

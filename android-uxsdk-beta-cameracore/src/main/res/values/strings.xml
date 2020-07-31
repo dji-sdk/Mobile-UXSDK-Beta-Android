@@ -18,14 +18,15 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
     <!-- Auto Exposure Lock -->
     <string name="uxsdk_auto_exposure_lock_widget_display_string">AE</string>
 
     <!-- Camera Setting Menu -->
     <string name="uxsdk_camera_setting_menu">MENU</string>
-
     <!-- Focus Mode -->
     <string name="uxsdk_widget_focus_mode_manual">MF</string>
     <string name="uxsdk_widget_focus_mode_auto">AF</string>

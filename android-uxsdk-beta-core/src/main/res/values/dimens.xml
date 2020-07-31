@@ -19,7 +19,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
     <dimen name="uxsdk_spacing_micro">2dp</dimen>
     <dimen name="uxsdk_spacing_mini">4dp</dimen>
@@ -28,7 +30,6 @@
 
     <dimen name="uxsdk_bar_panel_gap">4dp</dimen>
     <dimen name="uxsdk_bar_panel_margin">4dp</dimen>
-
 
     <!-- text size -->
     <dimen name="uxsdk_text_size_large">20sp</dimen>
@@ -40,21 +41,16 @@
     <dimen name="uxsdk_text_size_between_small_tiny">8sp</dimen>
     <dimen name="uxsdk_text_size_tiny">6sp</dimen>
 
+    <dimen name="uxsdk_sliding_dialog_width">350dp</dimen>
+
     <dimen name="uxsdk_seekbar_radius">42dp</dimen>
     <dimen name="uxsdk_seekbar_half_radius">21dp</dimen>
     <dimen name="uxsdk_leftmenu_thumb_radius">42dp</dimen>
-
-    <dimen name="uxsdk_simulator_row_height">45dp</dimen>
-    <dimen name="uxsdk_simulator_row_margin">5dp</dimen>
-    <dimen name="uxsdk_simulator_header_text_size">15sp</dimen>
-    <dimen name="uxsdk_simulator_row_text_size">14sp</dimen>
 
     <dimen name="uxsdk_line_width">1dp</dimen>
 
     <dimen name="uxsdk_user_account_state_text_size">4sp</dimen>
     <dimen name="uxsdk_user_account_message_text_size">3sp</dimen>
-
-    <dimen name="uxsdk_user_account_text_size">10sp</dimen>
 
     <dimen name="uxsdk_top_bar_default_height">32dp</dimen>
 
@@ -67,6 +63,10 @@
     <dimen name="uxsdk_list_item_button_padding_vertical">5dp</dimen>
     <dimen name="uxsdk_list_item_button_padding_horizontal">10dp</dimen>
     <dimen name="uxsdk_list_item_edit_min_width">60dp</dimen>
+    <dimen name="uxsdk_list_item_edit_text_size">6sp</dimen>
+    <dimen name="uxsdk_list_item_label_text_size">6sp</dimen>
     <dimen name="uxsdk_list_item_hint_text_size">4sp</dimen>
     <dimen name="uxsdk_list_item_radio_button_text_size">5sp</dimen>
+    <dimen name="uxsdk_list_item_button_text_size">5sp</dimen>
+    <dimen name="uxsdk_list_item_title_text_size">8sp</dimen>
 </resources>

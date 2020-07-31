@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.vision
@@ -74,30 +75,24 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
     private val omniVerticalAvoidanceEnabledProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val omniAvoidanceStateProcessor: DataProcessor<ObstacleAvoidanceSensorState> = DataProcessor.create(ObstacleAvoidanceSensorState.Builder().build())
     private val visionSystemStatusProcessor: DataProcessor<VisionSystemStatus> = DataProcessor.create(VisionSystemStatus.NORMAL)
-    private lateinit var sendWarningMessageKey: UXKey
+    private val sendWarningMessageKey: UXKey = UXKeys.create(MessagingKeys.SEND_WARNING_MESSAGE)
     //endregion
 
     //region Data
     /**
      * Get the status of the vision system.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val visionSystemStatus: Flowable<VisionSystemStatus>
         get() = visionSystemStatusProcessor.toFlowable()
 
     /**
      * Get whether user avoidance is enabled.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val isUserAvoidanceEnabled: Flowable<Boolean>
         get() = isUserAvoidEnabledProcessor.toFlowable()
 
     /**
      * Get whether the product has vision sensors.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val isVisionSupportedByProduct: Flowable<Boolean>
         get() = productModelProcessor.toFlowable()
@@ -144,7 +139,6 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
         val omniHorizontalAvoidanceEnabledKey = FlightControllerKey.createFlightAssistantKey(FlightControllerKey.OMNI_HORIZONTAL_AVOIDANCE_ENABLED)
         val omniVerticalAvoidanceEnabledKey = FlightControllerKey.createFlightAssistantKey(FlightControllerKey.OMNI_VERTICAL_AVOIDANCE_ENABLED)
         val omniAvoidanceStateKey = FlightControllerKey.createFlightAssistantKey(FlightControllerKey.OMNI_PERCEPTION_AVOIDANCE_STATE)
-        sendWarningMessageKey = UXKeys.create(MessagingKeys.SEND_WARNING_MESSAGE)
         bindDataProcessor(visionDetectionStateKey, visionDetectionStateProcessor)
         bindDataProcessor(isUserAvoidEnabledKey, isUserAvoidEnabledProcessor)
         bindDataProcessor(flightModeKey, flightModeProcessor)

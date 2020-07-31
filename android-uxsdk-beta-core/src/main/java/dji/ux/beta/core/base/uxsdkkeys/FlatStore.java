@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.base.uxsdkkeys;
@@ -33,16 +34,12 @@ public class FlatStore {
     private static final int INITIAL_CAPACITY = 100;
     private final ConcurrentHashMap<String, ModelValue> store;
 
-    private static class SingletonHolder {
-        private static FlatStore instance = new FlatStore();
+    private FlatStore() {
+        store = new ConcurrentHashMap<>(INITIAL_CAPACITY);
     }
 
     public static FlatStore getInstance() {
         return FlatStore.SingletonHolder.instance;
-    }
-
-    private FlatStore() {
-        store = new ConcurrentHashMap<>(INITIAL_CAPACITY);
     }
 
     /**
@@ -63,5 +60,9 @@ public class FlatStore {
      */
     public ModelValue getModelValue(@NonNull String keyPath) {
         return store.get(keyPath);
+    }
+
+    private static class SingletonHolder {
+        private static FlatStore instance = new FlatStore();
     }
 }

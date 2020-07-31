@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.hardwareaccessory.widget.rtk
@@ -42,7 +43,7 @@ class RTKEnabledWidgetModel(djiSdkModel: DJISDKModel,
 ) : WidgetModel(djiSdkModel, keyedStore) {
 
     //region Fields
-    private lateinit var isRTKEnabledKey: DJIKey
+    private val isRTKEnabledKey: DJIKey = FlightControllerKey.createRTKKey(FlightControllerKey.RTK_ENABLED)
     private val isRTKEnabledProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val isMotorOnProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val homePointDataSourceProcessor: DataProcessor<Int> = DataProcessor.create(0)
@@ -53,8 +54,6 @@ class RTKEnabledWidgetModel(djiSdkModel: DJISDKModel,
     //region Data
     /**
      * Get whether RTK is enabled.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val rtkEnabled: Flowable<Boolean>
         @JvmName("getRTKEnabled")
@@ -62,8 +61,6 @@ class RTKEnabledWidgetModel(djiSdkModel: DJISDKModel,
 
     /**
      * Get whether RTK can be enabled.
-     *
-     * @return Flowable for the DataProcessor that user should subscribe to.
      */
     val canEnableRTK: Flowable<Boolean>
         get() = canEnableRTKProcessor.toFlowable()
@@ -72,7 +69,6 @@ class RTKEnabledWidgetModel(djiSdkModel: DJISDKModel,
 
     //region Lifecycle
     override fun inSetup() {
-        isRTKEnabledKey = FlightControllerKey.createRTKKey(FlightControllerKey.RTK_ENABLED)
         bindDataProcessor(isRTKEnabledKey, isRTKEnabledProcessor)
         val isMotorOnKey: DJIKey = FlightControllerKey.create(FlightControllerKey.ARE_MOTOR_ON)
         bindDataProcessor(isMotorOnKey, isMotorOnProcessor)
@@ -101,8 +97,10 @@ class RTKEnabledWidgetModel(djiSdkModel: DJISDKModel,
 
 /**
  * The data source of the home point
+ *
+ * @property value Identifier for the item
  */
-enum class HomePointDataSourceType(val value: Int) {
+enum class HomePointDataSourceType(@get:JvmName("value") val value: Int) {
 
     /**
      * There is no home point data source
@@ -125,6 +123,7 @@ enum class HomePointDataSourceType(val value: Int) {
     UNKNOWN(255);
 
     companion object {
+        @JvmStatic
         fun find(value: Int): HomePointDataSourceType {
             val values = values()
             for (item in values) {

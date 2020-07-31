@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.core.widget.altitude;
@@ -59,7 +60,7 @@ import dji.ux.beta.core.util.UnitConversionUtil;
 public class AltitudeWidget extends ConstraintLayoutWidget {
     //region Fields
     private static final int EMS = 3;
-    private static DecimalFormat decimalFormat = new DecimalFormat("##0.0");
+    private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("##0.0");
     private TextView altitudeTitleTextView;
     private TextView altitudeValueTextView;
     private TextView altitudeUnitTextView;
@@ -130,7 +131,7 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
 
     //region Reactions to model
     private void updateValueText(float altitude) {
-        altitudeValueTextView.setText(decimalFormat.format(altitude));
+        altitudeValueTextView.setText(DECIMAL_FORMAT.format(altitude));
     }
 
     private void updateUnitText(UnitConversionUtil.UnitType unitType) {
@@ -162,24 +163,6 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set text color state list for the altitude title text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setAltitudeTitleTextColor(@NonNull ColorStateList colorStateList) {
-        altitudeTitleTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the altitude title text view
-     *
-     * @param color color integer resource
-     */
-    public void setAltitudeTitleTextColor(@ColorInt int color) {
-        altitudeTitleTextView.setTextColor(color);
-    }
-
-    /**
      * Get current text color state list of the altitude title text view
      *
      * @return ColorStateList resource
@@ -200,12 +183,21 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the altitude title text view
+     * Set text color state list for the altitude title text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setAltitudeTitleTextSize(@Dimension float textSize) {
-        altitudeTitleTextView.setTextSize(textSize);
+    public void setAltitudeTitleTextColor(@NonNull ColorStateList colorStateList) {
+        altitudeTitleTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the altitude title text view
+     *
+     * @param color color integer resource
+     */
+    public void setAltitudeTitleTextColor(@ColorInt int color) {
+        altitudeTitleTextView.setTextColor(color);
     }
 
     /**
@@ -216,6 +208,25 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getAltitudeTitleTextSize() {
         return altitudeTitleTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the altitude title text view
+     *
+     * @param textSize text size float value
+     */
+    public void setAltitudeTitleTextSize(@Dimension float textSize) {
+        altitudeTitleTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the altitude title text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getAltitudeTitleTextBackground() {
+        return altitudeTitleTextView.getBackground();
     }
 
     /**
@@ -237,40 +248,12 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the altitude title text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getAltitudeTitleTextBackground() {
-        return altitudeTitleTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the altitude value text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setAltitudeValueTextAppearance(@StyleRes int textAppearance) {
         altitudeValueTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the altitude value text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setAltitudeValueTextColor(@NonNull ColorStateList colorStateList) {
-        altitudeValueTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the altitude value text view
-     *
-     * @param color color integer resource
-     */
-    public void setAltitudeValueTextColor(@ColorInt int color) {
-        altitudeValueTextView.setTextColor(color);
     }
 
     /**
@@ -294,12 +277,21 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the altitude value text view
+     * Set text color state list for the altitude value text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setAltitudeValueTextSize(@Dimension float textSize) {
-        altitudeValueTextView.setTextSize(textSize);
+    public void setAltitudeValueTextColor(@NonNull ColorStateList colorStateList) {
+        altitudeValueTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the altitude value text view
+     *
+     * @param color color integer resource
+     */
+    public void setAltitudeValueTextColor(@ColorInt int color) {
+        altitudeValueTextView.setTextColor(color);
     }
 
     /**
@@ -310,6 +302,25 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getAltitudeValueTextSize() {
         return altitudeValueTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the altitude value text view
+     *
+     * @param textSize text size float value
+     */
+    public void setAltitudeValueTextSize(@Dimension float textSize) {
+        altitudeValueTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the altitude value text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getAltitudeValueTextBackground() {
+        return altitudeValueTextView.getBackground();
     }
 
     /**
@@ -331,40 +342,12 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get current background of the altitude value text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getAltitudeValueTextBackground() {
-        return altitudeValueTextView.getBackground();
-    }
-
-    /**
      * Set text appearance of the altitude unit text view
      *
      * @param textAppearance Style resource for text appearance
      */
     public void setAltitudeUnitTextAppearance(@StyleRes int textAppearance) {
         altitudeUnitTextView.setTextAppearance(getContext(), textAppearance);
-    }
-
-    /**
-     * Set text color state list for the altitude unit text view
-     *
-     * @param colorStateList ColorStateList resource
-     */
-    public void setAltitudeUnitTextColor(@NonNull ColorStateList colorStateList) {
-        altitudeUnitTextView.setTextColor(colorStateList);
-    }
-
-    /**
-     * Set the text color for the altitude unit text view
-     *
-     * @param color color integer resource
-     */
-    public void setAltitudeUnitTextColor(@ColorInt int color) {
-        altitudeUnitTextView.setTextColor(color);
     }
 
     /**
@@ -388,12 +371,21 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Set the text size of the altitude unit text view
+     * Set text color state list for the altitude unit text view
      *
-     * @param textSize text size float value
+     * @param colorStateList ColorStateList resource
      */
-    public void setAltitudeUnitTextSize(@Dimension float textSize) {
-        altitudeUnitTextView.setTextSize(textSize);
+    public void setAltitudeUnitTextColor(@NonNull ColorStateList colorStateList) {
+        altitudeUnitTextView.setTextColor(colorStateList);
+    }
+
+    /**
+     * Set the text color for the altitude unit text view
+     *
+     * @param color color integer resource
+     */
+    public void setAltitudeUnitTextColor(@ColorInt int color) {
+        altitudeUnitTextView.setTextColor(color);
     }
 
     /**
@@ -404,6 +396,25 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
     @Dimension
     public float getAltitudeUnitTextSize() {
         return altitudeUnitTextView.getTextSize();
+    }
+
+    /**
+     * Set the text size of the altitude unit text view
+     *
+     * @param textSize text size float value
+     */
+    public void setAltitudeUnitTextSize(@Dimension float textSize) {
+        altitudeUnitTextView.setTextSize(textSize);
+    }
+
+    /**
+     * Get current background of the altitude unit text view
+     *
+     * @return Drawable resource of the background
+     */
+    @Nullable
+    public Drawable getAltitudeUnitTextBackground() {
+        return altitudeUnitTextView.getBackground();
     }
 
     /**
@@ -422,16 +433,6 @@ public class AltitudeWidget extends ConstraintLayoutWidget {
      */
     public void setAltitudeUnitTextBackground(@DrawableRes int resourceId) {
         altitudeUnitTextView.setBackgroundResource(resourceId);
-    }
-
-    /**
-     * Get current background of the altitude unit text view
-     *
-     * @return Drawable resource of the background
-     */
-    @Nullable
-    public Drawable getAltitudeUnitTextBackground() {
-        return altitudeUnitTextView.getBackground();
     }
 
     //Initialize all customizable attributes

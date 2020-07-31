@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *  
  */
 
 package dji.ux.beta.hardwareaccessory.widget.rtk
@@ -65,7 +66,7 @@ private const val TAG = "RTKStatusWidget"
  * of the aircraft and base station, course angle, GLONASS, Beidou, Galileo, and GPS satellite
  * counts for both antennas and the base station, and overall status of the RTK system.
  */
-class RTKSatelliteStatusWidget @JvmOverloads constructor(
+open class RTKSatelliteStatusWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0

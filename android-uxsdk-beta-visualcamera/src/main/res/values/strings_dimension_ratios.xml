@@ -19,7 +19,9 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
+
 <resources>
     <string name="uxsdk_widget_base_camera_info_ratio" translatable="false">2:1</string>
     <string name="uxsdk_widget_camera_config_ssd_ratio" translatable="false">W,5:1</string>
