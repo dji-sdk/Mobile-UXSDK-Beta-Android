@@ -25,6 +25,9 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
+    lintOptions {
+        abortOnError = false
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     publishNonDefault true

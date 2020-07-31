@@ -26,6 +26,9 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    lintOptions {
+        abortOnError = false
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     useLibrary 'org.apache.http.legacy'
