@@ -31,6 +31,7 @@ import android.content.IntentFilter;
 import androidx.multidex.MultiDex;
 
 
+import com.secneo.sdk.Helper;
 
 import dji.ux.beta.core.base.DefaultGlobalPreferences;
 import dji.ux.beta.core.base.GlobalPreferencesManager;
@@ -58,7 +59,7 @@ public class SampleApplication extends Application {
     @Override
     protected void attachBaseContext(Context paramContext) {
         super.attachBaseContext(paramContext);
-        //Helper.install(SampleApplication.this);
+        Helper.install(SampleApplication.this);
         MultiDex.install(this);
     }
 
