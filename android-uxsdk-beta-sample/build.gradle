@@ -97,7 +97,7 @@ android {
 
 dependencies {
 
-    implementation ('com.dji:dji-sdk:4.13', {
+    implementation ('com.dji:dji-sdk:4.13.1', {
         /**
          * Comment the "library-anti-distortion" if your app needs Anti Distortion for Mavic 2 Pro
          * and Mavic 2 Zoom.
@@ -109,7 +109,7 @@ dependencies {
         exclude module: 'library-anti-distortion'
         exclude module: 'fly-safe-database'
     })
-    compileOnly ('com.dji:dji-sdk-provided:4.13')
+    compileOnly ('com.dji:dji-sdk-provided:4.13.1')
 
     implementation 'com.amap.api:3dmap:6.9.2'
     implementation 'com.amap.api:search:6.9.2'
