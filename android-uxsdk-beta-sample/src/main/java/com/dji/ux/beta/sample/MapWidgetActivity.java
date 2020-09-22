@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample;
@@ -30,9 +29,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -42,6 +38,10 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.model.HeatmapTileProvider;
@@ -76,25 +76,25 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import dji.common.flightcontroller.flyzone.FlyZoneCategory;
-import dji.ux.beta.util.ViewUtil;
-import dji.ux.beta.widget.map.MapWidget;
+import dji.ux.beta.core.util.SettingDefinitions;
+import dji.ux.beta.core.util.ViewUtil;
+import dji.ux.beta.map.widget.map.MapWidget;
 
 import static com.here.android.mpa.common.MapSettings.setIsolatedDiskCacheRootPath;
 
 /**
- * Displays the a {@link dji.ux.beta.widget.map.MapWidget} and controls to customize the look of
+ * Displays a {@link dji.ux.beta.map.widget.map.MapWidget} and controls to customize the look of
  * each of the components.
  */
 public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener {
 
-    //region constants
-    private static final String TAG = "MapWidgetActivity";
     /**
      * The key for passing a map provider through the intent.
      */
-    public static final String MAP_PROVIDER = "MapProvider";
+    public static final String MAP_PROVIDER_KEY = "MapProvider";
+    //region constants
+    private static final String TAG = "MapWidgetActivity";
     //endregion
-
     //region fields
     @BindView(R.id.map_widget)
     protected MapWidget mapWidget;
@@ -116,7 +116,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
     private MapOverlay mapOverlay;
     private GroundOverlay groundOverlay;
     private TileOverlay tileOverlay;
-    private int mapProvider;
+    private SettingDefinitions.MapProvider mapProvider;
     private Map hereMap;
     private GoogleMap googleMap;
     private AMap aMap;
@@ -134,7 +134,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
         ButterKnife.bind(this);
         markerList = new ArrayList<>();
         MapWidget.OnMapReadyListener onMapReadyListener = map -> {
-            map.setMapType(DJIMap.MapType.Normal);
+            map.setMapType(DJIMap.MapType.NORMAL);
 
             //Add toasts when a marker is dragged
             map.setOnMarkerDragListener(new DJIMap.OnMarkerDragListener() {
@@ -142,7 +142,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
                 public void onMarkerDragStart(DJIMarker djiMarker) {
                     if (markerList.contains(djiMarker)) {
                         Toast.makeText(MapWidgetActivity.this,
-                                "Marker " + markerList.indexOf(djiMarker) + " drag started",
+                                getString(R.string.marker_drag_started, markerList.indexOf(djiMarker)),
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -156,14 +156,14 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
                 public void onMarkerDragEnd(DJIMarker djiMarker) {
                     if (markerList.contains(djiMarker)) {
                         Toast.makeText(MapWidgetActivity.this,
-                                "Marker " + markerList.indexOf(djiMarker) + " drag ended",
+                                getString(R.string.marker_drag_ended, markerList.indexOf(djiMarker)),
                                 Toast.LENGTH_SHORT).show();
                     }
                 }
             });
             //Add toasts when a marker is clicked
-            mapWidget.setOnMarkerClickListener((DJIMap.OnMarkerClickListener) djiMarker -> {
-                Toast.makeText(MapWidgetActivity.this, "Marker " + markerList.indexOf(djiMarker) + " clicked",
+            mapWidget.setOnMarkerClickListener(djiMarker -> {
+                Toast.makeText(MapWidgetActivity.this, getString(R.string.marker_clicked, markerList.indexOf(djiMarker)),
                         Toast.LENGTH_SHORT).show();
                 return true;
             });
@@ -175,25 +175,24 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
 
         };
         Intent intent = getIntent();
-        mapProvider = intent.getIntExtra(MAP_PROVIDER, 0);
+        mapProvider = SettingDefinitions.MapProvider.find(intent.getIntExtra(MAP_PROVIDER_KEY, 0));
         switch (mapProvider) {
-            case 0:
+            case HERE:
                 boolean success = setIsolatedDiskCacheRootPath(
-                        getExternalFilesDir(null) + File.separator + ".here-maps",
-                        "HereMapServiceIntent");
+                        getExternalFilesDir(null) + File.separator + ".here-maps-cache");
                 if (success) {
                     mapWidget.initHereMap(onMapReadyListener);
                 }
                 break;
-            case 1:
+            case GOOGLE:
                 mapWidget.initGoogleMap(onMapReadyListener);
                 break;
-            case 2:
+            case AMAP:
                 mapWidget.initAMap(onMapReadyListener);
                 break;
-            case 3:
+            case MAPBOX:
             default:
-                mapWidget.initMapboxMap(onMapReadyListener, getResources().getString(R.string.dji_ux_sample_mapbox_token));
+                mapWidget.initMapboxMap(getResources().getString(R.string.dji_ux_sample_mapbox_token), onMapReadyListener);
                 break;
         }
         mapWidget.onCreate(savedInstanceState);
@@ -435,13 +434,14 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
         if (mapWidget.getMap() != null) {
             switch (position) {
                 case 0:
-                    mapWidget.getMap().setMapType(DJIMap.MapType.Normal);
+                    mapWidget.getMap().setMapType(DJIMap.MapType.NORMAL);
                     break;
                 case 1:
-                    mapWidget.getMap().setMapType(DJIMap.MapType.Satellite);
+                    mapWidget.getMap().setMapType(DJIMap.MapType.SATELLITE);
                     break;
+                case 2:
                 default:
-                    mapWidget.getMap().setMapType(DJIMap.MapType.Hybrid);
+                    mapWidget.getMap().setMapType(DJIMap.MapType.HYBRID);
                     break;
             }
         } else {
@@ -464,6 +464,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
                 lineColor.setTextColor(mapWidget.getFlightPathColor());
                 break;
             case 2:
+            default:
                 width = (int) mapWidget.getFlyZoneHelper().getFlyZoneBorderWidth();
                 lineColor.setVisibility(View.GONE);
                 break;
@@ -485,7 +486,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
         float testLat = 37.4419f;
         float testLng = -122.1430f;
         switch (mapProvider) {
-            case 0:
+            case HERE:
                 if (mapOverlay == null) {
                     hereMap = (Map) mapWidget.getMap().getMap();
                     ImageView overlayView = new ImageView(MapWidgetActivity.this);
@@ -498,7 +499,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
                     mapOverlay = null;
                 }
                 break;
-            case 1:
+            case GOOGLE:
                 if (groundOverlay == null) {
                     googleMap = (GoogleMap) mapWidget.getMap().getMap();
                     LatLng latLng1 = new LatLng(testLat, testLng);
@@ -518,7 +519,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
                     groundOverlay = null;
                 }
                 break;
-            case 2:
+            case AMAP:
                 if (tileOverlay == null) {
                     aMap = (AMap) mapWidget.getMap().getMap();
                     com.amap.api.maps.model.LatLng[] latlngs = new com.amap.api.maps.model.LatLng[500];
@@ -538,32 +539,28 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
                     tileOverlay = null;
                 }
                 break;
+            case MAPBOX:
             default:
-            case 3:
                 Random rnd = new Random();
                 mapboxMap = (MapboxMap) mapWidget.getMap().getMap();
                 mapboxMap.getLayer("water").setProperties(PropertyFactory.fillColor(Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))));
-
                 break;
-
         }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if (mapProvider == 0) {
+        if (mapProvider == SettingDefinitions.MapProvider.HERE) {
             startService(new Intent(getBaseContext(), MapService.class));
         }
-
     }
 
     @Override
     protected void onStop() {
-        if (mapProvider == 0) {
+        if (mapProvider == SettingDefinitions.MapProvider.HERE) {
             stopService(new Intent(getBaseContext(), MapService.class));
         }
-
         super.onStop();
     }
 

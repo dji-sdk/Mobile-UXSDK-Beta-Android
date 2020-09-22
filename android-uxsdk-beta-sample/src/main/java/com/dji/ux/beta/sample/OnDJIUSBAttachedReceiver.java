@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample;
@@ -27,6 +26,8 @@ package com.dji.ux.beta.sample;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import dji.sdk.sdkmanager.DJISDKManager;
 
 /**
  * This receiver will detect the USB attached event.
@@ -46,6 +47,10 @@ public class OnDJIUSBAttachedReceiver extends BroadcastReceiver {
                     | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
             startIntent.addCategory(Intent.CATEGORY_LAUNCHER);
             context.startActivity(startIntent);
+        } else {
+            Intent attachedIntent = new Intent();
+            attachedIntent.setAction(DJISDKManager.USB_ACCESSORY_ATTACHED);
+            context.sendBroadcast(attachedIntent);
         }
     }
 }

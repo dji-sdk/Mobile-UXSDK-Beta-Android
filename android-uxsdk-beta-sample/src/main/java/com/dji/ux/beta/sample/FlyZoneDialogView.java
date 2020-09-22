@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample;
@@ -27,8 +26,6 @@ package com.dji.ux.beta.sample;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorInt;
-import android.support.v4.graphics.ColorUtils;
 import android.util.AttributeSet;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -36,13 +33,13 @@ import android.widget.CompoundButton;
 import android.widget.ScrollView;
 import android.widget.Switch;
 
+import androidx.annotation.ColorInt;
+import androidx.core.graphics.ColorUtils;
+
 import java.util.Random;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import dji.common.flightcontroller.flyzone.FlyZoneCategory;
-import dji.ux.beta.widget.map.MapWidget;
+import dji.ux.beta.map.widget.map.MapWidget;
 
 /**
  * A dialog view that allows the user to customize the fly zones of a MapWidget.
@@ -116,9 +113,9 @@ public class FlyZoneDialogView extends ScrollView {
                     default:
                         all.setOnCheckedChangeListener(null);
                         all.setChecked(auth.isChecked()
-                                           && warning.isChecked()
-                                           && enhancedWarning.isChecked()
-                                           && restricted.isChecked());
+                                && warning.isChecked()
+                                && enhancedWarning.isChecked()
+                                && restricted.isChecked());
                         all.setOnCheckedChangeListener(this);
                         break;
                 }
@@ -129,9 +126,9 @@ public class FlyZoneDialogView extends ScrollView {
         enhancedWarning.setChecked(mapWidget.getFlyZoneHelper().isFlyZoneVisible(FlyZoneCategory.ENHANCED_WARNING));
         restricted.setChecked(mapWidget.getFlyZoneHelper().isFlyZoneVisible(FlyZoneCategory.RESTRICTED));
         all.setChecked(auth.isChecked()
-                           && warning.isChecked()
-                           && enhancedWarning.isChecked()
-                           && restricted.isChecked());
+                && warning.isChecked()
+                && enhancedWarning.isChecked()
+                && restricted.isChecked());
 
         all.setOnCheckedChangeListener(listener);
         auth.setOnCheckedChangeListener(listener);
@@ -161,21 +158,21 @@ public class FlyZoneDialogView extends ScrollView {
 
         final float STROKE_WIDTH = 15.0f;
         authColor.setBackground(getBackground(mapWidget.getFlyZoneHelper().getFlyZoneColor(FlyZoneCategory.AUTHORIZATION),
-                                              mapWidget.getFlyZoneHelper().getFlyZoneAlpha(FlyZoneCategory.AUTHORIZATION),
-                                              STROKE_WIDTH));
+                mapWidget.getFlyZoneHelper().getFlyZoneAlpha(FlyZoneCategory.AUTHORIZATION),
+                STROKE_WIDTH));
         warningColor.setBackground(getBackground(mapWidget.getFlyZoneHelper().getFlyZoneColor(FlyZoneCategory.WARNING),
-                                                 mapWidget.getFlyZoneHelper().getFlyZoneAlpha(FlyZoneCategory.WARNING),
-                                                 STROKE_WIDTH));
+                mapWidget.getFlyZoneHelper().getFlyZoneAlpha(FlyZoneCategory.WARNING),
+                STROKE_WIDTH));
         enhancedWarningColor.setBackground(getBackground(mapWidget.getFlyZoneHelper().getFlyZoneColor(FlyZoneCategory.ENHANCED_WARNING),
-                                                         mapWidget.getFlyZoneHelper().getFlyZoneAlpha(FlyZoneCategory.ENHANCED_WARNING),
-                                                         STROKE_WIDTH));
+                mapWidget.getFlyZoneHelper().getFlyZoneAlpha(FlyZoneCategory.ENHANCED_WARNING),
+                STROKE_WIDTH));
         restrictedColor.setBackground(getBackground(mapWidget.getFlyZoneHelper().getFlyZoneColor(FlyZoneCategory.RESTRICTED),
-                                                    mapWidget.getFlyZoneHelper().getFlyZoneAlpha(FlyZoneCategory.RESTRICTED),
-                                                    STROKE_WIDTH));
+                mapWidget.getFlyZoneHelper().getFlyZoneAlpha(FlyZoneCategory.RESTRICTED),
+                STROKE_WIDTH));
         maxHeightColor.setBackground(getBackground(mapWidget.getFlyZoneHelper().getMaximumHeightColor(),
-                                                   mapWidget.getFlyZoneHelper().getMaximumHeightAlpha(), STROKE_WIDTH));
+                mapWidget.getFlyZoneHelper().getMaximumHeightAlpha(), STROKE_WIDTH));
         selfUnlockColor.setBackground(getBackground(mapWidget.getFlyZoneHelper().getSelfUnlockColor(),
-                                                    mapWidget.getFlyZoneHelper().getSelfUnlockAlpha(), STROKE_WIDTH));
+                mapWidget.getFlyZoneHelper().getSelfUnlockAlpha(), STROKE_WIDTH));
 
         OnClickListener onClickListener = view -> {
             Random rnd = new Random();
@@ -218,6 +215,8 @@ public class FlyZoneDialogView extends ScrollView {
                 case R.id.custom_unlock_sync:
                     mapWidget.syncCustomUnlockZonesToAircraft();
                     return;
+                default:
+                    return;
             }
             view.setBackground(getBackground(randomColor, alpha, strokeWidth));
         };
@@ -235,15 +234,15 @@ public class FlyZoneDialogView extends ScrollView {
      * Get a oval shaped background with a border of the given color and a fill of the given color
      * and alpha.
      *
-     * @param color The color of the border and fill of the oval.
-     * @param alpha The alpha of the fill of the oval.
+     * @param color       The color of the border and fill of the oval.
+     * @param alpha       The alpha of the fill of the oval.
      * @param strokeWidth The stroke width of the border.
      * @return A GradientDrawable object.
      */
     private GradientDrawable getBackground(@ColorInt int color, int alpha, float strokeWidth) {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.OVAL);
-        drawable.setStroke((int)strokeWidth, color);
+        drawable.setStroke((int) strokeWidth, color);
         drawable.setColor(ColorUtils.setAlphaComponent(color, alpha));
         return drawable;
     }
@@ -264,7 +263,8 @@ public class FlyZoneDialogView extends ScrollView {
                 return enhancedWarning.isChecked();
             case RESTRICTED:
                 return restricted.isChecked();
+            default:
+                return false;
         }
-        return false;
     }
 }

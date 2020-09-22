@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<resources>
+    <!-- Simulator Widget -->
+    <string name="uxsdk_simulator_zero_string">0</string>
+    <string name="uxsdk_simulator_null_string">N/A</string>
+    <string name="uxsdk_simulator_widget_title">Simulator Status</string>
+    <string name="uxsdk_simulator_widget_lat">Latitude</string>
+    <string name="uxsdk_simulator_widget_lng">Longitude</string>
+    <string name="uxsdk_simulator_widget_world_x">World-X</string>
+    <string name="uxsdk_simulator_widget_world_y">World-Y</string>
+    <string name="uxsdk_simulator_widget_world_z">World-Z</string>
+    <string name="uxsdk_simulator_widget_pitch">Pitch</string>
+    <string name="uxsdk_simulator_widget_yaw">Yaw</string>
+    <string name="uxsdk_simulator_widget_roll">Roll</string>
+    <string name="uxsdk_simulator_widget_flying_state">Flying State</string>
+    <string name="uxsdk_simulator_widget_motor_started">Motor Started</string>
+    <string name="uxsdk_simulator_widget_satellite">Satellite Count</string>
+    <string name="uxsdk_simulator_widget_frequency">Frequency</string>
+    <string name="uxsdk_simulator_position_title">Position</string>
+    <string name="uxsdk_simulator_attitude_title">Attitude</string>
+    <string name="uxsdk_simulator_aircraft_status_title">Aircraft</string>
+    <string name="uxsdk_simulator_aircraft_wind_title">Wind Simulation</string>
+    <string name="uxsdk_simulator_input_val_error">Enter the values to simulate</string>
+    <string name="uxsdk_simulator_save_preset">Save Preset</string>
+    <string name="uxsdk_simulator_preset_name_hint">Enter preset name</string>
+    <string name="uxsdk_simulator_preset_name_empty_error">Preset name cannot be empty</string>
+    <string name="uxsdk_simulator_preset_error">Error loading preset.</string>
+    <string name="uxsdk_simulator_save_preset_list">Preset List</string>
+    <string name="uxsdk_simulator_save_preset_delete">Are you sure you want to delete %1$s?</string>
+    <string name="uxsdk_simulator_save_preset_list_empty">No saved presets</string>
+    <string name="uxsdk_simulator_preset">Preset</string>
+    <string name="uxsdk_simulator_wind_speed_x">Wind Speed X</string>
+    <string name="uxsdk_simulator_wind_speed_y">Wind Speed Y</string>
+    <string name="uxsdk_simulator_wind_speed_z">Wind Speed Z</string>
+    <string name="uxsdk_simulator_widget_lat_hint">Lat range -90 to 90</string>
+    <string name="uxsdk_simulator_widget_lng_hint">Lng range -180 to 180</string>
+</resources>

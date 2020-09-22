@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,17 +19,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample.widgetlist;
 
 import android.content.res.Resources;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dji.ux.beta.sample.R;
 
@@ -103,7 +103,7 @@ public class WidgetListItemAdapter extends RecyclerView.Adapter<WidgetListItemAd
         /**
          * Sets the selected state of this widget list item.
          *
-         * @param selected Whether this widget list item is selected.
+         * @param selected  Whether this widget list item is selected.
          * @param resources An instance of {@link Resources}.
          */
         public void setSelected(boolean selected, Resources resources) {

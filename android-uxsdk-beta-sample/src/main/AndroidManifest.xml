@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2019 DJI
+  ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -19,32 +19,27 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="com.dji.ux.beta.sample"
-          tools:ignore="GoogleAppIndexingWarning">
+          package="com.dji.ux.beta.sample">
 
     <!-- DJI SDK needs these permissions -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature
         android:name="android.hardware.usb.host"
         android:required="false" />
@@ -59,9 +54,13 @@
         android:label="@string/dji_ux_sample_app_name"
         tools:replace="android:label"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
         <!-- DJI SDK -->
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+        <uses-library android:name="com.android.future.usb.accessory" />
+
         <meta-data
             android:name="com.dji.sdk.API_KEY"
             android:value="@string/dji_ux_sample_dji_sdk_api_key" />
@@ -72,17 +71,17 @@
             android:value="@string/dji_ux_sample_here_maps_id" />
         <meta-data
             android:name="com.here.android.maps.apptoken"
-            android:value="@string/dji_ux_sample_here_maps_apptoken" />
+            android:value="@string/dji_ux_sample_here_maps_app_token" />
         <meta-data
             android:name="com.here.android.maps.license.key"
             android:value="@string/dji_ux_sample_here_maps_license_key" />
 
         <service
             android:name="com.here.android.mpa.service.MapService"
-            android:exported="false"
             android:label="HereMapService">
             <intent-filter>
-                <action android:name="HereMapServiceIntent" />
+                <!--Note, action name should not be changed.-->
+                <action android:name="com.here.android.mpa.service.MapService.v3" />
             </intent-filter>
         </service>
 
@@ -97,7 +96,7 @@
             android:value="@string/dji_ux_sample_amaps_api_key" />
 
         <activity
-            android:name="com.dji.ux.beta.sample.MainActivity"
+            android:name=".MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="sensorLandscape">
             <intent-filter>
@@ -108,17 +107,23 @@
         </activity>
 
         <activity
-            android:name="com.dji.ux.beta.sample.widgetlist.WidgetsActivity"
+            android:name=".widgetlist.WidgetsActivity"
             android:screenOrientation="sensorLandscape" />
+
         <activity
-            android:name="com.dji.ux.beta.sample.MapWidgetActivity"
+            android:name=".DefaultLayoutActivity"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/AppTheme" />
+
+        <activity
+            android:name=".MapWidgetActivity"
             android:label="Map Widget"
             android:launchMode="singleTop"
             android:screenOrientation="sensorLandscape"
             android:theme="@style/MapTheme" />
 
         <activity
-            android:name="com.dji.ux.beta.sample.DJIConnectionControlActivity"
+            android:name=".DJIConnectionControlActivity"
             android:theme="@android:style/Theme.Translucent">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED" />
@@ -128,15 +133,6 @@
                 android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
                 android:resource="@xml/accessory_filter" />
         </activity>
-
-        <receiver
-            android:name="com.dji.ux.beta.sample.OnDJIUSBAttachedReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.dji.ux.beta.sample.ACCESSORY_ATTACHED" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

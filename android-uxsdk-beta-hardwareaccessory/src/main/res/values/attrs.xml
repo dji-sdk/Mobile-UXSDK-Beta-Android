@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<resources>
+
+    <attr name="uxsdk_rtkSeparatorsColor" format="color" />
+
+    <declare-styleable name="RTKWidget">
+        <attr name="uxsdk_rtkDescriptionTextAppearance" format="reference" />
+        <attr name="uxsdk_rtkDescriptionTextSize" format="dimension" />
+        <attr name="uxsdk_rtkDescriptionTextColor" format="color" />
+        <attr name="uxsdk_rtkDescriptionBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_dialogOkTextAppearance" format="reference" />
+        <attr name="uxsdk_dialogOkTextSize" format="dimension" />
+        <attr name="uxsdk_dialogOkTextColor" format="color" />
+        <attr name="uxsdk_dialogOkBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_rtkSeparatorsColor" />
+    </declare-styleable>
+
+    <declare-styleable name="RTKEnabledWidget">
+        <attr name="uxsdk_titleTextSize"/>
+        <attr name="uxsdk_titleTextColor"/>
+        <attr name="uxsdk_titleTextBackground"/>
+        <attr name="uxsdk_titleTextAppearance"/>
+        <attr name="uxsdk_rtkEnabledSwitchThumbIcon" format="reference" />
+        <attr name="uxsdk_rtkEnabledSwitchTrackIcon" format="reference" />
+        <attr name="uxsdk_descriptionTextSize" format="dimension" />
+        <attr name="uxsdk_descriptionTextColor" format="color" />
+        <attr name="uxsdk_descriptionTextBackground" format="reference" />
+        <attr name="uxsdk_descriptionTextAppearance" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RTKSatelliteStatusWidget">
+        <attr name="uxsdk_rtkConnectionStatusTitleTextAppearance" format="reference" />
+        <attr name="uxsdk_rtkConnectionStatusTitleTextSize" format="dimension" />
+        <attr name="uxsdk_rtkConnectionStatusTitleTextColor" format="color" />
+        <attr name="uxsdk_rtkConnectionStatusTitleBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_rtkConnectionStatusTextAppearance" format="reference" />
+        <attr name="uxsdk_rtkConnectionStatusTextSize" format="dimension" />
+        <attr name="uxsdk_rtkConnectionStatusConnectedInUseTextColor" format="color" />
+        <attr name="uxsdk_rtkConnectionStatusConnectedNotInUseTextColor" format="color" />
+        <attr name="uxsdk_rtkConnectionStatusDisconnectedTextColor" format="color" />
+        <attr name="uxsdk_rtkConnectionStatusBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_rtkLabelsTextAppearance" format="reference" />
+        <attr name="uxsdk_rtkLabelsTextSize" format="dimension" />
+        <attr name="uxsdk_rtkLabelsTextColor" format="color" />
+        <attr name="uxsdk_rtkLabelsBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_rtkValuesTextAppearance" format="reference" />
+        <attr name="uxsdk_rtkValuesTextSize" format="dimension" />
+        <attr name="uxsdk_rtkValuesTextColor" format="color" />
+        <attr name="uxsdk_rtkValuesBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_orientationIconEnabledColor" format="color" />
+        <attr name="uxsdk_orientationIconDisabledColor" format="color" />
+        <attr name="uxsdk_orientationIcon" format="reference" />
+        <attr name="uxsdk_rtkSeparatorsColor" />
+        <attr name="uxsdk_tableBackground" format="reference" />
+        <attr name="uxsdk_beiDouSatellitesVisibility" format="boolean" />
+        <attr name="uxsdk_glonassSatellitesVisibility" format="boolean" />
+        <attr name="uxsdk_galileoSatellitesVisibility" format="boolean" />
+    </declare-styleable>
+
+</resources>

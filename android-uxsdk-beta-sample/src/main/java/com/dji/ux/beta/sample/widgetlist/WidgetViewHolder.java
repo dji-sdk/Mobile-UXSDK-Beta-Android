@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,24 +19,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample.widgetlist;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import dji.log.DJILog;
-import dji.ux.beta.base.ConstraintLayoutWidget;
-import dji.ux.beta.base.FrameLayoutWidget;
-import dji.ux.beta.util.DisplayUtil;
+import dji.ux.beta.core.base.ConstraintLayoutWidget;
+import dji.ux.beta.core.base.FrameLayoutWidget;
+import dji.ux.beta.core.util.DisplayUtil;
+
 
 /**
  * A view holder for a single widget.
@@ -128,7 +129,6 @@ public class WidgetViewHolder {
         if (widget == null) {
             return "[0,0]";
         }
-        return "[" + (int) (widget.getMeasuredWidth() * widget.getScaleX()) + "," +
-                (int) (widget.getMeasuredHeight() * widget.getScaleY()) + "]";
+        return "[" + (widget.getMeasuredWidth()) + "," + (widget.getMeasuredHeight()) + "]";
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,21 +19,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample.widgetlist;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.dji.ux.beta.sample.R;
 
@@ -45,14 +45,13 @@ import butterknife.ButterKnife;
  */
 public class WidgetListFragment extends Fragment {
 
-    //region Fields
-    private OnWidgetItemSelectedListener onWidgetItemSelectedListener;
-    private int selectedPosition = -1;
-    //endregion
-
     //region Views
     @BindView(R.id.recyclerview_widgets)
     protected RecyclerView widgetRecyclerView;
+    //region Fields
+    private OnWidgetItemSelectedListener onWidgetItemSelectedListener;
+    //endregion
+    private int selectedPosition = -1;
     //endregion
 
     //region Lifecycle

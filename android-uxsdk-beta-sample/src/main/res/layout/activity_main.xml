@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2019 DJI
+  ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -19,130 +19,163 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <View
-        android:id="@+id/connection_panel"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="8dp"
-        android:background="@color/gray_4"
-        app:layout_constraintBottom_toTopOf="@+id/button_panel"
+    <ScrollView
+        android:id="@+id/view_scroll"
+        android:layout_width="250dp"
+        android:layout_height="match_parent"
         app:layout_constraintHorizontal_weight=".3"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toLeftOf="@+id/log_panel"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/text_view_version"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_registered"
-        app:layout_constraintLeft_toLeftOf="@+id/connection_panel"
-        app:layout_constraintRight_toRightOf="@+id/connection_panel"
-        app:layout_constraintTop_toTopOf="@+id/connection_panel"
-        tools:text="Version" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/text_view_registered"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/unregistered"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_product_name"
-        app:layout_constraintLeft_toLeftOf="@+id/connection_panel"
-        app:layout_constraintRight_toRightOf="@+id/connection_panel"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_version" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:background="@color/gray_4"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-    <TextView
-        android:id="@+id/text_view_product_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/no_product"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/edit_text_bridge_ip"
-        app:layout_constraintLeft_toLeftOf="@+id/connection_panel"
-        app:layout_constraintRight_toRightOf="@+id/connection_panel"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_registered" />
+                <TextView
+                    android:id="@+id/text_view_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="4dp"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    tools:text="Version" />
 
-    <EditText
-        android:id="@+id/edit_text_bridge_ip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:digits="0123456789.\n"
-        android:hint="@string/wsbridge_ip"
-        android:imeOptions="actionDone"
-        android:maxLength="15"
-        android:maxLines="1"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/connection_panel"
-        app:layout_constraintLeft_toLeftOf="@+id/connection_panel"
-        app:layout_constraintRight_toRightOf="@+id/connection_panel"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_product_name" />
+                <TextView
+                    android:id="@+id/text_view_registered"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="4dp"
+                    android:text="@string/unregistered"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
 
-    <View
-        android:id="@+id/button_panel"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/gray_4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/connection_panel"
-        app:layout_constraintRight_toRightOf="@+id/connection_panel"
-        app:layout_constraintTop_toBottomOf="@+id/connection_panel" />
+                <TextView
+                    android:id="@+id/text_view_product_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="4dp"
+                    android:gravity="center"
+                    android:text="@string/no_product"
+                    android:textColor="@color/white" />
 
-    <TextView
-        android:id="@+id/widget_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/widgets"
-        android:textColor="@color/black"
-        app:layout_constraintLeft_toLeftOf="@+id/button_panel"
-        app:layout_constraintRight_toRightOf="@+id/button_panel"
-        app:layout_constraintTop_toTopOf="@+id/button_panel"
-        app:layout_constraintBottom_toTopOf="@+id/map_button"/>
+                <EditText
+                    android:id="@+id/edit_text_bridge_ip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:digits="0123456789.\n"
+                    android:hint="@string/wsbridge_ip"
+                    android:imeOptions="actionDone"
+                    android:maxLength="15"
+                    android:maxLines="1"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="15sp" />
 
-    <TextView
-        android:id="@+id/map_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/map"
-        android:textColor="@color/black"
-        app:layout_constraintLeft_toLeftOf="@+id/widget_button"
-        app:layout_constraintRight_toRightOf="@+id/widget_button"
-        app:layout_constraintTop_toBottomOf="@+id/widget_button" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@color/gray_4"
+                android:orientation="vertical"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/text_view_showcase_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/showcase"
+                    android:textColor="@color/white"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/default_layout_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/default_layout"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/widget_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/widget_list"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/map_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="@string/map"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <View
         android:id="@+id/log_panel"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/gray_4"
-        app:layout_constraintBottom_toBottomOf="@+id/button_panel"
+        app:layout_constraintBottom_toBottomOf="@+id/view_scroll"
         app:layout_constraintHorizontal_weight=".7"
-        app:layout_constraintLeft_toRightOf="@+id/connection_panel"
+        app:layout_constraintLeft_toRightOf="@+id/view_scroll"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/connection_panel" />
+        app:layout_constraintTop_toTopOf="@+id/view_scroll" />
 
     <TextView
         android:id="@+id/text_view_log_title"
@@ -151,6 +184,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/logs"
+        android:textColor="@color/white"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="@+id/log_panel"
         app:layout_constraintTop_toTopOf="@+id/log_panel" />
@@ -168,8 +202,9 @@
             android:id="@+id/text_view_logs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/white"
             tools:text="Registering product" />
 
     </ScrollView>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

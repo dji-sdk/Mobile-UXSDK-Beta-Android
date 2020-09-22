@@ -1,0 +1,41 @@
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<resources>
+    <string name="uxsdk_fly_zone_unlock">Unlock</string>
+    <string name="uxsdk_fly_zone_unlock_zone">Unlock %1$s</string>
+    <string name="uxsdk_fly_zone_unlock_confirmation">By tapping Unlock, you agree that you have the authorization to operate in this fly zone. A record of this request will be linked to your DJI account. Tap Cancel to abort the operation.</string>
+    <string name="uxsdk_fly_zone_unlock_end_time">Currently unlocked and expires at %1$s</string>
+    <string name="uxsdk_fly_zone_unlock_failed_unauthorized">Failed to unlock. You are not authorized to unlock this zone.</string>
+    <string name="uxsdk_fly_zone_unlock_failed">Failed to unlock. %1$s</string>
+    <string name="uxsdk_fly_zone_warning">Warning</string>
+    <string name="uxsdk_fly_zone_enhanced_warning">Enhanced warning</string>
+    <string name="uxsdk_fly_zone_authorized">Authorized</string>
+    <string name="uxsdk_fly_zone_restricted">Restricted</string>
+    <string name="uxsdk_fly_zone_self_unlock">Self Unlock</string>
+    <string name="uxsdk_fly_zone_custom_unlock">Custom Unlock</string>
+    <string name="uxsdk_self_fly_zone_login_requirement">In order to unlock fly zones you must login with your DJI account. Tap Log in to continue logging in</string>
+    <string name="uxsdk_fly_zone_custom_unlock_aircraft">Custom Unlock on Aircraft</string>
+    <string name="uxsdk_fly_zone_custom_unlock_enabled">Custom Unlock Enabled</string>
+    <string name="uxsdk_custom_fly_zone_duplicate">%1$s is currently enabled. Do you wish you disable it and enable %2$s</string>
+</resources>

@@ -1,5 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2019 DJI
+  ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -18,14 +19,15 @@
   ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
   ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
   ~ SOFTWARE.
+  ~
   -->
 
 <resources>
     <string name="dji_ux_sample_dji_sdk_api_key">YOUR DJI SDK API KEY</string>
     <string name="dji_ux_sample_here_maps_id">YOUR HERE MAPS ID</string>
-    <string name="dji_ux_sample_here_maps_apptoken">YOUR HERE MAPS APP TOKEN</string>
+    <string name="dji_ux_sample_here_maps_app_token">YOUR HERE MAPS APP TOKEN</string>
     <string name="dji_ux_sample_here_maps_license_key">YOUR HERE MAPS LICENSE KEY</string>
     <string name="dji_ux_sample_google_maps_api_key">YOUR GOOGLE MAPS API KEY</string>
     <string name="dji_ux_sample_amaps_api_key">YOUR AMAPS API KEY</string>
-    <string name="dji_ux_sample_mapbox_token">YOUR MAPBOX TOKEN</string>
+    <string name="dji_ux_sample_mapbox_token">YOUR_MAPBOX_TOKEN</string>
 </resources>

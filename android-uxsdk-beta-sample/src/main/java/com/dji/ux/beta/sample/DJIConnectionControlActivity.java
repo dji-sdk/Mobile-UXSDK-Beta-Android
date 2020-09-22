@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2019 DJI
+ * Copyright (c) 2018-2020 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,7 +19,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  *
- *
  */
 
 package com.dji.ux.beta.sample;
@@ -37,7 +36,7 @@ import android.view.View;
  */
 public class DJIConnectionControlActivity extends Activity {
 
-    public static final String ACCESSORY_ATTACHED = "com.dji.ux.beta.sample.ACCESSORY_ATTACHED";
+    public static final String ACCESSORY_ATTACHED = "dji.ux.beta.sample.ACCESSORY_ATTACHED";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +47,7 @@ public class DJIConnectionControlActivity extends Activity {
         if (usbIntent != null) {
             String action = usbIntent.getAction();
             if (UsbManager.ACTION_USB_ACCESSORY_ATTACHED.equals(action)) {
-                Intent attachedIntent=new Intent();
+                Intent attachedIntent = new Intent();
                 attachedIntent.setAction(ACCESSORY_ATTACHED);
                 sendBroadcast(attachedIntent);
             }
