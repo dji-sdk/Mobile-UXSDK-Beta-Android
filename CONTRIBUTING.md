@@ -4,9 +4,9 @@ Our aim is to continue to update the DJI UX SDK, making it easier and better to 
 We are committed to providing an inspiring and welcoming community for everyone. In order to do this, we expect everyone who participates to honor our [code of conduct](https://github.com/dji-sdk/Mobile-UXSDK-Beta-Android/blob/master/CODE_OF_CONDUCT.md).
 
 ## Development
-All work on the existing open source code in the Android UX SDK happens directly on GitHub. Both core team members and external contributors send pull requests for bugs and improvements which go through the same review process. 
+The Android UX SDK team develops new features in an internal repository, which are released alongside with new MSDK releases. The Android UX SDK team is actively working on improving this process to bring over bug fixes and improvements to this open source repository as they are needed. 
 
-For bigger changes like adding a feature or changing a public API, we recommend filing a [Github issue](https://github.com/dji-sdk/Mobile-UXSDK-Beta-Android/issues) which lets us reach an agreement on your proposal before you put significant effort into it. 
+External contributors can send pull requests for bugs and improvements, following the guidelines described in [Branch Organization](#branch-organization). For bigger changes like adding a feature or changing a public API, we recommend filing a [Github issue](https://github.com/dji-sdk/Mobile-UXSDK-Beta-Android/issues) which lets us reach an agreement on your proposal before you put significant effort into it. 
 
 The core team members may add additional features at their discretion after an internal review. 
 
