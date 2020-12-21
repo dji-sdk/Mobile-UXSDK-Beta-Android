@@ -34,20 +34,20 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.core.content.res.use
 import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
+import dji.ux.beta.core.base.SchedulerProvider
 import dji.thirdparty.io.reactivex.functions.Consumer
 import dji.thirdparty.io.reactivex.processors.PublishProcessor
-import dji.ux.beta.R
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.FrameLayoutWidget
-import dji.ux.beta.core.base.SchedulerProvider
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.widget.FrameLayoutWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.getColor
 import dji.ux.beta.core.extension.getDrawable
 import dji.ux.beta.core.extension.getDrawableAndUse
 import dji.ux.beta.core.extension.getString
-import dji.ux.beta.core.widget.vision.VisionWidget.VisionWidgetState
-import dji.ux.beta.core.widget.vision.VisionWidget.VisionWidgetState.*
+import dji.ux.beta.core.widget.vision.VisionWidget.ModelState
+import dji.ux.beta.core.widget.vision.VisionWidget.ModelState.*
+import dji.ux.beta.core.widget.vision.VisionWidget.UIState.VisibilityUpdated
 
 /**
  * Shows the current state of the vision system. There are two different vision systems that are
@@ -60,31 +60,29 @@ open class VisionWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : FrameLayoutWidget<VisionWidgetState>(
+) : FrameLayoutWidget<ModelState>(
         context,
         attrs,
         defStyleAttr
 ), View.OnClickListener {
     //region Fields
-    private val schedulerProvider: SchedulerProvider = SchedulerProvider.getInstance()
     private val visionIconImageView: ImageView = findViewById(R.id.imageview_vision_icon)
-    private val visionMap: MutableMap<VisionWidgetModel.VisionSystemStatus, Drawable?> =
+    private val visionMap: MutableMap<VisionWidgetModel.VisionSystemState, Drawable?> =
             mutableMapOf(
-                    VisionWidgetModel.VisionSystemStatus.NORMAL to getDrawable(R.drawable.uxsdk_ic_topbar_visual_normal),
-                    VisionWidgetModel.VisionSystemStatus.CLOSED to getDrawable(R.drawable.uxsdk_ic_topbar_visual_closed),
-                    VisionWidgetModel.VisionSystemStatus.DISABLED to getDrawable(R.drawable.uxsdk_ic_topbar_visual_error),
-                    VisionWidgetModel.VisionSystemStatus.OMNI_ALL to getDrawable(R.drawable.uxsdk_ic_avoid_normal_all),
-                    VisionWidgetModel.VisionSystemStatus.OMNI_FRONT_BACK to getDrawable(R.drawable.uxsdk_ic_avoid_normal_front_back),
-                    VisionWidgetModel.VisionSystemStatus.OMNI_HORIZONTAL to getDrawable(R.drawable.uxsdk_ic_omni_perception_horizontal),
-                    VisionWidgetModel.VisionSystemStatus.OMNI_VERTICAL to getDrawable(R.drawable.uxsdk_ic_omni_perception_vertical),
-                    VisionWidgetModel.VisionSystemStatus.OMNI_DISABLED to getDrawable(R.drawable.uxsdk_ic_avoid_disable_all),
-                    VisionWidgetModel.VisionSystemStatus.OMNI_CLOSED to getDrawable(R.drawable.uxsdk_ic_avoid_disable_all))
-    private val uiUpdateStateProcessor: PublishProcessor<VisionWidgetUIState> = PublishProcessor.create()
+                    VisionWidgetModel.VisionSystemState.NORMAL to getDrawable(R.drawable.uxsdk_ic_topbar_visual_normal),
+                    VisionWidgetModel.VisionSystemState.CLOSED to getDrawable(R.drawable.uxsdk_ic_topbar_visual_closed),
+                    VisionWidgetModel.VisionSystemState.DISABLED to getDrawable(R.drawable.uxsdk_ic_topbar_visual_error),
+                    VisionWidgetModel.VisionSystemState.OMNI_ALL to getDrawable(R.drawable.uxsdk_ic_avoid_normal_all),
+                    VisionWidgetModel.VisionSystemState.OMNI_FRONT_BACK to getDrawable(R.drawable.uxsdk_ic_avoid_normal_front_back),
+                    VisionWidgetModel.VisionSystemState.OMNI_HORIZONTAL to getDrawable(R.drawable.uxsdk_ic_omni_perception_horizontal),
+                    VisionWidgetModel.VisionSystemState.OMNI_VERTICAL to getDrawable(R.drawable.uxsdk_ic_omni_perception_vertical),
+                    VisionWidgetModel.VisionSystemState.OMNI_DISABLED to getDrawable(R.drawable.uxsdk_ic_avoid_disable_all),
+                    VisionWidgetModel.VisionSystemState.OMNI_CLOSED to getDrawable(R.drawable.uxsdk_ic_avoid_disable_all))
+    private val uiUpdateStateProcessor: PublishProcessor<UIState> = PublishProcessor.create()
 
     private val widgetModel by lazy {
         VisionWidgetModel(DJISDKModel.getInstance(),
-                ObservableInMemoryKeyedStore.getInstance(),
-                schedulerProvider)
+                ObservableInMemoryKeyedStore.getInstance())
     }
 
     /**
@@ -107,7 +105,7 @@ open class VisionWidget @JvmOverloads constructor(
         }
     //endregion
 
-    //region Constructors
+    //region Constructor
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         View.inflate(context, R.layout.uxsdk_widget_vision, this)
     }
@@ -134,41 +132,41 @@ open class VisionWidget @JvmOverloads constructor(
     }
 
     override fun onClick(v: View?) {
-        uiUpdateStateProcessor.onNext(VisionWidgetUIState.WidgetClick)
+        uiUpdateStateProcessor.onNext(UIState.WidgetClicked)
     }
 
     override fun reactToModelChanges() {
-        addReaction(widgetModel.visionSystemStatus
-                .observeOn(schedulerProvider.ui())
+        addReaction(widgetModel.visionSystemState
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateIcon(it) })
         addReaction(widgetModel.isUserAvoidanceEnabled
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { sendWarningMessage(it) })
         addReaction(widgetModel.isVisionSupportedByProduct
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateVisibility(it) })
         addReaction(widgetModel.productConnection
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateIconColor(it) })
     }
     //endregion
 
     //region Reactions
-    private fun updateIcon(visionSystemStatus: VisionWidgetModel.VisionSystemStatus) {
-        visionIconImageView.setImageDrawable(visionMap[visionSystemStatus])
-        widgetStateDataProcessor.onNext(VisionSystemStatusUpdate(visionSystemStatus))
+    private fun updateIcon(visionSystemState: VisionWidgetModel.VisionSystemState) {
+        visionIconImageView.setImageDrawable(visionMap[visionSystemState])
+        widgetStateDataProcessor.onNext(VisionSystemStateUpdated(visionSystemState))
     }
 
     private fun sendWarningMessage(isUserAvoidanceEnabled: Boolean) {
         addDisposable(widgetModel.sendWarningMessage(getString(R.string.uxsdk_visual_radar_avoidance_disabled_message_post),
                 isUserAvoidanceEnabled)
                 .subscribe())
-        widgetStateDataProcessor.onNext(UserAvoidanceEnabledUpdate(isUserAvoidanceEnabled))
+        widgetStateDataProcessor.onNext(UserAvoidanceEnabledUpdated(isUserAvoidanceEnabled))
     }
 
     private fun updateVisibility(isVisionSupported: Boolean) {
         visibility = if (isVisionSupported) View.VISIBLE else View.GONE
-        widgetStateDataProcessor.onNext(VisibilityUpdate(isVisionSupported))
+        uiUpdateStateProcessor.onNext(VisibilityUpdated(isVisionSupported))
     }
 
     private fun updateIconColor(isConnected: Boolean) {
@@ -182,8 +180,8 @@ open class VisionWidget @JvmOverloads constructor(
 
     private fun checkAndUpdateIcon() {
         if (!isInEditMode) {
-            addDisposable(widgetModel.visionSystemStatus.firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+            addDisposable(widgetModel.visionSystemState.firstOrError()
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateIcon(it) }, logErrorConsumer(TAG, "Update Icon ")))
         }
     }
@@ -191,7 +189,7 @@ open class VisionWidget @JvmOverloads constructor(
     private fun checkAndUpdateIconColor() {
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateIconColor(it) }, logErrorConsumer(TAG, "Update Icon Color ")))
         }
     }
@@ -203,37 +201,37 @@ open class VisionWidget @JvmOverloads constructor(
     }
 
     /**
-     * Sets the icon to the given image when the [VisionWidgetModel.VisionSystemStatus] is the
+     * Sets the icon to the given image when the [VisionWidgetModel.VisionSystemState] is the
      * given value.
      *
-     * @param status     The status at which the icon will change to the given image.
+     * @param state     The state at which the icon will change to the given image.
      * @param resourceId The id of the image the icon will change to.
      */
-    fun setVisionIcon(status: VisionWidgetModel.VisionSystemStatus, @DrawableRes resourceId: Int) {
-        setVisionIcon(status, getDrawable(resourceId))
+    fun setVisionIcon(state: VisionWidgetModel.VisionSystemState, @DrawableRes resourceId: Int) {
+        setVisionIcon(state, getDrawable(resourceId))
     }
 
     /**
-     * Sets the icon to the given image when the [VisionWidgetModel.VisionSystemStatus] is the
+     * Sets the icon to the given image when the [VisionWidgetModel.VisionSystemState] is the
      * given value.
      *
-     * @param status   The status at which the icon will change to the given image.
+     * @param state   The state at which the icon will change to the given image.
      * @param drawable The image the icon will change to.
      */
-    fun setVisionIcon(status: VisionWidgetModel.VisionSystemStatus, drawable: Drawable?) {
-        visionMap[status] = drawable
+    fun setVisionIcon(state: VisionWidgetModel.VisionSystemState, drawable: Drawable?) {
+        visionMap[state] = drawable
         checkAndUpdateIcon()
     }
 
     /**
-     * Gets the image that the icon will change to when the [VisionWidgetModel.VisionSystemStatus]
+     * Gets the image that the icon will change to when the [VisionWidgetModel.VisionSystemState]
      * is the given value.
      *
-     * @param status The status at which the icon will change.
-     * @return The image the icon will change to for the given status.
+     * @param state The state at which the icon will change.
+     * @return The image the icon will change to for the given state.
      */
-    fun getVisionIcon(status: VisionWidgetModel.VisionSystemStatus): Drawable? {
-        return visionMap[status]
+    fun getVisionIcon(state: VisionWidgetModel.VisionSystemState): Drawable? {
+        return visionMap[state]
     }
 
     /**
@@ -250,25 +248,25 @@ open class VisionWidget @JvmOverloads constructor(
     private fun initAttributes(context: Context, attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.VisionWidget).use { typedArray ->
             typedArray.getDrawableAndUse(R.styleable.VisionWidget_uxsdk_normalVisionIcon) {
-                setVisionIcon(VisionWidgetModel.VisionSystemStatus.NORMAL, it)
+                setVisionIcon(VisionWidgetModel.VisionSystemState.NORMAL, it)
             }
             typedArray.getDrawableAndUse(R.styleable.VisionWidget_uxsdk_closedVisionIcon) {
-                setVisionIcon(VisionWidgetModel.VisionSystemStatus.CLOSED, it)
+                setVisionIcon(VisionWidgetModel.VisionSystemState.CLOSED, it)
             }
             typedArray.getDrawableAndUse(R.styleable.VisionWidget_uxsdk_disabledVisionIcon) {
-                setVisionIcon(VisionWidgetModel.VisionSystemStatus.DISABLED, it)
+                setVisionIcon(VisionWidgetModel.VisionSystemState.DISABLED, it)
             }
             typedArray.getDrawableAndUse(R.styleable.VisionWidget_uxsdk_omniAllVisionIcon) {
-                setVisionIcon(VisionWidgetModel.VisionSystemStatus.OMNI_ALL, it)
+                setVisionIcon(VisionWidgetModel.VisionSystemState.OMNI_ALL, it)
             }
             typedArray.getDrawableAndUse(R.styleable.VisionWidget_uxsdk_omniFrontBackVisionIcon) {
-                setVisionIcon(VisionWidgetModel.VisionSystemStatus.OMNI_FRONT_BACK, it)
+                setVisionIcon(VisionWidgetModel.VisionSystemState.OMNI_FRONT_BACK, it)
             }
             typedArray.getDrawableAndUse(R.styleable.VisionWidget_uxsdk_omniClosedVisionIcon) {
-                setVisionIcon(VisionWidgetModel.VisionSystemStatus.OMNI_CLOSED, it)
+                setVisionIcon(VisionWidgetModel.VisionSystemState.OMNI_CLOSED, it)
             }
             typedArray.getDrawableAndUse(R.styleable.VisionWidget_uxsdk_omniDisabledVisionIcon) {
-                setVisionIcon(VisionWidgetModel.VisionSystemStatus.OMNI_DISABLED, it)
+                setVisionIcon(VisionWidgetModel.VisionSystemState.OMNI_DISABLED, it)
             }
             typedArray.getDrawableAndUse(R.styleable.VisionWidget_uxsdk_visionIconBackground) {
                 iconBackground = it
@@ -281,52 +279,54 @@ open class VisionWidget @JvmOverloads constructor(
 
     //region Hooks
     /**
-     * Get the [VisionWidgetUIState] updates
+     * Get the [UIState] updates
      */
-    fun getUIStateUpdates(): Flowable<VisionWidgetUIState> {
-        return uiUpdateStateProcessor
+    fun getUIStateUpdates(): Flowable<UIState> {
+        return uiUpdateStateProcessor.onBackpressureBuffer()
+    }
+
+    /**
+     * Get the [ModelState] updates
+     */
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
+        return super.getWidgetStateUpdate()
     }
 
     /**
      * Widget UI update State
      */
-    sealed class VisionWidgetUIState {
+    sealed class UIState {
         /**
          * Widget click update
          */
-        object WidgetClick : VisionWidgetUIState()
-    }
+        object WidgetClicked : UIState()
 
-    /**
-     * Get the [VisionWidgetState] updates
-     */
-    override fun getWidgetStateUpdate(): Flowable<VisionWidgetState> {
-        return super.getWidgetStateUpdate()
+        /**
+         * Is vision supported by product update
+         */
+        data class VisibilityUpdated(val isVisible: Boolean) : UIState()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class VisionWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : VisionWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * Vision system status update
          */
-        data class VisionSystemStatusUpdate(val visionSystemStatus: VisionWidgetModel.VisionSystemStatus) : VisionWidgetState()
+        data class VisionSystemStateUpdated(val visionSystemState: VisionWidgetModel.VisionSystemState) : ModelState()
 
         /**
          * Is user avoidance enabled update
          */
-        data class UserAvoidanceEnabledUpdate(val isUserAvoidanceEnabled: Boolean) : VisionWidgetState()
+        data class UserAvoidanceEnabledUpdated(val isUserAvoidanceEnabled: Boolean) : ModelState()
 
-        /**
-         * Is vision supported by product update
-         */
-        data class VisibilityUpdate(val isVisible: Boolean) : VisionWidgetState()
     }
     //endregion
 

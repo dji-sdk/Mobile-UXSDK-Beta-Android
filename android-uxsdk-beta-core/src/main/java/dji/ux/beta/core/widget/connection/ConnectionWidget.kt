@@ -32,18 +32,18 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.core.content.res.use
 import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
+import dji.ux.beta.core.base.SchedulerProvider
 import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.ux.beta.R
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.FrameLayoutWidget
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.widget.FrameLayoutWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.getDrawable
 import dji.ux.beta.core.extension.getDrawableAndUse
 import dji.ux.beta.core.extension.getString
 import dji.ux.beta.core.extension.imageDrawable
-import dji.ux.beta.core.widget.connection.ConnectionWidget.ConnectionWidgetState
-import dji.ux.beta.core.widget.connection.ConnectionWidget.ConnectionWidgetState.ProductConnected
+import dji.ux.beta.core.widget.connection.ConnectionWidget.ModelState
+import dji.ux.beta.core.widget.connection.ConnectionWidget.ModelState.ProductConnected
 
 private const val TAG = "ConnectionWidget"
 
@@ -54,11 +54,7 @@ open class ConnectionWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : FrameLayoutWidget<ConnectionWidgetState>(
-        context,
-        attrs,
-        defStyleAttr
-) {
+) : FrameLayoutWidget<ModelState>(context, attrs, defStyleAttr) {
 
     //region Fields
     /**
@@ -96,7 +92,7 @@ open class ConnectionWidget @JvmOverloads constructor(
     private val connectivityImageView: ImageView = findViewById(R.id.image_view_connection_status)
     //endregion
 
-    //region Constructors
+    //region Constructor
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         View.inflate(context, R.layout.uxsdk_widget_connection, this)
     }
@@ -123,12 +119,13 @@ open class ConnectionWidget @JvmOverloads constructor(
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.productConnection
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateUI))
     }
 
     //endregion
-    //region private functions
+
+    //region Reactions to model
     private fun updateUI(isConnected: Boolean) {
         widgetStateDataProcessor.onNext(ProductConnected(isConnected))
         connectivityImageView.imageDrawable = if (isConnected) {
@@ -137,11 +134,13 @@ open class ConnectionWidget @JvmOverloads constructor(
             disconnectedIcon
         }
     }
+    //endregion
 
+    //region private helpers
     private fun checkAndUpdateIcon() {
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.lastOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { updateUI(it) }, logErrorConsumer(TAG, "product connection")))
         }
     }
@@ -178,9 +177,7 @@ open class ConnectionWidget @JvmOverloads constructor(
     fun setConnectivityIconBackground(@DrawableRes resourceId: Int) {
         connectivityImageView.setBackgroundResource(resourceId)
     }
-    //endregion
 
-    //region Customization helpers
     @SuppressLint("Recycle")
     private fun initAttributes(context: Context, attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.ConnectionWidget).use { typedArray ->
@@ -200,20 +197,21 @@ open class ConnectionWidget @JvmOverloads constructor(
     //region Hooks
 
     /**
-     * Get the [ConnectionWidgetState] updates
+     * Get the [ModelState] updates
      */
-    override fun getWidgetStateUpdate(): Flowable<ConnectionWidgetState> {
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
         return super.getWidgetStateUpdate()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class ConnectionWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : ConnectionWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
     }
     //endregion
 }

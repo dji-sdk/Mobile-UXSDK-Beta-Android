@@ -52,11 +52,11 @@ import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.Single;
 import dji.thirdparty.io.reactivex.SingleOnSubscribe;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.SchedulerProviderInterface;
+import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.UXSDKError;
 import dji.ux.beta.core.base.UXSDKErrorDescription;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
 
 /**
@@ -68,7 +68,7 @@ import dji.ux.beta.core.util.DataProcessor;
 public class MapWidgetModel extends WidgetModel {
 
     public static final double INVALID_COORDINATE = 181;  //valid longitude range is -180 to 180.
-    //region fields
+    //region Fields
     private static final String TAG = "MapWidgetModel";
     private static final int FIRST_TIME_DELAY = 3;
     private final DataProcessor<LocationCoordinate3D> aircraftLocationDataProcessor;
@@ -81,14 +81,12 @@ public class MapWidgetModel extends WidgetModel {
     private List<FlyZoneInformation> flyZoneList;
     private List<CustomUnlockZone> customFlyZoneList;
     private Map<Integer, CustomUnlockZone> customUnlockZoneMap;
-    private SchedulerProviderInterface schedulerProvider;
     private boolean isFirstFlyZoneListRequest = true;
     //endregion
 
     //region life-cycle
     public MapWidgetModel(@NonNull DJISDKModel djiSdkModel,
-                          @NonNull ObservableInMemoryKeyedStore keyedStore,
-                          @NonNull SchedulerProviderInterface schedulerProvider) {
+                          @NonNull ObservableInMemoryKeyedStore keyedStore) {
         super(djiSdkModel, keyedStore);
         aircraftLocationDataProcessor =
                 DataProcessor.create(new LocationCoordinate3D(INVALID_COORDINATE, INVALID_COORDINATE, -1f));
@@ -102,7 +100,6 @@ public class MapWidgetModel extends WidgetModel {
         flyZoneList = new ArrayList<>();
         customUnlockZoneMap = new HashMap<>();
         customFlyZoneList = new ArrayList<>();
-        this.schedulerProvider = schedulerProvider;
     }
 
     @Override
@@ -202,10 +199,10 @@ public class MapWidgetModel extends WidgetModel {
                 });
         if (isFirstFlyZoneListRequest) {
             isFirstFlyZoneListRequest = false;
-            return Single.timer(FIRST_TIME_DELAY, TimeUnit.SECONDS, schedulerProvider.computation())
+            return Single.timer(FIRST_TIME_DELAY, TimeUnit.SECONDS, SchedulerProvider.computation())
                     .flatMap(aLong -> flyZoneListSingle);
         } else {
-            return flyZoneListSingle.subscribeOn(schedulerProvider.computation());
+            return flyZoneListSingle.subscribeOn(SchedulerProvider.computation());
         }
     }
 
@@ -249,7 +246,7 @@ public class MapWidgetModel extends WidgetModel {
                     }
                 }
             });
-        }).subscribeOn(schedulerProvider.computation());
+        }).subscribeOn(SchedulerProvider.computation());
     }
 
     /**
@@ -295,7 +292,7 @@ public class MapWidgetModel extends WidgetModel {
                     }
                 }
             });
-        }).subscribeOn(schedulerProvider.computation());
+        }).subscribeOn(SchedulerProvider.computation());
     }
 
     /**
@@ -331,7 +328,7 @@ public class MapWidgetModel extends WidgetModel {
                     }
                 }
             });
-        }).subscribeOn(schedulerProvider.computation());
+        }).subscribeOn(SchedulerProvider.computation());
     }
 
     /**
@@ -427,7 +424,7 @@ public class MapWidgetModel extends WidgetModel {
                             }
                         }
                     });
-        }).subscribeOn(schedulerProvider.computation());
+        }).subscribeOn(SchedulerProvider.computation());
     }
 
     private Single<List<FlyZoneInformation>> getSelfUnlockedFlyZones() {
@@ -457,7 +454,7 @@ public class MapWidgetModel extends WidgetModel {
                     }
                 }
             });
-        }).subscribeOn(schedulerProvider.computation());
+        }).subscribeOn(SchedulerProvider.computation());
     }
 
     private FlyZoneManager getFlyZoneManager() {

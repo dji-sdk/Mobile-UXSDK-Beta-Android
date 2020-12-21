@@ -42,14 +42,15 @@ import androidx.annotation.StyleRes;
 import java.util.HashMap;
 import java.util.Map;
 
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.CameraColor;
 import dji.common.camera.SettingsDefinitions.CameraMode;
 import dji.common.camera.SettingsDefinitions.SDCardOperationState;
 import dji.common.camera.SettingsDefinitions.StorageLocation;
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.SchedulerProvider;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.CameraUtil;
 import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
@@ -73,7 +74,7 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     private String[] cameraColorNameArray;
     //endregion
 
-    //region Constructors
+    //region Constructor
     public CameraConfigStorageWidget(@NonNull Context context) {
         super(context);
     }
@@ -130,15 +131,15 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getImageFormat()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateImageFormatText, logErrorConsumer(TAG, "reactToUpdateImageFormat")));
 
         addReaction(widgetModel.getCameraStorageState()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateStatus, logErrorConsumer(TAG, "reactToUpdateStatus")));
 
         addReaction(widgetModel.getCameraColor()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateColor, logErrorConsumer(TAG, "reactToUpdateColor")));
     }
     //endregion
@@ -216,7 +217,7 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     private void checkAndUpdateForegroundImage() {
         if (!isInEditMode()) {
             addDisposable(widgetModel.getCameraStorageState().firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(this::updateForegroundDrawable, logErrorConsumer(TAG, "checkAndUpdateForegroundImage")));
         }
     }
@@ -355,7 +356,30 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
      * @param cameraIndex {@link SettingDefinitions.CameraIndex}
      */
     public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
+        if (!isInEditMode()) {
+            widgetModel.setCameraIndex(cameraIndex);
+        }
+    }
+
+    /**
+     * Get the current type of the lens the widget is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    /**
+     * Set the type of the lens for which the widget should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        if (!isInEditMode()) {
+            widgetModel.setLensType(lensType);
+        }
     }
 
     /**
@@ -841,9 +865,8 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigStorageWidget);
 
-        if (!isInEditMode()) {
-            setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigStorageWidget_uxsdk_cameraIndex, 0)));
-        }
+        setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigStorageWidget_uxsdk_cameraIndex, 0)));
+        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigStorageWidget_uxsdk_lensType, 0)));
 
         if (typedArray.getDrawable(R.styleable.CameraConfigStorageWidget_uxsdk_internalStorageNotInsertedIcon) != null) {
             setInternalStorageIcon(StorageIconState.NOT_INSERTED, typedArray.getDrawable(R.styleable.CameraConfigStorageWidget_uxsdk_internalStorageNotInsertedIcon));

@@ -28,6 +28,8 @@
     <string name="uxsdk_fly_zone_unlock_end_time">Currently unlocked and expires at %1$s</string>
     <string name="uxsdk_fly_zone_unlock_failed_unauthorized">Failed to unlock. You are not authorized to unlock this zone.</string>
     <string name="uxsdk_fly_zone_unlock_failed">Failed to unlock. %1$s</string>
+    <string name="uxsdk_fly_zone_login_failed">Failed to login. You are not authorized to perform this action.</string>
+    <string name="uxsdk_fly_zone_login_failed_error">Something went wrong. Failed to login. Please try again later.</string>
     <string name="uxsdk_fly_zone_warning">Warning</string>
     <string name="uxsdk_fly_zone_enhanced_warning">Enhanced warning</string>
     <string name="uxsdk_fly_zone_authorized">Authorized</string>

@@ -30,12 +30,11 @@ import dji.keysdk.FlightControllerKey
 import dji.thirdparty.io.reactivex.Completable
 import dji.thirdparty.io.reactivex.Flowable
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.SchedulerProviderInterface
 import dji.ux.beta.core.base.WidgetModel
-import dji.ux.beta.core.base.uxsdkkeys.MessagingKeys
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
-import dji.ux.beta.core.base.uxsdkkeys.UXKey
-import dji.ux.beta.core.base.uxsdkkeys.UXKeys
+import dji.ux.beta.core.communication.MessagingKeys
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.UXKey
+import dji.ux.beta.core.communication.UXKeys
 import dji.ux.beta.core.model.WarningMessage
 import dji.ux.beta.core.model.WarningMessageError
 import dji.ux.beta.core.util.DataProcessor
@@ -44,15 +43,16 @@ import dji.ux.beta.core.util.DataProcessor
  * Widget Model for the [AirSenseWidget] used to define
  * the underlying logic and communication
  */
-class AirSenseWidgetModel(djiSdkModel: DJISDKModel,
-                          private val keyedStore: ObservableInMemoryKeyedStore,
-                          private val schedulerProvider: SchedulerProviderInterface) : WidgetModel(djiSdkModel, keyedStore) {
+class AirSenseWidgetModel @JvmOverloads constructor(
+        djiSdkModel: DJISDKModel,
+        private val keyedStore: ObservableInMemoryKeyedStore
+) : WidgetModel(djiSdkModel, keyedStore) {
     //region Fields
     private val airSenseConnectedProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val airSenseWarningLevelProcessor: DataProcessor<AirSenseWarningLevel> = DataProcessor.create(AirSenseWarningLevel.UNKNOWN)
     private val airSenseAirplaneStatesProcessor: DataProcessor<Array<AirSenseAirplaneState>> = DataProcessor.create(emptyArray())
     private val sendWarningMessageKey: UXKey = UXKeys.create(MessagingKeys.SEND_WARNING_MESSAGE)
-    private val airSenseStatusProcessor: DataProcessor<AirSenseStatus> = DataProcessor.create(AirSenseStatus.DISCONNECTED)
+    private val airSenseStateProcessor: DataProcessor<AirSenseState> = DataProcessor.create(AirSenseState.DISCONNECTED)
     //endregion
 
     //region Data
@@ -65,8 +65,8 @@ class AirSenseWidgetModel(djiSdkModel: DJISDKModel,
     /**
      * Get the number of airplanes detected by AirSense
      */
-    val airSenseStatus: Flowable<AirSenseStatus>
-        get() = airSenseStatusProcessor.toFlowable()
+    val airSenseState: Flowable<AirSenseState>
+        get() = airSenseStateProcessor.toFlowable()
     //endregion
 
     //region Actions
@@ -103,7 +103,6 @@ class AirSenseWidgetModel(djiSdkModel: DJISDKModel,
                 .action(action)
         val warningMessage = builder.build()
         return keyedStore.setValue(sendWarningMessageKey, warningMessage)
-                .subscribeOn(schedulerProvider.io())
     }
 
     //endregion
@@ -123,21 +122,21 @@ class AirSenseWidgetModel(djiSdkModel: DJISDKModel,
     }
 
     override fun updateStates() {
-        airSenseStatusProcessor.onNext(
+        airSenseStateProcessor.onNext(
                 if (!productConnectionProcessor.value) {
-                    AirSenseStatus.DISCONNECTED
+                    AirSenseState.DISCONNECTED
                 } else if (!airSenseConnectedProcessor.value) {
-                    AirSenseStatus.NO_AIR_SENSE_CONNECTED
+                    AirSenseState.NO_AIR_SENSE_CONNECTED
                 } else if (airSenseAirplaneStatesProcessor.value.isEmpty()) {
-                    AirSenseStatus.NO_AIRPLANES_NEARBY
+                    AirSenseState.NO_AIRPLANES_NEARBY
                 } else {
                     when (airSenseWarningLevelProcessor.value) {
-                        AirSenseWarningLevel.LEVEL_0 -> AirSenseStatus.WARNING_LEVEL_0
-                        AirSenseWarningLevel.LEVEL_1 -> AirSenseStatus.WARNING_LEVEL_1
-                        AirSenseWarningLevel.LEVEL_2 -> AirSenseStatus.WARNING_LEVEL_2
-                        AirSenseWarningLevel.LEVEL_3 -> AirSenseStatus.WARNING_LEVEL_3
-                        AirSenseWarningLevel.LEVEL_4 -> AirSenseStatus.WARNING_LEVEL_4
-                        else -> AirSenseStatus.UNKNOWN
+                        AirSenseWarningLevel.LEVEL_0 -> AirSenseState.WARNING_LEVEL_0
+                        AirSenseWarningLevel.LEVEL_1 -> AirSenseState.WARNING_LEVEL_1
+                        AirSenseWarningLevel.LEVEL_2 -> AirSenseState.WARNING_LEVEL_2
+                        AirSenseWarningLevel.LEVEL_3 -> AirSenseState.WARNING_LEVEL_3
+                        AirSenseWarningLevel.LEVEL_4 -> AirSenseState.WARNING_LEVEL_4
+                        else -> AirSenseState.UNKNOWN
                     }
                 }
         )
@@ -148,7 +147,7 @@ class AirSenseWidgetModel(djiSdkModel: DJISDKModel,
     /**
      * The status of the AirSense system.
      */
-    enum class AirSenseStatus {
+    enum class AirSenseState {
         /**
          * There is no product connected.
          */

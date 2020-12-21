@@ -74,19 +74,23 @@ import dji.log.DJILog;
 import dji.sdk.util.LocationUtil;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.Single;
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.OnStateChangeCallback;
 import dji.ux.beta.core.base.SchedulerProvider;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.OnStateChangeCallback;
 import dji.ux.beta.core.util.MathUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.ViewUtil;
 import dji.ux.beta.core.widget.useraccount.UserAccountLoginWidget;
 import dji.ux.beta.map.R;
 
+/**
+ * MapWidget displays the aircraft's state and information on the map. This
+ * includes aircraft location, home location, aircraft trail path, aircraft
+ * heading, and No Fly Zones. It also provides the user with options to unlock some Fly Zones.
+ */
 public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchListener, OnStateChangeCallback, FlyZoneActionListener {
 
     //region  Constants
@@ -119,7 +123,6 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     private boolean isAutoFrameMapBounds = false;
     private DJIMap.MapType mapType;
     private UserAccountLoginWidget userAccountLoginWidget;
-    private SchedulerProvider schedulerProvider;
     private DJIMap.OnMarkerClickListener onMarkerClickListener;
 
     //endregion
@@ -171,7 +174,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
 
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public MapWidget(@NonNull Context context) {
         super(context);
     }
@@ -190,12 +193,10 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         legendGroup = findViewById(R.id.constraint_group_legend);
         userAccountLoginWidget = findViewById(R.id.widget_login);
         userAccountLoginWidget.setOnStateChangeCallback(this);
-        schedulerProvider = SchedulerProvider.getInstance();
 
         if (!isInEditMode()) {
             widgetModel = new MapWidgetModel(DJISDKModel.getInstance(),
-                    ObservableInMemoryKeyedStore.getInstance(),
-                    schedulerProvider);
+                    ObservableInMemoryKeyedStore.getInstance());
             flyZoneHelper = new FlyZoneHelper(context, this, this);
         }
 
@@ -207,14 +208,14 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
 
     @Override
     protected void reactToModelChanges() {
-        addReaction(widgetModel.getProductConnection().observeOn(schedulerProvider.ui()).subscribe(connected -> {
+        addReaction(widgetModel.getProductConnection().observeOn(SchedulerProvider.ui()).subscribe(connected -> {
             if (connected) {
                 addReaction(reactToHeadingChanges());
                 addReaction(widgetModel.getHomeLocation()
-                        .observeOn(schedulerProvider.ui())
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(MapWidget.this::updateHomeLocation));
                 addReaction(widgetModel.getAircraftLocation()
-                        .observeOn(schedulerProvider.ui())
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(MapWidget.this::updateAircraftLocation));
             }
         }));
@@ -328,7 +329,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     @Override
     public void requestSelfUnlock(@NonNull ArrayList<Integer> arrayList) {
         addDisposable(widgetModel.unlockFlyZone(arrayList)
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::getFlyZoneList, error -> {
                     Toast.makeText(getContext(),
                             getResources().getString(R.string.uxsdk_fly_zone_unlock_failed, error.getMessage()),
@@ -345,7 +346,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     @Override
     public void requestEnableFlyZone(@NonNull CustomUnlockZone customUnlockZone) {
         addDisposable(widgetModel.enableCustomUnlockZoneOnAircraft(customUnlockZone)
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::requestCustomUnlockZonesFromServer,
                         logErrorConsumer(TAG, "request enable fly zone ")));
     }
@@ -353,7 +354,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     @Override
     public void requestDisableFlyZone() {
         addDisposable(widgetModel.disableCustomUnlockZoneOnAircraft()
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::requestCustomUnlockZonesFromServer,
                         logErrorConsumer(TAG, "request disable fly zone ")));
     }
@@ -542,7 +543,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     private Disposable reactToHeadingChanges() {
         return Flowable.combineLatest(widgetModel.getAircraftHeading(),
                 widgetModel.getGimbalHeading(), Pair::create)
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> {
                     updateAircraftHeading(values.first);
                     setGimbalHeading(values.first, values.second);
@@ -643,7 +644,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
 
     private void getFlyZoneList() {
         addDisposable(widgetModel.getFlyZoneList()
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::onFlyZoneListUpdate,
                         logErrorConsumer(TAG, "get fly zone list  ")));
     }
@@ -1023,12 +1024,22 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     /**
      * Perform common initialization steps after the specific provider's map has finished initializing
      */
+    @SuppressWarnings("SameReturnValue")
     private void postInit(OnMapReadyListener listener) {
         updateHomeCountry();
-        if (listener != null) {
-            listener.onMapReady(map);
-        }
-        map.setMapType(mapType);
+        map.setMapType(mapType, () -> {
+            Single<LocationCoordinate3D> aircraftLocation = widgetModel.getAircraftLocation().firstOrError();
+            Single<LocationCoordinate2D> homeLocation = widgetModel.getHomeLocation().firstOrError();
+            addDisposable(Single.zip(aircraftLocation, homeLocation, Pair::new)
+                    .observeOn(SchedulerProvider.ui())
+                    .subscribe(pair -> {
+                        updateAircraftLocation(pair.first);
+                        updateHomeLocation(pair.second);
+                        if (listener != null) {
+                            listener.onMapReady(map);
+                        }
+                    }, logErrorConsumer(TAG, "updateAircraftAndHomeLocation")));
+        });
         map.setOnMarkerClickListener(marker -> {
             String title = marker.getTitle();
             if (title != null && title.length() > 0
@@ -1045,11 +1056,11 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         });
         addDisposable(widgetModel.getAircraftLocation()
                 .firstOrError()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateAircraftLocation, logErrorConsumer(TAG, "updateAircraftLocation")));
         addDisposable(widgetModel.getHomeLocation()
                 .firstOrError()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateHomeLocation, logErrorConsumer(TAG, "updateHomeLocation")));
     }
 
@@ -1496,7 +1507,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         if (flyZoneHelper.isUserAuthorized()) {
             addDisposable(Single.zip(widgetModel.getCustomUnlockZonesFromServer(),
                     widgetModel.getCustomUnlockZonesFromAircraft(), Pair::new)
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(result -> flyZoneHelper.onCustomUnlockZoneUpdate(result.second, result.first),
                             logErrorConsumer(TAG, "get custom unlock zones ")));
         }
@@ -1508,7 +1519,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
     public void syncCustomUnlockZonesToAircraft() {
         if (flyZoneHelper.isUserAuthorized()) {
             addDisposable(widgetModel.syncZonesToAircraft()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(this::requestCustomUnlockZonesFromServer,
                             logErrorConsumer(TAG, "sync custom unlock zones ")));
         }
@@ -1580,9 +1591,18 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
             this.index = index;
         }
 
+        private static MapCenterLock[] values;
+
+        public static MapCenterLock[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
         @NonNull
         public static MapCenterLock find(@IntRange(from = -1, to = 2) int index) {
-            for (MapCenterLock mapCenterLock : MapCenterLock.values()) {
+            for (MapCenterLock mapCenterLock : MapCenterLock.getValues()) {
                 if (mapCenterLock.getIndex() == index) {
                     return mapCenterLock;
                 }

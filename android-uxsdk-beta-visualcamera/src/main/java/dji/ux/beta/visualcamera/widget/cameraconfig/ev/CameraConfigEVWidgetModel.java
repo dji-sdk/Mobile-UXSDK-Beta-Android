@@ -26,6 +26,7 @@ package dji.ux.beta.visualcamera.widget.cameraconfig.ev;
 import androidx.annotation.NonNull;
 
 import dji.common.camera.ExposureSettings;
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.Aperture;
 import dji.common.camera.SettingsDefinitions.ExposureCompensation;
 import dji.common.camera.SettingsDefinitions.ExposureMode;
@@ -36,7 +37,7 @@ import dji.keysdk.DJIKey;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions;
 
@@ -52,6 +53,7 @@ public class CameraConfigEVWidgetModel extends WidgetModel {
     private DataProcessor<ExposureSensitivityMode> exposureSensitivityModeProcessor;
     private DataProcessor<ExposureCompensation> consolidatedExposureCompensationProcessor;
     private int cameraIndex;
+    private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.ZOOM;
     //endregion
 
     //region Constructor
@@ -93,6 +95,26 @@ public class CameraConfigEVWidgetModel extends WidgetModel {
     }
 
     /**
+     * Get the current type of the lens the widget model is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return lensType;
+    }
+
+    /**
+     * Set the type of the lens for which the widget model should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        this.lensType = lensType;
+        restart();
+    }
+
+    /**
      * Get the exposure sensitivity mode.
      *
      * @return Flowable for the DataProcessor that user should subscribe to.
@@ -114,9 +136,9 @@ public class CameraConfigEVWidgetModel extends WidgetModel {
     //region Lifecycle
     @Override
     protected void inSetup() {
-        DJIKey exposureSettingsKey = CameraKey.create(CameraKey.EXPOSURE_SETTINGS, cameraIndex);
-        DJIKey exposureModeKey = CameraKey.create(CameraKey.EXPOSURE_MODE, cameraIndex);
-        DJIKey exposureCompensationKey = CameraKey.create(CameraKey.EXPOSURE_COMPENSATION, cameraIndex);
+        DJIKey exposureSettingsKey = djiSdkModel.createLensKey(CameraKey.EXPOSURE_SETTINGS, cameraIndex, lensType.value());
+        DJIKey exposureModeKey = djiSdkModel.createLensKey(CameraKey.EXPOSURE_MODE, cameraIndex, lensType.value());
+        DJIKey exposureCompensationKey = djiSdkModel.createLensKey(CameraKey.EXPOSURE_COMPENSATION, cameraIndex, lensType.value());
         DJIKey exposureSensitivityModeKey = CameraKey.create(CameraKey.EXPOSURE_SENSITIVITY_MODE, cameraIndex);
 
         bindDataProcessor(exposureSettingsKey, exposureSettingsProcessor);

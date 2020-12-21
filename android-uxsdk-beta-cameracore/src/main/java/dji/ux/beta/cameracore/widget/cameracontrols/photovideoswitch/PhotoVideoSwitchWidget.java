@@ -34,13 +34,11 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import dji.common.camera.SettingsDefinitions.CameraMode;
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.FrameLayoutWidget;
 import dji.ux.beta.core.base.SchedulerProvider;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.widget.FrameLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
 /**
@@ -48,16 +46,15 @@ import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
  */
 public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.OnClickListener {
 
-    //region fields
+    //region Fields
     private static final String TAG = "PhotoVideoSwitchWidget";
     private ImageView foregroundImageView;
     private Drawable photoModeDrawable;
     private Drawable videoModeDrawable;
     private PhotoVideoSwitchWidgetModel widgetModel;
-    private SchedulerProvider schedulerProvider;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public PhotoVideoSwitchWidget(@NonNull Context context) {
         super(context);
     }
@@ -74,12 +71,10 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
     protected void initView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.uxsdk_widget_photo_video_switch, this);
         foregroundImageView = findViewById(R.id.image_view_foreground);
-        schedulerProvider = SchedulerProvider.getInstance();
         if (!isInEditMode()) {
             widgetModel =
                     new PhotoVideoSwitchWidgetModel(DJISDKModel.getInstance(),
-                            ObservableInMemoryKeyedStore.getInstance(),
-                            schedulerProvider);
+                            ObservableInMemoryKeyedStore.getInstance());
             setOnClickListener(this);
         }
         photoModeDrawable = getResources().getDrawable(R.drawable.uxsdk_ic_camera_mode_photo);
@@ -109,12 +104,12 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
     protected void reactToModelChanges() {
         addReaction(
                 widgetModel.isEnabled()
-                        .observeOn(schedulerProvider.ui())
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(this::enableWidget));
 
         addReaction(
-                widgetModel.getCameraMode()
-                        .observeOn(schedulerProvider.ui())
+                widgetModel.isPictureMode()
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(this::updateUI));
     }
 
@@ -127,7 +122,7 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
     @Override
     public void onClick(View v) {
         addDisposable(widgetModel.toggleCameraMode()
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(
                         () -> {
                         }, logErrorConsumer(TAG, "Switch camera Mode")
@@ -152,11 +147,11 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
         typedArray.recycle();
     }
 
-    private void updateUI(CameraMode cameraMode) {
-        if (cameraMode == CameraMode.RECORD_VIDEO) {
-            foregroundImageView.setImageDrawable(videoModeDrawable);
-        } else if (cameraMode == CameraMode.SHOOT_PHOTO) {
+    private void updateUI(boolean isPictureMode) {
+        if (isPictureMode) {
             foregroundImageView.setImageDrawable(photoModeDrawable);
+        } else {
+            foregroundImageView.setImageDrawable(videoModeDrawable);
         }
     }
 
@@ -166,8 +161,8 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
 
     private void checkAndUpdateUI() {
         if (!isInEditMode()) {
-            addDisposable(widgetModel.getCameraMode().firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+            addDisposable(widgetModel.isPictureMode().firstOrError()
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(this::updateUI, logErrorConsumer(TAG, "Update UI ")));
         }
     }

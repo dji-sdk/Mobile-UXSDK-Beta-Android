@@ -103,7 +103,6 @@
     <color name="uxsdk_user_account_login_widget_background">#1FA3F6</color>
     <color name="uxsdk_user_account_login_widget_pressed_background">#801FA3F6</color>
 
-
     <!--BatteryWidget-->
     <color name="uxsdk_battery_healthy">@color/uxsdk_green</color>
     <color name="uxsdk_battery_overheating">@color/uxsdk_yellow_500</color>

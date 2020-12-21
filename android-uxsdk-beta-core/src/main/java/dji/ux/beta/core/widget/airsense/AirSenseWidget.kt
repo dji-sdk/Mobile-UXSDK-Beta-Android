@@ -53,22 +53,21 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.res.use
 import dji.common.flightcontroller.adsb.AirSenseWarningLevel
 import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
+import dji.ux.beta.core.base.SchedulerProvider
 import dji.thirdparty.io.reactivex.functions.Consumer
 import dji.thirdparty.io.reactivex.processors.PublishProcessor
-import dji.ux.beta.R
-import dji.ux.beta.core.base.ConstraintLayoutWidget
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.GlobalPreferencesManager
-import dji.ux.beta.core.base.SchedulerProvider
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
+import dji.ux.beta.core.communication.GlobalPreferencesManager
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
 import dji.ux.beta.core.util.ViewUtil
-import dji.ux.beta.core.widget.airsense.AirSenseWidget.AirSenseWidgetState
-import dji.ux.beta.core.widget.airsense.AirSenseWidget.AirSenseWidgetState.*
-import dji.ux.beta.core.widget.airsense.AirSenseWidget.AirSenseWidgetUIState.*
-import dji.ux.beta.core.widget.airsense.AirSenseWidgetModel.AirSenseStatus
+import dji.ux.beta.core.widget.airsense.AirSenseWidget.ModelState
+import dji.ux.beta.core.widget.airsense.AirSenseWidget.ModelState.*
+import dji.ux.beta.core.widget.airsense.AirSenseWidget.UIState.*
+import dji.ux.beta.core.widget.airsense.AirSenseWidgetModel.AirSenseState
 
 /**
  * Widget that displays an icon representing whether there are any aircraft nearby and how likely
@@ -92,27 +91,26 @@ open class AirSenseWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<AirSenseWidgetState>(context, attrs, defStyleAttr) {
+) : ConstraintLayoutWidget<ModelState>(context, attrs, defStyleAttr) {
 
     //region Fields
     private val airSenseImageView: ImageView = findViewById(R.id.imageview_air_sense)
-    private val colorMap: MutableMap<AirSenseStatus, Int> =
+    private val colorMap: MutableMap<AirSenseState, Int> =
             mutableMapOf(
-                    AirSenseStatus.DISCONNECTED to getColor(R.color.uxsdk_gray_58),
-                    AirSenseStatus.NO_AIR_SENSE_CONNECTED to getColor(R.color.uxsdk_gray_58),
-                    AirSenseStatus.NO_AIRPLANES_NEARBY to getColor(R.color.uxsdk_gray_58),
-                    AirSenseStatus.WARNING_LEVEL_0 to getColor(R.color.uxsdk_white),
-                    AirSenseStatus.WARNING_LEVEL_1 to getColor(R.color.uxsdk_blue_highlight),
-                    AirSenseStatus.WARNING_LEVEL_2 to getColor(R.color.uxsdk_yellow_500),
-                    AirSenseStatus.WARNING_LEVEL_3 to getColor(R.color.uxsdk_red_500),
-                    AirSenseStatus.WARNING_LEVEL_4 to getColor(R.color.uxsdk_red_500))
+                    AirSenseState.DISCONNECTED to getColor(R.color.uxsdk_gray_58),
+                    AirSenseState.NO_AIR_SENSE_CONNECTED to getColor(R.color.uxsdk_gray_58),
+                    AirSenseState.NO_AIRPLANES_NEARBY to getColor(R.color.uxsdk_gray_58),
+                    AirSenseState.WARNING_LEVEL_0 to getColor(R.color.uxsdk_white),
+                    AirSenseState.WARNING_LEVEL_1 to getColor(R.color.uxsdk_blue_highlight),
+                    AirSenseState.WARNING_LEVEL_2 to getColor(R.color.uxsdk_yellow_500),
+                    AirSenseState.WARNING_LEVEL_3 to getColor(R.color.uxsdk_red_500),
+                    AirSenseState.WARNING_LEVEL_4 to getColor(R.color.uxsdk_red_500))
     private val blinkAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.uxsdk_anim_blink)
     private var warningDialogDisplayed: Boolean = false
-    private val uiUpdateStateProcessor: PublishProcessor<AirSenseWidgetUIState> = PublishProcessor.create()
+    private val uiUpdateStateProcessor: PublishProcessor<UIState> = PublishProcessor.create()
     private val widgetModel by lazy {
         AirSenseWidgetModel(DJISDKModel.getInstance(),
-                ObservableInMemoryKeyedStore.getInstance(),
-                SchedulerProvider.getInstance())
+                ObservableInMemoryKeyedStore.getInstance())
     }
 
     var airSenseDisconnectedStateIcon: Drawable? = getDrawable(R.drawable.uxsdk_ic_topbar_adsb_disconnected)
@@ -200,7 +198,7 @@ open class AirSenseWidget @JvmOverloads constructor(
     var checkBoxTextSize: Float = 0f
     //endregion
 
-    //region Constructors
+    //region Constructor
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         View.inflate(context, R.layout.uxsdk_widget_air_sense, this)
     }
@@ -227,13 +225,13 @@ open class AirSenseWidget @JvmOverloads constructor(
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.airSenseWarningLevel
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateAirSenseWarningLevel(it) })
-        addReaction(widgetModel.airSenseStatus
-                .observeOn(AndroidSchedulers.mainThread())
+        addReaction(widgetModel.airSenseState
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateIcon(it) })
         addReaction(widgetModel.productConnection
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { widgetStateDataProcessor.onNext(ProductConnected(it)) })
     }
 
@@ -247,27 +245,27 @@ open class AirSenseWidget @JvmOverloads constructor(
                 && warningLevel != AirSenseWarningLevel.UNKNOWN) {
             showWarningDialog()
         }
-        widgetStateDataProcessor.onNext(AirSenseWarningLevelUpdate(warningLevel))
+        widgetStateDataProcessor.onNext(AirSenseWarningLevelUpdated(warningLevel))
     }
 
-    private fun updateIcon(status: AirSenseStatus) {
-        visibility = if (status == AirSenseStatus.NO_AIR_SENSE_CONNECTED) GONE else VISIBLE
+    private fun updateIcon(state: AirSenseState) {
+        visibility = if (state == AirSenseState.NO_AIR_SENSE_CONNECTED) GONE else VISIBLE
         airSenseImageView.imageDrawable =
-                if (status == AirSenseStatus.DISCONNECTED) {
+                if (state == AirSenseState.DISCONNECTED) {
                     airSenseDisconnectedStateIcon
                 } else {
                     airSenseConnectedStateIcon
                 }
 
-        if (colorMap.containsKey(status)) {
-            ViewUtil.tintImage(airSenseImageView, getAirSenseIconTintColor(status))
+        if (colorMap.containsKey(state)) {
+            ViewUtil.tintImage(airSenseImageView, getAirSenseIconTintColor(state))
         }
-        if (status == AirSenseStatus.WARNING_LEVEL_4) {
+        if (state == AirSenseState.WARNING_LEVEL_4) {
             airSenseImageView.startAnimation(blinkAnimation)
         } else {
             airSenseImageView.clearAnimation()
         }
-        widgetStateDataProcessor.onNext(AirSenseStatusUpdate(status))
+        widgetStateDataProcessor.onNext(AirSenseStateUpdated(state))
     }
 
     private fun updateWarningMessages(warningLevel: AirSenseWarningLevel) {
@@ -301,21 +299,22 @@ open class AirSenseWidget @JvmOverloads constructor(
 
     private fun onWarningDialogClosed() {
         warningDialogDisplayed = false
-        uiUpdateStateProcessor.onNext(WarningDialogDismiss)
+        uiUpdateStateProcessor.onNext(WarningDialogDismissed)
     }
 
+    @SuppressLint("InflateParams")
     private fun createTermsView(): View {
         val termsView = if (warningDialogTheme != 0) {
             val ctw = ContextThemeWrapper(context, warningDialogTheme)
             val inflater: LayoutInflater = ctw.getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            inflater.inflate(R.layout.uxsdk_layout_terms_view, null)
+            inflater.inflate(R.layout.uxsdk_layout_dialog_checkbox, null)
         } else {
-            View.inflate(context, R.layout.uxsdk_layout_terms_view, null)
+            View.inflate(context, R.layout.uxsdk_layout_dialog_checkbox, null)
         }
         val dontShowAgainCheckBox = termsView.findViewById<CheckBox>(R.id.checkbox_dont_show_again)
         dontShowAgainCheckBox.setOnCheckedChangeListener { _: CompoundButton?, checked: Boolean ->
             GlobalPreferencesManager.getInstance().isAirSenseTermsNeverShown = checked
-            uiUpdateStateProcessor.onNext(DontShowAgainCheckBoxTap(checked))
+            uiUpdateStateProcessor.onNext(NeverShowAgainCheckChanged(checked))
         }
         if (checkBoxTextAppearance != INVALID_RESOURCE) {
             dontShowAgainCheckBox.setTextAppearance(context, checkBoxTextAppearance)
@@ -329,12 +328,12 @@ open class AirSenseWidget @JvmOverloads constructor(
         if (checkBoxTextSize != INVALID_DIMENSION) {
             dontShowAgainCheckBox.textSize = checkBoxTextSize
         }
-        val termsLinkTextView = termsView.findViewById<TextView>(R.id.textview_terms_link)
+        val termsLinkTextView = termsView.findViewById<TextView>(R.id.textview_dialog_content)
         val termsLink = SpannableString(getString(R.string.uxsdk_air_sense_terms_content))
         val clickableSpan: ClickableSpan = object : ClickableSpan() {
             override fun onClick(view: View) {
                 showTermsDialog()
-                uiUpdateStateProcessor.onNext(TermsLinkTap)
+                uiUpdateStateProcessor.onNext(TermsLinkClicked)
             }
 
             override fun updateDrawState(ds: TextPaint) {
@@ -379,13 +378,13 @@ open class AirSenseWidget @JvmOverloads constructor(
     }
 
     private fun onTermsDialogClosed() {
-        uiUpdateStateProcessor.onNext(TermsDialogDismiss)
+        uiUpdateStateProcessor.onNext(TermsDialogDismissed)
     }
 
     private fun checkAndUpdateIcon() {
         if (!isInEditMode) {
-            addDisposable(widgetModel.airSenseStatus.firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+            addDisposable(widgetModel.airSenseState.firstOrError()
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateIcon(it) }, logErrorConsumer(TAG, "Update Icon ")))
         }
     }
@@ -397,27 +396,27 @@ open class AirSenseWidget @JvmOverloads constructor(
     }
 
     /**
-     * Tints the AirSense icon to the given color when the AirSense status is the given value.
+     * Tints the AirSense icon to the given color when the AirSense state is the given value.
      *
-     * @param status The status for which to tint the AirSense icon.
+     * @param state The state for which to tint the AirSense icon.
      * @param color The color to tint the AirSense icon.
      */
-    fun setAirSenseIconTintColor(status: AirSenseStatus, @ColorInt color: Int) {
-        colorMap[status] = color
+    fun setAirSenseIconTintColor(state: AirSenseState, @ColorInt color: Int) {
+        colorMap[state] = color
         checkAndUpdateIcon()
     }
 
     /**
-     * Returns the color that the AirSense icon will be tinted when the AirSense status is
+     * Returns the color that the AirSense icon will be tinted when the AirSense state is
      * the given value.
      *
-     * @param status The status for which the AirSense icon will be tinted the returned
+     * @param state The state for which the AirSense icon will be tinted the returned
      * color.
      * @return The color the AirSense icon will be tinted.
      */
     @ColorInt
-    fun getAirSenseIconTintColor(status: AirSenseStatus): Int {
-        return (colorMap[status]?.let { it } ?: getColor(R.color.uxsdk_white))
+    fun getAirSenseIconTintColor(state: AirSenseState): Int {
+        return (colorMap[state]?.let { it } ?: getColor(R.color.uxsdk_white))
     }
 
     /**
@@ -489,25 +488,25 @@ open class AirSenseWidget @JvmOverloads constructor(
                 airSenseIconBackground = it
             }
             typedArray.getColorAndUse(R.styleable.AirSenseWidget_uxsdk_airSenseIconDisconnectedTint) {
-                setAirSenseIconTintColor(AirSenseStatus.DISCONNECTED, it)
+                setAirSenseIconTintColor(AirSenseState.DISCONNECTED, it)
             }
             typedArray.getColorAndUse(R.styleable.AirSenseWidget_uxsdk_airSenseIconNoAirplanesNearbyTint) {
-                setAirSenseIconTintColor(AirSenseStatus.NO_AIRPLANES_NEARBY, it)
+                setAirSenseIconTintColor(AirSenseState.NO_AIRPLANES_NEARBY, it)
             }
             typedArray.getColorAndUse(R.styleable.AirSenseWidget_uxsdk_airSenseIconWarningLevel0Tint) {
-                setAirSenseIconTintColor(AirSenseStatus.WARNING_LEVEL_0, it)
+                setAirSenseIconTintColor(AirSenseState.WARNING_LEVEL_0, it)
             }
             typedArray.getColorAndUse(R.styleable.AirSenseWidget_uxsdk_airSenseIconWarningLevel1Tint) {
-                setAirSenseIconTintColor(AirSenseStatus.WARNING_LEVEL_1, it)
+                setAirSenseIconTintColor(AirSenseState.WARNING_LEVEL_1, it)
             }
             typedArray.getColorAndUse(R.styleable.AirSenseWidget_uxsdk_airSenseIconWarningLevel2Tint) {
-                setAirSenseIconTintColor(AirSenseStatus.WARNING_LEVEL_2, it)
+                setAirSenseIconTintColor(AirSenseState.WARNING_LEVEL_2, it)
             }
             typedArray.getColorAndUse(R.styleable.AirSenseWidget_uxsdk_airSenseIconWarningLevel3Tint) {
-                setAirSenseIconTintColor(AirSenseStatus.WARNING_LEVEL_3, it)
+                setAirSenseIconTintColor(AirSenseState.WARNING_LEVEL_3, it)
             }
             typedArray.getColorAndUse(R.styleable.AirSenseWidget_uxsdk_airSenseIconWarningLevel4Tint) {
-                setAirSenseIconTintColor(AirSenseStatus.WARNING_LEVEL_4, it)
+                setAirSenseIconTintColor(AirSenseState.WARNING_LEVEL_4, it)
             }
             typedArray.getResourceIdAndUse(R.styleable.AirSenseWidget_uxsdk_linkTextAppearance) {
                 termsLinkTextAppearance = it
@@ -545,63 +544,64 @@ open class AirSenseWidget @JvmOverloads constructor(
 
     //region Hooks
     /**
-     * Get the [AirSenseWidgetUIState] updates
+     * Get the [UIState] updates
      */
-    fun getUIStateUpdates(): Flowable<AirSenseWidgetUIState> {
-        return uiUpdateStateProcessor
+    fun getUIStateUpdates(): Flowable<UIState> {
+        return uiUpdateStateProcessor.onBackpressureBuffer()
     }
 
     /**
-     * Get the [AirSenseWidgetState] updates
+     * Get the [ModelState] updates
      */
-    override fun getWidgetStateUpdate(): Flowable<AirSenseWidgetState> {
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
         return super.getWidgetStateUpdate()
     }
 
     /**
      * Widget UI update State
      */
-    sealed class AirSenseWidgetUIState {
+    sealed class UIState {
 
         /**
          * Update when warning dialog is dismissed
          */
-        object WarningDialogDismiss : AirSenseWidgetUIState()
+        object WarningDialogDismissed : UIState()
 
         /**
          * Update when terms link is tapped
          */
-        object TermsLinkTap : AirSenseWidgetUIState()
+        object TermsLinkClicked : UIState()
 
         /**
          * Update when terms dialog is dismissed
          */
-        object TermsDialogDismiss : AirSenseWidgetUIState()
+        object TermsDialogDismissed : UIState()
 
         /**
          * Update when "Don't show again" checkbox is tapped
          */
-        data class DontShowAgainCheckBoxTap(val isChecked: Boolean) : AirSenseWidgetUIState()
+        data class NeverShowAgainCheckChanged(val isChecked: Boolean) : UIState()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class AirSenseWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : AirSenseWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * AirSense warning level update
          */
-        data class AirSenseWarningLevelUpdate(val airSenseWarningLevel: AirSenseWarningLevel) : AirSenseWidgetState()
+        data class AirSenseWarningLevelUpdated(val airSenseWarningLevel: AirSenseWarningLevel) : ModelState()
 
         /**
          * AirSense status update
          */
-        data class AirSenseStatusUpdate(val airSenseStatus: AirSenseStatus) : AirSenseWidgetState()
+        data class AirSenseStateUpdated(val airSenseState: AirSenseState) : ModelState()
 
     }
     //endregion

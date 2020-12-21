@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/fragment_widget_list"
-        android:name="com.dji.ux.beta.sample.widgetlist.WidgetListFragment"
+        android:name="com.dji.ux.beta.sample.showcase.widgetlist.WidgetListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintHorizontal_weight="1"
@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/fragment_widget"
-        android:name="com.dji.ux.beta.sample.widgetlist.WidgetFragment"
+        android:name="com.dji.ux.beta.sample.showcase.widgetlist.WidgetFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintLeft_toRightOf="@+id/fragment_widget_list"

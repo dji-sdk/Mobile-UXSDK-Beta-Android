@@ -37,18 +37,18 @@ import androidx.annotation.StyleRes
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.res.use
 import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
+import dji.ux.beta.core.base.SchedulerProvider
 import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.ux.beta.R
-import dji.ux.beta.core.base.ConstraintLayoutWidget
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetSizeDescription
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
-import dji.ux.beta.core.widget.flightmode.FlightModeWidget.FlightModeWidgetState
-import dji.ux.beta.core.widget.flightmode.FlightModeWidget.FlightModeWidgetState.FlightModeTextUpdated
-import dji.ux.beta.core.widget.flightmode.FlightModeWidget.FlightModeWidgetState.ProductConnected
+import dji.ux.beta.core.widget.flightmode.FlightModeWidget.ModelState
+import dji.ux.beta.core.widget.flightmode.FlightModeWidget.ModelState.FlightModeUpdated
+import dji.ux.beta.core.widget.flightmode.FlightModeWidget.ModelState.ProductConnected
 import dji.ux.beta.core.widget.flightmode.FlightModeWidgetModel.FlightModeState
 
 private const val TAG = "FlightModeWidget"
@@ -60,7 +60,7 @@ open class FlightModeWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<FlightModeWidgetState>(context, attrs, defStyleAttr) {
+) : ConstraintLayoutWidget<ModelState>(context, attrs, defStyleAttr) {
 
     //region Fields
     private val iconImageView: ImageView = findViewById(R.id.imageview_flight_mode_icon)
@@ -150,7 +150,7 @@ open class FlightModeWidget @JvmOverloads constructor(
         }
     //endregion
 
-    //region Constructors
+    //region Constructor
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         inflate(context, R.layout.uxsdk_widget_flight_mode, this)
     }
@@ -177,10 +177,10 @@ open class FlightModeWidget @JvmOverloads constructor(
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.flightModeState
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateUI(it) })
         addReaction(widgetModel.productConnection
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { widgetStateDataProcessor.onNext(ProductConnected(it)) })
 
     }
@@ -192,7 +192,7 @@ open class FlightModeWidget @JvmOverloads constructor(
             flightModeTextView.text = flightModeState.flightModeString
             iconImageView.setColorFilter(connectedStateIconColor, PorterDuff.Mode.SRC_IN)
             flightModeTextView.setTextColor(connectedStateTextColor)
-            widgetStateDataProcessor.onNext(FlightModeTextUpdated(flightModeState.flightModeString))
+            widgetStateDataProcessor.onNext(FlightModeUpdated(flightModeState.flightModeString))
         } else {
             flightModeTextView.text = getString(R.string.uxsdk_string_default_value)
             iconImageView.setColorFilter(disconnectedStateIconColor, PorterDuff.Mode.SRC_IN)
@@ -207,7 +207,7 @@ open class FlightModeWidget @JvmOverloads constructor(
     private fun checkAndUpdateUI() {
         if (!isInEditMode) {
             addDisposable(widgetModel.flightModeState
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateUI(it) }, logErrorConsumer(TAG, "Update UI ")))
         }
     }
@@ -321,27 +321,28 @@ open class FlightModeWidget @JvmOverloads constructor(
     }
     //endregion
 
-    //region hooks
+    //region Hooks
     /**
-     * Get the [FlightModeWidgetState] updates
+     * Get the [ModelState] updates
      */
-    override fun getWidgetStateUpdate(): Flowable<FlightModeWidgetState> {
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
         return super.getWidgetStateUpdate()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class FlightModeWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : FlightModeWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * Flight mode text update
          */
-        data class FlightModeTextUpdated(val flightModeText: String) : FlightModeWidgetState()
+        data class FlightModeUpdated(val flightModeText: String) : ModelState()
     }
     //endregion
 

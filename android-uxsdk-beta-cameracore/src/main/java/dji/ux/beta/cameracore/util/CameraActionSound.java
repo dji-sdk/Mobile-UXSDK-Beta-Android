@@ -29,7 +29,6 @@ import androidx.annotation.NonNull;
 
 import dji.thirdparty.io.reactivex.disposables.Disposable;
 import dji.ux.beta.cameracore.R;
-import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.util.AudioUtil;
 
 /**
@@ -48,27 +47,27 @@ public class CameraActionSound {
         int soundId;
         switch (value) {
             case ONE:
-                soundId = R.raw.shutter_1;
+                soundId = R.raw.uxsdk_shutter_1;
                 break;
             case THREE:
-                soundId = R.raw.shutter_3;
+                soundId = R.raw.uxsdk_shutter_3;
                 break;
             case FIVE:
-                soundId = R.raw.shutter_5;
+                soundId = R.raw.uxsdk_shutter_5;
                 break;
             case SEVEN:
-                soundId = R.raw.shutter_7;
+                soundId = R.raw.uxsdk_shutter_7;
                 break;
             case TEN:
-                soundId = R.raw.shutter_10;
+                soundId = R.raw.uxsdk_shutter_10;
                 break;
             case FOURTEEN:
-                soundId = R.raw.shutter_14;
+                soundId = R.raw.uxsdk_shutter_14;
                 break;
 
             case UNKNOWN:
             default:
-                soundId = R.raw.shutter_3;
+                soundId = R.raw.uxsdk_shutter_3;
                 break;
         }
         return soundId;
@@ -86,35 +85,32 @@ public class CameraActionSound {
     /**
      * Play sound for Capture Photo
      *
-     * @param schedulerProvider instance of scheduler
      * @return Disposable
      */
     @NonNull
-    public Disposable playCapturePhoto(@NonNull SchedulerProvider schedulerProvider) {
-        return AudioUtil.playSoundInBackground(schedulerProvider, context, shutterCountSound(shutterCount));
+    public Disposable playCapturePhoto() {
+        return AudioUtil.playSoundInBackground(context, shutterCountSound(shutterCount));
 
     }
 
     /**
      * Play sound for start record video
      *
-     * @param schedulerProvider instance of scheduler
      * @return Disposable
      */
     @NonNull
-    public Disposable playStartRecordVideo(@NonNull SchedulerProvider schedulerProvider) {
-        return AudioUtil.playSoundInBackground(schedulerProvider, context, R.raw.video_voice);
+    public Disposable playStartRecordVideo() {
+        return AudioUtil.playSoundInBackground(context, R.raw.uxsdk_video_voice);
     }
 
     /**
      * Play sound for stop record video
      *
-     * @param schedulerProvider instance of scheduler
      * @return Disposable
      */
     @NonNull
-    public Disposable playStopRecordVideo(@NonNull SchedulerProvider schedulerProvider) {
-        return AudioUtil.playSoundInBackground(schedulerProvider, context, R.raw.end_video_record);
+    public Disposable playStopRecordVideo() {
+        return AudioUtil.playSoundInBackground(context, R.raw.uxsdk_end_video_record);
     }
 
     /**
@@ -164,9 +160,9 @@ public class CameraActionSound {
          */
         public static ShutterSoundCount find(int value) {
             ShutterSoundCount result = UNKNOWN;
-            for (int i = 0; i < values().length; i++) {
-                if (values()[i]._equals(value)) {
-                    result = values()[i];
+            for (int i = 0; i < getValues().length; i++) {
+                if (getValues()[i]._equals(value)) {
+                    result = getValues()[i];
                     break;
                 }
             }
@@ -190,6 +186,15 @@ public class CameraActionSound {
          */
         private boolean _equals(int b) {
             return value == b;
+        }
+
+        private static ShutterSoundCount[] values;
+
+        public static ShutterSoundCount[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
         }
 
     }

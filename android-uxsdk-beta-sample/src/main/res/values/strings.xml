@@ -23,7 +23,15 @@
 
 <resources>
     <string name="dji_ux_sample_app_name">DJI UX Sample App</string>
+    <string name="uxsdk_os_samples">DJI UXSDK Beta Sample App</string>
     <string name="no_product">No product connected</string>
+    <string name="video_source">Video Source</string>
+    <string name="video_stream_source">Video Stream Source</string>
+    <string name="assign_source">Assign Source</string>
+    <string name="grid">Grid</string>
+    <string name="center_point">Center Point</string>
+    <string name="orientation">Orientation</string>
+    <string name="resize">Resize FPV</string>
     <string name="wsbridge_ip">WSBridge IP</string>
     <string name="sdk_version">Version: %1$s</string>
     <string name="product_name">Product Name: %1$s</string>
@@ -32,10 +40,10 @@
     <string name="registered">Registered</string>
     <string name="logs">Logs</string>
     <string name="showcase">Showcase</string>
-    <string name="internal">Internal</string>
     <string name="widget_list">Widget List</string>
     <string name="default_layout">Default Layout</string>
     <string name="map">Map</string>
+
     <string-array name="grid_line_type_array">
         <item>None</item>
         <item>Parallel</item>
@@ -46,11 +54,26 @@
         <item>Primary</item>
         <item>Secondary</item>
     </string-array>
+    <string-array name="fpv_source_h20_array">
+        <item>Wide</item>
+        <item>Zoom</item>
+    </string-array>
+    <string-array name="fpv_source_h20t_array">
+        <item>Wide</item>
+        <item>Zoom</item>
+        <item>Thermal</item>
+    </string-array>
     <string-array name="orientation_array">
         <item>Landscape</item>
         <item>Portrait</item>
     </string-array>
 
+    <string name="port_fpv">Port / FPV</string>
+    <string name="starboard_fpv">Starboard / FPV</string>
+    <string name="port_starboard">Port / Starboard</string>
+    <string name="top_fpv">Top / FPV</string>
+    <string name="port_top">Port / Top</string>
+    <string name="starboard_top">Starboard / Top</string>
 
     <!--Map Widget Activity-->
     <string name="provider_google_maps">Google Maps</string>
@@ -127,7 +150,7 @@
     <string name="camera_controls_widget_title">Camera Controls Widget</string>
     <string name="camera_settings_menu_indicator_widget_title">Camera Settings Menu Indicator Widget</string>
     <string name="compass_widget_title">Compass Widget</string>
-    <string name="dashboard_widget_title">Dashboard Widget</string>
+    <string name="telemetry_widget_title">Telemetry Panel</string>
     <string name="distance_home_widget_title">Distance Home Widget</string>
     <string name="distance_rc_widget_title">Distance RC Widget</string>
     <string name="exposure_settings_indicator_widget_title">Exposure Settings Indicator Widget</string>
@@ -157,4 +180,5 @@
     <string name="rtk_enabled_widget_title">RTK Enabled Widget</string>
     <string name="rtk_satellite_status_widget_title">RTK Satellite Status Widget</string>
     <string name="remaining_flight_time_widget_title">Remaining Flight Time Widget</string>
+
 </resources>

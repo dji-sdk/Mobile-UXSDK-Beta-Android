@@ -42,15 +42,16 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import dji.common.airlink.PhysicalSource;
+import dji.common.camera.CameraVideoStreamSource;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
 import dji.ux.beta.cameracore.R;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.GlobalPreferencesManager;
 import dji.ux.beta.core.base.SchedulerProvider;
-import dji.ux.beta.core.base.SchedulerProviderInterface;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.GlobalPreferencesManager;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.util.CameraUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
@@ -92,7 +93,6 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
     private float moveDeltaY;
     private float velocityFactor;
     private Disposable gimbalMoveDisposable;
-    private SchedulerProviderInterface schedulerProvider;
     private AtomicBoolean isInteractionEnabledAtomic;
     private String cameraName;
 
@@ -105,7 +105,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
     };
     //endregion
 
-    //region Constructors
+    //region Constructor
     public FPVInteractionWidget(@NonNull Context context) {
         super(context);
     }
@@ -126,15 +126,13 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
         gimbalControlView = findViewById(R.id.view_gimbal_control);
         setOnTouchListener(this);
         velocityFactor = DEFAULT_VELOCITY_FACTOR;
-        schedulerProvider = SchedulerProvider.getInstance();
         isInteractionEnabledAtomic = new AtomicBoolean(true);
         cameraName = "";
 
         if (!isInEditMode()) {
             widgetModel = new FPVInteractionWidgetModel(DJISDKModel.getInstance(),
                     ObservableInMemoryKeyedStore.getInstance(),
-                    GlobalPreferencesManager.getInstance(),
-                    schedulerProvider);
+                    GlobalPreferencesManager.getInstance());
         }
 
         if (attrs != null) {
@@ -178,10 +176,20 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
             if (cameraSide == SettingDefinitions.CameraSide.PORT) {
                 setGimbalIndex(SettingDefinitions.GimbalIndex.PORT);
                 setCameraIndex(SettingDefinitions.CameraIndex.CAMERA_INDEX_0);
-            } else {
+            } else if (cameraSide == SettingDefinitions.CameraSide.STARBOARD) {
                 setGimbalIndex(SettingDefinitions.GimbalIndex.STARBOARD);
                 setCameraIndex(SettingDefinitions.CameraIndex.CAMERA_INDEX_2);
+            } else {
+                setGimbalIndex(SettingDefinitions.GimbalIndex.TOP);
+                setCameraIndex(SettingDefinitions.CameraIndex.CAMERA_INDEX_4);
             }
+        }
+    }
+
+    @Override
+    public void onStreamSourceChange(@Nullable CameraVideoStreamSource streamSource) {
+        if (streamSource != null) {
+            setLensIndex(CameraUtil.getLensIndex(streamSource, cameraName));
         }
     }
 
@@ -194,10 +202,10 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
 
     //endregion
 
-    //region reaction helpers
+    //region Reaction helpers
     private Disposable reactToUpdateVisibility() {
         return Flowable.combineLatest(widgetModel.getControlMode(), widgetModel.isAeLocked(), Pair::new)
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateViewVisibility(values.first, values.second),
                         logErrorConsumer(TAG, "reactToUpdateVisibility: "));
     }
@@ -264,7 +272,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
                     float targetY = absTargetY / (float) viewHeight;
                     addDisposable(Flowable.combineLatest(widgetModel.getControlMode(), widgetModel.isAeLocked(), Pair::new)
                             .firstOrError()
-                            .observeOn(schedulerProvider.ui())
+                            .observeOn(SchedulerProvider.ui())
                             .subscribe((Pair values) -> updateTarget((ControlMode) (values.first), (Boolean) (values.second), targetX, targetY),
                                     logErrorConsumer(TAG, "Update Target: ")));
                 }
@@ -337,6 +345,26 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
     }
 
     /**
+     * Get the index of the lens to which the widget is reacting
+     *
+     * @return current lens index
+     */
+    public int getLensIndex() {
+        return widgetModel.getLensIndex();
+    }
+
+    /**
+     * Set the index of lens to which the widget should react
+     *
+     * @param lensIndex index of the lens.
+     */
+    public void setLensIndex(int lensIndex) {
+        if (!isInEditMode()) {
+            widgetModel.setLensIndex(lensIndex);
+        }
+    }
+
+    /**
      * Adjust the width and height of the interaction area. This should be called whenever the
      * size of the video feed changes. The interaction area will be centered within the view.
      *
@@ -358,12 +386,12 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
             if (spotMeteringEnabled && isInBounds() && !isAeLocked) {
                 final ControlMode newControlMode = exposureMeterView.clickEvent(controlMode, absTargetX, absTargetY, viewWidth, viewHeight);
                 addDisposable(widgetModel.setControlMode(newControlMode)
-                        .observeOn(schedulerProvider.ui())
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(() -> {
                             //do nothing
                         }, logErrorConsumer(TAG, "updateTarget: ")));
                 addDisposable(widgetModel.updateMetering(targetX, targetY)
-                        .observeOn(schedulerProvider.ui())
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(() -> {
                             // do nothing
                         }, throwable -> onExposureMeterSetFail(newControlMode)));
@@ -371,7 +399,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
         } else if (touchFocusEnabled && isInBounds()) {
             focusTargetView.clickEvent(absTargetX, absTargetY);
             addDisposable(widgetModel.updateFocusTarget(targetX, targetY)
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(() -> {
                         //do nothing
                     }, throwable -> onFocusTargetSetFail()));
@@ -393,7 +421,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
                             oldAbsTargetY,
                             viewWidth,
                             viewHeight))
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(() -> {
                         //do nothing
                     }, logErrorConsumer(TAG, "onExposureMeterSetFail: ")));
@@ -450,14 +478,14 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
 
     private void toggleGimbalRotateBySpeed() {
         gimbalMoveDisposable = Flowable.interval(50, TimeUnit.MILLISECONDS)
-                .subscribeOn(schedulerProvider.io())
+                .subscribeOn(SchedulerProvider.io())
                 .subscribe(aLong -> {
                     float yawVelocity = moveDeltaX / velocityFactor;
                     float pitchVelocity = moveDeltaY / velocityFactor;
 
                     if (Math.abs(yawVelocity) >= 1 || Math.abs(pitchVelocity) >= 1) {
                         addDisposable(widgetModel.rotateGimbalBySpeed(yawVelocity, -pitchVelocity)
-                                .observeOn(schedulerProvider.ui())
+                                .observeOn(SchedulerProvider.ui())
                                 .subscribe(() -> {
                                     //do nothing
                                 }, logErrorConsumer(TAG, "rotate gimbal: ")));
@@ -480,6 +508,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
 
         setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.FPVInteractionWidget_uxsdk_cameraIndex, 0)));
         setGimbalIndex(GimbalIndex.find(typedArray.getInt(R.styleable.FPVInteractionWidget_uxsdk_gimbalIndex, 0)));
+        setLensIndex(typedArray.getInt(R.styleable.FPVInteractionWidget_uxsdk_lensType, 0));
 
         Drawable manualFocusIcon = typedArray.getDrawable(R.styleable.FPVInteractionWidget_uxsdk_manualFocusIcon);
         if (manualFocusIcon != null) {

@@ -31,8 +31,10 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import dji.common.camera.CameraVideoStreamSource;
 import dji.common.camera.SettingsDefinitions;
-import dji.ux.beta.R;
+import dji.sdk.camera.Camera;
+import dji.ux.beta.core.R;
 
 /**
  * Utility class for displaying camera information.
@@ -275,6 +277,28 @@ public final class CameraUtil {
             return SettingsDefinitions.ISO.ISO_25600;
         } else {
             return SettingsDefinitions.ISO.UNKNOWN;
+        }
+    }
+
+    /**
+     * Get the lens index based on the given stream source and camera name.
+     *
+     * @param streamSource The streamSource
+     * @param cameraName   The name of the camera
+     * @return The lens index
+     */
+    public static int getLensIndex(CameraVideoStreamSource streamSource, String cameraName) {
+        if (streamSource == CameraVideoStreamSource.WIDE) {
+            return SettingsDefinitions.LensType.WIDE.value();
+        } else if (streamSource == CameraVideoStreamSource.INFRARED_THERMAL) {
+            if (Camera.DisplayNameXT2_VL.equals(cameraName) ||
+                    Camera.DisplayNameMavic2EnterpriseDual_VL.equals(cameraName)) {
+                return Camera.XT2_IR_CAMERA_INDEX;
+            } else {
+                return SettingsDefinitions.LensType.INFRARED_THERMAL.value();
+            }
+        } else {
+            return SettingsDefinitions.LensType.ZOOM.value();
         }
     }
 }

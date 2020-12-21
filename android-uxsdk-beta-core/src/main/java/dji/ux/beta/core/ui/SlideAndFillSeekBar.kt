@@ -29,7 +29,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.widget.SeekBar
 import androidx.appcompat.widget.AppCompatSeekBar
-import dji.ux.beta.R
+import dji.ux.beta.core.R
 import dji.ux.beta.core.extension.getColor
 
 /**

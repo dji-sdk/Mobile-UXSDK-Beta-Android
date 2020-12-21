@@ -36,16 +36,16 @@ import dji.thirdparty.io.reactivex.Flowable
 import dji.thirdparty.io.reactivex.disposables.Disposable
 import dji.thirdparty.io.reactivex.functions.BiFunction
 import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.ux.beta.R
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.OnStateChangeCallback
 import dji.ux.beta.core.base.SchedulerProvider
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.base.widget.IconButtonWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.OnStateChangeCallback
 import dji.ux.beta.core.extension.*
-import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget.SimulatorIndicatorWidgetState
-import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget.SimulatorIndicatorWidgetState.ProductConnected
-import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget.SimulatorIndicatorWidgetState.SimulatorStateUpdated
+import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget.ModelState
+import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget.ModelState.ProductConnected
+import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget.ModelState.SimulatorStateUpdated
 
 /**
  * Simulator Indicator Widget will display the current state of the simulator
@@ -58,15 +58,14 @@ open class SimulatorIndicatorWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : IconButtonWidget<SimulatorIndicatorWidgetState>(
+) : IconButtonWidget<ModelState>(
         context,
         attrs,
         defStyleAttr
 ), View.OnClickListener {
 
-    //region fields
+    //region Fields
     private var stateChangeResourceId: Int = INVALID_RESOURCE
-    private val schedulerProvider: SchedulerProvider = SchedulerProvider.getInstance()
     private val widgetModel by lazy {
         SimulatorIndicatorWidgetModel(
                 DJISDKModel.getInstance(),
@@ -99,7 +98,7 @@ open class SimulatorIndicatorWidget @JvmOverloads constructor(
 
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     init {
         attrs?.let { initAttributes(context, it) }
         connectedStateIconColor = getColor(R.color.uxsdk_white)
@@ -108,10 +107,10 @@ open class SimulatorIndicatorWidget @JvmOverloads constructor(
     override fun reactToModelChanges() {
         addReaction(reactToSimulatorStateChange())
         addReaction(widgetModel.isSimulatorActive
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { widgetStateDataProcessor.onNext(SimulatorStateUpdated(it)) })
         addReaction(widgetModel.productConnection
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { widgetStateDataProcessor.onNext(ProductConnected(it)) })
     }
 
@@ -154,7 +153,7 @@ open class SimulatorIndicatorWidget @JvmOverloads constructor(
     private fun reactToSimulatorStateChange(): Disposable {
         return Flowable.combineLatest(widgetModel.productConnection, widgetModel.isSimulatorActive,
                 BiFunction<Boolean, Boolean, Pair<Boolean, Boolean>> { first: Boolean, second: Boolean -> Pair(first, second) })
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(Consumer { values: Pair<Boolean, Boolean> -> updateUI(values.first, values.second) },
                         logErrorConsumer(TAG, "react to Focus Mode Change: "))
     }
@@ -232,27 +231,29 @@ open class SimulatorIndicatorWidget @JvmOverloads constructor(
 
     //endregion
 
-    //region hooks
+    //region Hooks
+
     /**
-     * Get the [SimulatorIndicatorWidgetState] updates
+     * Get the [ModelState] updates
      */
-    override fun getWidgetStateUpdate(): Flowable<SimulatorIndicatorWidgetState> {
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
         return super.getWidgetStateUpdate()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class SimulatorIndicatorWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : SimulatorIndicatorWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * Simulator State update
          */
-        data class SimulatorStateUpdated(val isActive: Boolean) : SimulatorIndicatorWidgetState()
+        data class SimulatorStateUpdated(val isActive: Boolean) : ModelState()
     }
     //endregion
 

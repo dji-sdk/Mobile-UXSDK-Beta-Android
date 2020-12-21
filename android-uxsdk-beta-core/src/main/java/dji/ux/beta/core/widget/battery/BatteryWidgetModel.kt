@@ -32,7 +32,7 @@ import dji.keysdk.FlightControllerKey
 import dji.thirdparty.io.reactivex.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.milliVoltsToVolts
 import dji.ux.beta.core.util.DataProcessor
 
@@ -72,9 +72,10 @@ class BatteryWidgetModel(
     private val batteryAggregationProcessor = DataProcessor.create(AggregationState.Builder().build())
 
 
-    private val batteryStateProcessor: DataProcessor<BatteryState> = DataProcessor.create(
-            BatteryState.SingleBatteryState(0, 0f, BatteryStatus.UNKNOWN))
+    private val batteryStateProcessor: DataProcessor<BatteryState> = DataProcessor.create(BatteryState.DisconnectedState)
     private val batteryThresholdBehaviorProcessor = DataProcessor.create(BatteryThresholdBehavior.UNKNOWN)
+    private val batteryNeededToGoHomeProcessor: DataProcessor<Int> = DataProcessor.create(0)
+    private val isAircraftFlyingDataProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
 
     /**
      * Get the current state of the battery of the connected product
@@ -103,7 +104,10 @@ class BatteryWidgetModel(
 
         val batteryThresholdBehaviorKey = FlightControllerKey.create(FlightControllerKey.BATTERY_THRESHOLD_BEHAVIOR)
         bindDataProcessor(batteryThresholdBehaviorKey, batteryThresholdBehaviorProcessor)
-
+        val batteryNeededToGoHomeKey = FlightControllerKey.create(FlightControllerKey.BATTERY_PERCENTAGE_NEEDED_TO_GO_HOME)
+        bindDataProcessor(batteryNeededToGoHomeKey, batteryNeededToGoHomeProcessor)
+        val isFlyingKey = FlightControllerKey.create(FlightControllerKey.IS_FLYING)
+        bindDataProcessor(isFlyingKey, isAircraftFlyingDataProcessor)
     }
 
     override fun updateStates() {
@@ -125,12 +129,16 @@ class BatteryWidgetModel(
                             calculateBatteryStatus(batteryWarningRecordProcessor1.value,
                                     batteryThresholdBehaviorProcessor.value,
                                     batteryPercentageProcessor1.value,
+                                    batteryNeededToGoHomeProcessor.value,
+                                    isAircraftFlyingDataProcessor.value,
                                     battery1Voltage),
                             batteryPercentageProcessor2.value,
                             battery2Voltage,
                             calculateBatteryStatus(batteryWarningRecordProcessor2.value,
                                     batteryThresholdBehaviorProcessor.value,
                                     batteryPercentageProcessor2.value,
+                                    batteryNeededToGoHomeProcessor.value,
+                                    isAircraftFlyingDataProcessor.value,
                                     battery2Voltage)
                     ))
                 }
@@ -142,6 +150,8 @@ class BatteryWidgetModel(
                             calculateBatteryStatus(batteryWarningRecordProcessor1.value,
                                     batteryThresholdBehaviorProcessor.value,
                                     batteryPercentageProcessor1.value,
+                                    batteryNeededToGoHomeProcessor.value,
+                                    isAircraftFlyingDataProcessor.value,
                                     voltage)
                     ))
                 }
@@ -180,6 +190,8 @@ class BatteryWidgetModel(
             val currentBatteryStatus = calculateBatteryStatus(currentWarningRecord,
                     batteryThresholdBehaviorProcessor.value,
                     aggregationState.batteryOverviews[i].chargeRemainingInPercent,
+                    batteryNeededToGoHomeProcessor.value,
+                    isAircraftFlyingDataProcessor.value,
                     currentVoltage)
 
             if (currentBatteryStatus > priorityStatus) {
@@ -191,12 +203,8 @@ class BatteryWidgetModel(
     }
 
     private fun calculateAverageVoltage(cellVoltages: Array<Int>?): Float {
-        var sum = 0f
         return if (cellVoltages != null && cellVoltages.isNotEmpty()) {
-            for (element in cellVoltages) {
-                sum += element
-            }
-            (sum / cellVoltages.size).milliVoltsToVolts()
+            cellVoltages.average().toFloat().milliVoltsToVolts()
         } else 0f
 
     }
@@ -204,6 +212,8 @@ class BatteryWidgetModel(
     private fun calculateBatteryStatus(warningRecord: WarningRecord,
                                        batteryThresholdBehavior: BatteryThresholdBehavior,
                                        percentage: Int,
+                                       goHomeBattery: Int,
+                                       isFlying: Boolean,
                                        voltage: Float): BatteryStatus {
         if (percentage < 0 || voltage < 0f) {
             return BatteryStatus.UNKNOWN
@@ -213,7 +223,8 @@ class BatteryWidgetModel(
             return BatteryStatus.ERROR
         } else if (BatteryThresholdBehavior.LAND_IMMEDIATELY == batteryThresholdBehavior) {
             return BatteryStatus.WARNING_LEVEL_2
-        } else if (BatteryThresholdBehavior.GO_HOME == batteryThresholdBehavior) {
+        } else if (BatteryThresholdBehavior.GO_HOME == batteryThresholdBehavior
+                || (percentage <= goHomeBattery && isFlying)) {
             return BatteryStatus.WARNING_LEVEL_1
         }
         return BatteryStatus.NORMAL
@@ -309,14 +320,11 @@ class BatteryWidgetModel(
 
         companion object {
             @JvmStatic
-            fun find(@IntRange(from = 0, to = 5) index: Int): BatteryStatus {
-                for (batteryStatus in values()) {
-                    if (batteryStatus.index == index) {
-                        return batteryStatus
-                    }
-                }
+            val values = values()
 
-                return UNKNOWN
+            @JvmStatic
+            fun find(@IntRange(from = 0, to = 5) index: Int): BatteryStatus {
+                return values.find { it.index == index } ?: UNKNOWN
             }
         }
     }

@@ -64,7 +64,6 @@
         <meta-data
             android:name="com.dji.sdk.API_KEY"
             android:value="@string/dji_ux_sample_dji_sdk_api_key" />
-
         <!-- Here Maps -->
         <meta-data
             android:name="com.here.android.maps.appid"
@@ -107,16 +106,18 @@
         </activity>
 
         <activity
-            android:name=".widgetlist.WidgetsActivity"
+            android:name=".showcase.widgetlist.WidgetsActivity"
             android:screenOrientation="sensorLandscape" />
 
+        <!-- Add android:windowSoftInputMode="adjustNothing" to activity tag if API 30-->
         <activity
-            android:name=".DefaultLayoutActivity"
+            android:name=".showcase.defaultlayout.DefaultLayoutActivity"
             android:screenOrientation="sensorLandscape"
+            android:windowSoftInputMode="adjustNothing"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".MapWidgetActivity"
+            android:name=".showcase.map.MapWidgetActivity"
             android:label="Map Widget"
             android:launchMode="singleTop"
             android:screenOrientation="sensorLandscape"
@@ -133,6 +134,7 @@
                 android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
                 android:resource="@xml/accessory_filter" />
         </activity>
+
     </application>
 
 </manifest>

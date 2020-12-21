@@ -54,7 +54,6 @@ inline fun <R> TypedArray.getStringAndUse(@StyleableRes index: Int, block: (Stri
     }
 }
 
-
 /**
  * Retrieve the color value for the attribute at [index] and executes the given [block]
  * function with the retrieved resource.
@@ -103,7 +102,6 @@ inline fun <R> TypedArray.getDrawableAndUse(@StyleableRes index: Int, block: (Dr
     drawable?.let { block(drawable) }
 }
 
-
 /**
  * Retrieve the int value for the attribute at [index] and executes the given [block]
  * function with the retrieved resource.
@@ -129,7 +127,6 @@ inline fun <R> TypedArray.getResourceIdAndUse(@StyleableRes index: Int, block: (
         block(resourceId)
     }
 }
-
 
 /**
  * Retrieve the float value for the attribute at [index] and executes the given [block]
@@ -166,6 +163,22 @@ inline fun <R> TypedArray.getIntegerAndUse(@StyleableRes index: Int, block: (Int
 inline fun <R> TypedArray.getBooleanAndUse(@StyleableRes index: Int, defaultValue: Boolean, block: (Boolean) -> R) {
     val booleanValue = getBoolean(index, defaultValue)
     block(booleanValue)
+}
+
+/**
+ * Retrieve the drawable array value for the attribute at [index] and executes the given [block]
+ * function with the retrieved resource.
+ */
+inline fun <R> TypedArray.getDrawableArrayAndUse(@StyleableRes index: Int, block: (Array<Drawable?>) -> R) {
+    val arrayResourceId = getResourceId(index, INVALID_RESOURCE)
+    if (arrayResourceId != INVALID_RESOURCE) {
+        val resourceArray = resources.obtainTypedArray(arrayResourceId)
+        val drawableArray = Array(resourceArray.length()) { i ->
+            resourceArray.getDrawable(i)
+        }
+        block(drawableArray)
+        resourceArray.recycle()
+    }
 }
 
 

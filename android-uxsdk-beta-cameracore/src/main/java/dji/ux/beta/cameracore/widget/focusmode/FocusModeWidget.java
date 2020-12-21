@@ -41,15 +41,16 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.FocusMode;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.FrameLayoutWidget;
-import dji.ux.beta.core.base.GlobalPreferencesManager;
 import dji.ux.beta.core.base.SchedulerProvider;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.widget.FrameLayoutWidget;
+import dji.ux.beta.core.communication.GlobalPreferencesManager;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 
@@ -68,15 +69,14 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     private static final String TAG = "FocusModeWidget";
     //endregion
 
-    //region fields
+    //region Fields
     private FocusModeWidgetModel widgetModel;
     private TextView titleTextView;
     private int activeColor;
     private int inactiveColor;
-    private SchedulerProvider schedulerProvider;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public FocusModeWidget(Context context) {
         super(context);
     }
@@ -96,12 +96,10 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
             setBackgroundResource(R.drawable.uxsdk_background_black_rectangle);
         }
         titleTextView = findViewById(R.id.text_view_camera_control_af);
-        schedulerProvider = SchedulerProvider.getInstance();
         if (!isInEditMode()) {
             widgetModel = new FocusModeWidgetModel(DJISDKModel.getInstance(),
                     ObservableInMemoryKeyedStore.getInstance(),
-                    GlobalPreferencesManager.getInstance(),
-                    schedulerProvider);
+                    GlobalPreferencesManager.getInstance());
         }
         setOnClickListener(this);
         activeColor = getResources().getColor(R.color.uxsdk_green);
@@ -129,8 +127,12 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
 
     @Override
     protected void reactToModelChanges() {
+        addReaction(widgetModel.isFocusModeChangeSupported()
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(this::updateVisibility));
         addReaction(reactToFocusModeChange());
     }
+
 
     @NonNull
     @Override
@@ -141,7 +143,7 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     @Override
     public void onClick(View v) {
         addDisposable(widgetModel.toggleFocusMode()
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(() -> {
                     // Do nothing
                 }, logErrorConsumer(TAG, "switch focus mode: ")));
@@ -155,7 +157,7 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
         if (!isInEditMode()) {
             addDisposable(Flowable.combineLatest(widgetModel.isAFCEnabled(), widgetModel.getFocusMode(), Pair::new)
                     .firstOrError()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateUI(values.first, values.second),
                             logErrorConsumer(TAG, "check and update focus mode: ")));
         }
@@ -163,9 +165,17 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
 
     private Disposable reactToFocusModeChange() {
         return Flowable.combineLatest(widgetModel.isAFCEnabled(), widgetModel.getFocusMode(), Pair::new)
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateUI(values.first, values.second),
                         logErrorConsumer(TAG, "react to Focus Mode Change: "));
+    }
+
+    private void updateVisibility(boolean isFocusModeChangeSupported) {
+        if (isFocusModeChangeSupported) {
+            setVisibility(VISIBLE);
+        } else {
+            setVisibility(GONE);
+        }
     }
 
     private void updateUI(boolean isAFCEnabled, FocusMode focusMode) {
@@ -210,6 +220,7 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FocusModeWidget);
         setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.FocusModeWidget_uxsdk_cameraIndex, 0)));
+        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FocusModeWidget_uxsdk_lensType, 0)));
         activeColor = typedArray.getColor(R.styleable.FocusModeWidget_uxsdk_activeModeTextColor, getResources().getColor(R.color.uxsdk_green));
         inactiveColor = typedArray.getColor(R.styleable.FocusModeWidget_uxsdk_inactiveModeTextColor, getResources().getColor(R.color.uxsdk_white));
         Drawable background = typedArray.getDrawable(R.styleable.FocusModeWidget_uxsdk_widgetTitleBackground);
@@ -243,6 +254,27 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
         if (!isInEditMode()) {
             widgetModel.setCameraIndex(cameraIndex);
+        }
+    }
+
+    /**
+     * Get the current type of the lens the widget is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    /**
+     * Set the type of the lens for which the widget should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        if (!isInEditMode()) {
+            widgetModel.setLensType(lensType);
         }
     }
 

@@ -39,7 +39,7 @@ import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.UXSDKError;
 import dji.ux.beta.core.base.UXSDKErrorDescription;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
 
 /**
@@ -51,7 +51,7 @@ import dji.ux.beta.core.util.DataProcessor;
 public class UserAccountLoginWidgetModel extends WidgetModel
         implements UserAccountManager.UserAccountStateChangeListener {
 
-    //region fields
+    //region Fields
     private static final String TAG = "LoginWidgetModel";
     private final DataProcessor<UserAccountState> userAccountStateDataProcessor;
     private final DataProcessor<UserAccountInformation> userAccountInformationDataProcessor;

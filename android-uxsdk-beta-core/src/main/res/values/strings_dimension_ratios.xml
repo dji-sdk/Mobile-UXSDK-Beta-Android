@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -33,6 +34,7 @@
     <string name="uxsdk_widget_dashboard_ratio" translatable="false">W,476:91</string>
     <string name="uxsdk_widget_flight_mode_ratio" translatable="false">W,52:11</string>
     <string name="uxsdk_widget_fpv_ratio" translatable="false">W,16:9</string>
+    <string name="uxsdk_widget_radar_ratio" translatable="false">W,17:8</string>
     <string name="uxsdk_widget_user_account_login_ratio" translatable="false">W,4:1</string>
     <string name="uxsdk_widget_remaining_flight_time_ratio" translatable="false">W,400:3</string>
     <string name="uxsdk_icon_single_battery_ratio" translatable="false">W,1:1</string>

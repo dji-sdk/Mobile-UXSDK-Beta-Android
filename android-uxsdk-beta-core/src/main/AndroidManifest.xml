@@ -21,5 +21,4 @@
   ~
   -->
 
-<manifest package="dji.ux.beta">
-</manifest>
+<manifest package="dji.ux.beta.core" />

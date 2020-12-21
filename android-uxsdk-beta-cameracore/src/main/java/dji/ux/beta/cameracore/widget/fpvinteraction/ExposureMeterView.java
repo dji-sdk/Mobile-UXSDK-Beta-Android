@@ -61,7 +61,7 @@ public class ExposureMeterView extends FrameLayout {
     private ControlMode controlMode;
     //endregion
 
-    //region Constructors
+    //region Constructor
     public ExposureMeterView(@NonNull Context context) {
         super(context);
         initView(context);

@@ -70,7 +70,7 @@ if outputDirectory:
 else:
 	sp.Popen("mkdir android-uxsdk-beta", shell=True)
 	outputDirectory = "./android-uxsdk-beta/"
-modules =["android-uxsdk-beta-core", "android-uxsdk-beta-cameracore", "android-uxsdk-beta-hardwareaccessory", "android-uxsdk-beta-map", "android-uxsdk-beta-training", "android-uxsdk-beta-visualcamera"]
+modules =["android-uxsdk-beta-core", "android-uxsdk-beta-cameracore", "android-uxsdk-beta-accessory", "android-uxsdk-beta-map", "android-uxsdk-beta-training", "android-uxsdk-beta-visualcamera", "android-uxsdk-beta-flight"]
 
 
 for module in modules:

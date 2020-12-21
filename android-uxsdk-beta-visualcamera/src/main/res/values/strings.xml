@@ -57,6 +57,9 @@
     <string name="uxsdk_camera_video_resolution_3712x2088p">3712x2088</string>
     <string name="uxsdk_camera_video_resolution_3944x2088p">3944x2088</string>
     <string name="uxsdk_camera_video_resolution_2688x1512p">2688x1512</string>
+    <string name="uxsdk_camera_video_resolution_hq">HQ</string>
+    <string name="uxsdk_camera_video_resolution_full_fov">Full FOV</string>
+    <string name="uxsdk_slow_tag">SLOW</string>
 
     <!-- video frame rate value-->
     <string name="uxsdk_camera_video_frame_rate_value_24">23.976</string>
@@ -80,6 +83,7 @@
     <string name="uxsdk_camera_ssd_color_rec709">Rec.709</string>
     <string name="uxsdk_camera_ssd_color_cine_like">CineLike</string>
     <string name="uxsdk_camera_ssd_color_raw_color">RAW</string>
+    <string name="uxsdk_camera_ssd_color_unknown">Unknown</string>
 
     <!-- Storage -->
     <string name="uxsdk_storage_title_time">TIME</string>
@@ -121,6 +125,7 @@
     <string name="uxsdk_camera_ssd_saving">Saving to SSD</string>
     <string name="uxsdk_ssd_status_formatting">Formatting…</string>
     <string name="uxsdk_ssd_status_init">SSD initializing…</string>
+    <string name="uxsdk_ssd_status_recognize_failed">SSD recognition failed.</string>
     <string name="uxsdk_ssd_status_verify_failed">SSD Verification Failed</string>
     <string name="uxsdk_ssd_status_full">SSD Full</string>
     <string name="uxsdk_ssd_status_poor_connection">Connection Error</string>
@@ -167,9 +172,12 @@
     <string name="uxsdk_camera_filter_film_g">Film G</string>
     <string name="uxsdk_camera_filter_film_h">Film H</string>
     <string name="uxsdk_camera_filter_film_i">Film I</string>
+    <string name="uxsdk_camera_filter_rec_709">Rec.709</string>
 
     <!-- Camera Config Widgets -->
     <string name="uxsdk_aperture_title">F</string>
+    <string name="uxsdk_aperture_integer">%1$d</string>
+    <string name="uxsdk_aperture_integer_with_decimal">%1$d.%2$d</string>
     <string name="uxsdk_shutter_title">SHUTTER</string>
     <string name="uxsdk_ev_title">EV</string>
     <string name="uxsdk_exposure_auto_iso_title">AUTO ISO</string>

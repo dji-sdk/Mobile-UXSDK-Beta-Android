@@ -39,8 +39,8 @@ import androidx.annotation.Nullable;
 
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget;
-import dji.ux.beta.core.base.FrameLayoutWidget;
-import dji.ux.beta.core.base.OnStateChangeCallback;
+import dji.ux.beta.core.base.widget.FrameLayoutWidget;
+import dji.ux.beta.core.communication.OnStateChangeCallback;
 
 /**
  * Camera Settings Menu Indicator Widget
@@ -50,13 +50,13 @@ import dji.ux.beta.core.base.OnStateChangeCallback;
  */
 public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget implements View.OnClickListener {
 
-    //region fields
+    //region Fields
     private TextView foregroundTextView;
     private OnStateChangeCallback<Object> stateChangeCallback = null;
     private int stateChangeResourceId;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public CameraSettingsMenuIndicatorWidget(@NonNull Context context) {
         super(context);
     }

@@ -34,9 +34,8 @@ import dji.keysdk.DJIKey;
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.SchedulerProviderInterface;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions;
 
@@ -75,18 +74,16 @@ public class RecordVideoWidgetModel extends WidgetModel {
     private final DataProcessor<Integer> ssdRecordingTime;
     private final DataProcessor<RecordingState> recordingStateProcessor;
     private int cameraIndex;
+    private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.ZOOM;
     private DJIKey stopVideoRecordingKey;
     private DJIKey startVideoRecordingKey;
-    private SchedulerProviderInterface schedulerProvider;
     //endregion
 
     //region Constructor
     public RecordVideoWidgetModel(@NonNull DJISDKModel djiSdkModel,
-                                  @NonNull ObservableInMemoryKeyedStore uxKeyManager,
-                                  @NonNull SchedulerProviderInterface schedulerProvider) {
+                                  @NonNull ObservableInMemoryKeyedStore uxKeyManager) {
         super(djiSdkModel, uxKeyManager);
         this.cameraIndex = SettingDefinitions.CameraIndex.CAMERA_INDEX_0.getIndex();
-        this.schedulerProvider = schedulerProvider;
         CameraSDVideoStorageState cameraSDVideoStorageState = new CameraSDVideoStorageState(
                 SettingsDefinitions.StorageLocation.SDCARD,
                 0,
@@ -150,7 +147,7 @@ public class RecordVideoWidgetModel extends WidgetModel {
         bindDataProcessor(ssdRecordingTimeKey, ssdRecordingTime);
         bindDataProcessor(ssdVideoLicenseKey, cameraSSDVideoLicenseDataProcessor);
         // Resolution and Frame Rates
-        DJIKey nonSSDRecordedVideoParametersKey = CameraKey.create(CameraKey.RESOLUTION_FRAME_RATE, cameraIndex);
+        DJIKey nonSSDRecordedVideoParametersKey = djiSdkModel.createLensKey(CameraKey.RESOLUTION_FRAME_RATE, cameraIndex, lensType.value());
         DJIKey ssdRecordedVideoParametersKey = CameraKey.create(CameraKey.SSD_VIDEO_RESOLUTION_AND_FRAME_RATE, cameraIndex);
         bindDataProcessor(nonSSDRecordedVideoParametersKey, nonSSDRecordedVideoParameters);
         bindDataProcessor(ssdRecordedVideoParametersKey, ssdRecordedVideoParameters);
@@ -237,6 +234,26 @@ public class RecordVideoWidgetModel extends WidgetModel {
         this.cameraIndex = cameraIndex.getIndex();
         restart();
     }
+
+    /**
+     * Get the current type of the lens the widget model is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return lensType;
+    }
+
+    /**
+     * Set the type of the lens for which the widget model should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        this.lensType = lensType;
+        restart();
+    }
     //endregion
 
     //region Actions
@@ -251,8 +268,7 @@ public class RecordVideoWidgetModel extends WidgetModel {
             return Completable.complete();
         }
 
-        return djiSdkModel.performAction(startVideoRecordingKey)
-                .subscribeOn(schedulerProvider.io());
+        return djiSdkModel.performAction(startVideoRecordingKey);
     }
 
     /**
@@ -265,8 +281,7 @@ public class RecordVideoWidgetModel extends WidgetModel {
             return Completable.complete();
         }
 
-        return djiSdkModel.performAction(stopVideoRecordingKey)
-                .subscribeOn(schedulerProvider.io());
+        return djiSdkModel.performAction(stopVideoRecordingKey);
     }
     //endregion
 

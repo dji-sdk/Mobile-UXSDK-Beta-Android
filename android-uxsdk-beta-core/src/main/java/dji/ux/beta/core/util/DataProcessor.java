@@ -27,7 +27,7 @@ import androidx.annotation.NonNull;
 
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.processors.BehaviorProcessor;
-import dji.thirdparty.io.reactivex.schedulers.Schedulers;
+import dji.ux.beta.core.base.SchedulerProvider;
 
 /**
  * Processor that emits the most recent item it has observed and all subsequent observed items
@@ -59,7 +59,6 @@ public final class DataProcessor<T> {
      *
      * @param data item to be emitted
      */
-    @SuppressWarnings("unchecked")
     public void onNext(@NonNull Object data) {
         T newData = (T) data;
         processor.onNext(newData);
@@ -98,7 +97,7 @@ public final class DataProcessor<T> {
      */
     @NonNull
     public Flowable<T> toFlowable() {
-        return processor.observeOn(Schedulers.computation())
+        return processor.observeOn(SchedulerProvider.computation())
                 .onBackpressureLatest();
     }
 }

@@ -31,9 +31,9 @@ import dji.keysdk.DJIKey;
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.SchedulerProviderInterface;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.module.FlatCameraModule;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
@@ -45,7 +45,7 @@ import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
  */
 public class PhotoVideoSwitchWidgetModel extends WidgetModel {
 
-    //region fields
+    //region Fields
     private final DataProcessor<Boolean> isCameraConnectedDataProcessor;
     private final DataProcessor<Boolean> isRecordingDataProcessor;
     private final DataProcessor<Boolean> isShootingDataProcessor;
@@ -53,19 +53,15 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
     private final DataProcessor<Boolean> isShootingBurstDataProcessor;
     private final DataProcessor<Boolean> isShootingRawBurstDataProcessor;
     private final DataProcessor<Boolean> isShootingPanoramaDataProcessor;
-    private final DataProcessor<CameraMode> cameraModeDataProcessor;
     private final DataProcessor<Boolean> isEnabledDataProcessor;
     private int cameraIndex = CameraIndex.CAMERA_INDEX_0.getIndex();
-    private CameraKey cameraModeKey;
-    private SchedulerProviderInterface schedulerProvider;
+    private FlatCameraModule flatCameraModule;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public PhotoVideoSwitchWidgetModel(@NonNull DJISDKModel djiSdkModel,
-                                       @NonNull ObservableInMemoryKeyedStore keyedStore,
-                                       @NonNull SchedulerProviderInterface scheduletProviderInterface) {
+                                       @NonNull ObservableInMemoryKeyedStore keyedStore) {
         super(djiSdkModel, keyedStore);
-        this.schedulerProvider = scheduletProviderInterface;
         isCameraConnectedDataProcessor = DataProcessor.create(false);
         isRecordingDataProcessor = DataProcessor.create(false);
         isShootingDataProcessor = DataProcessor.create(false);
@@ -73,8 +69,9 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
         isShootingBurstDataProcessor = DataProcessor.create(false);
         isShootingRawBurstDataProcessor = DataProcessor.create(false);
         isShootingPanoramaDataProcessor = DataProcessor.create(false);
-        cameraModeDataProcessor = DataProcessor.create(CameraMode.UNKNOWN);
         isEnabledDataProcessor = DataProcessor.create(false);
+        flatCameraModule = new FlatCameraModule();
+        addModule(flatCameraModule);
     }
 
     @Override
@@ -93,14 +90,11 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
         bindDataProcessor(isShootingRawBurstKey, isShootingRawBurstDataProcessor);
         CameraKey isShootingPanoramaKey = CameraKey.create(CameraKey.IS_SHOOTING_PANORAMA_PHOTO, cameraIndex);
         bindDataProcessor(isShootingPanoramaKey, isShootingPanoramaDataProcessor);
-        bindDataProcessor(isShootingBurstKey, isShootingBurstDataProcessor);
-        cameraModeKey = CameraKey.create(CameraKey.MODE, cameraIndex);
-        bindDataProcessor(cameraModeKey, cameraModeDataProcessor);
     }
 
     @Override
     protected void inCleanup() {
-        // No Code
+        // do nothing
     }
 
     @Override
@@ -130,12 +124,14 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
     }
 
     /**
-     * Get the current camera mode
+     * Get whether the current camera mode is picture mode.
      *
-     * @return {@link CameraMode}
+     * @return Flowable with boolean value
      */
-    public Flowable<CameraMode> getCameraMode() {
-        return cameraModeDataProcessor.toFlowable();
+    public Flowable<Boolean> isPictureMode() {
+        return flatCameraModule.getCameraModeDataProcessor().toFlowable().map(cameraMode ->
+                cameraMode == CameraMode.SHOOT_PHOTO
+        );
     }
     //endregion
 
@@ -147,11 +143,11 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
      * @return Completable
      */
     public Completable toggleCameraMode() {
-        CameraMode cameraMode = CameraMode.SHOOT_PHOTO;
-        if (cameraModeDataProcessor.getValue() == CameraMode.SHOOT_PHOTO) {
-            cameraMode = CameraMode.RECORD_VIDEO;
+        if (flatCameraModule.getCameraModeDataProcessor().getValue() == CameraMode.SHOOT_PHOTO) {
+            return flatCameraModule.setCameraMode(djiSdkModel, CameraMode.RECORD_VIDEO);
+        } else {
+            return flatCameraModule.setCameraMode(djiSdkModel, CameraMode.SHOOT_PHOTO);
         }
-        return djiSdkModel.setValue(cameraModeKey, cameraMode).subscribeOn(schedulerProvider.io());
     }
 
     /**
@@ -171,6 +167,7 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
      */
     public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
         this.cameraIndex = cameraIndex.getIndex();
+        flatCameraModule.setCameraIndex(cameraIndex);
         restart();
     }
     //endregion

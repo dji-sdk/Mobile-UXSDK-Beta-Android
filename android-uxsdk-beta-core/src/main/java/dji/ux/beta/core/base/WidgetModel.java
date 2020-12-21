@@ -23,6 +23,7 @@
 
 package dji.ux.beta.core.base;
 
+import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -36,8 +37,8 @@ import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.disposables.CompositeDisposable;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
 import dji.thirdparty.io.reactivex.functions.Consumer;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
-import dji.ux.beta.core.base.uxsdkkeys.UXKey;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.UXKey;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.RxUtil;
 
@@ -64,10 +65,12 @@ public abstract class WidgetModel {
     private CompositeDisposable keyDisposables;
     private CompositeDisposable compositeDisposable;
     private Disposable timerDisposable;
+    private List<BaseModule> moduleList = new ArrayList<>();
     //endregion
 
     //region Default Constructor
-    public WidgetModel(@NonNull DJISDKModel djiSdkModel, @NonNull ObservableInMemoryKeyedStore uxKeyManager) {
+    public WidgetModel(@NonNull DJISDKModel djiSdkModel,
+                       @NonNull ObservableInMemoryKeyedStore uxKeyManager) {
         this.djiSdkModel = djiSdkModel;
         pendingKeys = new ArrayList<>();
         this.uxKeyManager = uxKeyManager;
@@ -76,6 +79,16 @@ public abstract class WidgetModel {
     //endregion
 
     //region Lifecycle
+
+    protected void addModule(@NonNull BaseModule baseModule) {
+        if (isStarted()) {
+            throw new IllegalStateException("WidgetModel is already setup. Modules should" +
+                    " be added during initialization.");
+        }
+        if (!moduleList.contains(baseModule)) {
+            moduleList.add(baseModule);
+        }
+    }
 
     /**
      * Set up the widget model by initializing all the required resources
@@ -88,6 +101,9 @@ public abstract class WidgetModel {
         compositeDisposable = new CompositeDisposable();
         initializeConnection();
         inSetup();
+        for (BaseModule module : moduleList) {
+            module.setup(this);
+        }
         if (!djiSdkModel.isAvailable()) {
             startPendingKeysTimer();
         }
@@ -111,6 +127,9 @@ public abstract class WidgetModel {
 
         djiSdkModel.removeListener(this);
 
+        for (BaseModule module : moduleList) {
+            module.cleanup();
+        }
         inCleanup();
     }
 
@@ -225,6 +244,7 @@ public abstract class WidgetModel {
      * @param message Message to be logged
      * @return Throwable consumer
      */
+    @CheckResult
     protected Consumer<Throwable> logErrorConsumer(@NonNull String tag, @NonNull String message) {
         return RxUtil.logErrorConsumer(tag, message);
     }

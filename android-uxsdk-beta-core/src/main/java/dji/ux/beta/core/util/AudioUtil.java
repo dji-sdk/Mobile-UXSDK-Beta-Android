@@ -51,9 +51,23 @@ public final class AudioUtil {
      * @param resID   The resource ID of the sound to play.
      */
     public static void playSound(Context context, int resID) {
+        playSound(context, resID, false);
+    }
+
+    /**
+     * Plays a sound.
+     *
+     * @param context        A context object.
+     * @param resID          The resource ID of the sound to play.
+     * @param ignoreWhenBusy If set to true, will do nothing if a sound is already being played.
+     */
+    public static void playSound(Context context, int resID, boolean ignoreWhenBusy) {
         try {
             if (player != null) {
                 if (player.isPlaying()) {
+                    if (ignoreWhenBusy) {
+                        return;
+                    }
                     player.stop();
                 }
                 player.release();
@@ -84,14 +98,12 @@ public final class AudioUtil {
     /**
      * Plays a sound in the background.
      *
-     * @param schedulerProvider A scheduler provider which provides the background thread.
-     * @param context           A context object.
-     * @param resID             The resource ID of the sound to play.
+     * @param context A context object.
+     * @param resID   The resource ID of the sound to play.
      */
-    public static Disposable playSoundInBackground(SchedulerProvider schedulerProvider,
-                                                   final Context context, final int resID) {
+    public static Disposable playSoundInBackground(final Context context, final int resID) {
         return Observable.just(true)
-                .subscribeOn(schedulerProvider.computation())
+                .subscribeOn(SchedulerProvider.computation())
                 .subscribe(aBoolean -> playSound(context, resID),
                         e -> DJILog.d("PlaySound", e.getMessage()));
     }

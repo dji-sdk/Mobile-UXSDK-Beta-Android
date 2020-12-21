@@ -26,13 +26,33 @@ package dji.ux.beta.core.model;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.Objects;
+
+/**
+ * The class represents warning messages.
+ * The messages will guide the user through the flight.
+ */
 public class WarningMessage {
 
     private static final int DEFAULT_DISPLAY_DURATION = 5;
 
+    /**
+     * Warning levels for warning message
+     */
     public enum Level {
+        /**
+         * Message is a notification
+         */
         NOTIFY(0),
+
+        /**
+         * Message is a warning
+         */
         WARNING(1),
+
+        /**
+         * Message implies dangerous condition
+         */
         DANGEROUS(2);
 
         private int value;
@@ -45,8 +65,17 @@ public class WarningMessage {
             return value;
         }
 
+        private static Level[] values;
+
+        public static Level[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
         public static Level find(int value) {
-            for (Level item : values()) {
+            for (Level item : getValues()) {
                 if (item.getValue() == value) {
                     return item;
                 }
@@ -55,10 +84,32 @@ public class WarningMessage {
         }
     }
 
+    /**
+     * Type of message behavior
+     */
     public enum Type {
+
+        /**
+         * Message will auto disappear from the screen
+         * after the number of seconds specified by showDuration.
+         */
         AUTO_DISAPPEAR(0),
+
+        /**
+         * Message stays until a removal message is sent.
+         */
         PUSH(1),
+
+        /**
+         * Message will be pinned above other messages and will
+         * have a close button to dismiss it.
+         */
         PINNED(2),
+
+        /**
+         * Message will be pinned above other messages and cannot
+         * be dismissed by user.
+         */
         PINNED_NOT_CLOSE(3);
 
         private int value;
@@ -71,8 +122,17 @@ public class WarningMessage {
             return value;
         }
 
+        private static Type[] values;
+
+        public static Type[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
         public static Type find(int value) {
-            for (Type item : values()) {
+            for (Type item : getValues()) {
                 if (item.getValue() == value) {
                     return item;
                 }
@@ -81,26 +141,98 @@ public class WarningMessage {
         }
     }
 
+    /**
+     * Action for warning message
+     */
     public enum Action {
+        /**
+         * Insert warning message
+         */
         INSERT,
+
+        /**
+         * Remove warning message
+         */
         REMOVE
     }
 
+    /**
+     *  The type of the warning message component
+     */
     public enum WarningType {
+        /**
+         * Air 1860
+         */
         AIR1860(0),
+
+        /**
+         * Battery
+         */
         BATTERY(1),
+
+        /**
+         * Camera
+         */
         CAMERA(2),
+
+        /**
+         * Center board
+         */
         CENTER_BOARD(3),
+
+        /**
+         * OSD
+         */
         OSD(4),
+
+        /**
+         * Flight Controller
+         */
         FLIGHT_CONTROLLER(5),
+
+        /**
+         * Gimbal
+         */
         GIMBAL(6),
+
+        /**
+         * Lightbridge
+         */
         LIGHT_BRIDGE(7),
+
+        /**
+         * Remote controller
+         */
         REMOTE_CONTROLLER(8),
+
+        /**
+         * Vision
+         */
         VISION(9),
+
+        /**
+         * Flight record
+         */
         FLIGHT_RECORD(10),
+
+        /**
+         * Fly safe
+         */
         FLY_SAFE(11),
+
+        /**
+         * RTK
+         */
         RTK(12),
+
+        /**
+         * LTE
+         */
         LTE(13),
+
+        /**
+         * Other
+         */
         OTHER(100);
 
         private int value;
@@ -113,8 +245,17 @@ public class WarningMessage {
             return value;
         }
 
+        private static WarningType[] values;
+
+        public static WarningType[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
         public static WarningType find(int value) {
-            for (WarningType item : values()) {
+            for (WarningType item : getValues()) {
                 if (item.getValue() == value) {
                     return item;
                 }
@@ -288,8 +429,8 @@ public class WarningMessage {
         if (code != that.code) return false;
         if (subCode != that.subCode) return false;
         if (componentIndex != that.componentIndex) return false;
-        if (reason != null ? !reason.equals(that.reason) : that.reason != null) return false;
-        return solution != null ? solution.equals(that.solution) : that.solution == null;
+        if (!Objects.equals(reason, that.reason)) return false;
+        return Objects.equals(solution, that.solution);
     }
 
     @Override
