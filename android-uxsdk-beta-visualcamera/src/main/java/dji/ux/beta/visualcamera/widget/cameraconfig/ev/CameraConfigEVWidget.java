@@ -38,10 +38,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
 import dji.common.camera.SettingsDefinitions;
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.SchedulerProvider;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.CameraUtil;
 import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
@@ -58,7 +58,7 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
     private TextView evValueTextView;
     //endregion
 
-    //region Constructors
+    //region Constructor
     public CameraConfigEVWidget(@NonNull Context context) {
         super(context);
     }
@@ -109,10 +109,10 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getExposureCompensation()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateUI));
         addReaction(widgetModel.getExposureSensitivityMode()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateVisibility));
     }
     //endregion
@@ -155,7 +155,30 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
      * @param cameraIndex {@link SettingDefinitions.CameraIndex}
      */
     public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
+        if (!isInEditMode()) {
+            widgetModel.setCameraIndex(cameraIndex);
+        }
+    }
+
+    /**
+     * Get the current type of the lens the widget is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    /**
+     * Set the type of the lens for which the widget should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        if (!isInEditMode()) {
+            widgetModel.setLensType(lensType);
+        }
     }
 
     /**
@@ -351,9 +374,8 @@ public class CameraConfigEVWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigEVWidget);
 
-        if (!isInEditMode()) {
-            setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigEVWidget_uxsdk_cameraIndex, 0)));
-        }
+        setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigEVWidget_uxsdk_cameraIndex, 0)));
+        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigEVWidget_uxsdk_lensType, 0)));
 
         int evTitleTextAppearanceId =
                 typedArray.getResourceId(R.styleable.CameraConfigEVWidget_uxsdk_evTitleTextAppearance, INVALID_RESOURCE);

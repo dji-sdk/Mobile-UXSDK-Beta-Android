@@ -50,10 +50,10 @@ import dji.thirdparty.io.reactivex.Completable;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.util.CameraActionSound;
 import dji.ux.beta.cameracore.widget.cameracapture.recordvideo.RecordVideoWidgetModel.RecordingState;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.CameraUtil;
 import dji.ux.beta.core.util.ProductUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
@@ -66,7 +66,7 @@ import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
  */
 public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClickListener {
 
-    //region fields
+    //region Fields
     private static final String TAG = "RecordVideoWidget";
     private RecordVideoWidgetModel widgetModel;
     private ImageView centerImageView;
@@ -79,11 +79,10 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     private Drawable recordVideoStopDrawable;
     private Drawable recordVideoStartHasselbladDrawable;
     private Drawable recordVideoStopHasselbladDrawable;
-    private SchedulerProvider schedulerProvider;
     private CameraActionSound cameraActionSound;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public RecordVideoWidget(Context context) {
         super(context);
     }
@@ -107,12 +106,10 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
         storageSDCardIconMap = new HashMap<>();
         centerImageView.setOnClickListener(this);
         cameraActionSound = new CameraActionSound(context);
-        schedulerProvider = SchedulerProvider.getInstance();
         if (!isInEditMode()) {
             widgetModel =
                     new RecordVideoWidgetModel(DJISDKModel.getInstance(),
-                            ObservableInMemoryKeyedStore.getInstance(),
-                            schedulerProvider);
+                            ObservableInMemoryKeyedStore.getInstance());
         }
         initDefaults();
         if (attrs != null) {
@@ -140,19 +137,19 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     protected void reactToModelChanges() {
         addReaction(
                 widgetModel.getRecordingTimeInSeconds()
-                        .observeOn(schedulerProvider.ui())
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(
                                 this::updateRecordingTime,
                                 logErrorConsumer(TAG, "record time: ")));
         addReaction(
                 widgetModel.getRecordingState()
-                        .observeOn(schedulerProvider.ui())
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(
                                 recordingState -> onIsRecordingVideoChange(recordingState, true),
                                 logErrorConsumer(TAG, "is recording: ")));
         addReaction(
                 widgetModel.getCameraVideoStorageState()
-                        .observeOn(schedulerProvider.ui())
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(
                                 this::updateCameraForegroundResource,
                                 logErrorConsumer(TAG, "camera storage update: ")));
@@ -175,7 +172,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
                 } else {
                     return Completable.complete();
                 }
-            }).observeOn(schedulerProvider.ui()).subscribe(() -> {
+            }).observeOn(SchedulerProvider.ui()).subscribe(() -> {
             }, logErrorConsumer(TAG, "START STOP VIDEO")));
         }
     }
@@ -202,6 +199,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RecordVideoWidget);
         setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.RecordVideoWidget_uxsdk_cameraIndex, 0)));
+        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.RecordVideoWidget_uxsdk_lensType, 0)));
 
         int textAppearance = typedArray.getResourceId(R.styleable.RecordVideoWidget_uxsdk_timerTextAppearance, INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
@@ -312,9 +310,9 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
         storageStatusOverlayImageView.setVisibility(isRecordingVideo ? View.GONE : View.VISIBLE);
         if (playSound) {
             if (recordingState == RecordingState.RECORDING_IN_PROGRESS) {
-                addDisposable(cameraActionSound.playStartRecordVideo(schedulerProvider));
+                addDisposable(cameraActionSound.playStartRecordVideo());
             } else if (recordingState == RecordingState.RECORDING_STOPPED) {
-                addDisposable(cameraActionSound.playStopRecordVideo(schedulerProvider));
+                addDisposable(cameraActionSound.playStopRecordVideo());
             }
         }
     }
@@ -322,7 +320,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     private void checkAndUpdateCameraForegroundResource() {
         if (!isInEditMode()) {
             addDisposable(widgetModel.getCameraVideoStorageState().firstOrError()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(this::updateCameraForegroundResource,
                             logErrorConsumer(TAG, "check and update camera foreground resource: ")));
         }
@@ -331,7 +329,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     private void checkAndUpdateCenterImageView() {
         if (!isInEditMode()) {
             addDisposable(widgetModel.getRecordingState().firstOrError()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(recordingState -> onIsRecordingVideoChange(recordingState, false),
                             logErrorConsumer(TAG, "check and update camera foreground resource: ")));
         }
@@ -358,6 +356,27 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
         if (!isInEditMode()) {
             widgetModel.setCameraIndex(cameraIndex);
+        }
+    }
+
+    /**
+     * Get the current type of the lens the widget is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    /**
+     * Set the type of the lens for which the widget should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        if (!isInEditMode()) {
+            widgetModel.setLensType(lensType);
         }
     }
 

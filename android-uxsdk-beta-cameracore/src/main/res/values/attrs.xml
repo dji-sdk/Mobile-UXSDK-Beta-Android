@@ -24,8 +24,11 @@
 
 <resources>
 
+    <attr name="uxsdk_cameraSettingBackgroundColor" format="color" />
+
     <declare-styleable name="AutoExposureLockWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_widgetTitleTextAppearance" />
         <attr name="uxsdk_widgetTitleTextSize" />
         <attr name="uxsdk_widgetTitleTextColor" />
@@ -37,6 +40,7 @@
 
     <declare-styleable name="ExposureSettingsIndicatorWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_iconBackground" />
         <attr name="uxsdk_aperturePriorityModeDrawable" format="reference" />
         <attr name="uxsdk_shutterPriorityModeDrawable" format="reference" />
@@ -51,6 +55,7 @@
 
     <declare-styleable name="FocusExposureSwitchWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_manualFocusDrawable" format="reference" />
         <attr name="uxsdk_autoFocusDrawable" format="reference" />
         <attr name="uxsdk_meteringDrawable" format="reference" />
@@ -59,6 +64,7 @@
 
     <declare-styleable name="FocusModeWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_widgetTitleTextSize" />
         <attr name="uxsdk_widgetTitleBackground" />
         <attr name="uxsdk_activeModeTextColor" format="reference" />
@@ -84,6 +90,7 @@
 
     <declare-styleable name="RecordVideoWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_timerTextBackground" format="reference" />
         <attr name="uxsdk_timerTextAppearance" format="reference" />
         <attr name="uxsdk_timerTextColor" format="color" />
@@ -127,6 +134,7 @@
     <declare-styleable name="FPVInteractionWidget">
         <attr name="uxsdk_cameraIndex" />
         <attr name="uxsdk_gimbalIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_manualFocusIcon" format="reference" />
         <attr name="uxsdk_autoFocusIcon" format="reference" />
         <attr name="uxsdk_autoFocusContinuousIcon" format="reference" />

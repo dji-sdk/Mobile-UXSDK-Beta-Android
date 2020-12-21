@@ -28,8 +28,8 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.ColorInt
-import dji.ux.beta.R
-import dji.ux.beta.core.base.GlobalPreferencesManager
+import dji.ux.beta.core.R
+import dji.ux.beta.core.communication.GlobalPreferencesManager
 import dji.ux.beta.core.extension.getColor
 
 private const val DISABLED = 0
@@ -106,7 +106,7 @@ class GridLineView @JvmOverloads constructor(
 
     //endregion
 
-    //region Constructors
+    //region Constructor
     init {
         if (!isInEditMode) {
             setWillNotDraw(false)
@@ -212,15 +212,11 @@ class GridLineView @JvmOverloads constructor(
 
         companion object {
             @JvmStatic
+            val values = values()
+
+            @JvmStatic
             fun find(value: Int): GridLineType {
-                var result = UNKNOWN
-                for (i in values().indices) {
-                    if (values()[i].value == value) {
-                        result = values()[i]
-                        break
-                    }
-                }
-                return result
+                return values.find { it.value == value } ?: UNKNOWN
             }
         }
 

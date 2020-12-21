@@ -27,12 +27,13 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import dji.ux.beta.R;
+import dji.ux.beta.core.R;
 
 /**
  * Utility class for unit conversions
  */
 public final class UnitConversionUtil {
+    public static final float TEMPERATURE_K2C = 273.15f;
     //region Constants
     private static final float METER_TO_FOOT = 3.2808f;
     private static final float METER_PER_SEC_TO_MILE_PER_HR = 2.2369f;
@@ -50,6 +51,7 @@ public final class UnitConversionUtil {
 
     //region Length or Distance Conversion Functions
 
+
     /**
      * Utility function to convert meters to feet
      *
@@ -57,6 +59,16 @@ public final class UnitConversionUtil {
      * @return float value of the input meter value converted to feet
      */
     public static float convertMetersToFeet(float value) {
+        return (value * METER_TO_FOOT);
+    }
+
+    /**
+     * Utility function to convert meters to feet
+     *
+     * @param value in meters
+     * @return double value of the input meter value converted to feet
+     */
+    public static double convertMetersToFeet(double value) {
         return (value * METER_TO_FOOT);
     }
 
@@ -130,6 +142,46 @@ public final class UnitConversionUtil {
         return time;
     }
 
+    /**
+     * Convert temperature value from kelvin to Celsius
+     *
+     * @param value temperature in kelvin
+     * @return float temperature in Celsius
+     */
+    public static float kelvinToCelsius(final float value) {
+        return (value - TEMPERATURE_K2C);
+    }
+
+    /**
+     * Convert temperature value from Celsius to kelvin
+     *
+     * @param value temperature in Celsius
+     * @return float temperature in kelvin
+     */
+    public static float celsiusToKelvin(final float value) {
+        return (value + TEMPERATURE_K2C);
+    }
+
+    /**
+     * Convert temperature value from Celsius to fahrenheit
+     *
+     * @param value temperature in Celsius
+     * @return float temperature in Fahrenheit
+     */
+    public static float celsiusToFahrenheit(final float value) {
+        return (value * 1.8f + 32);
+    }
+
+    /**
+     * Convert temperature value from Fahrenheit to Celsius
+     *
+     * @param value temperature in Fahrenheit
+     * @return float temperature in Celsius
+     */
+    public static float fahrenheitToCelsius(final float value) {
+        return (value - 32) / 1.8f;
+    }
+
     public static String getSpaceWithUnit(@NonNull Context context, int space) {
         String result = String.format(context.getString(R.string.uxsdk_storage_status_remaining_space_mb), space);
         if (space > 1024) {
@@ -163,11 +215,20 @@ public final class UnitConversionUtil {
             intValue = value;
         }
 
+        private static UnitType[] values;
+
+        public static UnitType[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
         public static UnitType find(int value) {
             UnitType result = METRIC;
-            for (int i = 0; i < values().length; i++) {
-                if (values()[i].intValue == value) {
-                    result = values()[i];
+            for (int i = 0; i < getValues().length; i++) {
+                if (getValues()[i].intValue == value) {
+                    result = getValues()[i];
                     break;
                 }
             }
@@ -206,11 +267,20 @@ public final class UnitConversionUtil {
             intValue = value;
         }
 
+        private static SpeedMetricUnitType[] values;
+
+        public static SpeedMetricUnitType[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
         public static SpeedMetricUnitType find(int value) {
             SpeedMetricUnitType result = METERS_PER_SECOND;
-            for (int i = 0; i < values().length; i++) {
-                if (values()[i].intValue == value) {
-                    result = values()[i];
+            for (int i = 0; i < getValues().length; i++) {
+                if (getValues()[i].intValue == value) {
+                    result = getValues()[i];
                     break;
                 }
             }
@@ -228,5 +298,62 @@ public final class UnitConversionUtil {
         }
     }
 
+
+    /**
+     * Specify the temperature unit
+     */
+    public enum TemperatureUnitType {
+        /**
+         * The unit type degrees CELSIUS
+         */
+        CELSIUS("CELSIUS", 0),
+        /**
+         * The unit type degrees FAHRENHEIT
+         */
+        FAHRENHEIT("FAHRENHEIT", 1),
+        /**
+         * The unit type KELVIN
+         */
+        KELVIN("KELVIN", 2);
+
+        private String stringValue;
+        private int intValue;
+
+        TemperatureUnitType(String toString, int value) {
+            stringValue = toString;
+            intValue = value;
+        }
+
+        private static TemperatureUnitType[] values;
+
+        public static TemperatureUnitType[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
+        public static TemperatureUnitType find(int value) {
+            TemperatureUnitType result = CELSIUS;
+            for (int i = 0; i < getValues().length; i++) {
+                if (getValues()[i].intValue == value) {
+                    result = getValues()[i];
+                    break;
+                }
+            }
+            return result;
+        }
+
+        @Override
+        @NonNull
+        public String toString() {
+            return stringValue;
+        }
+
+        public int value() {
+            return this.intValue;
+        }
+
+    }
     //endregion
 }

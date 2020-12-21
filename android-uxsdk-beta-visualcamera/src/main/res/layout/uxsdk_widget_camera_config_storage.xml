@@ -32,7 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/textview_status_capacity_title"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textview_status_capacity_title"
@@ -44,7 +43,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
         android:textColor="@color/uxsdk_white_50_percent"
         android:textSize="@dimen/uxsdk_text_size_small"
         app:layout_constraintStart_toEndOf="@+id/imageview_storage_icon"
@@ -56,7 +54,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
         android:maxLines="1"
         android:textColor="@color/uxsdk_white"
         android:textSize="@dimen/uxsdk_text_size_normal"
@@ -64,6 +61,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text="1080P/240" />
 
+    <!--suppress AndroidDomInspection -->
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
         android:layout_width="wrap_content"
@@ -77,9 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
         android:textColor="@color/uxsdk_white_33_percent"
         android:textSize="@dimen/uxsdk_text_size_small"
         app:layout_constraintBottom_toTopOf="@+id/textview_status_capacity_value"
@@ -92,9 +88,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
         android:textColor="@color/uxsdk_white"
         android:textSize="@dimen/uxsdk_text_size_normal"
         app:layout_constraintBottom_toBottomOf="parent"

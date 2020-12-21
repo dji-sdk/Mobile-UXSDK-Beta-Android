@@ -1,0 +1,79 @@
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<resources>
+
+    <!-- RTK Widget -->
+    <string name="uxsdk_rtk_panel_antenna_1">Antenna 1</string>
+    <string name="uxsdk_rtk_panel_antenna_2">Antenna 2</string>
+    <string name="uxsdk_rtk_panel_base_station">Base Station</string>
+    <string name="uxsdk_rtk_panel_satellite_num">Satellites#</string>
+    <string name="uxsdk_rtk_panel_gps_num">GPS:</string>
+    <string name="uxsdk_rtk_panel_beidou_num">BeiDou:</string>
+    <string name="uxsdk_rtk_panel_glonass_num">GLONASS:</string>
+    <string name="uxsdk_rtk_panel_galileo_num">Galileo:</string>
+
+    <string name="uxsdk_rtk_panel_aircraft_location">Aircraft</string>
+    <string name="uxsdk_rtk_panel_base_station_location">Base Station</string>
+    <string name="uxsdk_rtk_panel_lat">Latitude: </string>
+    <string name="uxsdk_rtk_panel_coordinate_value">%1$.9f</string>
+    <string name="uxsdk_rtk_panel_altitude_value">%1$.3f</string>
+    <string name="uxsdk_rtk_panel_course_angle_value">%1$.2f</string>
+    <string name="uxsdk_rtk_panel_lng">Longitude:</string>
+    <string name="uxsdk_rtk_panel_height">Altitude:</string>
+    <string name="uxsdk_rtk_panel_antenna_angle">Course Angle:</string>
+    <string name="uxsdk_rtk_panel_orientation_status_text">Orientation:</string>
+    <string name="uxsdk_rtk_panel_positioning_status_text">Positioning:</string>
+    <string name="uxsdk_rtk_standard_deviation">Standard Deviation:</string>
+    <string name="uxsdk_rtk_introduction_txt">Real-Time Kinematic positioning is based on the phase of the signal\'s carrier phase and outputs centimeter-level 3D positioning on particular coordinates. Heading is determined by the two antennas of the rover.</string>
+
+    <string name="uxsdk_rtk_enabled_title_rtk_switch">RTK Positioning</string>
+    <string name="uxsdk_rtk_enabled_desc">When RTK module malfunctions, manually disable RTK and switch back to GPS mode. (If you enable RTK after takeoff, the GPS will continually be used.)</string>
+    <string name="uxsdk_rtk_enabled_motors_running">Motors are running. Stop them and try again.</string>
+
+    <string name="uxsdk_rtk_solution_none">NONE</string>
+    <string name="uxsdk_rtk_solution_single">SINGLE</string>
+    <string name="uxsdk_rtk_solution_float">FLOAT</string>
+    <string name="uxsdk_rtk_solution_fixed">FIXED</string>
+    <string name="uxsdk_rtk_solution_unknown">UNKNOWN</string>
+    <string name="uxsdk_rtk_state_connect">RTK connected. RTK data in use</string>
+    <string name="uxsdk_rtk_state_connect_not_healthy">RTK connected. RTK data not in use</string>
+    <string name="uxsdk_rtk_state_disconnect">Not connected</string>
+    <string name="uxsdk_rtk_state_pause">Suspending account…</string>
+    <string name="uxsdk_rtk_state_account_expire">Time verification failed</string>
+    <string name="uxsdk_rtk_state_network_err">Network unavailable</string>
+    <string name="uxsdk_rtk_state_auth_failed">Verification failed</string>
+    <string name="uxsdk_rtk_state_unknown">Unknown error</string>
+    <string name="uxsdk_rtk_nrtk_state_inner_error">%sInternal error</string>
+    <string name="uxsdk_rtk_nrtk_state_unknown">Unknown error</string>
+    <string name="uxsdk_rtk_nrtk_account_error">Account error</string>
+    <string name="uxsdk_rtk_nrtk_connecting">Connecting to server…</string>
+    <string name="uxsdk_rtk_nrtk_invalid_request">Request rejected by server</string>
+    <string name="uxsdk_rtk_nrtk_server_not_reachable">Connecting to server failed</string>
+    <string name="uxsdk_rtk_type_nrtk">Network RTK</string>
+    <string name="uxsdk_rtk_type_rtk_mobile_station">D-RTK 2 Mobile Station</string>
+    <string name="uxsdk_rtk_type_rtk_base_station">Base Station</string>
+    <string name="uxsdk_rtk_type_custom_rtk">Custom Network RTK</string>
+    <string name="uxsdk_rtk_status_desc">%1$s Status:</string>
+
+</resources>

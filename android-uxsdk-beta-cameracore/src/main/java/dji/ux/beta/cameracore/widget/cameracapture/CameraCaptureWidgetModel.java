@@ -26,13 +26,11 @@ package dji.ux.beta.cameracore.widget.cameracapture;
 import androidx.annotation.NonNull;
 
 import dji.common.camera.SettingsDefinitions.CameraMode;
-import dji.keysdk.CameraKey;
-import dji.keysdk.DJIKey;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
-import dji.ux.beta.core.util.DataProcessor;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.module.FlatCameraModule;
 
 /**
  * Camera Capture Widget Model
@@ -42,26 +40,26 @@ import dji.ux.beta.core.util.DataProcessor;
  */
 public class CameraCaptureWidgetModel extends WidgetModel {
 
-    //region fields
-    private final DataProcessor<CameraMode> cameraModeDataProcessor;
+    //region Fields
+    private FlatCameraModule flatCameraModule;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public CameraCaptureWidgetModel(@NonNull DJISDKModel djiSdkModel,
                                     @NonNull ObservableInMemoryKeyedStore keyedStore) {
         super(djiSdkModel, keyedStore);
-        cameraModeDataProcessor = DataProcessor.create(CameraMode.UNKNOWN);
+        flatCameraModule = new FlatCameraModule();
+        addModule(flatCameraModule);
     }
 
     @Override
     protected void inSetup() {
-        DJIKey cameraModeKey = CameraKey.create(CameraKey.MODE);
-        bindDataProcessor(cameraModeKey, cameraModeDataProcessor);
+        // do nothing
     }
 
     @Override
     protected void inCleanup() {
-        // Empty function
+        // do nothing
     }
 
     @Override
@@ -78,7 +76,7 @@ public class CameraCaptureWidgetModel extends WidgetModel {
      * @return Flowable with {@link CameraMode} instance
      */
     public Flowable<CameraMode> getCameraMode() {
-        return cameraModeDataProcessor.toFlowable();
+        return flatCameraModule.getCameraModeDataProcessor().toFlowable();
     }
     //endregion
 }

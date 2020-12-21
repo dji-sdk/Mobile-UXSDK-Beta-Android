@@ -34,16 +34,16 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.IntRange
 import androidx.core.content.res.use
 import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
+import dji.ux.beta.core.base.SchedulerProvider
 import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.ux.beta.R
-import dji.ux.beta.core.base.ConstraintLayoutWidget
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
-import dji.ux.beta.core.widget.remotecontrollersignal.RemoteControllerSignalWidget.RemoteControllerSignalWidgetState
-import dji.ux.beta.core.widget.remotecontrollersignal.RemoteControllerSignalWidget.RemoteControllerSignalWidgetState.ProductConnected
-import dji.ux.beta.core.widget.remotecontrollersignal.RemoteControllerSignalWidget.RemoteControllerSignalWidgetState.SignalQualityUpdated
+import dji.ux.beta.core.widget.remotecontrollersignal.RemoteControllerSignalWidget.ModelState
+import dji.ux.beta.core.widget.remotecontrollersignal.RemoteControllerSignalWidget.ModelState.ProductConnected
+import dji.ux.beta.core.widget.remotecontrollersignal.RemoteControllerSignalWidget.ModelState.SignalQualityUpdated
 
 /**
  * This widget shows the strength of the signal between the RC and the aircraft.
@@ -52,7 +52,7 @@ open class RemoteControllerSignalWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<RemoteControllerSignalWidgetState>(context, attrs, defStyleAttr) {
+) : ConstraintLayoutWidget<ModelState>(context, attrs, defStyleAttr) {
 
     //region Fields
     private val rcIconImageView: ImageView = findViewById(R.id.imageview_rc_icon)
@@ -128,7 +128,7 @@ open class RemoteControllerSignalWidget @JvmOverloads constructor(
         }
     //endregion
 
-    //region Constructors
+    //region Constructor
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         inflate(context, R.layout.uxsdk_widget_remote_controller_signal, this)
     }
@@ -155,10 +155,10 @@ open class RemoteControllerSignalWidget @JvmOverloads constructor(
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.rcSignalQuality
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateRCSignal(it) })
         addReaction(widgetModel.productConnection
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateIconColor(it) })
     }
     //endregion
@@ -183,7 +183,7 @@ open class RemoteControllerSignalWidget @JvmOverloads constructor(
     private fun checkAndUpdateIconColor() {
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateIconColor(it) }, logErrorConsumer(TAG, "Update Icon Color ")))
         }
     }
@@ -248,27 +248,28 @@ open class RemoteControllerSignalWidget @JvmOverloads constructor(
     }
     //endregion
 
-    //region hooks
+    //region Hooks
     /**
-     * Get the [RemoteControllerSignalWidgetState] updates
+     * Get the [ModelState] updates
      */
-    override fun getWidgetStateUpdate(): Flowable<RemoteControllerSignalWidgetState> {
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
         return super.getWidgetStateUpdate()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class RemoteControllerSignalWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : RemoteControllerSignalWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * Signal quality update
          */
-        data class SignalQualityUpdated(val signalValue: Int) : RemoteControllerSignalWidgetState()
+        data class SignalQualityUpdated(val signalValue: Int) : ModelState()
     }
     //endregion
 

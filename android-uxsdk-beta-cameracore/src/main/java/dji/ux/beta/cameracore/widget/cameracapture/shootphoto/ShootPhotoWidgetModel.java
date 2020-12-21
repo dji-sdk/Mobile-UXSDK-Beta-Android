@@ -32,9 +32,9 @@ import dji.keysdk.DJIKey;
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.SchedulerProviderInterface;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.module.FlatCameraModule;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions;
 
@@ -59,13 +59,11 @@ public class ShootPhotoWidgetModel extends WidgetModel {
     private final DataProcessor<Boolean> canStartShootingPhoto;
     private final DataProcessor<Boolean> canStopShootingPhoto;
     private final DataProcessor<String> cameraDisplayName;
-    private int cameraIndex;
+    private final DataProcessor<Boolean> isShootingInterval;
     //endregion
 
     //region Internal data
-    private final DataProcessor<Boolean> isShootingInterval;
     private final DataProcessor<Boolean> isShootingPanorama;
-    private final DataProcessor<SettingsDefinitions.ShootPhotoMode> shootPhotoMode;
     private final DataProcessor<SettingsDefinitions.PhotoAEBCount> aebCount;
     private final DataProcessor<SettingsDefinitions.PhotoBurstCount> burstCount;
     private final DataProcessor<SettingsDefinitions.PhotoBurstCount> rawBurstCount;
@@ -80,22 +78,21 @@ public class ShootPhotoWidgetModel extends WidgetModel {
     private final DataProcessor<Long> innerStorageAvailableCaptureCount;
     private final DataProcessor<Integer> ssdAvailableCaptureCount;
     private final DataProcessor<Boolean> isProductConnected;
-    private SchedulerProviderInterface schedulerProvider;
     //endregion
 
     //region Other fields
     private final SettingsDefinitions.PhotoTimeIntervalSettings defaultIntervalSettings;
+    private int cameraIndex;
     private DJIKey stopShootPhotoKey;
     private DJIKey startShootPhotoKey;
+    private FlatCameraModule flatCameraModule;
     //endregion
 
     //region Constructor
     public ShootPhotoWidgetModel(@NonNull DJISDKModel djiSdkModel,
-                                 @NonNull ObservableInMemoryKeyedStore keyedStore,
-                                 @NonNull SchedulerProviderInterface schedulerProvider) {
+                                 @NonNull ObservableInMemoryKeyedStore keyedStore) {
         super(djiSdkModel, keyedStore);
         this.cameraIndex = SettingDefinitions.CameraIndex.CAMERA_INDEX_0.getIndex();
-        this.schedulerProvider = schedulerProvider;
         defaultIntervalSettings = new SettingsDefinitions.PhotoTimeIntervalSettings(0, 0);
         CameraPhotoState cameraPhotoState = new CameraPhotoState(SettingsDefinitions.ShootPhotoMode.UNKNOWN);
 
@@ -105,7 +102,6 @@ public class ShootPhotoWidgetModel extends WidgetModel {
                 0,
                 SettingsDefinitions.SDCardOperationState.NOT_INSERTED);
         cameraStorageState = DataProcessor.create(cameraSDStorageState);
-        shootPhotoMode = DataProcessor.create(cameraPhotoState.getShootPhotoMode());
         canStartShootingPhoto = DataProcessor.create(false);
         canStopShootingPhoto = DataProcessor.create(false);
         cameraDisplayName = DataProcessor.create("");
@@ -127,6 +123,8 @@ public class ShootPhotoWidgetModel extends WidgetModel {
         innerStorageAvailableCaptureCount = DataProcessor.create(INVALID_AVAILABLE_CAPTURE_COUNT_LONG);
         ssdAvailableCaptureCount = DataProcessor.create(INVALID_AVAILABLE_CAPTURE_COUNT);
         isProductConnected = DataProcessor.create(false);
+        flatCameraModule = new FlatCameraModule();
+        addModule(flatCameraModule);
     }
     //endregion
 
@@ -191,22 +189,23 @@ public class ShootPhotoWidgetModel extends WidgetModel {
     }
 
     /**
-     * Set the index of the camera for which the widget model should react
-     *
-     * @param cameraIndex camera index
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        this.cameraIndex = cameraIndex.getIndex();
-        restart();
-    }
-
-    /**
      * Get the current index of the camera the widget model is reacting to
      *
      * @return current camera index
      */
     public SettingDefinitions.CameraIndex getCameraIndex() {
         return SettingDefinitions.CameraIndex.find(cameraIndex);
+    }
+
+    /**
+     * Set the index of the camera for which the widget model should react
+     *
+     * @param cameraIndex camera index
+     */
+    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+        this.cameraIndex = cameraIndex.getIndex();
+        flatCameraModule.setCameraIndex(cameraIndex);
+        restart();
     }
 
     /**
@@ -230,9 +229,7 @@ public class ShootPhotoWidgetModel extends WidgetModel {
         if (!canStartShootingPhoto.getValue() || !djiSdkModel.isAvailable()) {
             return Completable.complete();
         }
-
-        return djiSdkModel.performAction(startShootPhotoKey)
-                .subscribeOn(schedulerProvider.io());
+        return djiSdkModel.performAction(startShootPhotoKey);
     }
 
     /**
@@ -244,8 +241,7 @@ public class ShootPhotoWidgetModel extends WidgetModel {
         if (!canStopShootingPhoto.getValue() || !djiSdkModel.isAvailable()) {
             return Completable.complete();
         }
-        return djiSdkModel.performAction(stopShootPhotoKey)
-                .subscribeOn(schedulerProvider.io());
+        return djiSdkModel.performAction(stopShootPhotoKey);
     }
     //endregion
 
@@ -259,13 +255,11 @@ public class ShootPhotoWidgetModel extends WidgetModel {
         DJIKey cameraConnectionKey = CameraKey.create(CameraKey.CONNECTION, cameraIndex);
         bindDataProcessor(cameraConnectionKey, isProductConnected, newValue -> onCameraConnected((boolean) newValue));
         // Photo mode
-        DJIKey shootPhotoModeKey = CameraKey.create(CameraKey.SHOOT_PHOTO_MODE, cameraIndex);
         DJIKey photoAEBParamKey = CameraKey.create(CameraKey.PHOTO_AEB_COUNT, cameraIndex);
         DJIKey photoBurstCountKey = CameraKey.create(CameraKey.PHOTO_BURST_COUNT, cameraIndex);
         DJIKey photoIntervalParamKey = CameraKey.create(CameraKey.PHOTO_TIME_INTERVAL_SETTINGS, cameraIndex);
         DJIKey rawBurstCountKey = CameraKey.create(CameraKey.PHOTO_RAW_BURST_COUNT, cameraIndex);
         DJIKey panoramaModeKey = CameraKey.create(CameraKey.PHOTO_PANORAMA_MODE, cameraIndex);
-        bindDataProcessor(shootPhotoModeKey, shootPhotoMode);
         bindDataProcessor(photoAEBParamKey, aebCount);
         bindDataProcessor(photoBurstCountKey, burstCount);
         bindDataProcessor(rawBurstCountKey, rawBurstCount);
@@ -311,7 +305,7 @@ public class ShootPhotoWidgetModel extends WidgetModel {
 
     @Override
     protected void inCleanup() {
-        //Nothing to clean
+        // do nothing
     }
 
     @Override
@@ -324,7 +318,7 @@ public class ShootPhotoWidgetModel extends WidgetModel {
     //region Helpers
     private void updateCameraPhotoState() {
         CameraPhotoState cameraPhotoState = null;
-        SettingsDefinitions.ShootPhotoMode shootPhotoMode = this.shootPhotoMode.getValue();
+        SettingsDefinitions.ShootPhotoMode shootPhotoMode = flatCameraModule.getShootPhotoModeProcessor().getValue();
         switch (shootPhotoMode) {
             case SINGLE:
             case HDR:
@@ -389,7 +383,7 @@ public class ShootPhotoWidgetModel extends WidgetModel {
             return;
         }
 
-        SettingsDefinitions.ShootPhotoMode currentShootPhotoMode = shootPhotoMode.getValue();
+        SettingsDefinitions.ShootPhotoMode currentShootPhotoMode = flatCameraModule.getShootPhotoModeProcessor().getValue();
         long availableCaptureCount = getAvailableCaptureCount(currentStorageLocation, currentShootPhotoMode);
         if (availableCaptureCount == INVALID_AVAILABLE_CAPTURE_COUNT) {
             return;

@@ -25,6 +25,7 @@
 <resources>
 	<declare-styleable name="CameraConfigApertureWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_apertureTitleTextAppearance" format="reference" />
         <attr name="uxsdk_apertureTitleTextSize" format="dimension" />
         <attr name="uxsdk_apertureTitleTextColor" format="color" />
@@ -37,6 +38,7 @@
 
     <declare-styleable name="CameraConfigShutterWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_shutterTitleTextAppearance" format="reference" />
         <attr name="uxsdk_shutterTitleTextSize" format="dimension" />
         <attr name="uxsdk_shutterTitleTextColor" format="color" />
@@ -49,6 +51,7 @@
 
     <declare-styleable name="CameraConfigEVWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_evTitleTextAppearance" format="reference" />
         <attr name="uxsdk_evTitleTextSize" format="dimension" />
         <attr name="uxsdk_evTitleTextColor" format="color" />
@@ -61,6 +64,7 @@
 
     <declare-styleable name="CameraConfigWBWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_wbTitleTextAppearance" format="reference" />
         <attr name="uxsdk_wbTitleTextSize" format="dimension" />
         <attr name="uxsdk_wbTitleTextColor" format="color" />
@@ -73,6 +77,7 @@
 
     <declare-styleable name="CameraConfigISOAndEIWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_isoAndEITitleTextAppearance" format="reference" />
         <attr name="uxsdk_isoAndEITitleTextSize" format="dimension" />
         <attr name="uxsdk_isoAndEITitleTextColor" format="color" />
@@ -85,6 +90,7 @@
 
     <declare-styleable name="CameraConfigStorageWidget">
         <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
         <attr name="uxsdk_sdCardWarningIcon" format="reference" />
         <attr name="uxsdk_sdCardNormalIcon" format="reference" />
         <attr name="uxsdk_sdCardNotInsertedIcon" />
@@ -145,6 +151,5 @@
         <attr name="uxsdk_ssdSwitchingLicenseIcon" format="reference" />
         <attr name="uxsdk_ssdFormattingRequiredIcon" format="reference" />
     </declare-styleable>
-
 
 </resources>

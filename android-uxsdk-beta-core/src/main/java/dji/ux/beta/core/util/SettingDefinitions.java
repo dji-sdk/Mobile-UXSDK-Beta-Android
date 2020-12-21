@@ -37,7 +37,7 @@ public final class SettingDefinitions {
     }
 
     /**
-     * The gimbal index to determine control over the dual gimbal drones
+     * The gimbal index to determine control over drones with multiple gimbals.
      */
     public enum GimbalIndex {
         /**
@@ -47,7 +47,11 @@ public final class SettingDefinitions {
         /**
          * The gimbal index corresponds to the starboard side of the aircraft.
          */
-        STARBOARD(1);
+        STARBOARD(1),
+        /**
+         * The gimbal index corresponds to the top of the aircraft.
+         */
+        TOP(2);
 
         private int index;
 
@@ -55,9 +59,18 @@ public final class SettingDefinitions {
             this.index = index;
         }
 
+        private static GimbalIndex[] values;
+
+        public static GimbalIndex[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
         @Nullable
-        public static GimbalIndex find(@IntRange(from = 0, to = 1) int index) {
-            for (GimbalIndex gimbalIndex : GimbalIndex.values()) {
+        public static GimbalIndex find(@IntRange(from = 0, to = 2) int index) {
+            for (GimbalIndex gimbalIndex : GimbalIndex.getValues()) {
                 if (gimbalIndex.getIndex() == index) {
                     return gimbalIndex;
                 }
@@ -89,7 +102,11 @@ public final class SettingDefinitions {
         /**
          * The camera has an index of 2
          */
-        CAMERA_INDEX_2(2);
+        CAMERA_INDEX_2(2),
+        /**
+         * The camera has an index of 4
+         */
+        CAMERA_INDEX_4(4);
 
         private int index;
 
@@ -97,9 +114,18 @@ public final class SettingDefinitions {
             this.index = index;
         }
 
+        private static CameraIndex[] values;
+
+        public static CameraIndex[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
         @NonNull
-        public static CameraIndex find(@IntRange(from = -1, to = 2) int index) {
-            for (CameraIndex cameraIndex : CameraIndex.values()) {
+        public static CameraIndex find(@IntRange(from = -1, to = 4) int index) {
+            for (CameraIndex cameraIndex : CameraIndex.getValues()) {
                 if (cameraIndex.getIndex() == index) {
                     return cameraIndex;
                 }
@@ -147,17 +173,6 @@ public final class SettingDefinitions {
             this.value = value;
         }
 
-        public static VideoSource find(int value) {
-            VideoSource result = UNKNOWN;
-            for (int i = 0; i < values().length; i++) {
-                if (values()[i]._equals(value)) {
-                    result = values()[i];
-                    break;
-                }
-            }
-            return result;
-        }
-
         public int value() {
             return this.value;
         }
@@ -165,6 +180,27 @@ public final class SettingDefinitions {
         private boolean _equals(int b) {
             return value == b;
         }
+
+        private static VideoSource[] values;
+
+        public static VideoSource[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
+        public static VideoSource find(int value) {
+            VideoSource result = UNKNOWN;
+            for (int i = 0; i < getValues().length; i++) {
+                if (getValues()[i]._equals(value)) {
+                    result = getValues()[i];
+                    break;
+                }
+            }
+            return result;
+        }
+
     }
 
     /**
@@ -180,6 +216,10 @@ public final class SettingDefinitions {
          */
         STARBOARD("Starboard-side"),
         /**
+         * The camera is on top of the aircraft.
+         */
+        TOP("Top-side"),
+        /**
          * The camera is on an unknown side of the aircraft.
          */
         UNKNOWN("Unknown");
@@ -190,11 +230,20 @@ public final class SettingDefinitions {
             this.side = side;
         }
 
+        private static CameraSide[] values;
+
+        public static CameraSide[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
         public static CameraSide find(String side) {
             CameraSide result = UNKNOWN;
-            for (int i = 0; i < values().length; i++) {
-                if (values()[i].side.equals(side)) {
-                    result = values()[i];
+            for (int i = 0; i < getValues().length; i++) {
+                if (getValues()[i].side.equals(side)) {
+                    result = getValues()[i];
                     break;
                 }
             }
@@ -244,17 +293,6 @@ public final class SettingDefinitions {
             this.value = value;
         }
 
-        public static ControlMode find(int value) {
-            ControlMode result = SPOT_METER;
-            for (int i = 0; i < values().length; i++) {
-                if (values()[i]._equals(value)) {
-                    result = values()[i];
-                    break;
-                }
-            }
-            return result;
-        }
-
         public int value() {
             return this.value;
         }
@@ -262,6 +300,27 @@ public final class SettingDefinitions {
         private boolean _equals(int b) {
             return value == b;
         }
+
+        private static ControlMode[] values;
+
+        public static ControlMode[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
+        public static ControlMode find(int value) {
+            ControlMode result = SPOT_METER;
+            for (int i = 0; i < getValues().length; i++) {
+                if (getValues()[i]._equals(value)) {
+                    result = getValues()[i];
+                    break;
+                }
+            }
+            return result;
+        }
+
     }
 
     /**
@@ -296,9 +355,18 @@ public final class SettingDefinitions {
             this.index = index;
         }
 
+        private static MapProvider[] values;
+
+        public static MapProvider[] getValues() {
+            if (values == null) {
+                values = values();
+            }
+            return values;
+        }
+
         @NonNull
         public static MapProvider find(@IntRange(from = -1, to = 3) int index) {
-            for (MapProvider mapProvider : MapProvider.values()) {
+            for (MapProvider mapProvider : MapProvider.getValues()) {
                 if (mapProvider.getIndex() == index) {
                     return mapProvider;
                 }

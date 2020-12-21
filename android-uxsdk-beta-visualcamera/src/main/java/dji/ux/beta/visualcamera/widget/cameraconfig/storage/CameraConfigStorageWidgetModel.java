@@ -34,7 +34,8 @@ import dji.keysdk.DJIKey;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.module.FlatCameraModule;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions;
 
@@ -57,7 +58,6 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
 
     //region Internal Data
     private final DataProcessor<SettingsDefinitions.StorageLocation> storageLocationProcessor;
-    private final DataProcessor<SettingsDefinitions.CameraMode> cameraModeProcessor;
     private final DataProcessor<ResolutionAndFrameRate> resolutionAndFrameRateProcessor;
     private final DataProcessor<SettingsDefinitions.PhotoFileFormat> photoFileFormatProcessor;
     private final DataProcessor<SettingsDefinitions.SDCardOperationState> sdCardState;
@@ -73,6 +73,8 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
     //endregion
     private final DataProcessor<CameraStorageState> cameraStorageState;
     private int cameraIndex;
+    private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.ZOOM;
+    private FlatCameraModule flatCameraModule;
     //endregion
 
     //region Constructor
@@ -81,7 +83,6 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
         super(djiSdkModel, keyedStore);
         this.cameraIndex = SettingDefinitions.CameraIndex.CAMERA_INDEX_0.getIndex();
         storageLocationProcessor = DataProcessor.create(SettingsDefinitions.StorageLocation.UNKNOWN);
-        cameraModeProcessor = DataProcessor.create(SettingsDefinitions.CameraMode.UNKNOWN);
         resolutionAndFrameRateProcessor = DataProcessor.create(new ResolutionAndFrameRate(
                 SettingsDefinitions.VideoResolution.UNKNOWN,
                 SettingsDefinitions.VideoFrameRate.UNKNOWN));
@@ -107,6 +108,8 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
                 INVALID_AVAILABLE_CAPTURE_COUNT_LONG,
                 INVALID_AVAILABLE_RECORDING_TIME);
         cameraStorageState = DataProcessor.create(cameraSSDStorageState);
+        flatCameraModule = new FlatCameraModule();
+        addModule(flatCameraModule);
     }
     //endregion
 
@@ -129,6 +132,27 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
      */
     public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
         this.cameraIndex = cameraIndex.getIndex();
+        flatCameraModule.setCameraIndex(cameraIndex);
+        restart();
+    }
+
+    /**
+     * Get the current type of the lens the widget model is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return lensType;
+    }
+
+    /**
+     * Set the type of the lens for which the widget model should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        this.lensType = lensType;
         restart();
     }
 
@@ -164,9 +188,8 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
     @Override
     protected void inSetup() {
         DJIKey storageLocationKey = CameraKey.create(CameraKey.CAMERA_STORAGE_LOCATION, cameraIndex);
-        DJIKey cameraModeKey = CameraKey.create(CameraKey.MODE, cameraIndex);
-        DJIKey resolutionAndFrameRateKey = CameraKey.create(CameraKey.RESOLUTION_FRAME_RATE, cameraIndex);
-        DJIKey photoFileFormatKey = CameraKey.create(CameraKey.PHOTO_FILE_FORMAT, cameraIndex);
+        DJIKey resolutionAndFrameRateKey = djiSdkModel.createLensKey(CameraKey.RESOLUTION_FRAME_RATE, cameraIndex, lensType.value());
+        DJIKey photoFileFormatKey = djiSdkModel.createLensKey(CameraKey.PHOTO_FILE_FORMAT, cameraIndex, lensType.value());
         DJIKey sdCardStateKey = CameraKey.create(CameraKey.SDCARD_STATE, cameraIndex);
         DJIKey storageStateKey = CameraKey.create(CameraKey.STORAGE_STATE, cameraIndex);
         DJIKey innerStorageStateKey = CameraKey.create(CameraKey.INNERSTORAGE_STATE, cameraIndex);
@@ -177,7 +200,6 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
         DJIKey cameraColorKey = CameraKey.create(CameraKey.CAMERA_COLOR, cameraIndex);
 
         bindDataProcessor(storageLocationKey, storageLocationProcessor);
-        bindDataProcessor(cameraModeKey, cameraModeProcessor);
         bindDataProcessor(resolutionAndFrameRateKey, resolutionAndFrameRateProcessor);
         bindDataProcessor(photoFileFormatKey, photoFileFormatProcessor);
         bindDataProcessor(sdCardStateKey, sdCardState);
@@ -192,12 +214,12 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
 
     @Override
     protected void inCleanup() {
-        //Nothing to cleanup
+        // do nothing
     }
 
     @Override
     protected void updateStates() {
-        imageFormatProcessor.onNext(new ImageFormat(cameraModeProcessor.getValue(),
+        imageFormatProcessor.onNext(new ImageFormat(flatCameraModule.getCameraModeDataProcessor().getValue(),
                 photoFileFormatProcessor.getValue(),
                 resolutionAndFrameRateProcessor.getValue().getResolution(),
                 resolutionAndFrameRateProcessor.getValue().getFrameRate()));
@@ -225,7 +247,7 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
         }
 
         if (sdCardOperationState != null) {
-            cameraStorageState.onNext(new CameraStorageState(cameraModeProcessor.getValue(),
+            cameraStorageState.onNext(new CameraStorageState(flatCameraModule.getCameraModeDataProcessor().getValue(),
                     currentStorageLocation,
                     sdCardOperationState,
                     getAvailableCaptureCount(currentStorageLocation),
@@ -269,7 +291,7 @@ public class CameraConfigStorageWidgetModel extends WidgetModel {
         private SettingsDefinitions.VideoResolution resolution;
         private SettingsDefinitions.VideoFrameRate frameRate;
 
-        private ImageFormat(@Nullable SettingsDefinitions.CameraMode cameraMode,
+        protected ImageFormat(@Nullable SettingsDefinitions.CameraMode cameraMode,
                             @Nullable SettingsDefinitions.PhotoFileFormat photoFileFormat,
                             @Nullable SettingsDefinitions.VideoResolution resolution,
                             @Nullable SettingsDefinitions.VideoFrameRate frameRate) {

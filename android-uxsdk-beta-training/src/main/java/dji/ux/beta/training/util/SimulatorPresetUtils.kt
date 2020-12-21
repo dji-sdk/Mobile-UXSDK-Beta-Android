@@ -23,10 +23,11 @@
 
 package dji.ux.beta.training.util
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.core.content.edit
 import dji.sdk.sdkmanager.DJISDKManager
+import dji.ux.beta.training.widget.simulatorcontrol.preset.SimulatorPresetData
 
 /**
  * Simulator Widget Preferences
@@ -41,47 +42,105 @@ import dji.sdk.sdkmanager.DJISDKManager
 object SimulatorPresetUtils {
     private const val SIMULATOR_SHARED_PREFERENCES = "simulatorsharedpreferences"
     private const val SIMULATOR_FREQUENCY = "simulatorfrequency"
-    private val sharedPreferences: SharedPreferences
-    private val editor: SharedPreferences.Editor
+    private const val SIMULATOR_LAT = "simulatorLatitude"
+    private const val SIMULATOR_LNG = "simulatorLongitude"
+    private val sharedPreferences: SharedPreferences = DJISDKManager.getInstance()
+            .context
+            .getSharedPreferences(SIMULATOR_SHARED_PREFERENCES, Context.MODE_PRIVATE)
 
-    init {
-        sharedPreferences = DJISDKManager.getInstance().context.getSharedPreferences(SIMULATOR_SHARED_PREFERENCES, Context.MODE_PRIVATE)
-        @SuppressLint("CommitPrefErrors")
-        editor = sharedPreferences.edit()
-    }
-
-
-    fun savePreset(key: String, lat: Double, lng: Double, satelliteCount: Int, frequency: Int) {
-        editor.putString(key, "$lat $lng $satelliteCount $frequency").commit()
-    }
-
-    fun savePreset(key: String, simulatorPresetData: dji.ux.beta.training.widget.simulatorcontrol.preset.SimulatorPresetData) {
-        editor.putString(key, simulatorPresetData.latitude
-                .toString() + " " + simulatorPresetData.longitude
-                + " " + simulatorPresetData.satelliteCount
-                + " " + simulatorPresetData.updateFrequency).commit()
-    }
-
+    /**
+     * List representing saved presets in simulator control
+     */
     val presetList: Map<String, *>
         get() {
             val resultList = sharedPreferences.all
             resultList.remove(SIMULATOR_FREQUENCY)
+            resultList.remove(SIMULATOR_LAT)
+            resultList.remove(SIMULATOR_LNG)
             return resultList
         }
 
-    fun deletePreset(key: String?) {
-        editor.remove(key).commit()
-    }
+    /**
+     * Cached location latitude value for simulator start
+     */
+    var currentSimulatorStartLat: String
+        get() = sharedPreferences.getString(SIMULATOR_LAT, "") ?: ""
+        set(value) {
+            sharedPreferences.edit { putString(SIMULATOR_LAT, value) }
+        }
 
-    fun saveCurrentSimulationFrequency(frequency: Int) {
-        editor.putInt(SIMULATOR_FREQUENCY, frequency).commit()
-    }
+    /**
+     * Cached location longitude value for simulator start
+     */
+    var currentSimulatorStartLng: String
+        get() = sharedPreferences.getString(SIMULATOR_LNG, "") ?: ""
+        set(value) {
+            sharedPreferences.edit { putString(SIMULATOR_LNG, value) }
+        }
 
-    val currentSimulatorFrequency: Int
+    /**
+     * Cached frequency value for simulator start
+     */
+    var currentSimulatorFrequency: Int
         get() = sharedPreferences.getInt(SIMULATOR_FREQUENCY, -1)
+        set(value) {
+            sharedPreferences.edit { putInt(SIMULATOR_FREQUENCY, value) }
+        }
 
+    /**
+     * Save preset to be used later.
+     *
+     * @param key - String value to be used as key and display name.
+     * @param lat - Double value representing latitude.
+     * @param lng - Double value representing longitude.
+     * @param satelliteCount - Integer value representing satellite count.
+     * @param frequency - Integer value representing data frequency.
+     */
+    fun savePreset(key: String, lat: Double, lng: Double, satelliteCount: Int, frequency: Int) {
+        sharedPreferences.edit { putString(key, "$lat $lng $satelliteCount $frequency") }
+    }
+
+    /**
+     * Save preset to be used later.
+     *
+     * @param key - String value to be used as key and display name.
+     * @param simulatorPresetData - instance of [SimulatorPresetData].
+     */
+    fun savePreset(key: String, simulatorPresetData: SimulatorPresetData) {
+        savePreset(key, simulatorPresetData.latitude,
+                simulatorPresetData.longitude,
+                simulatorPresetData.satelliteCount,
+                simulatorPresetData.updateFrequency)
+    }
+
+    /**
+     * Delete a preset.
+     *
+     * @param key - String key of the preset to be deleted.
+     */
+    fun deletePreset(key: String?) {
+        sharedPreferences.edit { remove(key) }
+    }
+
+    /**
+     * Clear cached frequency value.
+     */
     fun clearSimulatorFrequency() {
-        editor.remove(SIMULATOR_FREQUENCY).commit()
+        deletePreset(SIMULATOR_FREQUENCY)
+    }
+
+    /**
+     * Clear cached latitude value.
+     */
+    fun clearSimulatorStartLat() {
+        deletePreset(SIMULATOR_LAT)
+    }
+
+    /**
+     * Clear cached longitude value.
+     */
+    fun clearSimulatorStartLng() {
+        deletePreset(SIMULATOR_LNG)
     }
 
 }

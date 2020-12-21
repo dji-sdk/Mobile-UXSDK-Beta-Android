@@ -24,6 +24,7 @@
 package dji.ux.beta.core.util;
 
 import dji.common.product.Model;
+import dji.sdk.accessory.speaker.Speaker;
 import dji.sdk.base.BaseProduct;
 import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKManager;
@@ -95,17 +96,32 @@ public final class ProductUtil {
     }
 
     /**
-     * Determine whether the connected product is in the  Matrice 200 series.
+     * Determine whether the connected product is in the Matrice 200 series.
      *
      * @param model The connected product.
-     * @return `true` if the connected product is in the  Matrice 200 series. `false` if the
-     * connected product is not in the  Matrice 200 series.
+     * @return `true` if the connected product is in the Matrice 200 series. `false` if the
+     * connected product is not in the Matrice 200 series.
      */
     public static boolean isMatrice200Series(Model model) {
         return Model.MATRICE_200.equals(model)
                 || Model.MATRICE_210.equals(model)
                 || Model.MATRICE_210_RTK.equals(model)
                 || Model.MATRICE_200_V2.equals(model)
+                || Model.MATRICE_210_V2.equals(model)
+                || Model.MATRICE_210_RTK_V2.equals(model)
+                || Model.MATRICE_300_RTK.equals(model);
+    }
+
+    /**
+     * Determine whether the connected product is in the Matrice 200 V2 series or the Matrice 300
+     * series.
+     *
+     * @param model The connected product.
+     * @return `true` if the connected product is in the  Matrice 200 V2 or Matrice 300 series.
+     * `false` if the connected product is not in the Matrice 200 V2 or Matrice 300 series.
+     */
+    public static boolean isM200V2OrM300(Model model) {
+        return Model.MATRICE_200_V2.equals(model)
                 || Model.MATRICE_210_V2.equals(model)
                 || Model.MATRICE_210_RTK_V2.equals(model)
                 || Model.MATRICE_300_RTK.equals(model);
@@ -172,7 +188,35 @@ public final class ProductUtil {
         }
         return false;
     }
-    
+
+    /**
+     * Get the Speaker object from the current product.
+     *
+     * @return The current product's speaker, or null if the current product does not have a
+     * speaker.
+     */
+    public static Speaker getSpeaker() {
+        Aircraft aircraft = (Aircraft) DJISDKManager.getInstance().getProduct();
+        if (aircraft != null && null != aircraft.getAccessoryAggregation() && null != aircraft.getAccessoryAggregation().getSpeaker()) {
+            return aircraft.getAccessoryAggregation().getSpeaker();
+        }
+        return null;
+    }
+
+    /**
+     * Determine whether the connected product supports Auto ISO.
+     *
+     * @return `true` if the connected product supports Auto ISO. `false` if there is
+     * no product connected or if the connected product does not support Auto ISO.
+     */
+    public static boolean isAutoISOSupportedProduct() {
+        if (isProductAvailable()) {
+            Model model = DJISDKManager.getInstance().getProduct().getModel();
+            return !Model.MAVIC_AIR.equals(model) && !Model.MAVIC_PRO.equals(model);
+        }
+        return false;
+    }
+
     /**
      * Determine whether the connected product has vision sensors.
      *
@@ -184,7 +228,8 @@ public final class ProductUtil {
         return !isMatrice600Series(model)
                 && !Model.MATRICE_100.equals(model)
                 && !isPhantom3Series(model)
-                && !isInspire1Series(model);
+                && !isInspire1Series(model)
+                && !Model.MAVIC_MINI.equals(model);
     }
 
     /**

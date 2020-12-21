@@ -45,7 +45,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import java.util.LinkedList;
 import java.util.List;
 
-import dji.ux.beta.R;
+import dji.ux.beta.core.R;
 
 /**
  * Displays a customized seek bar that displays a value positioned above the thumb image. There are
@@ -230,6 +230,13 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
+     * Get the text above the seek bar progress indicator
+     */
+    public String getText() {
+        return seekBarValueText.getText().toString();
+    }
+
+    /**
      * Set the minimum value text
      *
      * @param text The minimum value text
@@ -264,22 +271,7 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
      * @param progress The progress to set the seek bar to
      */
     public void setProgress(@IntRange(from = 0) int progress) {
-        synchronized (this) {
-            if (progress >= progressMax) {
-                currentProgress = progressMax;
-            } else if (progress < 0) {
-                currentProgress = 0;
-            } else {
-                currentProgress = progress;
-            }
-
-            if (onSeekBarChangeListeners != null) {
-                for (int i = 0; i < onSeekBarChangeListeners.size(); i++) {
-                    onSeekBarChangeListeners.get(i).onProgressChanged(this, currentProgress);
-                }
-            }
-            updateTextAndThumbInProgress(currentProgress);
-        }
+        updateSeekBarProgress(progress, false);
     }
 
     /**
@@ -292,6 +284,26 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     //endregion
 
     //region Seek Bar Internal Methods
+
+    private void updateSeekBarProgress(int progress, boolean isFromUI) {
+        synchronized (this) {
+            if (progress >= progressMax) {
+                currentProgress = progressMax;
+            } else if (progress < 0) {
+                currentProgress = 0;
+            } else {
+                currentProgress = progress;
+            }
+
+            if (onSeekBarChangeListeners != null) {
+                for (int i = 0; i < onSeekBarChangeListeners.size(); i++) {
+                    onSeekBarChangeListeners.get(i).onProgressChanged(this, currentProgress, isFromUI);
+                }
+            }
+            updateTextAndThumbInProgress(currentProgress);
+        }
+    }
+
     private void updateTextAndThumbInProgress(int progress) {
         float newX = boundaryLeft + getIncrement() * progress;
         updateTextAndThumbPosition(newX);
@@ -325,6 +337,7 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     private float getIncrement() {
         return (boundaryRight - boundaryLeft) / progressMax;
     }
+
     //endregion
 
     //region OnTouchListener
@@ -371,7 +384,7 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     private void onTrackMoving(@NonNull MotionEvent event) {
         float xDelta = event.getX() - xMoveStart;
         float newX = xThumbStartCenter + xDelta;
-        setProgress((int) ((newX - boundaryLeft) / getIncrement()));
+        updateSeekBarProgress((int) ((newX - boundaryLeft) / getIncrement()), true);
     }
 
     private void onEndTracking() {
@@ -1057,7 +1070,7 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
          * @param progress The current progress level. This will be in the range 0..max where max
          *                 was set by {@link #setMax(int)}.
          */
-        void onProgressChanged(@NonNull SeekBarView object, @IntRange(from = 0) int progress);
+        void onProgressChanged(@NonNull SeekBarView object, @IntRange(from = 0) int progress, boolean isFromUI);
 
         /**
          * Notification that the user has started a touch gesture. Clients may want to use this

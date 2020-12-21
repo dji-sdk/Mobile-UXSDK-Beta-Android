@@ -30,6 +30,7 @@
     <string name="uxsdk_app_cancel">Cancel</string>
     <string name="uxsdk_error">Error</string>
     <string name="uxsdk_alert">Alert</string>
+    <string name="uxsdk_tips">Tips</string>
     <string name="uxsdk_success">Success</string>
     <string name="uxsdk_enable">Enable</string>
     <string name="uxsdk_disable">Disable</string>
@@ -51,7 +52,8 @@
 
     <string name="uxsdk_home_location_letter">H</string>
 
-    <!-- Dashboard widgets -->
+
+    <!-- Telemetry widgets -->
     <string name="uxsdk_unit_meters">m</string>
     <string name="uxsdk_unit_feet">ft</string>
     <string name="uxsdk_value_meters">%1$s m</string>
@@ -59,12 +61,14 @@
     <string name="uxsdk_unit_meter_per_second">m/s</string>
     <string name="uxsdk_unit_km_per_hr">km/h</string>
     <string name="uxsdk_unit_mile_per_hr">mph</string>
-    <string name="uxsdk_altitude_title">H:</string>
-    <string name="uxsdk_distance_home_title">D:</string>
-    <string name="uxsdk_distance_rc_title">DRC:</string>
-    <string name="uxsdk_vps_title">VPS:</string>
-    <string name="uxsdk_horizontal_velocity_title">H.S:</string>
-    <string name="uxsdk_vertical_velocity_title">V.S:</string>
+    <string name="uxsdk_altitude_title">H</string>
+    <string name="uxsdk_agl_title">H AGL</string>
+    <string name="uxsdk_amsl_altitude_title">H AMSL</string>
+    <string name="uxsdk_distance_home_title">D</string>
+    <string name="uxsdk_distance_rc_title">DRC</string>
+    <string name="uxsdk_vps_title">VPS</string>
+    <string name="uxsdk_horizontal_velocity_title">H.S.</string>
+    <string name="uxsdk_vertical_velocity_title">V.S.</string>
 
     <string name="uxsdk_video_time_hours">%1$02d:%2$02d:%3$02d</string>
     <string name="uxsdk_video_time">%1$02d:%2$02d</string>
@@ -87,10 +91,17 @@
 
     <string name="uxsdk_visual_radar_avoidance_disabled_message_post">Obstacle Avoidance Disabled. Fly with caution.</string>
 
+    <string name="uxsdk_ei_title">EI</string>
+
     <string name="uxsdk_max_flight_height_limit">Max Flight Altitude: %1$s</string>
 
-    <!-- Pre Flight Checklist -->
+    <!-- System Status List -->
     <string name="uxsdk_list_item_flight_mode_title">Flight Mode</string>
+    <string name="uxsdk_list_item_aircraft_battery_temp">Aircraft Battery Temperature</string>
+    <string name="uxsdk_list_item_radio_quality">Radio Channel Quality</string>
+    <string name="uxsdk_celsius_unit">%1$.1f°C</string>
+    <string name="uxsdk_fahrenheit_unit">%1$.1f°F</string>
+    <string name="uxsdk_kelvins_unit">%1$.1fK</string>
     <string name="uxsdk_list_item_travel_mode">Travel Mode</string>
     <string name="uxsdk_enter_travel_mode_success">The aircraft will automatically retract the landing gear and enter Travel Mode.</string>
     <string name="uxsdk_enter_travel_mode_failed">Failed to enter Travel Mode. %1$s</string>
@@ -99,13 +110,14 @@
     <string name="uxsdk_travel_mode_exit">Exit</string>
     <string name="uxsdk_travel_mode_enter_confirmation">The aircraft will enter Travel Mode for easier transportation. Place the aircraft on a flat, hard surface and remove the gimbal. If the aircraft does not enter Travel Mode, adjust the landing gear manually.</string>
 
-    <string name="uxsdk_list_item_rc_batery">Remote Controller Battery</string>
+    <string name="uxsdk_list_item_rc_battery">Remote Controller Battery</string>
     <string name="uxsdk_rc_battery_percent">%1$d%%</string>
 
     <string name="uxsdk_list_item_rc_stick_mode">Control Stick Mode</string>
     <string name="uxsdk_rc_stick_mode_1">Mode 1</string>
     <string name="uxsdk_rc_stick_mode_2">Mode 2</string>
     <string name="uxsdk_rc_stick_mode_3">Mode 3</string>
+    <string name="uxsdk_rc_stick_mode_custom">Custom</string>
 
     <string name="uxsdk_list_item_sd_card">SD Card Remaining Capacity</string>
     <string name="uxsdk_list_item_format_button">Format</string>
@@ -157,7 +169,11 @@
     <string name="uxsdk_novice_mode_distance_meters">30m</string>
     <string name="uxsdk_novice_mode_distance_feet">100ft</string>
     <string name="uxsdk_altitude_range_meters">(%1$d~%2$dm)</string>
-    <string name="uxsdk_altitude_range_feet">(%1$d~%2$dft)</string>
+    <string name="uxsdk_altitude_range_feet">≈ (%1$d~%2$dft)</string>
+
+    <string name="uxsdk_system_status_disabled">Disabled</string>
+    <string name="uxsdk_system_status_normal">Normal</string>
+
 
     <!-- System Status List -->
     <string name="uxsdk_system_status_list_title">System Status List</string>
@@ -170,9 +186,11 @@
 
     <string name="uxsdk_novice_mode_enabled_message">Beginner mode enabled. Altitude and distance will both be limited to 100ft / 30m.</string>
 
-    <string name="uxsdk_list_item_unit_type">Unit Type</string>
-    <string name="uxsdk_list_item_unit_type_imperial">Imperial</string>
-    <string name="uxsdk_list_item_unit_type_metric">Metric</string>
+    <string name="uxsdk_list_item_unit_mode">Unit Mode</string>
+    <string name="uxsdk_list_item_unit_mode_imperial">Imperial</string>
+    <string name="uxsdk_list_item_unit_mode_metric">Metric</string>
+    <string name="uxsdk_dialog_unit_change_notice">Imperial unit mode set successfully. Measurement values will now follow imperial unit system. Since the aircraft supports metric unit system, the values seen are approximate conversions.</string>
+    <string name="uxsdk_dialog_unit_change_example">Example: 10m ≈  32ft - 34ft</string>
 
     <string name="uxsdk_list_item_ssd">SSD Remaining Capacity</string>
     <string name="uxsdk_ssd_not_found">Not Inserted</string>
@@ -189,4 +207,7 @@
     <string name="uxsdk_ssd_format_error">Error formatting SSD. %1$s</string>
     <string name="uxsdk_ssd_format_confirmation">Are you sure you want to format the SSD?</string>
     <string name="uxsdk_ssd_format_complete">SSD formatting completed.</string>
+
+    <string name="uxsdk_location_default">N/A, N/A</string>
+    <string name="uxsdk_location_coordinates">%1$s, %2$s</string>
 </resources>

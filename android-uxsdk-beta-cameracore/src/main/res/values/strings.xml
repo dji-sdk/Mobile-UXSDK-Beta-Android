@@ -24,7 +24,7 @@
 <resources>
     <!-- Auto Exposure Lock -->
     <string name="uxsdk_auto_exposure_lock_widget_display_string">AE</string>
-
+    
     <!-- Camera Setting Menu -->
     <string name="uxsdk_camera_setting_menu">MENU</string>
     <!-- Focus Mode -->

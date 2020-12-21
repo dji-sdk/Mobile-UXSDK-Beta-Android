@@ -59,7 +59,7 @@ public class GimbalControlView extends FrameLayout {
     private int vibrationDuration;
     //endregion
 
-    //region Constructors
+    //region Constructor
     public GimbalControlView(@NonNull Context context) {
         super(context);
         initView(context);

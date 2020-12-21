@@ -29,8 +29,8 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.appcompat.widget.AppCompatImageView
-import dji.ux.beta.R
-import dji.ux.beta.core.base.GlobalPreferencesManager
+import dji.ux.beta.core.R
+import dji.ux.beta.core.communication.GlobalPreferencesManager
 import dji.ux.beta.core.ui.CenterPointView.CenterPointType
 import dji.ux.beta.core.util.ViewUtil
 
@@ -82,7 +82,7 @@ class CenterPointView @JvmOverloads constructor(
         }
     //endregion
 
-    //region Constructors
+    //region Constructor
     init {
         initView()
     }
@@ -154,15 +154,11 @@ class CenterPointView @JvmOverloads constructor(
 
         companion object {
             @JvmStatic
+            val values = values()
+
+            @JvmStatic
             fun find(value: Int): CenterPointType {
-                var result = UNKNOWN
-                for (i in values().indices) {
-                    if (values()[i].value == (value)) {
-                        result = values()[i]
-                        break
-                    }
-                }
-                return result
+                return values.find { it.value == value } ?: UNKNOWN
             }
         }
 

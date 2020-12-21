@@ -37,13 +37,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dji.common.camera.SettingsDefinitions.CameraMode;
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.widget.cameracapture.recordvideo.RecordVideoWidget;
 import dji.ux.beta.cameracore.widget.cameracapture.shootphoto.ShootPhotoWidget;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.SchedulerProvider;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 
 /**
  * Camera Capture Widget
@@ -53,13 +53,13 @@ import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
  */
 public class CameraCaptureWidget extends ConstraintLayoutWidget {
 
-    //region fields
+    //region Fields
     private static final String TAG = "CameraCaptureWidget";
     private CameraCaptureWidgetModel widgetModel;
     private Map<CameraMode, View> widgetMap;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public CameraCaptureWidget(Context context) {
         super(context);
     }
@@ -104,7 +104,7 @@ public class CameraCaptureWidget extends ConstraintLayoutWidget {
     protected void reactToModelChanges() {
         addReaction(
                 widgetModel.getCameraMode()
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(
                                 this::onCameraModeChange,
                                 logErrorConsumer(TAG, "Camera Mode Change: ")));

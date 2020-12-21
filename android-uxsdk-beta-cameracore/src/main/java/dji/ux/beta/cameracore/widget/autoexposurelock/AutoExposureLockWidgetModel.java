@@ -25,14 +25,14 @@ package dji.ux.beta.cameracore.widget.autoexposurelock;
 
 import androidx.annotation.NonNull;
 
+import dji.common.camera.SettingsDefinitions;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.SchedulerProviderInterface;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
@@ -47,15 +47,13 @@ public class AutoExposureLockWidgetModel extends WidgetModel {
     private final DataProcessor<Boolean> autoExposureLockBooleanProcessor;
     private DJIKey autoExposureLockKey;
     private int cameraIndex = CameraIndex.CAMERA_INDEX_0.getIndex();
-    private SchedulerProviderInterface schedulerProvider;
+    private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.ZOOM;
     //endregion
 
     public AutoExposureLockWidgetModel(@NonNull DJISDKModel djiSdkModel,
-                                       @NonNull ObservableInMemoryKeyedStore uxKeyManager,
-                                       @NonNull SchedulerProviderInterface schedulerProvider) {
+                                       @NonNull ObservableInMemoryKeyedStore uxKeyManager) {
         super(djiSdkModel, uxKeyManager);
         autoExposureLockBooleanProcessor = DataProcessor.create(false);
-        this.schedulerProvider = schedulerProvider;
     }
 
     //region Data
@@ -94,20 +92,39 @@ public class AutoExposureLockWidgetModel extends WidgetModel {
     }
 
     /**
+     * Get the current type of the lens the widget model is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return lensType;
+    }
+
+    /**
+     * Set the type of the lens for which the widget model should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        this.lensType = lensType;
+        restart();
+    }
+
+    /**
      * Set auto exposure lock the opposite of its current state
      *
      * @return Completable representing success and failure of action
      */
     public Completable toggleAutoExposureLock() {
-        return djiSdkModel.setValue(autoExposureLockKey, !autoExposureLockBooleanProcessor.getValue())
-                .subscribeOn(schedulerProvider.io());
+        return djiSdkModel.setValue(autoExposureLockKey, !autoExposureLockBooleanProcessor.getValue());
     }
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     @Override
     protected void inSetup() {
-        autoExposureLockKey = CameraKey.create(CameraKey.AE_LOCK, cameraIndex);
+        autoExposureLockKey = djiSdkModel.createLensKey(CameraKey.AE_LOCK, cameraIndex, lensType.value());
         bindDataProcessor(autoExposureLockKey, autoExposureLockBooleanProcessor);
     }
 

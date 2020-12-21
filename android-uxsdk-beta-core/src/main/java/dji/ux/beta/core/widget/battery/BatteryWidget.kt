@@ -38,17 +38,18 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.res.use
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
+import dji.thirdparty.io.reactivex.Flowable
+import dji.ux.beta.core.base.SchedulerProvider
 import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.ux.beta.R
-import dji.ux.beta.core.base.ConstraintLayoutWidget
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetSizeDescription
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
-import dji.ux.beta.core.widget.battery.BatteryWidget.BatteryWidgetState
-import dji.ux.beta.core.widget.battery.BatteryWidget.BatteryWidgetState.BatteryStateUpdated
-import dji.ux.beta.core.widget.battery.BatteryWidget.BatteryWidgetState.ProductConnected
+import dji.ux.beta.core.widget.battery.BatteryWidget.ModelState
+import dji.ux.beta.core.widget.battery.BatteryWidget.ModelState.BatteryStateUpdated
+import dji.ux.beta.core.widget.battery.BatteryWidget.ModelState.ProductConnected
 import dji.ux.beta.core.widget.battery.BatteryWidgetModel.BatteryState
 import dji.ux.beta.core.widget.battery.BatteryWidgetModel.BatteryStatus
 
@@ -62,9 +63,9 @@ open class BatteryWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<BatteryWidgetState>(context, attrs, defStyleAttr) {
+) : ConstraintLayoutWidget<ModelState>(context, attrs, defStyleAttr) {
 
-
+    //region Fields
     private val widgetModel by lazy {
         BatteryWidgetModel(
                 DJISDKModel.getInstance(),
@@ -182,7 +183,9 @@ open class BatteryWidget @JvmOverloads constructor(
             dualBattery2ValueTextView.background = value
         }
 
+    //endregion
 
+    //region Constructors
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         View.inflate(context, R.layout.uxsdk_widget_battery, this)
     }
@@ -190,26 +193,19 @@ open class BatteryWidget @JvmOverloads constructor(
     init {
         attrs?.let { initAttributes(context, it) }
     }
+    //endregion
 
+    //region Lifecycle
     override fun reactToModelChanges() {
         addReaction(widgetModel.batteryState
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateUI(it) })
 
         addReaction(widgetModel.productConnection
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { widgetStateDataProcessor.onNext(ProductConnected(it)) })
 
     }
-
-    override fun getIdealDimensionRatioString(): String? {
-        return null
-    }
-
-    override val widgetSizeDescription: WidgetSizeDescription =
-            WidgetSizeDescription(WidgetSizeDescription.SizeType.OTHER,
-                    widthDimension = WidgetSizeDescription.Dimension.WRAP,
-                    heightDimension = WidgetSizeDescription.Dimension.EXPAND)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -225,7 +221,9 @@ open class BatteryWidget @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
+    //endregion
 
+    //region Reactions to model
     private fun updateUI(batteryState: BatteryState) {
         widgetStateDataProcessor.onNext(BatteryStateUpdated(batteryState))
         when (batteryState) {
@@ -296,7 +294,9 @@ open class BatteryWidget @JvmOverloads constructor(
 
 
     }
+    //endregion
 
+    //region private helpers
     private fun setPercentageTextColorByState(textView: TextView, batteryStatus: BatteryStatus) {
         percentColorStates[batteryStatus]?.let {
             textView.textColorStateList = it
@@ -331,7 +331,7 @@ open class BatteryWidget @JvmOverloads constructor(
     private fun checkAndUpdateUI() {
         if (!isInEditMode) {
             addDisposable(widgetModel.batteryState.firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateUI(it) }, logErrorConsumer(TAG, "Update UI ")))
         }
     }
@@ -339,7 +339,7 @@ open class BatteryWidget @JvmOverloads constructor(
     private fun checkAndUpdateIconDimensionRatio() {
         if (!isInEditMode) {
             addDisposable(widgetModel.batteryState.firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateIconRatio(it) }, logErrorConsumer(TAG, "Update icon dimension ratio ")))
         }
     }
@@ -352,9 +352,17 @@ open class BatteryWidget @JvmOverloads constructor(
                 if (batteryState is BatteryState.DualBatteryState) dualIconDimensionRatio else singleIconDimensionRatio)
         set.applyTo(this)
     }
+    //endregion
 
     //region customizations
+    override fun getIdealDimensionRatioString(): String? {
+        return null
+    }
 
+    override val widgetSizeDescription: WidgetSizeDescription =
+            WidgetSizeDescription(WidgetSizeDescription.SizeType.OTHER,
+                    widthDimension = WidgetSizeDescription.Dimension.WRAP,
+                    heightDimension = WidgetSizeDescription.Dimension.EXPAND)
 
     /**
      * Set the single battery icon drawable for the given batteryStatus
@@ -687,21 +695,31 @@ open class BatteryWidget @JvmOverloads constructor(
 
     //endregion
 
+    //region Hooks
+    /**
+     * Get the [ModelState] updates
+     */
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
+        return super.getWidgetStateUpdate()
+    }
+
     /**
      *
      * Class defines widget state updates
      */
-    sealed class BatteryWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : BatteryWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * Battery state update
          */
-        data class BatteryStateUpdated(val batteryState: BatteryState) : BatteryWidgetState()
+        data class BatteryStateUpdated(val batteryState: BatteryState) : ModelState()
     }
+    //endregion
 
     companion object {
         private const val TAG = "BatteryWidget"

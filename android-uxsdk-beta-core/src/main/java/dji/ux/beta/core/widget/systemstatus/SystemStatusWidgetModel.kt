@@ -30,10 +30,8 @@ import dji.keysdk.FlightControllerKey
 import dji.thirdparty.io.reactivex.Completable
 import dji.thirdparty.io.reactivex.Flowable
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.GlobalPreferencesInterface
-import dji.ux.beta.core.base.SchedulerProviderInterface
 import dji.ux.beta.core.base.WidgetModel
-import dji.ux.beta.core.base.uxsdkkeys.*
+import dji.ux.beta.core.communication.*
 import dji.ux.beta.core.model.VoiceNotificationType
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.UnitConversionUtil
@@ -44,8 +42,8 @@ import dji.ux.beta.core.util.UnitConversionUtil
  */
 class SystemStatusWidgetModel(djiSdkModel: DJISDKModel,
                               private val keyedStore: ObservableInMemoryKeyedStore,
-                              private val schedulerProvider: SchedulerProviderInterface,
-                              private val preferencesManager: GlobalPreferencesInterface?) : WidgetModel(djiSdkModel, keyedStore) {
+                              private val preferencesManager: GlobalPreferencesInterface?
+) : WidgetModel(djiSdkModel, keyedStore) {
 
     //region Fields
     private val systemStatusProcessor: DataProcessor<WarningStatusItem> = DataProcessor.create(WarningStatusItem.getDefaultItem())
@@ -86,7 +84,6 @@ class SystemStatusWidgetModel(djiSdkModel: DJISDKModel,
     fun sendVoiceNotification(): Completable {
         val notificationType = VoiceNotificationType.ATTI
         return keyedStore.setValue(sendVoiceNotificationKey, notificationType)
-                .subscribeOn(schedulerProvider.io())
     }
     //endregion
 

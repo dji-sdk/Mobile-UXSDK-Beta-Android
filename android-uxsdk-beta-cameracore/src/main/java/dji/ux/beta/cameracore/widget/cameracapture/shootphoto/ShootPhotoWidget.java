@@ -53,10 +53,10 @@ import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.ui.ProgressRingView;
 import dji.ux.beta.cameracore.util.CameraActionSound;
 import dji.ux.beta.cameracore.util.CameraResource;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.ProductUtil;
 
 import static dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
@@ -68,7 +68,7 @@ import static dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
  * displays the storage state and errors associated with it.
  */
 public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnClickListener {
-    //region fields
+    //region Fields
     private static final String TAG = "ShootPhotoWidget";
     private ShootPhotoWidgetModel widgetModel;
     private ProgressRingView borderProgressRingView;
@@ -85,11 +85,10 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     private Map<StorageIconState, Drawable> storageInternalIconMap;
     private Map<StorageIconState, Drawable> storageSSDIconMap;
     private Map<StorageIconState, Drawable> storageSDCardIconMap;
-    private SchedulerProvider schedulerProvider;
     private CameraActionSound cameraActionSound;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public ShootPhotoWidget(Context context) {
         super(context);
     }
@@ -111,14 +110,12 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
         storageInternalIconMap = new HashMap<>();
         storageSSDIconMap = new HashMap<>();
         storageSDCardIconMap = new HashMap<>();
-        schedulerProvider = SchedulerProvider.getInstance();
         cameraActionSound = new CameraActionSound(context);
         if (!isInEditMode()) {
             centerImageView.setOnClickListener(this);
             widgetModel =
                     new ShootPhotoWidgetModel(DJISDKModel.getInstance(),
-                            ObservableInMemoryKeyedStore.getInstance(),
-                            schedulerProvider);
+                            ObservableInMemoryKeyedStore.getInstance());
         }
         initDefaults();
         if (attrs != null) {
@@ -146,7 +143,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     protected void reactToModelChanges() {
         addReaction(
                 widgetModel.isShootingPhoto()
-                        .observeOn(schedulerProvider.ui())
+                        .observeOn(SchedulerProvider.ui())
                         .subscribe(
                                 this::onIsShootingPhotoChange,
                                 logErrorConsumer(TAG, "isShootingPhoto: ")));
@@ -175,7 +172,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
                             return widgetModel.startShootPhoto();
                         }
                         return Completable.complete();
-                    }).observeOn(schedulerProvider.ui())
+                    }).observeOn(SchedulerProvider.ui())
                     .subscribe(
                             () -> {
                             }, logErrorConsumer(TAG, "Start Stop Shoot Photo")));
@@ -252,7 +249,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
         DJILog.d(TAG, "onIsShootingPhotoChange " + isShootingPhoto);
         borderProgressRingView.setIndeterminate(isShootingPhoto);
         if (isShootingPhoto) {
-            addDisposable(cameraActionSound.playCapturePhoto(schedulerProvider));
+            addDisposable(cameraActionSound.playCapturePhoto());
         }
     }
 
@@ -260,7 +257,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
         return Flowable.combineLatest(widgetModel.getCameraPhotoState(),
                 widgetModel.getCameraStorageState(),
                 Pair::new)
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateCameraForegroundResource(values.first, values.second),
                         logErrorConsumer(TAG, "reactToPhotoStateAndPhotoStorageState "));
     }
@@ -270,7 +267,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
                 widgetModel.canStartShootingPhoto(),
                 widgetModel.canStopShootingPhoto(),
                 Pair::new)
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateImages(values.first, values.second),
                         logErrorConsumer(TAG, "reactToCanStartOrStopShootingPhoto: "));
     }
@@ -281,7 +278,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
                     widgetModel.getCameraStorageState(),
                     Pair::new)
                     .firstOrError()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateCameraForegroundResource(values.first, values.second),
                             logErrorConsumer(TAG, "checkAndUpdatePhotoStateAndPhotoStorageState ")));
         }
@@ -294,7 +291,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
                     widgetModel.canStopShootingPhoto(),
                     Pair::new)
                     .firstOrError()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateImages(values.first, values.second),
                             logErrorConsumer(TAG, "checkAndUpdateCanStartOrStopShootingPhoto: ")));
         }

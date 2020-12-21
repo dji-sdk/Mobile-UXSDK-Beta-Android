@@ -57,7 +57,7 @@ public class FocusTargetView extends FrameLayout {
     private Map<ControlMode, Drawable> iconMap;
     //endregion
 
-    //region Constructors
+    //region Constructor
     public FocusTargetView(@NonNull Context context) {
         super(context);
         initView();

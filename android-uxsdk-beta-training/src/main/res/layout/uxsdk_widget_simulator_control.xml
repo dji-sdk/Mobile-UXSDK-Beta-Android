@@ -24,7 +24,6 @@
 
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -32,10 +31,9 @@
         android:id="@+id/textview_simulator_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:drawableStart="@drawable/uxsdk_ic_simulator"
-        android:drawableLeft="@drawable/uxsdk_ic_simulator"
         android:drawablePadding="5dp"
         android:padding="@dimen/uxsdk_simulator_dialog_padding"
         android:text="@string/uxsdk_simulator_widget_title"
@@ -50,7 +48,7 @@
         android:layout_marginTop="5dp"
         android:thumb="@drawable/uxsdk_selector_switch_thumb"
         android:track="@drawable/uxsdk_switch_background"
-        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -119,7 +117,7 @@
                 android:background="@color/uxsdk_white"
                 android:hint="@string/uxsdk_simulator_widget_lat_hint"
                 android:inputType="numberSigned|numberDecimal"
-                android:paddingLeft="2dp"
+                android:paddingStart="2dp"
                 android:textColor="@color/uxsdk_black"
                 android:textSize="@dimen/uxsdk_simulator_row_text_size"
                 app:layout_constraintBottom_toTopOf="@+id/edit_text_simulator_lng"
@@ -164,7 +162,7 @@
                 android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
                 android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
                 android:background="@color/uxsdk_white"
-                android:paddingLeft="2dp"
+                android:paddingStart="2dp"
                 android:hint="@string/uxsdk_simulator_widget_lng_hint"
                 android:inputType="numberSigned|numberDecimal"
                 android:textColor="@color/uxsdk_black"
@@ -262,7 +260,7 @@
                 app:uxsdk_maxValueVisible="false"
                 app:uxsdk_minValueVisible="false" />
 
-
+            <!--suppress AndroidDomInspection -->
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraint_group_real_world"
                 android:layout_width="wrap_content"
@@ -373,6 +371,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textview_status_section_header"
                 app:layout_constraintTop_toBottomOf="@+id/textview_simulator_world_z_value" />
 
+            <!--suppress AndroidDomInspection -->
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraint_group_aircraft_state"
                 android:layout_width="wrap_content"
@@ -466,6 +465,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textview_attitude_section_header"
                 app:layout_constraintTop_toBottomOf="@+id/textview_simulator_aircraft_flying_label" />
 
+            <!--suppress AndroidDomInspection -->
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraint_group_attitude"
                 android:layout_width="wrap_content"
@@ -590,15 +590,16 @@
                 app:layout_constraintBottom_toTopOf="@+id/textview_wind_section_header"
                 app:layout_constraintTop_toBottomOf="@+id/textview_simulator_roll_label" />
 
+            <!--suppress AndroidDomInspection -->
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraint_group_wind"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 app:constraint_referenced_ids="textview_wind_section_header,wind_section_footer,
-                    textview_wind_speed_x_label, imageview_btn_minus_x,textview_wind_x,imageview_btn_plus_x,
-                    textview_wind_speed_y_label, imageview_btn_minus_y,textview_wind_y,imageview_btn_plus_y,
-                    textview_wind_speed_z_label, imageview_btn_minus_z,textview_wind_z,imageview_btn_plus_z" />
+                    textview_wind_speed_x_label, seek_bar_wind_speed_x,
+                    textview_wind_speed_y_label, seek_bar_wind_speed_y,
+                    textview_wind_speed_z_label, seek_bar_wind_speed_z" />
 
             <TextView
                 android:id="@+id/textview_wind_section_header"
@@ -626,50 +627,21 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_wind_section_header" />
 
-            <ImageView
-                android:id="@+id/imageview_btn_minus_x"
-                android:layout_width="@dimen/uxsdk_simulator_row_height"
+            <dji.ux.beta.core.ui.SeekBarView
+                android:id="@+id/seek_bar_wind_speed_x"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/uxsdk_simulator_row_height"
                 android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
-                android:layout_marginRight="15dp"
                 android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
-                android:gravity="center"
-                android:padding="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/imageview_btn_minus_y"
-                app:layout_constraintEnd_toStartOf="@+id/textview_wind_x"
+                android:layout_marginLeft="@dimen/uxsdk_simulator_seek_bar_margin"
+                android:layout_marginRight="@dimen/uxsdk_simulator_seek_bar_margin"
+                android:textColor="@color/uxsdk_white"
+                app:layout_constraintBottom_toTopOf="@+id/seek_bar_wind_speed_y"
+                app:layout_constraintLeft_toRightOf="@+id/textview_wind_speed_x_label"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_wind_section_header"
-                app:srcCompat="@drawable/uxsdk_ic_minus"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/textview_wind_x"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/uxsdk_simulator_row_height"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
-                android:gravity="center_vertical"
-                android:text="@string/uxsdk_simulator_zero_string"
-                android:textColor="@color/uxsdk_blue"
-                app:layout_constraintBottom_toTopOf="@+id/textview_wind_y"
-                app:layout_constraintEnd_toStartOf="@+id/imageview_btn_plus_x"
-                app:layout_constraintTop_toBottomOf="@+id/textview_wind_section_header" />
-
-            <ImageView
-                android:id="@+id/imageview_btn_plus_x"
-                android:layout_width="@dimen/uxsdk_simulator_row_height"
-                android:layout_height="@dimen/uxsdk_simulator_row_height"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
-                android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
-                android:padding="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/imageview_btn_plus_y"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/textview_wind_x"
-                app:layout_constraintTop_toBottomOf="@+id/textview_wind_section_header"
-                app:srcCompat="@drawable/uxsdk_ic_plus"
-                tools:ignore="ContentDescription" />
+                app:uxsdk_maxValueVisible="false"
+                app:uxsdk_minValueVisible="false" />
 
             <TextView
                 android:id="@+id/textview_wind_speed_y_label"
@@ -684,56 +656,27 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_wind_speed_x_label" />
 
-            <ImageView
-                android:id="@+id/imageview_btn_minus_y"
-                android:layout_width="@dimen/uxsdk_simulator_row_height"
+            <dji.ux.beta.core.ui.SeekBarView
+                android:id="@+id/seek_bar_wind_speed_y"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/uxsdk_simulator_row_height"
                 android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
-                android:layout_marginRight="15dp"
                 android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
-                android:padding="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/imageview_btn_minus_z"
-                app:layout_constraintEnd_toStartOf="@+id/textview_wind_y"
-                app:layout_constraintTop_toBottomOf="@+id/imageview_btn_minus_x"
-                app:srcCompat="@drawable/uxsdk_ic_minus"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/textview_wind_y"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/uxsdk_simulator_row_height"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
-                android:gravity="center_vertical"
-                android:text="@string/uxsdk_simulator_zero_string"
-                android:textColor="@color/uxsdk_blue"
-                app:layout_constraintBottom_toTopOf="@+id/textview_wind_z"
-                app:layout_constraintEnd_toStartOf="@+id/imageview_btn_plus_y"
-                app:layout_constraintTop_toBottomOf="@+id/textview_wind_x" />
-
-            <ImageView
-                android:id="@+id/imageview_btn_plus_y"
-                android:layout_width="@dimen/uxsdk_simulator_row_height"
-                android:layout_height="@dimen/uxsdk_simulator_row_height"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
-                android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
-                android:padding="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/imageview_btn_plus_z"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/textview_wind_y"
-                app:layout_constraintTop_toBottomOf="@+id/imageview_btn_plus_x"
-                app:srcCompat="@drawable/uxsdk_ic_plus"
-                tools:ignore="ContentDescription" />
+                android:layout_marginLeft="@dimen/uxsdk_simulator_seek_bar_margin"
+                android:layout_marginRight="@dimen/uxsdk_simulator_seek_bar_margin"
+                android:textColor="@color/uxsdk_white"
+                app:layout_constraintBottom_toTopOf="@+id/seek_bar_wind_speed_z"
+                app:layout_constraintLeft_toRightOf="@+id/textview_wind_speed_y_label"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seek_bar_wind_speed_x"
+                app:uxsdk_maxValueVisible="false"
+                app:uxsdk_minValueVisible="false" />
 
             <TextView
                 android:id="@+id/textview_wind_speed_z_label"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/uxsdk_simulator_row_height"
                 android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
-                android:layout_marginRight="25dp"
                 android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
                 android:gravity="center_vertical"
                 android:text="@string/uxsdk_simulator_wind_speed_z"
@@ -742,49 +685,21 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textview_wind_speed_y_label" />
 
-            <ImageView
-                android:id="@+id/imageview_btn_minus_z"
-                android:layout_width="@dimen/uxsdk_simulator_row_height"
+            <dji.ux.beta.core.ui.SeekBarView
+                android:id="@+id/seek_bar_wind_speed_z"
+                android:layout_width="0dp"
                 android:layout_height="@dimen/uxsdk_simulator_row_height"
                 android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
-                android:layout_marginRight="15dp"
                 android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
-                android:padding="3dp"
+                android:layout_marginLeft="@dimen/uxsdk_simulator_seek_bar_margin"
+                android:layout_marginRight="@dimen/uxsdk_simulator_seek_bar_margin"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintBottom_toTopOf="@+id/wind_section_footer"
-                app:layout_constraintEnd_toStartOf="@+id/textview_wind_z"
-                app:layout_constraintTop_toBottomOf="@+id/imageview_btn_minus_y"
-                app:srcCompat="@drawable/uxsdk_ic_minus"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/textview_wind_z"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/uxsdk_simulator_row_height"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
-                android:gravity="center_vertical"
-                android:text="@string/uxsdk_simulator_zero_string"
-                android:textColor="@color/uxsdk_blue"
-                app:layout_constraintBottom_toTopOf="@+id/wind_section_footer"
-                app:layout_constraintEnd_toStartOf="@+id/imageview_btn_plus_z"
-                app:layout_constraintTop_toBottomOf="@+id/textview_wind_y" />
-
-            <ImageView
-                android:id="@+id/imageview_btn_plus_z"
-                android:layout_width="@dimen/uxsdk_simulator_row_height"
-                android:layout_height="@dimen/uxsdk_simulator_row_height"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="@dimen/uxsdk_simulator_row_margin"
-                android:layout_marginBottom="@dimen/uxsdk_simulator_row_margin"
-                android:padding="3dp"
-                app:layout_constraintBottom_toTopOf="@+id/wind_section_footer"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/textview_wind_z"
-                app:layout_constraintTop_toBottomOf="@+id/imageview_btn_plus_y"
-                app:srcCompat="@drawable/uxsdk_ic_plus"
-                tools:ignore="ContentDescription" />
+                app:layout_constraintLeft_toRightOf="@+id/textview_wind_speed_z_label"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/seek_bar_wind_speed_y"
+                app:uxsdk_maxValueVisible="false"
+                app:uxsdk_minValueVisible="false" />
 
             <View
                 android:id="@+id/wind_section_footer"
@@ -796,6 +711,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/textview_load_preset"
                 app:layout_constraintTop_toBottomOf="@+id/textview_wind_speed_z_label" />
 
+            <!--suppress AndroidDomInspection -->
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraint_group_buttons"
                 android:layout_width="wrap_content"
@@ -806,7 +722,7 @@
                 android:id="@+id/textview_load_preset"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
+                android:layout_marginEnd="2dp"
                 android:background="@drawable/uxsdk_selector_simulator_button_background"
                 android:gravity="center"
                 android:paddingTop="7dp"
@@ -823,7 +739,7 @@
                 android:id="@+id/textview_save_preset"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp"
                 android:background="@drawable/uxsdk_selector_simulator_button_background"
                 android:gravity="center"
                 android:paddingTop="7dp"

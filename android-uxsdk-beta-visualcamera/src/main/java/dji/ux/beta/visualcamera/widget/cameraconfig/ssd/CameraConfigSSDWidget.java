@@ -50,10 +50,10 @@ import dji.common.camera.SSDOperationState;
 import dji.common.camera.SettingsDefinitions;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.visualcamera.R;
@@ -85,7 +85,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     private Map<SSDOperationState, Drawable> ssdIconMap;
     //endregion
 
-    //region Constructors
+    //region Constructor
     public CameraConfigSSDWidget(@NonNull Context context) {
         super(context);
     }
@@ -146,16 +146,16 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.isSSDSupported()
-                .observeOn(SchedulerProvider.getInstance().ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateWidgetVisibility));
         addReaction(widgetModel.getSSDLicense()
-                .observeOn(SchedulerProvider.getInstance().ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateCapacityTitle));
         addReaction(widgetModel.getSSDRemainingSpace()
-                .observeOn(SchedulerProvider.getInstance().ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateCapacityValue));
         addReaction(widgetModel.getSSDResolutionAndFrameRate()
-                .observeOn(SchedulerProvider.getInstance().ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateSSDResolutionAndFrameRate));
         addReaction(reactToUpdateClipInfo());
         addReaction(reactToUpdateSSDState());
@@ -165,7 +165,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     //region Reaction Helpers
     private Disposable reactToUpdateClipInfo() {
         return Flowable.combineLatest(widgetModel.getSSDClipName(), widgetModel.getSSDColor(), Pair::new)
-                .observeOn(SchedulerProvider.getInstance().ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateClipInfo(values.first, values.second),
                         logErrorConsumer(TAG, "reactToUpdateClipInfo: "));
     }
@@ -184,7 +184,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
 
     private Disposable reactToUpdateSSDState() {
         return getSSDState()
-                .observeOn(SchedulerProvider.getInstance().ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateSSDState(values.first, values.second),
                         logErrorConsumer(TAG, "reactToUpdateSSDState: "));
     }
@@ -193,7 +193,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
         if (!isInEditMode()) {
             addDisposable(getSSDState()
                     .firstOrError()
-                    .observeOn(SchedulerProvider.getInstance().ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateSSDState(values.first, values.second),
                             logErrorConsumer(TAG, "checkAndUpdateSSDState: ")));
         }
@@ -257,9 +257,6 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
             case NOT_FOUND:
             case UNKNOWN:
                 statusInfoTextView.setText(R.string.uxsdk_ssd_status_error_nossd);
-                needShowStatus = false;
-                break;
-            case IDLE:
                 needShowStatus = false;
                 break;
             case SAVING:
@@ -367,7 +364,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     }
 
     private Integer getSSDColorIndex(@NonNull SettingsDefinitions.SSDColor ssdColor) {
-        SettingsDefinitions.SSDColor[] ssdColorValueArray = SettingsDefinitions.SSDColor.values();
+        SettingsDefinitions.SSDColor[] ssdColorValueArray = SettingsDefinitions.SSDColor.getValues();
         for (int i = 0; i < ssdColorValueArray.length; i++) {
             if (ssdColorValueArray[i] == ssdColor) {
                 return i;
@@ -400,7 +397,9 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
      * @param cameraIndex {@link SettingDefinitions.CameraIndex}
      */
     public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
+        if (!isInEditMode()) {
+            widgetModel.setCameraIndex(cameraIndex);
+        }
     }
 
     /**
@@ -993,9 +992,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigSSDWidget);
 
-        if (!isInEditMode()) {
-            setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigSSDWidget_uxsdk_cameraIndex, 0)));
-        }
+        setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigSSDWidget_uxsdk_cameraIndex, 0)));
 
         int ssdClipInfoTextAppearanceId =
                 typedArray.getResourceId(R.styleable.CameraConfigSSDWidget_uxsdk_ssdClipInfoTextAppearance, INVALID_RESOURCE);

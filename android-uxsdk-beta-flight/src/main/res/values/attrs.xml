@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<resources>
+
+    <attr name="uxsdk_dialogTheme" format="reference" />
+
+    <declare-styleable name="TakeOffWidget">
+        <attr name="uxsdk_takeOffActionDrawable" format="reference" />
+        <attr name="uxsdk_landActionDrawable" format="reference" />
+        <attr name="uxsdk_cancelLandActionDrawable" format="reference" />
+        <attr name="uxsdk_takeOffDialogIcon" format="reference" />
+        <attr name="uxsdk_landingDialogIcon" format="reference" />
+        <attr name="uxsdk_landingConfirmationDialogIcon" format="reference" />
+        <attr name="uxsdk_unsafeToLandDialogIcon" format="reference" />
+        <attr name="uxsdk_dialogTitleTextAppearance" />
+        <attr name="uxsdk_dialogTitleTextSize" />
+        <attr name="uxsdk_dialogTitleTextColor" />
+        <attr name="uxsdk_dialogTitleBackground" />
+        <attr name="uxsdk_dialogMessageTextAppearance" />
+        <attr name="uxsdk_dialogMessageTextSize" />
+        <attr name="uxsdk_dialogPrecisionMessageTextSize" format="dimension" />
+        <attr name="uxsdk_dialogMessageTextColor" />
+        <attr name="uxsdk_dialogMessageBackground" />
+        <attr name="uxsdk_dialogCheckBoxMessageTextAppearance" />
+        <attr name="uxsdk_dialogCheckBoxMessageTextSize" />
+        <attr name="uxsdk_dialogCheckBoxMessageTextColor" />
+        <attr name="uxsdk_dialogCheckBoxMessageBackground" />
+        <attr name="uxsdk_dialogCancelTextAppearance" />
+        <attr name="uxsdk_dialogCancelTextSize" />
+        <attr name="uxsdk_dialogCancelTextColor" />
+        <attr name="uxsdk_dialogCancelBackground" />
+        <attr name="uxsdk_dialogSliderMessageTextAppearance" />
+        <attr name="uxsdk_dialogSliderMessageTextSize" />
+        <attr name="uxsdk_dialogSliderMessageTextColor" />
+        <attr name="uxsdk_dialogSliderMessageBackground" />
+        <attr name="uxsdk_dialogSliderIcon" />
+        <attr name="uxsdk_dialogSliderThumbColor" />
+        <attr name="uxsdk_dialogSliderThumbSelectedColor" />
+        <attr name="uxsdk_dialogSliderFillColor" />
+        <attr name="uxsdk_dialogBackground" />
+        <attr name="uxsdk_dialogTheme" />
+        <attr name="uxsdk_disabledAlpha" />
+        <attr name="uxsdk_enabledAlpha" />
+    </declare-styleable>
+
+    <declare-styleable name="ReturnHomeWidget">
+        <attr name="uxsdk_returnHomeDrawable" format="reference" />
+        <attr name="uxsdk_cancelReturnHomeDrawable" format="reference" />
+        <attr name="uxsdk_returnHomeDialogIcon" format="reference" />
+        <attr name="uxsdk_dialogTitleTextAppearance" />
+        <attr name="uxsdk_dialogTitleTextSize" />
+        <attr name="uxsdk_dialogTitleTextColor" />
+        <attr name="uxsdk_dialogTitleBackground" />
+        <attr name="uxsdk_dialogMessageTextAppearance" />
+        <attr name="uxsdk_dialogMessageTextSize" />
+        <attr name="uxsdk_dialogMessageTextColor" />
+        <attr name="uxsdk_dialogMessageBackground" />
+        <attr name="uxsdk_dialogCancelTextAppearance" />
+        <attr name="uxsdk_dialogCancelTextSize" />
+        <attr name="uxsdk_dialogCancelTextColor" />
+        <attr name="uxsdk_dialogCancelBackground" />
+        <attr name="uxsdk_dialogSliderMessageTextAppearance" />
+        <attr name="uxsdk_dialogSliderMessageTextSize" />
+        <attr name="uxsdk_dialogSliderMessageTextColor" />
+        <attr name="uxsdk_dialogSliderMessageBackground" />
+        <attr name="uxsdk_dialogSliderIcon" />
+        <attr name="uxsdk_dialogSliderThumbColor" />
+        <attr name="uxsdk_dialogSliderThumbSelectedColor" />
+        <attr name="uxsdk_dialogSliderFillColor" />
+        <attr name="uxsdk_dialogBackground" />
+        <attr name="uxsdk_dialogTheme" />
+        <attr name="uxsdk_disabledAlpha" />
+        <attr name="uxsdk_enabledAlpha" />
+    </declare-styleable>
+
+</resources>

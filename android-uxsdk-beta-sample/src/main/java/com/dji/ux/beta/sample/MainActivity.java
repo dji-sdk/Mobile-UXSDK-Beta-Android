@@ -47,8 +47,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.dji.ux.beta.sample.showcase.defaultlayout.DefaultLayoutActivity;
+import com.dji.ux.beta.sample.showcase.map.MapWidgetActivity;
+import com.dji.ux.beta.sample.showcase.widgetlist.WidgetsActivity;
 import com.dji.ux.beta.sample.util.MapUtil;
-import com.dji.ux.beta.sample.widgetlist.WidgetsActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,7 +73,7 @@ import dji.ux.beta.core.util.SettingDefinitions;
 
 /**
  * Handles the connection to the product and provides links to the different test activities. Also
- * shows the current connection status and displays logs for the different steps of the SDK
+ * shows the current connection state and displays logs for the different steps of the SDK
  * registration process.
  */
 public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
@@ -368,6 +370,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         startActivity(intent);
     }
 
+
     /**
      * Displays a menu of map providers before launching the {@link MapWidgetActivity}. Disables
      * providers that are not supported by this device.
@@ -385,7 +388,6 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         popupMenu.findItem(R.id.google_map).setEnabled(MapUtil.isGoogleMapsSupported(this));
         popup.show();
     }
-
 
     /**
      * When one of the map providers is clicked, the {@link MapWidgetActivity} is launched with

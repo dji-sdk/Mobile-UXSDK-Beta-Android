@@ -47,12 +47,24 @@
     <dimen name="uxsdk_seekbar_half_radius">21dp</dimen>
     <dimen name="uxsdk_leftmenu_thumb_radius">42dp</dimen>
 
+    <dimen name="uxsdk_simulator_row_height">45dp</dimen>
+    <dimen name="uxsdk_simulator_seek_bar_margin">10dp</dimen>
+    <dimen name="uxsdk_simulator_row_margin">5dp</dimen>
+    <dimen name="uxsdk_simulator_header_text_size">15sp</dimen>
+    <dimen name="uxsdk_simulator_row_text_size">14sp</dimen>
+
     <dimen name="uxsdk_line_width">1dp</dimen>
+    <dimen name="uxsdk_gimbal_line_width">2dp</dimen>
 
     <dimen name="uxsdk_user_account_state_text_size">4sp</dimen>
     <dimen name="uxsdk_user_account_message_text_size">3sp</dimen>
 
+    <dimen name="uxsdk_user_account_text_size">10sp</dimen>
+
+    <dimen name="uxsdk_camera_exposure_mode_selector_radius">100dp</dimen>
+
     <dimen name="uxsdk_top_bar_default_height">32dp</dimen>
+    <dimen name="uxsdk_title_bar_default_height">16dp</dimen>
 
     <dimen name="uxsdk_system_status_text_size">13sp</dimen>
 
@@ -69,4 +81,9 @@
     <dimen name="uxsdk_list_item_radio_button_text_size">5sp</dimen>
     <dimen name="uxsdk_list_item_button_text_size">5sp</dimen>
     <dimen name="uxsdk_list_item_title_text_size">8sp</dimen>
+    <dimen name="uxsdk_list_item_switch_min_width">55dp</dimen>
+
+    <dimen name="uxsdk_telemetry_item_padding">5dp</dimen>
+    <dimen name="uxsdk_telemetry_view_margin">2dp</dimen>
+    <dimen name="uxsdk_telemetry_column_margin">6dp</dimen>
 </resources>

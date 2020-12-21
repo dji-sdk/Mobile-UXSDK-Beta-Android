@@ -32,7 +32,7 @@ import dji.keysdk.DJIKey;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions;
 
@@ -44,6 +44,7 @@ public class CameraConfigWBWidgetModel extends WidgetModel {
     //region Fields
     private DataProcessor<WhiteBalance> whiteBalanceProcessor;
     private int cameraIndex;
+    private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.ZOOM;
     //endregion
 
     //region Constructor
@@ -78,6 +79,26 @@ public class CameraConfigWBWidgetModel extends WidgetModel {
     }
 
     /**
+     * Get the current type of the lens the widget model is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return lensType;
+    }
+
+    /**
+     * Set the type of the lens for which the widget model should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        this.lensType = lensType;
+        restart();
+    }
+
+    /**
      * Get the white balance.
      *
      * @return Flowable for the DataProcessor that user should subscribe to.
@@ -90,7 +111,7 @@ public class CameraConfigWBWidgetModel extends WidgetModel {
     //region LifeCycle
     @Override
     protected void inSetup() {
-        DJIKey wbAndColorTempKey = CameraKey.create(CameraKey.WHITE_BALANCE, cameraIndex);
+        DJIKey wbAndColorTempKey = djiSdkModel.createLensKey(CameraKey.WHITE_BALANCE, cameraIndex, lensType.value());
         bindDataProcessor(wbAndColorTempKey, whiteBalanceProcessor);
     }
 

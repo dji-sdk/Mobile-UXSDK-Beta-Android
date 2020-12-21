@@ -39,12 +39,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
+import dji.common.camera.SettingsDefinitions;
 import dji.ux.beta.cameracore.R;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.ViewUtil;
 
@@ -63,12 +63,11 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     private AutoExposureLockWidgetModel widgetModel;
     private Drawable autoExposureLockDrawable;
     private Drawable autoExposureUnlockDrawable;
-    private SchedulerProvider schedulerProvider;
     private ColorStateList lockDrawableTint;
     private ColorStateList unlockDrawableTint;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public AutoExposureLockWidget(@NonNull Context context) {
         super(context);
     }
@@ -87,14 +86,12 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
         if (getBackground() == null) {
             setBackgroundResource(R.drawable.uxsdk_background_black_rectangle);
         }
-        schedulerProvider = SchedulerProvider.getInstance();
         foregroundImageView = findViewById(R.id.auto_exposure_lock_widget_foreground_image_view);
         titleTextView = findViewById(R.id.auto_exposure_lock_widget_title_text_view);
         if (!isInEditMode()) {
             widgetModel =
                     new AutoExposureLockWidgetModel(DJISDKModel.getInstance(),
-                            ObservableInMemoryKeyedStore.getInstance(),
-                            schedulerProvider);
+                            ObservableInMemoryKeyedStore.getInstance());
         }
         initDefaults();
         if (attrs != null) {
@@ -106,7 +103,7 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
 
     @Override
     protected void reactToModelChanges() {
-        addReaction(widgetModel.isAutoExposureLockOn().observeOn(AndroidSchedulers.mainThread()).subscribe(this::onAELockChange));
+        addReaction(widgetModel.isAutoExposureLockOn().observeOn(SchedulerProvider.ui()).subscribe(this::onAELockChange));
     }
 
     @Override
@@ -149,7 +146,7 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
 
     private void setAutoExposureLock() {
         addDisposable(widgetModel.toggleAutoExposureLock()
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(() -> {
                     // Do nothing
                 }, logErrorConsumer(TAG, "set auto exposure lock: ")));
@@ -158,7 +155,7 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     private void checkAndUpdateAELock() {
         if (!isInEditMode()) {
             addDisposable(widgetModel.isAutoExposureLockOn().firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(this::onAELockChange, logErrorConsumer(TAG, "Update AE Lock ")));
         }
     }
@@ -173,6 +170,7 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AutoExposureLockWidget);
         setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.AutoExposureLockWidget_uxsdk_cameraIndex, 0)));
+        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.AutoExposureLockWidget_uxsdk_lensType, 0)));
         ColorStateList colorStateList = typedArray.getColorStateList(R.styleable.AutoExposureLockWidget_uxsdk_widgetTitleTextColor);
         if (colorStateList != null) {
             setTitleTextColor(colorStateList);
@@ -241,6 +239,27 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
         if (!isInEditMode()) {
             widgetModel.setCameraIndex(cameraIndex);
+        }
+    }
+
+    /**
+     * Get the current type of the lens the widget is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    /**
+     * Set the type of the lens for which the widget should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        if (!isInEditMode()) {
+            widgetModel.setLensType(lensType);
         }
     }
 

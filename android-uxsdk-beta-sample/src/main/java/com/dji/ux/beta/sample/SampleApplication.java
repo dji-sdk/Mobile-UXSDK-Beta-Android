@@ -30,11 +30,10 @@ import android.content.IntentFilter;
 
 import androidx.multidex.MultiDex;
 
-
 import com.secneo.sdk.Helper;
 
-import dji.ux.beta.core.base.DefaultGlobalPreferences;
-import dji.ux.beta.core.base.GlobalPreferencesManager;
+import dji.ux.beta.core.communication.DefaultGlobalPreferences;
+import dji.ux.beta.core.communication.GlobalPreferencesManager;
 
 import static com.dji.ux.beta.sample.DJIConnectionControlActivity.ACCESSORY_ATTACHED;
 

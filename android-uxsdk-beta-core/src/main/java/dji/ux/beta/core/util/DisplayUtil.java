@@ -26,6 +26,7 @@ package dji.ux.beta.core.util;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Px;
 
 /**
  * Utility class for converting display units.
@@ -43,7 +44,7 @@ public final class DisplayUtil {
      * @param pxValue The pixel value to convert.
      * @return A density-independent pixel value.
      */
-    public static float pxToDip(@NonNull Context context, float pxValue) {
+    public static float pxToDip(@NonNull Context context, @Px float pxValue) {
         float scale = context.getResources().getDisplayMetrics().density;
         return pxValue / scale + 0.5f;
     }
@@ -55,6 +56,7 @@ public final class DisplayUtil {
      * @param dipValue The density-independent pixel value to convert.
      * @return A pixel value.
      */
+    @Px
     public static float dipToPx(@NonNull Context context, float dipValue) {
         float scale = context.getResources().getDisplayMetrics().density;
         return dipValue * scale + 0.5f;
@@ -67,7 +69,7 @@ public final class DisplayUtil {
      * @param pxValue The pixel value to convert.
      * @return A scale-independent pixel value.
      */
-    public static float pxToSp(@NonNull Context context, float pxValue) {
+    public static float pxToSp(@NonNull Context context, @Px float pxValue) {
         float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return pxValue / fontScale + 0.5f;
     }
@@ -79,6 +81,7 @@ public final class DisplayUtil {
      * @param spValue The scale-independent pixel value to convert.
      * @return A pixel value.
      */
+    @Px
     public static float spToPx(@NonNull Context context, float spValue) {
         float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
         return spValue * fontScale + 0.5f;
