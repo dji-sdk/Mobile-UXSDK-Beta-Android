@@ -18,11 +18,12 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *  
+ *
  */
 
 package dji.ux.beta.training.widget.simulatorcontrol.preset
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -49,7 +50,7 @@ class PresetListDialog @JvmOverloads constructor(
         private val dialogHeight: Int = context.resources.getDimension(R.dimen.uxsdk_simulator_dialog_height).toInt()
 ) : Dialog(context), View.OnClickListener {
 
-    //region fields
+    //region Fields
     private val presetListContainerLinearLayout: LinearLayout
     private val emptyPresetListTextView: TextView
     private val confirmDeleteTextView: TextView
@@ -59,7 +60,7 @@ class PresetListDialog @JvmOverloads constructor(
     private var keyToDelete: String? = null
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window?.setBackgroundDrawableResource(R.drawable.uxsdk_background_dialog_rounded_corners)
@@ -166,6 +167,7 @@ class PresetListDialog @JvmOverloads constructor(
         dismiss()
     }
 
+    @SuppressLint("InflateParams")
     private fun insertView(key: String, value: String) {
         val presetRow = LayoutInflater.from(context).inflate(R.layout.uxsdk_layout_simulator_preset_row, null)
         presetListContainerLinearLayout.addView(presetRow, presetListContainerLinearLayout.childCount)

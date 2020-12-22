@@ -88,6 +88,7 @@
         app:srcCompat="@drawable/uxsdk_ic_camera_decrement_minus"
         tools:ignore="ContentDescription" />
 
+    <!--suppress AndroidDomInspection -->
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/min_barrier"
         android:layout_width="wrap_content"
@@ -107,6 +108,7 @@
         tools:layout_constraintStart_toStartOf="@+id/imageview_track"
         tools:text="100" />
 
+    <!--suppress AndroidDomInspection -->
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/max_barrier"
         android:layout_width="wrap_content"

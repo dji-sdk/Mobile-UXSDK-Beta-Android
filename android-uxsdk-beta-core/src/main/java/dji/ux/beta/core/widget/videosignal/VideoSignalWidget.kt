@@ -44,15 +44,14 @@ import dji.thirdparty.io.reactivex.Flowable
 import dji.thirdparty.io.reactivex.disposables.Disposable
 import dji.thirdparty.io.reactivex.functions.BiFunction
 import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.ux.beta.R
-import dji.ux.beta.core.base.ConstraintLayoutWidget
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
-import dji.ux.beta.core.widget.videosignal.VideoSignalWidget.VideoSignalWidgetState
-import dji.ux.beta.core.widget.videosignal.VideoSignalWidget.VideoSignalWidgetState.*
+import dji.ux.beta.core.widget.videosignal.VideoSignalWidget.ModelState.*
 
 /**
  * This widget shows the strength of the video signal between the
@@ -62,13 +61,12 @@ open class VideoSignalWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<VideoSignalWidgetState>(context, attrs, defStyleAttr) {
+) : ConstraintLayoutWidget<VideoSignalWidget.ModelState>(context, attrs, defStyleAttr) {
 
     //region Fields
     private val videoIconImageView: ImageView = findViewById(R.id.imageview_video_icon)
     private val videoSignalImageView: ImageView = findViewById(R.id.imageview_video_signal)
     private val frequencyBandTextView: TextView = findViewById(R.id.textview_frequency_band)
-    private val schedulerProvider: SchedulerProvider = SchedulerProvider.getInstance()
     private val widgetModel: VideoSignalWidgetModel by lazy {
         VideoSignalWidgetModel(
                 DJISDKModel.getInstance(),
@@ -170,7 +168,7 @@ open class VideoSignalWidget @JvmOverloads constructor(
         }
     //endregion
 
-    //region Constructors
+    //region Constructor
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         View.inflate(context, R.layout.uxsdk_widget_video_signal, this)
     }
@@ -197,16 +195,16 @@ open class VideoSignalWidget @JvmOverloads constructor(
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.productConnection
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateIconColor(it) })
         addReaction(widgetModel.videoSignalQuality
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateVideoSignal(it) })
         addReaction(widgetModel.wifiFrequencyBand
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateWifiFrequencyBandText(it) })
         addReaction(widgetModel.lightBridgeFrequencyBand
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateLightBridgeFrequencyBandText(it) })
         addReaction(reactToOcuSyncFrequencyStateChange())
 
@@ -215,7 +213,7 @@ open class VideoSignalWidget @JvmOverloads constructor(
 
     //region Reactions to model
     private fun updateVideoSignal(@IntRange(from = 0, to = 100) videoSignalQuality: Int) {
-        widgetStateDataProcessor.onNext(VideoSignalQualityUpdate(videoSignalQuality))
+        widgetStateDataProcessor.onNext(VideoSignalQualityUpdated(videoSignalQuality))
         videoSignalImageView.setImageLevel(videoSignalQuality)
     }
 
@@ -235,13 +233,13 @@ open class VideoSignalWidget @JvmOverloads constructor(
     private fun checkAndUpdateIconColor() {
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.firstOrError()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateIconColor(it) }, logErrorConsumer(TAG, "Update Icon Color ")))
         }
     }
 
     private fun updateLightBridgeFrequencyBandText(frequencyBandType: LightbridgeFrequencyBand) {
-        widgetStateDataProcessor.onNext(LightbridgeFrequencyBandUpdate(frequencyBandType))
+        widgetStateDataProcessor.onNext(LightbridgeFrequencyBandUpdated(frequencyBandType))
         if (frequencyBandType != LightbridgeFrequencyBand.UNKNOWN) {
             frequencyBandTextView.text = when (frequencyBandType) {
                 LightbridgeFrequencyBand.FREQUENCY_BAND_2_DOT_4_GHZ -> FREQUENCY_BAND_2_DOT_4_GHZ
@@ -253,7 +251,7 @@ open class VideoSignalWidget @JvmOverloads constructor(
     }
 
     private fun updateWifiFrequencyBandText(frequencyBandType: WiFiFrequencyBand) {
-        widgetStateDataProcessor.onNext(WiFiFrequencyBandUpdate(frequencyBandType))
+        widgetStateDataProcessor.onNext(WiFiFrequencyBandUpdated(frequencyBandType))
         if (frequencyBandType != WiFiFrequencyBand.UNKNOWN) {
             frequencyBandTextView.text = when (frequencyBandType) {
                 WiFiFrequencyBand.FREQUENCY_BAND_2_DOT_4_GHZ -> FREQUENCY_BAND_2_DOT_4_GHZ
@@ -269,9 +267,9 @@ open class VideoSignalWidget @JvmOverloads constructor(
                 widgetModel.ocuSyncFrequencyBand,
                 widgetModel.ocuSyncFrequencyPointIndex,
                 BiFunction<OcuSyncFrequencyBand, Int, Pair<OcuSyncFrequencyBand, Int>> { ocuSyncFrequencyBand, signalQuality -> Pair.create(ocuSyncFrequencyBand, signalQuality) })
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { values ->
-                    widgetStateDataProcessor.onNext(OcuSyncFrequencyBandUpdate(values.first))
+                    widgetStateDataProcessor.onNext(OcuSyncFrequencyBandUpdated(values.first))
                     if (values.first != OcuSyncFrequencyBand.UNKNOWN) {
                         frequencyBandTextView.text = when (values.first) {
                             OcuSyncFrequencyBand.FREQUENCY_BAND_2_DOT_4_GHZ -> FREQUENCY_BAND_2_DOT_4_GHZ
@@ -384,42 +382,47 @@ open class VideoSignalWidget @JvmOverloads constructor(
     }
     //endregion
 
+    //region Hooks
+
     /**
-     * Get the [VideoSignalWidgetState] updates
+     * Get the [ModelState] updates
      */
-    override fun getWidgetStateUpdate(): Flowable<VideoSignalWidgetState> {
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
         return super.getWidgetStateUpdate()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class VideoSignalWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : VideoSignalWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * Video signal quality / strength update
          */
-        data class VideoSignalQualityUpdate(val signalQuality: Int) : VideoSignalWidgetState()
+        data class VideoSignalQualityUpdated(val signalQuality: Int) : ModelState()
 
         /**
          * Lightbridge frequency band update
          */
-        data class LightbridgeFrequencyBandUpdate(val frequencyBandType: LightbridgeFrequencyBand) : VideoSignalWidgetState()
+        data class LightbridgeFrequencyBandUpdated(val frequencyBandType: LightbridgeFrequencyBand) : ModelState()
 
         /**
          * WiFi frequency band update
          */
-        data class WiFiFrequencyBandUpdate(val frequencyBandType: WiFiFrequencyBand) : VideoSignalWidgetState()
+        data class WiFiFrequencyBandUpdated(val frequencyBandType: WiFiFrequencyBand) : ModelState()
 
         /**
          * OcuSync frequency band update
          */
-        data class OcuSyncFrequencyBandUpdate(val frequencyBandType: OcuSyncFrequencyBand) : VideoSignalWidgetState()
+        data class OcuSyncFrequencyBandUpdated(val frequencyBandType: OcuSyncFrequencyBand) : ModelState()
     }
+
+    //endregion
 
     companion object {
         private const val TAG = "VideoSignalWidget"

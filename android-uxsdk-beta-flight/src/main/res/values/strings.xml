@@ -1,0 +1,56 @@
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<resources>
+
+    <!-- Take Off Widget -->
+
+    <string name="uxsdk_take_off_header">Take Off?</string>
+    <string name="uxsdk_take_off_message">Ensure that conditions are safe for takeoff. Aircraft will go to an altitude of %1$s and hover.</string>
+    <string name="uxsdk_take_off_atti_message">Positioning failed. The aircraft will automatically fly to %1$s above the ground. Do not take off in a narrow space or near crowd or buildings. Do not touch propellers.</string>
+    <string name="uxsdk_precision_takeoff">Precisely record takeoff point</string>
+    <string name="uxsdk_precision_takeoff_message">With Precision Takeoff Mode enabled, the aircraft will automatically ascend to %1$s. This allows the aircraft to return to home point more accurately with VPS images. Ensure there is sufficient ambient light and that the takeoff route isn\'t blocked by trees, power lines or other objects. Moving the sticks during takeoff may affect image acquisition. In an emergency, use the control sticks to throttle downward.</string>
+    <string name="uxsdk_take_off_action">Slide to Take Off</string>
+
+    <string name="uxsdk_land_header">Land?</string>
+    <string name="uxsdk_land_message">Aircraft will land at its current location. Check landing area is clear.</string>
+    <string name="uxsdk_land_action">Slide to Land</string>
+
+    <string name="uxsdk_land_confirmation_header">Continue Landing?</string>
+    <string name="uxsdk_land_confirmation_message">Aircraft has descended to %1$s.</string>
+    <string name="uxsdk_land_confirmation_message_in2">Aircraft is hovering low. Ensure the landing point is safe and push the stick downward to land.</string>
+
+    <string name="uxsdk_unsafe_to_land_header">Not suitable for landing.</string>
+    <string name="uxsdk_unsafe_to_land_message">Area is not suitable for landing. Please move to a safer location.</string>
+    <string name="uxsdk_unsafe_to_land_action">Slide to Force Landing</string>
+
+    <!-- Return Home Widget -->
+
+    <string name="uxsdk_return_to_home_header">Return home and land?</string>
+    <string name="uxsdk_return_to_home_action">Slide to Return Home</string>
+    <string name="uxsdk_return_home_at_current_altitude">The distance between the aircraft and Home Point is less than 65.6 ft (20 m). The aircraft will return home at its current altitude if RTH is initiated.</string>
+    <string name="uxsdk_return_home_inner_desc">The aircraft is less than 20 m (65.6 ft) from the Home Point. The aircraft will land if Return to Home is initiated.</string>
+    <string name="uxsdk_return_home_near_nfz">Approaching a No-Fly Zone. Current RTH route may be distorted. Monitor the aircraft\'s flight path on the map or visually to ensure safety.</string>
+    <string name="uxsdk_return_home_wifi">Aircraft will head to home point and set RTH route. Use virtual joystick to adjust flight direction. Tap Cancel RTH button to stop RTH.</string>
+    <string name="uxsdk_return_home_below_desc">Aircraft will adjust its nose direction to face the home point, and its altitude to %1$s. Current aircraft altitude is %2$s. Press Return to Home button directly on your remote to cancel this procedure, or take over control sticks.</string>
+</resources>

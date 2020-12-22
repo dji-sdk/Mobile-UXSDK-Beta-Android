@@ -23,5 +23,6 @@
   -->
 
 <resources>
+    <integer name="uxsdk_translate_duration">200</integer>
     <integer name="uxsdk_panel_transition">333</integer>
 </resources>

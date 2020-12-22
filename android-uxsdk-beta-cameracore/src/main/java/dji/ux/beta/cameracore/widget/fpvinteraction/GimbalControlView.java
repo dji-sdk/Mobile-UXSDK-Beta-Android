@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.fpvinteraction;
@@ -59,7 +60,7 @@ public class GimbalControlView extends FrameLayout {
     private int vibrationDuration;
     //endregion
 
-    //region Constructors
+    //region Constructor
     public GimbalControlView(@NonNull Context context) {
         super(context);
         initView(context);

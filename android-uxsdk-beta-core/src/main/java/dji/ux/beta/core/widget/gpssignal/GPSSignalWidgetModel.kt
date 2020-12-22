@@ -18,7 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *  
+ *
  */
 
 package dji.ux.beta.core.widget.gpssignal
@@ -31,9 +31,9 @@ import dji.keysdk.FlightControllerKey
 import dji.thirdparty.io.reactivex.Flowable
 import dji.thirdparty.io.reactivex.functions.Consumer
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.SchedulerProviderInterface
+import dji.ux.beta.core.base.SchedulerProvider
 import dji.ux.beta.core.base.WidgetModel
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
 
 /**
@@ -41,8 +41,7 @@ import dji.ux.beta.core.util.DataProcessor
  * the underlying logic and communication
  */
 class GPSSignalWidgetModel(djiSdkModel: DJISDKModel,
-                           keyedStore: ObservableInMemoryKeyedStore,
-                           private val schedulerProvider: SchedulerProviderInterface
+                           keyedStore: ObservableInMemoryKeyedStore
 ) : WidgetModel(djiSdkModel, keyedStore) {
 
     //region Fields
@@ -105,7 +104,7 @@ class GPSSignalWidgetModel(djiSdkModel: DJISDKModel,
         //Use the supported key to begin getting the RTK Enabled values
         bindDataProcessor(rtkSupportedKey, rtkSupportedProcessor) {
             addDisposable(djiSdkModel.getValue(rtkEnabledKey)
-                    .observeOn(schedulerProvider.io())
+                    .observeOn(SchedulerProvider.io())
                     .subscribe(Consumer { }, logErrorConsumer("GPSSignalWidget", "isRTKSupported: ")))
         }
         bindDataProcessor(rtkStateKey, rtkStateProcessor)

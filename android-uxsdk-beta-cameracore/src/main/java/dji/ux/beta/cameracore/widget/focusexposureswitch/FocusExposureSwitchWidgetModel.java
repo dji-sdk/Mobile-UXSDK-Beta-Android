@@ -26,6 +26,7 @@ package dji.ux.beta.cameracore.widget.focusexposureswitch;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.FocusMode;
 import dji.common.camera.SettingsDefinitions.MeteringMode;
 import dji.keysdk.CameraKey;
@@ -34,13 +35,12 @@ import dji.log.DJILog;
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.GlobalPreferencesInterface;
-import dji.ux.beta.core.base.SchedulerProviderInterface;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.GlobalPreferenceKeys;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
-import dji.ux.beta.core.base.uxsdkkeys.UXKey;
-import dji.ux.beta.core.base.uxsdkkeys.UXKeys;
+import dji.ux.beta.core.communication.GlobalPreferenceKeys;
+import dji.ux.beta.core.communication.GlobalPreferencesInterface;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.UXKey;
+import dji.ux.beta.core.communication.UXKeys;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
@@ -53,30 +53,31 @@ import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
  */
 public class FocusExposureSwitchWidgetModel extends WidgetModel {
 
-    //region fields
+    //region Fields
     private static final String TAG = "FocusExpoSwitchWidMod";
+    private final DataProcessor<Boolean> isFocusModeSupportedDataProcessor;
     private final DataProcessor<FocusMode> focusModeDataProcessor;
     private final DataProcessor<MeteringMode> meteringModeDataProcessor;
     private final DataProcessor<ControlMode> controlModeDataProcessor;
     private final ObservableInMemoryKeyedStore keyedStore;
     private final GlobalPreferencesInterface preferencesManager;
+    private DJIKey focusModeKey;
     private DJIKey meteringModeKey;
     private UXKey controlModeKey;
     private int cameraIndex;
-    private SchedulerProviderInterface schedulerProvider;
+    private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.ZOOM;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public FocusExposureSwitchWidgetModel(@NonNull DJISDKModel djiSdkModel,
                                           @NonNull ObservableInMemoryKeyedStore keyedStore,
-                                          @Nullable GlobalPreferencesInterface preferencesManager,
-                                          @Nullable SchedulerProviderInterface schedulerProvider) {
+                                          @Nullable GlobalPreferencesInterface preferencesManager) {
         super(djiSdkModel, keyedStore);
         DJILog.d(TAG, "In CONSTRUCTOR");
-        this.schedulerProvider = schedulerProvider;
         focusModeDataProcessor = DataProcessor.create(FocusMode.UNKNOWN);
         meteringModeDataProcessor = DataProcessor.create(MeteringMode.UNKNOWN);
         controlModeDataProcessor = DataProcessor.create(ControlMode.SPOT_METER);
+        isFocusModeSupportedDataProcessor = DataProcessor.create(false);
         if (preferencesManager != null) {
             controlModeDataProcessor.onNext(preferencesManager.getControlMode());
         }
@@ -88,8 +89,8 @@ public class FocusExposureSwitchWidgetModel extends WidgetModel {
     @Override
     protected void inSetup() {
         DJILog.d(TAG, "In inSetup");
-        meteringModeKey = CameraKey.create(CameraKey.METERING_MODE, cameraIndex);
-        DJIKey focusModeKey = CameraKey.create(CameraKey.FOCUS_MODE, cameraIndex);
+        meteringModeKey = djiSdkModel.createLensKey(CameraKey.METERING_MODE, cameraIndex, lensType.value());
+        focusModeKey = djiSdkModel.createLensKey(CameraKey.FOCUS_MODE, cameraIndex, lensType.value());
         bindDataProcessor(focusModeKey, focusModeDataProcessor);
         bindDataProcessor(meteringModeKey, meteringModeDataProcessor);
 
@@ -114,9 +115,29 @@ public class FocusExposureSwitchWidgetModel extends WidgetModel {
         DJILog.d(TAG, "In updateStates");
         updateFocusMode();
     }
+
+    @Override
+    protected void onProductConnectionChanged(boolean isConnected) {
+        super.onProductConnectionChanged(isConnected);
+        if (isConnected) {
+            isFocusModeSupportedDataProcessor.onNext(djiSdkModel.isKeySupported(focusModeKey));
+        } else {
+            isFocusModeSupportedDataProcessor.onNext(false);
+        }
+    }
     //endregion
 
     //region Data
+
+    /**
+     * Check if focus mode change is supported
+     *
+     * @return Flowable with boolean true - supported false - not supported
+     */
+    public Flowable<Boolean> isFocusModeChangeSupported() {
+        return isFocusModeSupportedDataProcessor.toFlowable();
+    }
+
 
     /**
      * Get control mode
@@ -153,6 +174,26 @@ public class FocusExposureSwitchWidgetModel extends WidgetModel {
     }
 
     /**
+     * Get the current type of the lens the widget model is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return lensType;
+    }
+
+    /**
+     * Set the type of the lens for which the widget model should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        this.lensType = lensType;
+        restart();
+    }
+
+    /**
      * Switch between exposure/metering mode and focus mode
      *
      * @return Completable representing the success/failure of the set action.
@@ -179,7 +220,6 @@ public class FocusExposureSwitchWidgetModel extends WidgetModel {
 
     private Completable setMeteringMode() {
         return djiSdkModel.setValue(meteringModeKey, MeteringMode.SPOT)
-                .subscribeOn(schedulerProvider.io())
                 .doOnComplete(
                         () -> {
                             DJILog.d(TAG, "setMeteringMode success");
@@ -205,13 +245,13 @@ public class FocusExposureSwitchWidgetModel extends WidgetModel {
         }
         if (focusModeDataProcessor.getValue() == FocusMode.MANUAL) {
             preferencesManager.setControlMode(ControlMode.MANUAL_FOCUS);
-            return keyedStore.setValue(controlModeKey, ControlMode.MANUAL_FOCUS).subscribeOn(schedulerProvider.io());
+            return keyedStore.setValue(controlModeKey, ControlMode.MANUAL_FOCUS);
         } else if (focusModeDataProcessor.getValue() == FocusMode.AFC) {
             preferencesManager.setControlMode(ControlMode.AUTO_FOCUS_CONTINUE);
-            return keyedStore.setValue(controlModeKey, ControlMode.AUTO_FOCUS_CONTINUE).subscribeOn(schedulerProvider.io());
+            return keyedStore.setValue(controlModeKey, ControlMode.AUTO_FOCUS_CONTINUE);
         } else {
             preferencesManager.setControlMode(ControlMode.AUTO_FOCUS);
-            return keyedStore.setValue(controlModeKey, ControlMode.AUTO_FOCUS).subscribeOn(schedulerProvider.io());
+            return keyedStore.setValue(controlModeKey, ControlMode.AUTO_FOCUS);
         }
     }
     //endregion

@@ -18,7 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *  
+ *
  */
 
 package dji.ux.beta.core.widget.remotecontrollersignal
@@ -28,7 +28,7 @@ import dji.keysdk.AirLinkKey.UPLINK_SIGNAL_QUALITY
 import dji.thirdparty.io.reactivex.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
 
 /**

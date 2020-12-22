@@ -76,7 +76,7 @@ import dji.ux.beta.map.R;
 public class FlyZoneHelper {
 
     protected static final float DEFAULT_BORDER_WIDTH = 5;
-    //region fields
+    //region Fields
     private static final int DEFAULT_ALPHA = 26;
     private static final float DEFAULT_ANCHOR = 0.5f;
     private static final String TAG = "FlyZoneHelper";

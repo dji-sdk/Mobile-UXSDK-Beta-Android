@@ -32,25 +32,9 @@
     <string name="registered">Registered</string>
     <string name="logs">Logs</string>
     <string name="showcase">Showcase</string>
-    <string name="internal">Internal</string>
     <string name="widget_list">Widget List</string>
     <string name="default_layout">Default Layout</string>
     <string name="map">Map</string>
-    <string-array name="grid_line_type_array">
-        <item>None</item>
-        <item>Parallel</item>
-        <item>Parallel/Diagonal</item>
-    </string-array>
-    <string-array name="fpv_source_array">
-        <item>Auto</item>
-        <item>Primary</item>
-        <item>Secondary</item>
-    </string-array>
-    <string-array name="orientation_array">
-        <item>Landscape</item>
-        <item>Portrait</item>
-    </string-array>
-
 
     <!--Map Widget Activity-->
     <string name="provider_google_maps">Google Maps</string>
@@ -127,7 +111,7 @@
     <string name="camera_controls_widget_title">Camera Controls Widget</string>
     <string name="camera_settings_menu_indicator_widget_title">Camera Settings Menu Indicator Widget</string>
     <string name="compass_widget_title">Compass Widget</string>
-    <string name="dashboard_widget_title">Dashboard Widget</string>
+    <string name="telemetry_widget_title">Telemetry Panel</string>
     <string name="distance_home_widget_title">Distance Home Widget</string>
     <string name="distance_rc_widget_title">Distance RC Widget</string>
     <string name="exposure_settings_indicator_widget_title">Exposure Settings Indicator Widget</string>
@@ -157,4 +141,5 @@
     <string name="rtk_enabled_widget_title">RTK Enabled Widget</string>
     <string name="rtk_satellite_status_widget_title">RTK Satellite Status Widget</string>
     <string name="remaining_flight_time_widget_title">Remaining Flight Time Widget</string>
+
 </resources>

@@ -18,6 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
+ *
  */
 
 package dji.ux.beta.cameracore.widget.fpvinteraction;
@@ -44,13 +45,12 @@ import dji.keysdk.GimbalKey;
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.GlobalPreferencesInterface;
-import dji.ux.beta.core.base.SchedulerProviderInterface;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.GlobalPreferenceKeys;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
-import dji.ux.beta.core.base.uxsdkkeys.UXKey;
-import dji.ux.beta.core.base.uxsdkkeys.UXKeys;
+import dji.ux.beta.core.communication.GlobalPreferenceKeys;
+import dji.ux.beta.core.communication.GlobalPreferencesInterface;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.UXKey;
+import dji.ux.beta.core.communication.UXKeys;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.ProductUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
@@ -76,19 +76,18 @@ public class FPVInteractionWidgetModel extends WidgetModel {
     //region Fields
     private int cameraIndex;
     private int gimbalIndex;
+    private int lensIndex;
     private DJIKey focusTargetKey;
     private DJIKey meteringTargetKey;
     private DJIKey meteringModeKey;
     private Rotation.Builder builder;
     private UXKey controlModeKey;
-    private SchedulerProviderInterface schedulerProvider;
     //endregion
 
     //region Constructor
     public FPVInteractionWidgetModel(@NonNull DJISDKModel djiSdkModel,
                                      @NonNull ObservableInMemoryKeyedStore keyedStore,
-                                     @Nullable GlobalPreferencesInterface preferencesManager,
-                                     @NonNull SchedulerProviderInterface schedulerProvider) {
+                                     @Nullable GlobalPreferencesInterface preferencesManager) {
         super(djiSdkModel, keyedStore);
         cameraIndex = CameraIndex.CAMERA_INDEX_0.getIndex();
         gimbalIndex = GimbalIndex.PORT.getIndex();
@@ -102,18 +101,17 @@ public class FPVInteractionWidgetModel extends WidgetModel {
         builder = new Rotation.Builder().mode(RotationMode.SPEED);
         this.preferencesManager = preferencesManager;
         this.keyedStore = keyedStore;
-        this.schedulerProvider = schedulerProvider;
     }
     //endregion
 
     //region Lifecycle
     @Override
     protected void inSetup() {
-        focusTargetKey = CameraKey.create(CameraKey.FOCUS_TARGET, cameraIndex);
-        meteringTargetKey = CameraKey.create(CameraKey.SPOT_METERING_TARGET, cameraIndex);
-        meteringModeKey = CameraKey.create(CameraKey.METERING_MODE, cameraIndex);
+        focusTargetKey = djiSdkModel.createLensKey(CameraKey.FOCUS_TARGET, cameraIndex, lensIndex);
+        meteringTargetKey = djiSdkModel.createLensKey(CameraKey.SPOT_METERING_TARGET, cameraIndex, lensIndex);
+        meteringModeKey = djiSdkModel.createLensKey(CameraKey.METERING_MODE, cameraIndex, lensIndex);
         bindDataProcessor(meteringModeKey, meteringModeProcessor, meteringMode -> setMeteringMode((MeteringMode) meteringMode));
-        DJIKey aeLockedKey = CameraKey.create(CameraKey.AE_LOCK, cameraIndex);
+        DJIKey aeLockedKey = djiSdkModel.createLensKey(CameraKey.AE_LOCK, cameraIndex, lensIndex);
         bindDataProcessor(aeLockedKey, aeLockedProcessor);
         DJIKey capabilitiesKey = GimbalKey.create(GimbalKey.CAPABILITIES, gimbalIndex);
         bindDataProcessor(capabilitiesKey, capabilitiesMapProcessor);
@@ -193,6 +191,25 @@ public class FPVInteractionWidgetModel extends WidgetModel {
     }
 
     /**
+     * Get the current index of the lens the widget model is reacting to
+     *
+     * @return current lens index
+     */
+    public int getLensIndex() {
+        return lensIndex;
+    }
+
+    /**
+     * Set the index of the lens for which the widget model should react
+     *
+     * @param lensIndex lens index
+     */
+    public void setLensIndex(int lensIndex) {
+        this.lensIndex = lensIndex;
+        restart();
+    }
+
+    /**
      * Set the control mode.
      *
      * @param controlMode The control mode to set.
@@ -227,7 +244,7 @@ public class FPVInteractionWidgetModel extends WidgetModel {
     }
     //endregion
 
-    //region reactions to user input
+    //region Reactions to user input
 
     /**
      * Set the focus target to the location (targetX, targetY). This is a relative coordinate
@@ -242,8 +259,7 @@ public class FPVInteractionWidgetModel extends WidgetModel {
     @NonNull
     public Completable updateFocusTarget(@FloatRange(from = 0, to = 1) float targetX,
                                          @FloatRange(from = 0, to = 1) float targetY) {
-        return djiSdkModel.setValue(focusTargetKey, createPointF(targetX, targetY))
-                .subscribeOn(schedulerProvider.io());
+        return djiSdkModel.setValue(focusTargetKey, createPointF(targetX, targetY));
     }
 
     /**
@@ -266,17 +282,14 @@ public class FPVInteractionWidgetModel extends WidgetModel {
             if (column >= 0 && column < NUM_COLUMNS && row >= 0 && row < NUM_ROWS) {
                 if (meteringModeProcessor.getValue() != MeteringMode.SPOT) {
                     return djiSdkModel.setValue(meteringModeKey, MeteringMode.SPOT)
-                            .andThen(djiSdkModel.setValue(meteringTargetKey, createPoint(column, row))
-                                    .subscribeOn(schedulerProvider.io()))
-                            .subscribeOn(schedulerProvider.io());
+                            .andThen(djiSdkModel.setValue(meteringTargetKey, createPoint(column, row)));
                 } else {
-                    return djiSdkModel.setValue(meteringTargetKey, createPoint(column, row))
-                            .subscribeOn(schedulerProvider.io());
+                    return djiSdkModel.setValue(meteringTargetKey, createPoint(column, row));
+
                 }
             }
         } else if (controlModeProcessor.getValue() == ControlMode.CENTER_METER) {
-            return djiSdkModel.setValue(meteringModeKey, MeteringMode.CENTER)
-                    .subscribeOn(schedulerProvider.io());
+            return djiSdkModel.setValue(meteringModeKey, MeteringMode.CENTER);
         }
         return Completable.complete();
     }
@@ -308,8 +321,7 @@ public class FPVInteractionWidgetModel extends WidgetModel {
             pitch = Rotation.NO_ROTATION;
         }
         Rotation r = builder.yaw(yaw).pitch(pitch).build();
-        return djiSdkModel.performAction(GimbalKey.create(GimbalKey.ROTATE, gimbalIndex), r)
-                .subscribeOn(schedulerProvider.io());
+        return djiSdkModel.performAction(GimbalKey.create(GimbalKey.ROTATE, gimbalIndex), r);
     }
     //endregion
 

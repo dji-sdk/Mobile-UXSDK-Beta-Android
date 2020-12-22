@@ -18,7 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *  
+ *
  */
 
 package dji.ux.beta.training.widget.simulatorcontrol.preset
@@ -54,7 +54,7 @@ class SavePresetDialog (
         simulatorPresetData: SimulatorPresetData
 ) : Dialog(context), View.OnClickListener {
 
-    //region fields
+    //region Fields
     private val simulatorPresetData: SimulatorPresetData
     private val titleTextView: TextView
     private val saveTextView: TextView
@@ -62,7 +62,7 @@ class SavePresetDialog (
     private val presetEditText: EditText
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window?.setBackgroundDrawableResource(R.drawable.uxsdk_background_dialog_rounded_corners)

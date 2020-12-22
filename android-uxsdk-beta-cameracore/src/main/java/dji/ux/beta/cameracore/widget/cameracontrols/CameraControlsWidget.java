@@ -34,7 +34,7 @@ import dji.ux.beta.cameracore.widget.cameracapture.CameraCaptureWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator.CameraSettingsMenuIndicatorWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettingsindicator.ExposureSettingsIndicatorWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch.PhotoVideoSwitchWidget;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 
 /**
  * Compound widget which combines the state and interaction related to camera.
@@ -45,14 +45,14 @@ import dji.ux.beta.core.base.ConstraintLayoutWidget;
  */
 public class CameraControlsWidget extends ConstraintLayoutWidget {
 
-    //region fields
+    //region Fields
     private CameraSettingsMenuIndicatorWidget cameraSettingsMenuIndicatorWidget;
     private PhotoVideoSwitchWidget photoVideoSwitchWidget;
     private CameraCaptureWidget cameraCaptureWidget;
     private ExposureSettingsIndicatorWidget exposureSettingsIndicatorWidget;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public CameraControlsWidget(@NonNull Context context) {
         super(context);
     }

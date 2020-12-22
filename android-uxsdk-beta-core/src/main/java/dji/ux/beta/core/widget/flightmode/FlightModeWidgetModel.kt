@@ -27,7 +27,7 @@ import dji.keysdk.FlightControllerKey
 import dji.thirdparty.io.reactivex.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.widget.flightmode.FlightModeWidgetModel.FlightModeState.FlightModeUpdated
 import dji.ux.beta.core.widget.flightmode.FlightModeWidgetModel.FlightModeState.ProductDisconnected

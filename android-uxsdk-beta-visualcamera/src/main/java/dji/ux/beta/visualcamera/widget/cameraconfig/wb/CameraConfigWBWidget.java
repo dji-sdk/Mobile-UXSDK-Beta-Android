@@ -37,11 +37,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.WhiteBalance;
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.SchedulerProvider;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.visualcamera.R;
@@ -62,7 +63,7 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
     private String[] wbNameArray;
     //endregion
 
-    //region Constructors
+    //region Constructor
     public CameraConfigWBWidget(@NonNull Context context) {
         super(context);
     }
@@ -114,7 +115,7 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getWhiteBalance()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateUI));
     }
     //endregion
@@ -157,7 +158,30 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
      * @param cameraIndex {@link SettingDefinitions.CameraIndex}
      */
     public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        widgetModel.setCameraIndex(cameraIndex);
+        if (!isInEditMode()) {
+            widgetModel.setCameraIndex(cameraIndex);
+        }
+    }
+
+    /**
+     * Get the current type of the lens the widget is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    /**
+     * Set the type of the lens for which the widget should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        if (!isInEditMode()) {
+            widgetModel.setLensType(lensType);
+        }
     }
 
     /**
@@ -353,9 +377,8 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigWBWidget);
 
-        if (!isInEditMode()) {
-            setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigWBWidget_uxsdk_cameraIndex, 0)));
-        }
+        setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigWBWidget_uxsdk_cameraIndex, 0)));
+        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigWBWidget_uxsdk_lensType, 0)));
 
         int wbTitleTextAppearanceId =
                 typedArray.getResourceId(R.styleable.CameraConfigWBWidget_uxsdk_wbTitleTextAppearance, INVALID_RESOURCE);

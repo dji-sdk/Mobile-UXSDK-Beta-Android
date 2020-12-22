@@ -18,7 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *  
+ *
  */
 package dji.ux.beta.training.widget.simulatorcontrol
 
@@ -30,8 +30,11 @@ import dji.keysdk.DJIKey
 import dji.keysdk.FlightControllerKey
 import dji.thirdparty.io.reactivex.Completable
 import dji.thirdparty.io.reactivex.Flowable
-import dji.ux.beta.core.base.*
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.DJISDKModel
+import dji.ux.beta.core.base.UXSDKError
+import dji.ux.beta.core.base.UXSDKErrorDescription
+import dji.ux.beta.core.base.WidgetModel
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
 
 /**
@@ -42,8 +45,8 @@ import dji.ux.beta.core.util.DataProcessor
  * underlying logic and communication
  */
 class SimulatorControlWidgetModel(djiSdkModel: DJISDKModel,
-                                  keyedStore: ObservableInMemoryKeyedStore,
-                                  private val schedulerProvider: SchedulerProviderInterface) : WidgetModel(djiSdkModel, keyedStore) {
+                                  keyedStore: ObservableInMemoryKeyedStore
+) : WidgetModel(djiSdkModel, keyedStore) {
     //region private fields
     private val simulatorStateBuilder = SimulatorState.Builder()
     private val windBuilder = SimulatorWindData.Builder()
@@ -89,7 +92,7 @@ class SimulatorControlWidgetModel(djiSdkModel: DJISDKModel,
      */
     fun startSimulator(initializationData: InitializationData): Completable {
         val startSimulatorKey: DJIKey = FlightControllerKey.create(FlightControllerKey.START_SIMULATOR)
-        return djiSdkModel.performAction(startSimulatorKey, initializationData).subscribeOn(schedulerProvider.io())
+        return djiSdkModel.performAction(startSimulatorKey, initializationData)
     }
 
     /**
@@ -99,18 +102,19 @@ class SimulatorControlWidgetModel(djiSdkModel: DJISDKModel,
      */
     fun stopSimulator(): Completable {
         val stopSimulatorKey: DJIKey = FlightControllerKey.create(FlightControllerKey.STOP_SIMULATOR)
-        return djiSdkModel.performAction(stopSimulatorKey).subscribeOn(schedulerProvider.io())
+        return djiSdkModel.performAction(stopSimulatorKey)
     }
 
     /**
      * Set values to simulate wind in x, y and z directions
+     * The unit for wind speed is m/s
      *
      * @param simulatorWindData [SimulatorWindData] instance with values to simulate
      * @return Completable to determine status of the action
      */
     fun setSimulatorWindData(simulatorWindData: SimulatorWindData): Completable {
         return if (simulatorActiveDataProcessor.value) {
-            djiSdkModel.setValue(simulatorWindDataKey, simulatorWindData).subscribeOn(schedulerProvider.io())
+            djiSdkModel.setValue(simulatorWindDataKey, simulatorWindData)
         } else {
             Completable.error(UXSDKError(UXSDKErrorDescription.SIMULATOR_WIND_ERROR))
         }
@@ -127,6 +131,8 @@ class SimulatorControlWidgetModel(djiSdkModel: DJISDKModel,
     /**
      * Get the current wind simulation values. Includes
      * wind speed in x, y and z directions
+     * The unit for wind speed is m/s
+     *
      */
     val simulatorWindData: Flowable<SimulatorWindData>
         get() = simulatorWindDataProcessor.toFlowable()

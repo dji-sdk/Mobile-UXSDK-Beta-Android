@@ -29,7 +29,7 @@ import dji.keysdk.FlightControllerKey
 import dji.thirdparty.io.reactivex.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
 
 /**
@@ -39,11 +39,10 @@ import dji.ux.beta.core.util.DataProcessor
  * Widget Model for the [RemainingFlightTimeWidget] used to define the
  * underlying logic and communication
  */
-class RemainingFlightTimeWidgetModel(
-        djiSdkModel: DJISDKModel,
-        keyedStore: ObservableInMemoryKeyedStore
+class RemainingFlightTimeWidgetModel(djiSdkModel: DJISDKModel,
+                                     keyedStore: ObservableInMemoryKeyedStore
 ) : WidgetModel(djiSdkModel, keyedStore) {
-    //region fields
+    //region Fields
     private val chargeRemainingProcessor: DataProcessor<Int> = DataProcessor.create(0)
     private val batteryNeededToLandProcessor: DataProcessor<Int> = DataProcessor.create(0)
     private val batteryNeededToGoHomeProcessor: DataProcessor<Int> = DataProcessor.create(0)

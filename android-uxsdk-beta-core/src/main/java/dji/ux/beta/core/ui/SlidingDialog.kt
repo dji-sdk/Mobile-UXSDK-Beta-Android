@@ -36,7 +36,7 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.annotation.*
 import androidx.constraintlayout.widget.ConstraintLayout
-import dji.ux.beta.R
+import dji.ux.beta.core.R
 import dji.ux.beta.core.extension.textColor
 import dji.ux.beta.core.extension.textColorStateList
 import dji.ux.beta.core.util.ViewUtil
@@ -56,7 +56,7 @@ class SlidingDialog @JvmOverloads constructor(
         @param:DimenRes private val widthId: Int = R.dimen.uxsdk_sliding_dialog_width
 ) : Dialog(context, styleId), View.OnClickListener, SeekBar.OnSeekBarChangeListener,
         CompoundButton.OnCheckedChangeListener {
-    //region fields
+    //region Fields
     private var container: ConstraintLayout
     private var iconImageView: ImageView
     private var cancelTextView: TextView
@@ -307,7 +307,7 @@ class SlidingDialog @JvmOverloads constructor(
         fun onCheckBoxChecked(dialog: DialogInterface?, checked: Boolean)
     }
 
-    //region lifecycle
+    //region Lifecycle
     init {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.uxsdk_dialog_sliding_action)

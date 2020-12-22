@@ -35,20 +35,23 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.res.use
 import dji.thirdparty.io.reactivex.Flowable
 import dji.thirdparty.io.reactivex.processors.PublishProcessor
-import dji.ux.beta.R
-import dji.ux.beta.core.base.ConstraintLayoutWidget
+import dji.ux.beta.core.R
 import dji.ux.beta.core.extension.*
 
+/**
+ * Abstract class that represents a widget with a single Image View.
+ * The class provides functionality and customizations for widgets to reuse
+ */
 abstract class IconButtonWidget<T> @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
 ) : ConstraintLayoutWidget<T>(context, attrs, defStyleAttr), View.OnClickListener {
 
-    //region fields
+    //region Fields
 
     protected val foregroundImageView: ImageView = findViewById(R.id.image_view_button)
-    protected val uiUpdateStateProcessor: PublishProcessor<WidgetUIState> = PublishProcessor.create()
+    protected val uiUpdateStateProcessor: PublishProcessor<UIState> = PublishProcessor.create()
 
     /**
      * The color of the icon when the product is connected
@@ -109,7 +112,7 @@ abstract class IconButtonWidget<T> @JvmOverloads constructor(
 
     @CallSuper
     override fun onClick(view: View?) {
-        uiUpdateStateProcessor.onNext(WidgetUIState.WidgetClick)
+        uiUpdateStateProcessor.onNext(UIState.WidgetClicked)
     }
 
     override fun getIdealDimensionRatioString(): String {
@@ -126,39 +129,44 @@ abstract class IconButtonWidget<T> @JvmOverloads constructor(
     }
 
     /**
-     * Get the [WidgetUIState] updates
+     * Get the [UIState] updates
      */
-    fun getUIStateUpdates(): Flowable<WidgetUIState> {
-        return uiUpdateStateProcessor
+    fun getUIStateUpdates(): Flowable<UIState> {
+        return uiUpdateStateProcessor.onBackpressureBuffer()
     }
 
     /**
      * Widget UI update State
      */
-    sealed class WidgetUIState {
+    sealed class UIState {
         /**
          * Widget click update
          */
-        object WidgetClick : WidgetUIState()
+        object WidgetClicked : UIState()
 
         /**
          * Dialog shown update
          */
-        data class DialogDisplayed(val info: Any?) : WidgetUIState()
+        data class DialogDisplayed(val info: Any?) : UIState()
 
         /**
          * Dialog action confirm
          */
-        data class DialogActionConfirm(val info: Any?) : WidgetUIState()
+        data class DialogActionConfirmed(val info: Any?) : UIState()
 
         /**
          * Dialog action dismiss
          */
-        data class DialogActionDismiss(val info: Any?) : WidgetUIState()
+        data class DialogDismissed(val info: Any?) : UIState()
+
+        /**
+         * Dialog action dismiss
+         */
+        data class DialogActionCancelled(val info: Any?) : UIState()
 
         /**
          * Dialog checkbox interaction
          */
-        data class DialogCheckboxCheckChanged(val info: Any?) : WidgetUIState()
+        data class DialogCheckboxCheckChanged(val info: Any?) : UIState()
     }
 }

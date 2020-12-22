@@ -34,12 +34,12 @@ import dji.keysdk.ProductKey
 import dji.thirdparty.io.reactivex.Completable
 import dji.thirdparty.io.reactivex.Flowable
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.SchedulerProviderInterface
+import dji.ux.beta.core.base.SchedulerProvider
 import dji.ux.beta.core.base.WidgetModel
-import dji.ux.beta.core.base.uxsdkkeys.MessagingKeys
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
-import dji.ux.beta.core.base.uxsdkkeys.UXKey
-import dji.ux.beta.core.base.uxsdkkeys.UXKeys
+import dji.ux.beta.core.communication.MessagingKeys
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.UXKey
+import dji.ux.beta.core.communication.UXKeys
 import dji.ux.beta.core.model.WarningMessage
 import dji.ux.beta.core.model.WarningMessageError
 import dji.ux.beta.core.util.DataProcessor
@@ -51,12 +51,11 @@ import java.util.*
  * the underlying logic and communication
  */
 open class VisionWidgetModel(djiSdkModel: DJISDKModel,
-                             private val keyedStore: ObservableInMemoryKeyedStore,
-                             private val schedulerProvider: SchedulerProviderInterface
+                             private val keyedStore: ObservableInMemoryKeyedStore
 ) : WidgetModel(djiSdkModel, keyedStore) {
 
     //region Fields
-    private val statusMap: MutableMap<VisionSensorPosition, VisionSystemStatus> = HashMap()
+    private val stateMap: MutableMap<VisionSensorPosition, VisionSystemState> = EnumMap(VisionSensorPosition::class.java)
     private val visionDetectionStateProcessor: DataProcessor<VisionDetectionState> = DataProcessor.create(
             VisionDetectionState.createInstance(false, 0.0, VisionSystemWarning.INVALID, null,
                     VisionSensorPosition.UNKNOWN, false, 0))
@@ -74,16 +73,15 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
     private val omniHorizontalAvoidanceEnabledProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val omniVerticalAvoidanceEnabledProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val omniAvoidanceStateProcessor: DataProcessor<ObstacleAvoidanceSensorState> = DataProcessor.create(ObstacleAvoidanceSensorState.Builder().build())
-    private val visionSystemStatusProcessor: DataProcessor<VisionSystemStatus> = DataProcessor.create(VisionSystemStatus.NORMAL)
-    private val sendWarningMessageKey: UXKey = UXKeys.create(MessagingKeys.SEND_WARNING_MESSAGE)
+    private val visionSystemStateProcessor: DataProcessor<VisionSystemState> = DataProcessor.create(VisionSystemState.NORMAL)
     //endregion
 
     //region Data
     /**
      * Get the status of the vision system.
      */
-    val visionSystemStatus: Flowable<VisionSystemStatus>
-        get() = visionSystemStatusProcessor.toFlowable()
+    val visionSystemState: Flowable<VisionSystemState>
+        get() = visionSystemStateProcessor.toFlowable()
 
     /**
      * Get whether user avoidance is enabled.
@@ -108,6 +106,7 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
      * @return Completable representing the success/failure of the set action.
      */
     fun sendWarningMessage(reason: String?, isUserAvoidanceEnabled: Boolean): Completable {
+        val sendWarningMessageKey: UXKey = UXKeys.create(MessagingKeys.SEND_WARNING_MESSAGE)
         val subCode = WarningMessageError.VISION_AVOID.value()
         val action = if (isUserAvoidanceEnabled) WarningMessage.Action.REMOVE else WarningMessage.Action.INSERT
         val builder = WarningMessage.Builder(WarningMessage.WarningType.VISION)
@@ -117,7 +116,7 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
                 .type(WarningMessage.Type.AUTO_DISAPPEAR).action(action)
         val warningMessage = builder.build()
         return keyedStore.setValue(sendWarningMessageKey, warningMessage)
-                .subscribeOn(schedulerProvider.io())
+                .subscribeOn(SchedulerProvider.io())
     }
 
     //endregion
@@ -162,15 +161,16 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
 
     override fun updateStates() {
         if (!productConnectionProcessor.value) {
-            visionSystemStatusProcessor.onNext(VisionSystemStatus.NORMAL)
+            visionSystemStateProcessor.onNext(VisionSystemState.NORMAL)
         } else {
             addSingleVisionStatus()
-            if (Model.MATRICE_300_RTK == productModelProcessor.value) {
-                visionSystemStatusProcessor.onNext(omniHorizontalVerticalAvoidanceState)
+            if (Model.MATRICE_300_RTK == productModelProcessor.value
+                    || Model.MAVIC_AIR_2 == productModelProcessor.value) {
+                visionSystemStateProcessor.onNext(omniHorizontalVerticalAvoidanceState)
             } else if (!ProductUtil.isMavic2SeriesProduct(productModelProcessor.value)) {
-                visionSystemStatusProcessor.onNext(overallVisionSystemStatus)
+                visionSystemStateProcessor.onNext(overallVisionSystemState)
             } else {
-                visionSystemStatusProcessor.onNext(omnidirectionalVisionSystemStatus)
+                visionSystemStateProcessor.onNext(omnidirectionalVisionSystemState)
             }
         }
     }
@@ -179,7 +179,7 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
     //region Helpers
     private fun addSingleVisionStatus() {
         val state = visionDetectionStateProcessor.value
-        statusMap[state.position] = getSingleVisionSystemStatus(state)
+        stateMap[state.position] = getSingleVisionSystemStatus(state)
     }
 
     /**
@@ -187,16 +187,17 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
      *
      * @return The overall status of all vision sensors on the aircraft.
      */
-    private val overallVisionSystemStatus: VisionSystemStatus
+    private val overallVisionSystemState: VisionSystemState
         get() {
-            var status = VisionSystemStatus.CLOSED
-            for ((_, item) in statusMap) {
-                if (item == VisionSystemStatus.NORMAL) {
-                    status = VisionSystemStatus.NORMAL
-                } else if (item == VisionSystemStatus.CLOSED) {
-                    status = VisionSystemStatus.CLOSED
+            var status = VisionSystemState.CLOSED
+            for ((_, item) in stateMap) {
+                if (item == VisionSystemState.NORMAL) {
+                    status = VisionSystemState.NORMAL
+                } else if (item == VisionSystemState.CLOSED) {
+                    status = VisionSystemState.CLOSED
+                    break
                 } else {
-                    status = VisionSystemStatus.DISABLED
+                    status = VisionSystemState.DISABLED
                     break
                 }
             }
@@ -209,51 +210,53 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
      * @param state The state of single vision sensor on the aircraft.
      * @return The status of the vision sensor.
      */
-    private fun getSingleVisionSystemStatus(state: VisionDetectionState): VisionSystemStatus {
+    private fun getSingleVisionSystemStatus(state: VisionDetectionState): VisionSystemState {
         return if (isUserAvoidEnabledProcessor.value) {
             if (isVisionSystemEnabled && !state.isDisabled) {
-                VisionSystemStatus.NORMAL
+                VisionSystemState.NORMAL
             } else {
-                VisionSystemStatus.DISABLED
+                VisionSystemState.DISABLED
             }
         } else {
-            VisionSystemStatus.CLOSED
+            VisionSystemState.CLOSED
         }
     }
 
-    private val omniHorizontalVerticalAvoidanceState: VisionSystemStatus
+    private val omniHorizontalVerticalAvoidanceState: VisionSystemState
         get() {
-            val horizontalState: VisionSystemStatus =
-                    if (omniHorizontalAvoidanceEnabledProcessor.value && omniAvoidanceStateProcessor.value.areObstacleAvoidanceSensorsInHorizontalDirectionEnabled()) {
-                        if (omniAvoidanceStateProcessor.value.areObstacleAvoidanceSensorsInHorizontalDirectionWorking()) {
-                            VisionSystemStatus.NORMAL
+            val horizontalState: VisionSystemState =
+                    if (omniHorizontalAvoidanceEnabledProcessor.value
+                            && omniAvoidanceStateProcessor.value.areVisualObstacleAvoidanceSensorsInHorizontalDirectionEnabled()) {
+                        if (omniAvoidanceStateProcessor.value.areVisualObstacleAvoidanceSensorsInHorizontalDirectionWorking()) {
+                            VisionSystemState.NORMAL
                         } else {
-                            VisionSystemStatus.DISABLED
+                            VisionSystemState.DISABLED
                         }
                     } else {
-                        VisionSystemStatus.CLOSED
+                        VisionSystemState.CLOSED
                     }
-            val verticalState: VisionSystemStatus =
-                    if (omniVerticalAvoidanceEnabledProcessor.value && omniAvoidanceStateProcessor.value.areObstacleAvoidanceSensorsInVerticalDirectionEnabled()) {
-                        if (omniAvoidanceStateProcessor.value.areObstacleAvoidanceSensorsInVerticalDirectionWorking()) {
-                            VisionSystemStatus.NORMAL
+            val verticalState: VisionSystemState =
+                    if (omniVerticalAvoidanceEnabledProcessor.value
+                            && omniAvoidanceStateProcessor.value.areVisualObstacleAvoidanceSensorsInVerticalDirectionEnabled()) {
+                        if (omniAvoidanceStateProcessor.value.areVisualObstacleAvoidanceSensorsInVerticalDirectionWorking()) {
+                            VisionSystemState.NORMAL
                         } else {
-                            VisionSystemStatus.DISABLED
+                            VisionSystemState.DISABLED
                         }
                     } else {
-                        VisionSystemStatus.CLOSED
+                        VisionSystemState.CLOSED
                     }
-            return if (horizontalState == VisionSystemStatus.NORMAL) {
-                if (verticalState == VisionSystemStatus.NORMAL) {
-                    VisionSystemStatus.OMNI_ALL
+            return if (horizontalState == VisionSystemState.NORMAL) {
+                if (verticalState == VisionSystemState.NORMAL) {
+                    VisionSystemState.OMNI_ALL
                 } else {
-                    VisionSystemStatus.OMNI_HORIZONTAL
+                    VisionSystemState.OMNI_HORIZONTAL
                 }
             } else {
-                if (verticalState == VisionSystemStatus.NORMAL) {
-                    VisionSystemStatus.OMNI_VERTICAL
+                if (verticalState == VisionSystemState.NORMAL) {
+                    VisionSystemState.OMNI_VERTICAL
                 } else {
-                    VisionSystemStatus.OMNI_CLOSED
+                    VisionSystemState.OMNI_CLOSED
                 }
             }
         }
@@ -263,26 +266,26 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
      *
      * @return The status of the omnidirectional vision system.
      */
-    private val omnidirectionalVisionSystemStatus: VisionSystemStatus
+    private val omnidirectionalVisionSystemState: VisionSystemState
         get() {
             if (ProductUtil.isMavic2Enterprise(productModelProcessor.value)) {
                 if (isAllOmnidirectionalDataOpen) {
-                    return VisionSystemStatus.OMNI_ALL
-                } else if (overallVisionSystemStatus == VisionSystemStatus.DISABLED) {
-                    VisionSystemStatus.OMNI_DISABLED
+                    return VisionSystemState.OMNI_ALL
+                } else if (overallVisionSystemState == VisionSystemState.DISABLED) {
+                    return VisionSystemState.OMNI_DISABLED
                 } else if (isNoseTailVisionNormal || isNoseTailDataOpen) {
-                    return VisionSystemStatus.OMNI_FRONT_BACK
+                    return VisionSystemState.OMNI_FRONT_BACK
                 }
             } else {
-                if (overallVisionSystemStatus == VisionSystemStatus.NORMAL && isAllOmnidirectionalDataOpen) {
-                    return VisionSystemStatus.OMNI_ALL
-                } else if (overallVisionSystemStatus == VisionSystemStatus.DISABLED) {
-                    VisionSystemStatus.OMNI_DISABLED
+                if (overallVisionSystemState == VisionSystemState.NORMAL && isAllOmnidirectionalDataOpen) {
+                    return VisionSystemState.OMNI_ALL
+                } else if (overallVisionSystemState == VisionSystemState.DISABLED) {
+                    return VisionSystemState.OMNI_DISABLED
                 } else if (isNoseTailVisionNormal && isNoseTailDataOpen) {
-                    return VisionSystemStatus.OMNI_FRONT_BACK
+                    return VisionSystemState.OMNI_FRONT_BACK
                 }
             }
-            return VisionSystemStatus.OMNI_CLOSED
+            return VisionSystemState.OMNI_CLOSED
         }
 
     private val isAllOmnidirectionalDataOpen: Boolean
@@ -295,8 +298,8 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
         get() = isFrontRadarOpenProcessor.value && isBackRadarOpenProcessor.value
 
     private val isNoseTailVisionNormal: Boolean
-        get() = statusMap[VisionSensorPosition.NOSE] == VisionSystemStatus.NORMAL
-                && statusMap[VisionSensorPosition.TAIL] == VisionSystemStatus.NORMAL
+        get() = stateMap[VisionSensorPosition.NOSE] == VisionSystemState.NORMAL
+                && stateMap[VisionSensorPosition.TAIL] == VisionSystemState.NORMAL
 
     /**
      * Whether the vision system is enabled. It could be disabled due to the flight mode,
@@ -352,7 +355,7 @@ open class VisionWidgetModel(djiSdkModel: DJISDKModel,
     /**
      * The status of the vision system.
      */
-    enum class VisionSystemStatus {
+    enum class VisionSystemState {
         /**
          * Obstacle avoidance is disabled by the user.
          */

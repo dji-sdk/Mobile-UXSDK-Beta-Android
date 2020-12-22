@@ -32,7 +32,6 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/textview_ssd_clip_info"
         app:layout_constraintDimensionRatio="5:4"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +44,6 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/imageview_ssd_icon"
         app:layout_constraintDimensionRatio="1:1"
@@ -99,6 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textview_ssd_clip_info"
         tools:text="3840x2160/120.000" />
 
+    <!--suppress AndroidDomInspection -->
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier"
         android:layout_width="wrap_content"
@@ -112,9 +111,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
         android:layout_marginEnd="2dp"
-        android:layout_marginRight="2dp"
         android:textColor="@color/uxsdk_white_75_percent"
         android:textSize="@dimen/uxsdk_text_size_small"
         app:layout_constraintStart_toEndOf="@id/barrier"
@@ -126,7 +123,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:textColor="@color/uxsdk_white"
         android:textSize="@dimen/uxsdk_text_size_normal"
         app:layout_constraintBottom_toBottomOf="@+id/textview_format_info"

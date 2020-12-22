@@ -48,14 +48,14 @@ import dji.log.DJILog;
 import dji.sdk.useraccount.UserAccountInformation;
 import dji.sdk.useraccount.UserAccountManager;
 import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.thirdparty.io.reactivex.disposables.Disposable;
-import dji.ux.beta.R;
-import dji.ux.beta.core.base.ConstraintLayoutWidget;
+import dji.ux.beta.core.R;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.OnStateChangeCallback;
+import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.UXSDKError;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.OnStateChangeCallback;
 
 /**
  * User Account Login Widget
@@ -65,7 +65,7 @@ import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
  */
 public class UserAccountLoginWidget extends ConstraintLayoutWidget implements OnClickListener {
 
-    //region fields
+    //region Fields
     private static final String TAG = "LoginWidget";
     private TextView widgetStateTextView;
     private ImageView widgetActionImageView;
@@ -81,7 +81,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
 
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public UserAccountLoginWidget(Context context) {
         super(context);
     }
@@ -146,7 +146,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     public void onClick(View v) {
         addDisposable(widgetModel.getUserAccountState()
                 .firstOrError()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(userAccountState -> {
                     if (userAccountState == UserAccountState.AUTHORIZED) {
                         logoutUser();
@@ -177,7 +177,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
 
     private Disposable reactToAccountStateChange() {
         return getAccountState()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateUI(values.first, values.second),
                         logErrorConsumer(TAG, "react to User Account "));
     }
@@ -185,7 +185,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     private void checkAndUpdateUI() {
         if (!isInEditMode()) {
             addDisposable(getAccountState().firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateUI(values.first, values.second),
                             logErrorConsumer(TAG, "react to User Account ")));
         }
@@ -193,7 +193,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
 
     private void loginUser() {
         addDisposable(widgetModel.loginUser(getContext())
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(() -> {
                 }, error -> {
                     if (error instanceof UXSDKError) {
@@ -203,7 +203,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     private void logoutUser() {
-        addDisposable(widgetModel.logoutUser().observeOn(AndroidSchedulers.mainThread()).subscribe(() -> {
+        addDisposable(widgetModel.logoutUser().observeOn(SchedulerProvider.ui()).subscribe(() -> {
 
         }, error -> {
             if (error instanceof UXSDKError) {

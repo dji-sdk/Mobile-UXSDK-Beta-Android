@@ -33,15 +33,15 @@ import dji.thirdparty.io.reactivex.Flowable
 import dji.thirdparty.io.reactivex.disposables.Disposable
 import dji.thirdparty.io.reactivex.functions.BiFunction
 import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.ux.beta.R
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.FrameLayoutWidget
 import dji.ux.beta.core.base.SchedulerProvider
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.widget.FrameLayoutWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.getColorAndUse
 import dji.ux.beta.core.extension.getString
-import dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidget.RemainingFlightTimeWidgetState
-import dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidget.RemainingFlightTimeWidgetState.*
+import dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidget.ModelState
+import dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidget.ModelState.*
 import dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidgetModel.RemainingFlightTimeData
 
 /**
@@ -60,7 +60,7 @@ open class RemainingFlightTimeWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : FrameLayoutWidget<RemainingFlightTimeWidgetState>(
+) : FrameLayoutWidget<ModelState>(
         context,
         attrs,
         defStyleAttr
@@ -71,7 +71,6 @@ open class RemainingFlightTimeWidget @JvmOverloads constructor(
                 DJISDKModel.getInstance(),
                 ObservableInMemoryKeyedStore.getInstance())
     }
-    private val schedulerProvider: SchedulerProvider = SchedulerProvider.getInstance()
     private val batteryRequiredToLandPaint: Paint = Paint()
     private val batteryChargeRemainingPaint: Paint = Paint()
     private val batteryRequiredToGoHomePaint: Paint = Paint()
@@ -189,7 +188,7 @@ open class RemainingFlightTimeWidget @JvmOverloads constructor(
 
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
 
     init {
         setWillNotDraw(false)
@@ -308,16 +307,16 @@ open class RemainingFlightTimeWidget @JvmOverloads constructor(
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.productConnection
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { isProductConnected: Boolean -> updateVisibility(isProductConnected) })
         addReaction(reactToRemainingFlightTimeChange())
         addReaction(widgetModel.isAircraftFlying
-                .observeOn(schedulerProvider.io())
+                .observeOn(SchedulerProvider.io())
                 .subscribe {
-                    widgetStateDataProcessor.onNext(AircraftFlying(it))
+                    widgetStateDataProcessor.onNext(AircraftFlyingUpdated(it))
                 })
         addReaction(widgetModel.remainingFlightTimeData
-                .observeOn(schedulerProvider.io())
+                .observeOn(SchedulerProvider.io())
                 .subscribe {
                     widgetStateDataProcessor.onNext(
                             FlightTimeDataUpdated(it))
@@ -358,7 +357,7 @@ open class RemainingFlightTimeWidget @JvmOverloads constructor(
         return Flowable.combineLatest(widgetModel.isAircraftFlying,
                 widgetModel.remainingFlightTimeData,
                 BiFunction { first: Boolean, second: RemainingFlightTimeData -> Pair(first, second) })
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(Consumer { values: Pair<Boolean, RemainingFlightTimeData> -> onRemainingFlightTimeChange(values.first, values.second) },
                         logErrorConsumer(TAG, "react to flight time update: "))
     }
@@ -464,32 +463,33 @@ open class RemainingFlightTimeWidget @JvmOverloads constructor(
 
     //endregion
 
-    //region hooks
+    //region Hooks
     /**
-     * Get the [RemainingFlightTimeWidgetState] updates
+     * Get the [ModelState] updates
      */
-    override fun getWidgetStateUpdate(): Flowable<RemainingFlightTimeWidgetState> {
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
         return super.getWidgetStateUpdate()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class RemainingFlightTimeWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : RemainingFlightTimeWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * Aircraft flying status change update
          */
-        data class AircraftFlying(val isAircraftFlying: Boolean) : RemainingFlightTimeWidgetState()
+        data class AircraftFlyingUpdated(val isAircraftFlying: Boolean) : ModelState()
 
         /**
          * Remaining flight time data update
          */
-        data class FlightTimeDataUpdated(val remainingFlightTimeData: RemainingFlightTimeData) : RemainingFlightTimeWidgetState()
+        data class FlightTimeDataUpdated(val remainingFlightTimeData: RemainingFlightTimeData) : ModelState()
 
     }
     //endregion

@@ -37,13 +37,14 @@ import androidx.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.ExposureMode;
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.FrameLayoutWidget;
-import dji.ux.beta.core.base.OnStateChangeCallback;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.SchedulerProvider;
+import dji.ux.beta.core.base.widget.FrameLayoutWidget;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.OnStateChangeCallback;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
 /**
@@ -52,7 +53,7 @@ import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
  */
 public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implements View.OnClickListener {
 
-    //region fields
+    //region Fields
     private static final String TAG = "ExposureSetIndicWidget";
     private ImageView foregroundImageView;
     private ExposureSettingsIndicatorWidgetModel widgetModel;
@@ -61,7 +62,7 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     private int stateChangeResourceId;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public ExposureSettingsIndicatorWidget(@NonNull Context context) {
         super(context);
     }
@@ -93,7 +94,7 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.getExposureMode()
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(this::updateUI));
     }
 
@@ -134,7 +135,7 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
         if (!isInEditMode()) {
             addDisposable(widgetModel.getExposureMode()
                     .firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(this::updateUI, logErrorConsumer(TAG, "get exposure mode")));
         }
     }
@@ -163,6 +164,7 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ExposureSettingsIndicatorWidget);
         setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_cameraIndex, 0)));
+        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_lensType, 0)));
         stateChangeResourceId =
                 typedArray.getResourceId(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_onStateChange, INVALID_RESOURCE);
         Drawable drawable = typedArray.getDrawable(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_aperturePriorityModeDrawable);
@@ -230,6 +232,27 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
         if (!isInEditMode()) {
             widgetModel.setCameraIndex(cameraIndex);
+        }
+    }
+
+    /**
+     * Get the current type of the lens the widget is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    /**
+     * Set the type of the lens for which the widget should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        if (!isInEditMode()) {
+            widgetModel.setLensType(lensType);
         }
     }
 

@@ -39,6 +39,10 @@ import androidx.annotation.ColorInt;
 
 import dji.ux.beta.cameracore.R;
 
+/**
+ * Ring progress bar.
+ * The view shows circular animation to indicate progress.
+ */
 public class ProgressRingView extends View {
 
     private RectF boundaries;
@@ -125,6 +129,11 @@ public class ProgressRingView extends View {
         canvas.drawArc(boundaries, 0, 360, false, paint);
     }
 
+    /**
+     * Set the color of the progress ring.
+     *
+     * @param color integer value
+     */
     public void setRingColor(@ColorInt int color) {
         ringColor = color;
         paint.setColor(color);
@@ -132,10 +141,22 @@ public class ProgressRingView extends View {
         invalidate();
     }
 
+    /**
+     * Check if the ring is currently animating.
+     *
+     * @return boolean value
+     */
     public boolean isIndeterminate() {
         return indeterminate;
     }
 
+    /**
+     * Start/Stop the ring animation.
+     *
+     * @param indeterminate boolean value
+     *                      true - to start animation
+     *                      false - to stop animation
+     */
     public void setIndeterminate(boolean indeterminate) {
         if (indeterminate == this.indeterminate) return;
 

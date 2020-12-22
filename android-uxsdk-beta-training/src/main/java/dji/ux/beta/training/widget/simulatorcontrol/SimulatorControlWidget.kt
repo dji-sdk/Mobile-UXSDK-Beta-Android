@@ -18,7 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *  
+ *
  */
 
 package dji.ux.beta.training.widget.simulatorcontrol
@@ -45,17 +45,21 @@ import dji.log.DJILog
 import dji.thirdparty.io.reactivex.Flowable
 import dji.thirdparty.io.reactivex.functions.Consumer
 import dji.thirdparty.io.reactivex.processors.PublishProcessor
-import dji.ux.beta.core.base.*
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.DJISDKModel
+import dji.ux.beta.core.base.SchedulerProvider
+import dji.ux.beta.core.base.UXSDKError
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.OnStateChangeCallback
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.ui.SeekBarView
 import dji.ux.beta.core.util.DisplayUtil
 import dji.ux.beta.core.util.EditTextNumberInputFilter
 import dji.ux.beta.training.R
 import dji.ux.beta.training.util.SimulatorPresetUtils
-import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget.SimulatorControlWidgetState
-import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget.SimulatorControlWidgetState.*
-import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget.SimulatorControlWidgetUIUpdate.*
+import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget.ModelState
+import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget.ModelState.*
+import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget.UIState.*
 import dji.ux.beta.training.widget.simulatorcontrol.preset.OnLoadPresetListener
 import dji.ux.beta.training.widget.simulatorcontrol.preset.PresetListDialog
 import dji.ux.beta.training.widget.simulatorcontrol.preset.SavePresetDialog
@@ -63,6 +67,7 @@ import dji.ux.beta.training.widget.simulatorcontrol.preset.SimulatorPresetData
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.math.max
 
 /**
@@ -78,19 +83,17 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<SimulatorControlWidgetState>(
+) : ConstraintLayoutWidget<ModelState>(
         context,
         attrs,
         defStyleAttr),
         View.OnClickListener, OnStateChangeCallback<Any?>, OnLoadPresetListener {
 
-    //region fields
-    private val schedulerProvider: SchedulerProvider = SchedulerProvider.getInstance()
+    //region Fields
     private val widgetModel by lazy {
         SimulatorControlWidgetModel(
                 DJISDKModel.getInstance(),
-                ObservableInMemoryKeyedStore.getInstance(),
-                schedulerProvider)
+                ObservableInMemoryKeyedStore.getInstance())
     }
     private val latitudeEditText: EditText = findViewById(R.id.edit_text_simulator_lat)
     private val longitudeEditText: EditText = findViewById(R.id.edit_text_simulator_lng)
@@ -112,9 +115,6 @@ open class SimulatorControlWidget @JvmOverloads constructor(
     private val frequencyTextView: TextView = findViewById(R.id.textview_simulator_frequency_value)
     private val loadPresetTextView: TextView = findViewById(R.id.textview_load_preset)
     private val savePresetTextView: TextView = findViewById(R.id.textview_save_preset)
-    private val windXTextView: TextView = findViewById(R.id.textview_wind_x)
-    private val windYTextView: TextView = findViewById(R.id.textview_wind_y)
-    private val windZTextView: TextView = findViewById(R.id.textview_wind_z)
     private val latitudeLabelTextView: TextView = findViewById(R.id.textview_simulator_latitude_label)
     private val longitudeLabelTextView: TextView = findViewById(R.id.textview_simulator_longitude_label)
     private val satelliteLabelTextView: TextView = findViewById(R.id.textview_simulator_satellite_label)
@@ -130,6 +130,9 @@ open class SimulatorControlWidget @JvmOverloads constructor(
     private val windXLabelTextView: TextView = findViewById(R.id.textview_wind_speed_x_label)
     private val windYLabelTextView: TextView = findViewById(R.id.textview_wind_speed_y_label)
     private val windZLabelTextView: TextView = findViewById(R.id.textview_wind_speed_z_label)
+    private val windSpeedXSeekBar: SeekBarView = findViewById(R.id.seek_bar_wind_speed_x)
+    private val windSpeedYSeekBar: SeekBarView = findViewById(R.id.seek_bar_wind_speed_y)
+    private val windSpeedZSeekBar: SeekBarView = findViewById(R.id.seek_bar_wind_speed_z)
     private val positionSectionHeaderTextView: TextView = findViewById(R.id.textview_location_section_header)
     private val windSectionHeaderTextView: TextView = findViewById(R.id.textview_wind_section_header)
     private val attitudeSectionHeaderTextView: TextView = findViewById(R.id.textview_attitude_section_header)
@@ -142,11 +145,33 @@ open class SimulatorControlWidget @JvmOverloads constructor(
     private lateinit var df: DecimalFormat
     private var shouldReactToCheckChange = false
     private val seekBarChangeListener = object : SeekBarView.OnSeekBarChangeListener {
-        override fun onProgressChanged(seekBarView: SeekBarView, progress: Int) {
-            if (seekBarView == satelliteCountSeekBar) {
-                satelliteCountSeekBar.setText(satelliteCountSeekBar.progress.toString())
-            } else if (seekBarView == frequencySeekBar) {
-                frequencySeekBar.setText(max(MIN_FREQUENCY, frequencySeekBar.progress).toString())
+        override fun onProgressChanged(seekBarView: SeekBarView, progress: Int, isFromUI: Boolean) {
+            when (seekBarView) {
+                satelliteCountSeekBar -> {
+                    satelliteCountSeekBar.text = satelliteCountSeekBar.progress.toString()
+                }
+                frequencySeekBar -> {
+                    frequencySeekBar.text = max(MIN_FREQUENCY, frequencySeekBar.progress).toString()
+                }
+                windSpeedXSeekBar -> {
+                    seekBarView.text = normalizeWindValue(seekBarView.progress).toString()
+                    if (isFromUI) {
+                        setWindSpeedUI(WIND_DIRECTION_X, seekBarView.progress > 0)
+                    }
+
+                }
+                windSpeedYSeekBar -> {
+                    seekBarView.text = normalizeWindValue(seekBarView.progress).toString()
+                    if (isFromUI) {
+                        setWindSpeedUI(WIND_DIRECTION_Y, seekBarView.progress > 0)
+                    }
+                }
+                windSpeedZSeekBar -> {
+                    seekBarView.text = normalizeWindValue(seekBarView.progress).toString()
+                    if (isFromUI) {
+                        setWindSpeedUI(WIND_DIRECTION_Z, seekBarView.progress > 0)
+                    }
+                }
             }
         }
 
@@ -168,7 +193,7 @@ open class SimulatorControlWidget @JvmOverloads constructor(
 
     }
 
-    private val uiUpdateStateProcessor: PublishProcessor<SimulatorControlWidgetUIUpdate> = PublishProcessor.create()
+    private val uiUpdateStateProcessor: PublishProcessor<UIState> = PublishProcessor.create()
 
     /**
      * The drawable resource for the simulator active icon
@@ -280,9 +305,6 @@ open class SimulatorControlWidget @JvmOverloads constructor(
             yawTextView.textColorStateList = value
             rollTextView.textColorStateList = value
             frequencyTextView.textColorStateList = value
-            windXTextView.textColorStateList = value
-            windYTextView.textColorStateList = value
-            windZTextView.textColorStateList = value
         }
 
     /**
@@ -303,16 +325,13 @@ open class SimulatorControlWidget @JvmOverloads constructor(
             yawTextView.textColor = value
             rollTextView.textColor = value
             frequencyTextView.textColor = value
-            windXTextView.textColor = value
-            windYTextView.textColor = value
-            windZTextView.textColor = value
         }
 
     /**
      * Text size of the value fields
      */
     var valueTextSize: Float
-        get() = windZTextView.textSize
+        get() = latitudeTextView.textSize
         set(textSize) {
             latitudeTextView.textSize = textSize
             longitudeTextView.textSize = textSize
@@ -326,9 +345,6 @@ open class SimulatorControlWidget @JvmOverloads constructor(
             yawTextView.textSize = textSize
             rollTextView.textSize = textSize
             frequencyTextView.textSize = textSize
-            windXTextView.textSize = textSize
-            windYTextView.textSize = textSize
-            windZTextView.textSize = textSize
         }
 
     /**
@@ -349,9 +365,6 @@ open class SimulatorControlWidget @JvmOverloads constructor(
             yawTextView.background = value
             rollTextView.background = value
             frequencyTextView.background = value
-            windXTextView.background = value
-            windYTextView.background = value
-            windZTextView.background = value
         }
 
     /**
@@ -574,9 +587,48 @@ open class SimulatorControlWidget @JvmOverloads constructor(
             windSectionHeaderTextView.textColor = value
         }
 
+    /**
+     * Text color of the seek bar value
+     */
+    var seekBarTextColor: Int
+        get() = frequencySeekBar.valueTextColor
+        set(value) {
+            frequencySeekBar.valueTextColor = value
+            satelliteCountSeekBar.valueTextColor = value
+            windSpeedXSeekBar.valueTextColor = value
+            windSpeedYSeekBar.valueTextColor = value
+            windSpeedZSeekBar.valueTextColor = value
+        }
+
+    /**
+     * Drawable for the seek bar track
+     */
+    var seekBarTrackIconBackground: Drawable?
+        get() = frequencySeekBar.trackIconBackground
+        set(value) {
+            frequencySeekBar.trackIconBackground = value
+            satelliteCountSeekBar.trackIconBackground = value
+            windSpeedXSeekBar.trackIconBackground = value
+            windSpeedYSeekBar.trackIconBackground = value
+            windSpeedZSeekBar.trackIconBackground = value
+        }
+
+    /**
+     * Drawable for the seek bar thumb
+     */
+    var seekBarThumbIcon: Drawable?
+        get() = frequencySeekBar.thumbIcon
+        set(value) {
+            frequencySeekBar.thumbIcon = value
+            satelliteCountSeekBar.thumbIcon = value
+            windSpeedXSeekBar.thumbIcon = value
+            windSpeedYSeekBar.thumbIcon = value
+            windSpeedZSeekBar.thumbIcon = value
+        }
+
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         View.inflate(context, R.layout.uxsdk_widget_simulator_control, this)
     }
@@ -589,19 +641,20 @@ open class SimulatorControlWidget @JvmOverloads constructor(
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.productConnection
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { onProductChanged(it) })
         addReaction(widgetModel.satelliteCount
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateSatelliteCount(it) })
         addReaction(widgetModel.simulatorWindData
-                .observeOn(schedulerProvider.ui())
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateWindValues(it) })
         addReaction(widgetModel.simulatorState
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateWidgetValues(it) })
         addReaction(widgetModel.isSimulatorActive
-                .observeOn(schedulerProvider.ui())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { this.updateUI(it) })
     }
 
@@ -640,19 +693,13 @@ open class SimulatorControlWidget @JvmOverloads constructor(
     override fun onClick(v: View) {
         when (v.id) {
             R.id.textview_load_preset -> {
-                uiUpdateStateProcessor.onNext(LoadPresetTap)
+                uiUpdateStateProcessor.onNext(LoadPresetClicked)
                 showPresetListDialog()
             }
             R.id.textview_save_preset -> {
-                uiUpdateStateProcessor.onNext(SavePresetTap)
+                uiUpdateStateProcessor.onNext(SavePresetClicked)
                 showSavePresetDialog()
             }
-            R.id.imageview_btn_plus_x -> setWindSpeedUI(WIND_DIRECTION_X, true)
-            R.id.imageview_btn_plus_y -> setWindSpeedUI(WIND_DIRECTION_Y, true)
-            R.id.imageview_btn_plus_z -> setWindSpeedUI(WIND_DIRECTION_Z, true)
-            R.id.imageview_btn_minus_x -> setWindSpeedUI(WIND_DIRECTION_X, false)
-            R.id.imageview_btn_minus_y -> setWindSpeedUI(WIND_DIRECTION_Y, false)
-            R.id.imageview_btn_minus_z -> setWindSpeedUI(WIND_DIRECTION_Z, false)
         }
     }
 
@@ -669,7 +716,7 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         } else {
             View.VISIBLE
         }
-        uiUpdateStateProcessor.onNext(VisibilityToggled(visibility == View.VISIBLE))
+        uiUpdateStateProcessor.onNext(VisibilityUpdated(visibility == View.VISIBLE))
     }
 
     @SuppressLint("Recycle")
@@ -776,30 +823,14 @@ open class SimulatorControlWidget @JvmOverloads constructor(
     }
 
     private fun setWindSpeedUI(windDirection: Int, isPositive: Boolean) {
-        uiUpdateStateProcessor.onNext(SimulatorWindChangeTap(windDirection, isPositive))
-
-        val change = if (isPositive) 1 else -1
-        var textView = windXTextView
-        when (windDirection) {
-            WIND_DIRECTION_X -> textView = windXTextView
-            WIND_DIRECTION_Y -> textView = windYTextView
-            WIND_DIRECTION_Z -> textView = windZTextView
-        }
-        var currentValue = textView.text.toString().toInt()
-        currentValue += change
-        if (currentValue > SIMULATION_MAX_WIND_SPEED) {
-            currentValue = SIMULATION_MAX_WIND_SPEED
-        } else if (currentValue < SIMULATION_MIN_WIND_SPEED) {
-            currentValue = SIMULATION_MIN_WIND_SPEED
-        }
-        textView.text = currentValue.toString()
+        uiUpdateStateProcessor.onNext(SimulatorWindChangeClicked(windDirection, isPositive))
         addDisposable(widgetModel.setSimulatorWindData(SimulatorWindData.Builder()
-                        .windSpeedX(windXTextView.text.toString().toInt())
-                        .windSpeedY(windYTextView.text.toString().toInt())
-                        .windSpeedZ(windZTextView.text.toString().toInt())
-                        .build())
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .windSpeedX(normalizeWindValue(windSpeedXSeekBar.progress))
+                .windSpeedY(normalizeWindValue(windSpeedYSeekBar.progress))
+                .windSpeedZ(normalizeWindValue(windSpeedZSeekBar.progress))
+                .build())
+                .subscribeOn(SchedulerProvider.io())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe({}) { error: Throwable ->
                     if (error is UXSDKError) {
                         DJILog.e(TAG, error.toString())
@@ -812,7 +843,7 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.simulatorWindData
                     .lastOrError()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { simulatorWindData -> updateWindValues(simulatorWindData) },
                             logErrorConsumer(TAG, "Update wind")))
         }
@@ -836,7 +867,7 @@ open class SimulatorControlWidget @JvmOverloads constructor(
     private fun checkAndUpdateState() {
         if (!isInEditMode) {
             addDisposable(widgetModel.isSimulatorActive.firstOrError()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateUI(it) },
                             logErrorConsumer(TAG, "Update Icon ")))
         }
@@ -851,12 +882,6 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         longitudeEditText.filters = arrayOf<InputFilter>(EditTextNumberInputFilter("-180", "180"))
         loadPresetTextView.setOnClickListener(this)
         savePresetTextView.setOnClickListener(this)
-        findViewById<View>(R.id.imageview_btn_plus_x).setOnClickListener(this)
-        findViewById<View>(R.id.imageview_btn_plus_y).setOnClickListener(this)
-        findViewById<View>(R.id.imageview_btn_plus_z).setOnClickListener(this)
-        findViewById<View>(R.id.imageview_btn_minus_x).setOnClickListener(this)
-        findViewById<View>(R.id.imageview_btn_minus_y).setOnClickListener(this)
-        findViewById<View>(R.id.imageview_btn_minus_z).setOnClickListener(this)
         simulatorSwitch.setOnCheckedChangeListener { buttonView: CompoundButton?, isChecked: Boolean -> handleSwitchChange(isChecked) }
         valueTextColor = getColor(R.color.uxsdk_blue)
         titleTextColor = getColor(R.color.uxsdk_white)
@@ -876,7 +901,29 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         frequencySeekBar.enable(true)
         frequencySeekBar.progress = DEFAULT_FREQUENCY
 
+        windSpeedXSeekBar.max = WIND_SEEK_BAR_MAX
+        windSpeedXSeekBar.addOnSeekBarChangeListener(seekBarChangeListener)
+        windSpeedXSeekBar.enable(true)
+        windSpeedXSeekBar.progress = WIND_SEEK_BAR_MAX / 2
 
+        windSpeedYSeekBar.max = WIND_SEEK_BAR_MAX
+        windSpeedYSeekBar.addOnSeekBarChangeListener(seekBarChangeListener)
+        windSpeedYSeekBar.enable(true)
+        windSpeedYSeekBar.progress = WIND_SEEK_BAR_MAX / 2
+
+        windSpeedZSeekBar.max = WIND_SEEK_BAR_MAX
+        windSpeedZSeekBar.addOnSeekBarChangeListener(seekBarChangeListener)
+        windSpeedZSeekBar.enable(true)
+        windSpeedZSeekBar.progress = WIND_SEEK_BAR_MAX / 2
+
+    }
+
+    private fun normalizeWindValue(progress: Int): Int {
+        return progress - SIMULATION_MAX_WIND_SPEED
+    }
+
+    private fun deNormalizeWindValue(progress: Int): Int {
+        return progress + SIMULATION_MAX_WIND_SPEED
     }
 
     private fun handleSwitchChange(isChecked: Boolean) {
@@ -903,13 +950,15 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         if (locationCoordinate2D != null) {
             setSimulatorStatus(true)
 
-            SimulatorPresetUtils.saveCurrentSimulationFrequency(frequencySeekBar.progress)
+            SimulatorPresetUtils.currentSimulatorFrequency = frequencySeekBar.progress
+            SimulatorPresetUtils.currentSimulatorStartLat = latitudeEditText.text.toString()
+            SimulatorPresetUtils.currentSimulatorStartLng = longitudeEditText.text.toString()
             val initializationData = InitializationData.createInstance(locationCoordinate2D,
                     max(MIN_FREQUENCY, frequencySeekBar.progress),
                     satelliteCountSeekBar.progress)
             addDisposable(widgetModel.startSimulator(initializationData)
-                    .subscribeOn(schedulerProvider.io())
-                    .observeOn(schedulerProvider.ui())
+                    .subscribeOn(SchedulerProvider.io())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe({}) { error: Throwable ->
                         if (error is UXSDKError) {
                             DJILog.e(TAG, error.toString())
@@ -930,6 +979,8 @@ open class SimulatorControlWidget @JvmOverloads constructor(
             updateWidgetToStartedState()
         } else {
             SimulatorPresetUtils.clearSimulatorFrequency()
+            SimulatorPresetUtils.clearSimulatorStartLat()
+            SimulatorPresetUtils.clearSimulatorStartLng()
             updateWidgetToStoppedState()
         }
         shouldReactToCheckChange = true
@@ -937,15 +988,27 @@ open class SimulatorControlWidget @JvmOverloads constructor(
 
     private fun updateWidgetToStartedState() {
         simulatorSwitch.isChecked = true
-        latitudeTextView.text = if (latitudeEditText.text.toString().isEmpty()) {
-            getString(R.string.uxsdk_simulator_null_string)
-        } else {
-            df.format(latitudeEditText.text.toString().toDouble())
+        latitudeTextView.text = when {
+            latitudeEditText.text.toString().isNotEmpty() -> {
+                df.format(latitudeEditText.text.toString().toDouble())
+            }
+            SimulatorPresetUtils.currentSimulatorStartLat.isNotEmpty() -> {
+                SimulatorPresetUtils.currentSimulatorStartLat
+            }
+            else -> {
+                getString(R.string.uxsdk_simulator_null_string)
+            }
         }
-        longitudeTextView.text = if (longitudeEditText.text.toString().isEmpty()) {
-            getString(R.string.uxsdk_simulator_null_string)
-        } else {
-            df.format(longitudeEditText.text.toString().toDouble())
+        longitudeTextView.text = when {
+            longitudeEditText.text.toString().isNotEmpty() -> {
+                df.format(longitudeEditText.text.toString().toDouble())
+            }
+            SimulatorPresetUtils.currentSimulatorStartLng.isNotEmpty() -> {
+                SimulatorPresetUtils.currentSimulatorStartLng
+            }
+            else -> {
+                getString(R.string.uxsdk_simulator_null_string)
+            }
         }
         val simulatorFrequency = SimulatorPresetUtils.currentSimulatorFrequency
         frequencyTextView.text = if (simulatorFrequency > 0) {
@@ -987,9 +1050,9 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         rollTextView.text = getString(R.string.uxsdk_simulator_null_string)
         motorsStartedTextView.text = getString(R.string.uxsdk_simulator_null_string)
         aircraftFlyingTextView.text = getString(R.string.uxsdk_simulator_null_string)
-        windXTextView.text = getString(R.string.uxsdk_simulator_zero_string)
-        windYTextView.text = getString(R.string.uxsdk_simulator_zero_string)
-        windZTextView.text = getString(R.string.uxsdk_simulator_zero_string)
+        windSpeedXSeekBar.progress = 20
+        windSpeedYSeekBar.progress = 20
+        windSpeedZSeekBar.progress = 20
         simulatorTitleTextView.setCompoundDrawablesWithIntrinsicBounds(simulatorInactiveIcon, null, null, null)
         realWorldPositionGroup.visibility = View.GONE
         windSimulationGroup.visibility = View.GONE
@@ -1014,9 +1077,24 @@ open class SimulatorControlWidget @JvmOverloads constructor(
 
     private fun updateWindValues(simulatorWindData: SimulatorWindData) {
         widgetStateDataProcessor.onNext(SimulatorWindDataUpdated(simulatorWindData))
-        windXTextView.text = simulatorWindData.windSpeedX.toString()
-        windYTextView.text = simulatorWindData.windSpeedY.toString()
-        windZTextView.text = simulatorWindData.windSpeedZ.toString()
+        if (simulatorWindData.windSpeedX.toString() != windSpeedXSeekBar.text) {
+            windSpeedXSeekBar.text = simulatorWindData.windSpeedX.toString()
+        }
+        if (deNormalizeWindValue(simulatorWindData.windSpeedX) != windSpeedXSeekBar.progress) {
+            windSpeedXSeekBar.progress = deNormalizeWindValue(simulatorWindData.windSpeedX)
+        }
+        if (simulatorWindData.windSpeedY.toString() != windSpeedYSeekBar.text) {
+            windSpeedYSeekBar.text = simulatorWindData.windSpeedY.toString()
+        }
+        if (deNormalizeWindValue(simulatorWindData.windSpeedY) != windSpeedYSeekBar.progress) {
+            windSpeedYSeekBar.progress = deNormalizeWindValue(simulatorWindData.windSpeedY)
+        }
+        if (simulatorWindData.windSpeedZ.toString() != windSpeedZSeekBar.text) {
+            windSpeedZSeekBar.text = simulatorWindData.windSpeedZ.toString()
+        }
+        if (deNormalizeWindValue(simulatorWindData.windSpeedZ) != windSpeedZSeekBar.progress) {
+            windSpeedZSeekBar.progress = deNormalizeWindValue(simulatorWindData.windSpeedZ)
+        }
     }
 
     private val simulatedLocation: LocationCoordinate2D?
@@ -1107,9 +1185,6 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         yawTextView.setTextAppearance(context, textAppearance)
         rollTextView.setTextAppearance(context, textAppearance)
         frequencyTextView.setTextAppearance(context, textAppearance)
-        windXTextView.setTextAppearance(context, textAppearance)
-        windYTextView.setTextAppearance(context, textAppearance)
-        windZTextView.setTextAppearance(context, textAppearance)
     }
 
     /**
@@ -1211,74 +1286,75 @@ open class SimulatorControlWidget @JvmOverloads constructor(
     fun setHeaderBackground(@DrawableRes resourceId: Int) {
         headerBackground = getDrawable(resourceId)
     }
+    //endregion
 
+    //region Hooks
     /**
-     * Get the [SimulatorControlWidgetUIUpdate] updates
+     * Get the [UIState] updates
      *
      */
-    fun getUIStateUpdates(): Flowable<SimulatorControlWidgetUIUpdate> {
-        return uiUpdateStateProcessor
+    fun getUIStateUpdates(): Flowable<UIState> {
+        return uiUpdateStateProcessor.onBackpressureBuffer()
     }
 
     /**
-     * Get the [SimulatorControlWidgetState] updates
+     * Get the [ModelState] updates
      */
-    override fun getWidgetStateUpdate(): Flowable<SimulatorControlWidgetState> {
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
         return super.getWidgetStateUpdate()
     }
-
-    //endregion
 
     /**
      *
      * Class defines widget state updates
      */
-    sealed class SimulatorControlWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : SimulatorControlWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * Simulator state update
          */
-        data class SimulatorStateUpdated(val simulatorState: SimulatorState) : SimulatorControlWidgetState()
+        data class SimulatorStateUpdated(val simulatorState: SimulatorState) : ModelState()
 
         /**
          * Simulator active/inactive update
          */
-        data class SimulatorActiveUpdated(val isActive: Boolean) : SimulatorControlWidgetState()
+        data class SimulatorActiveUpdated(val isActive: Boolean) : ModelState()
 
         /**
          * Simulator wind data update
          */
-        data class SimulatorWindDataUpdated(val windData: SimulatorWindData) : SimulatorControlWidgetState()
+        data class SimulatorWindDataUpdated(val windData: SimulatorWindData) : ModelState()
     }
 
     /**
      * Class defines the widget UI updates
      */
-    sealed class SimulatorControlWidgetUIUpdate {
+    sealed class UIState {
 
         /**
          * Update when widget visibility is toggled
          */
-        data class VisibilityToggled(val isVisible: Boolean) : SimulatorControlWidgetUIUpdate()
+        data class VisibilityUpdated(val isVisible: Boolean) : UIState()
 
         /**
          * Update when load preset button is tapped
          */
-        object LoadPresetTap : SimulatorControlWidgetUIUpdate()
+        object LoadPresetClicked : UIState()
 
         /**
          * Update when save preset button is tapped
          */
-        object SavePresetTap : SimulatorControlWidgetUIUpdate()
+        object SavePresetClicked : UIState()
 
         /**
          * Update when start/stop simulator switch is tapped
          */
-        data class SimulatorSwitchTap(val isChecked: Boolean) : SimulatorControlWidgetUIUpdate()
+        data class SimulatorSwitchTap(val isChecked: Boolean) : UIState()
 
         /**
          * Update when simulator wind variation button tapped
@@ -1287,10 +1363,11 @@ open class SimulatorControlWidget @JvmOverloads constructor(
          * 1 - Y
          * 2 - Z
          */
-        data class SimulatorWindChangeTap(@IntRange(from = 0, to = 2) val windDirection: Int,
-                                          val isPositive: Boolean) : SimulatorControlWidgetUIUpdate()
+        data class SimulatorWindChangeClicked(@IntRange(from = 0, to = 2) val windDirection: Int,
+                                              val isPositive: Boolean) : UIState()
 
     }
+    //endregion
 
     companion object {
         private const val TAG = "SimulatorCtlWidget"
@@ -1299,8 +1376,9 @@ open class SimulatorControlWidget @JvmOverloads constructor(
         private const val WIND_DIRECTION_Z = 2
         private const val MIN_FREQUENCY = 2
         private const val DEFAULT_FREQUENCY = 20
-        private const val SIMULATION_MIN_WIND_SPEED = 0
+        private const val SIMULATION_MIN_WIND_SPEED = -20
         private const val SIMULATION_MAX_WIND_SPEED = 20
+        private const val WIND_SEEK_BAR_MAX = 40
     }
 
 }

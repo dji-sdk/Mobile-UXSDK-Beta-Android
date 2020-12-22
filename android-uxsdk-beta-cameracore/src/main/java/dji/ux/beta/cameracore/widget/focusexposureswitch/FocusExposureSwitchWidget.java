@@ -35,13 +35,14 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import dji.common.camera.SettingsDefinitions;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.FrameLayoutWidget;
-import dji.ux.beta.core.base.GlobalPreferencesManager;
 import dji.ux.beta.core.base.SchedulerProvider;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.base.widget.FrameLayoutWidget;
+import dji.ux.beta.core.communication.GlobalPreferencesManager;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
 
@@ -54,17 +55,16 @@ import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
  */
 public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnClickListener {
 
-    //region fields
+    //region Fields
     private static final String TAG = "FocusExpoSwitchWidget";
     private ImageView focusExposureSwitchImageView;
     private FocusExposureSwitchWidgetModel widgetModel;
     private Drawable manualFocusDrawable;
     private Drawable autoFocusDrawable;
     private Drawable spotMeterDrawable;
-    private SchedulerProvider schedulerProvider;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public FocusExposureSwitchWidget(@NonNull Context context) {
         super(context);
     }
@@ -81,15 +81,13 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     protected void initView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.uxsdk_widget_focus_exposure_switch, this);
         focusExposureSwitchImageView = findViewById(R.id.focus_exposure_switch_image_view);
-        schedulerProvider = SchedulerProvider.getInstance();
         if (getBackground() == null) {
             setBackgroundResource(R.drawable.uxsdk_background_black_rectangle);
         }
         if (!isInEditMode()) {
             widgetModel = new FocusExposureSwitchWidgetModel(DJISDKModel.getInstance(),
                     ObservableInMemoryKeyedStore.getInstance(),
-                    GlobalPreferencesManager.getInstance(),
-                    schedulerProvider);
+                    GlobalPreferencesManager.getInstance());
         }
 
         initDefaults();
@@ -107,7 +105,12 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
 
     @Override
     protected void reactToModelChanges() {
-        addReaction(widgetModel.getControlMode().observeOn(schedulerProvider.ui()).subscribe(this::updateUI));
+        addReaction(widgetModel.isFocusModeChangeSupported()
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(this::updateVisibility));
+        addReaction(widgetModel.getControlMode()
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(this::updateUI));
     }
 
     @Override
@@ -115,7 +118,7 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
         int id = v.getId();
         if (id == this.getId()) {
             addDisposable(widgetModel.switchControlMode()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(() -> {
                         //do nothing
                     }, logErrorConsumer(TAG, "switchControlMode: ")));
@@ -140,6 +143,14 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     //endregion
 
     //region private methods
+    private void updateVisibility(boolean isFocusModeChangeSupported) {
+        if (isFocusModeChangeSupported) {
+            setVisibility(VISIBLE);
+        } else {
+            setVisibility(GONE);
+        }
+    }
+
     private void updateUI(ControlMode controlMode) {
         if (controlMode == ControlMode.SPOT_METER || controlMode == ControlMode.CENTER_METER) {
             focusExposureSwitchImageView.setImageDrawable(spotMeterDrawable);
@@ -153,7 +164,7 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     private void checkAndUpdateUI() {
         if (!isInEditMode()) {
             addDisposable(widgetModel.getControlMode().firstOrError()
-                    .observeOn(schedulerProvider.ui())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(this::updateUI, logErrorConsumer(TAG, "Update UI ")));
         }
     }
@@ -161,6 +172,7 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FocusExposureSwitchWidget);
         setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.FocusExposureSwitchWidget_uxsdk_cameraIndex, 0)));
+        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FocusExposureSwitchWidget_uxsdk_lensType, 0)));
         if (typedArray.getDrawable(R.styleable.FocusExposureSwitchWidget_uxsdk_meteringDrawable) != null) {
             spotMeterDrawable = typedArray.getDrawable(R.styleable.FocusExposureSwitchWidget_uxsdk_meteringDrawable);
         }
@@ -201,6 +213,27 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
         if (!isInEditMode()) {
             widgetModel.setCameraIndex(cameraIndex);
+        }
+    }
+
+    /**
+     * Get the current type of the lens the widget is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    /**
+     * Set the type of the lens for which the widget should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        if (!isInEditMode()) {
+            widgetModel.setLensType(lensType);
         }
     }
 

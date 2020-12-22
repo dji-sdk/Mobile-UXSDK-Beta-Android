@@ -39,19 +39,18 @@ import androidx.annotation.StyleRes
 import androidx.core.content.res.use
 import dji.common.flightcontroller.GPSSignalLevel
 import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
 import dji.thirdparty.io.reactivex.functions.Consumer
 import dji.thirdparty.io.reactivex.processors.PublishProcessor
-import dji.ux.beta.R
-import dji.ux.beta.core.base.ConstraintLayoutWidget
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.OnStateChangeCallback
 import dji.ux.beta.core.base.SchedulerProvider
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.OnStateChangeCallback
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
-import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget.GPSSignalWidgetState
-import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget.GPSSignalWidgetState.*
+import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget.ModelState
+import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget.ModelState.*
 import java.util.*
 
 /**
@@ -62,7 +61,7 @@ open class GPSSignalWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<GPSSignalWidgetState>(context, attrs, defStyleAttr), View.OnClickListener {
+) : ConstraintLayoutWidget<ModelState>(context, attrs, defStyleAttr), View.OnClickListener {
 
     //region Fields
     private val gpsIconImageView: ImageView = findViewById(R.id.imageview_gps_icon)
@@ -70,13 +69,12 @@ open class GPSSignalWidget @JvmOverloads constructor(
     private val satelliteCountTextView: TextView = findViewById(R.id.textview_satellite_count)
     private val rtkEnabledTextView: TextView = findViewById(R.id.textview_rtk_enabled)
     private var stateChangeResourceId: Int = 0
-    private val uiUpdateStateProcessor: PublishProcessor<GPSSignalWidgetUIState> = PublishProcessor.create()
+    private val uiUpdateStateProcessor: PublishProcessor<UIState> = PublishProcessor.create()
 
     private val widgetModel by lazy {
         GPSSignalWidgetModel(
                 DJISDKModel.getInstance(),
-                ObservableInMemoryKeyedStore.getInstance(),
-                SchedulerProvider.getInstance())
+                ObservableInMemoryKeyedStore.getInstance())
     }
 
     /**
@@ -240,7 +238,7 @@ open class GPSSignalWidget @JvmOverloads constructor(
     var stateChangeCallback: OnStateChangeCallback<Any>? = null
     //endregion
 
-    //region Constructors
+    //region Constructor
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         inflate(context, R.layout.uxsdk_widget_gps_signal, this)
     }
@@ -269,28 +267,28 @@ open class GPSSignalWidget @JvmOverloads constructor(
     }
 
     override fun onClick(v: View?) {
-        uiUpdateStateProcessor.onNext(GPSSignalWidgetUIState.WidgetClick)
+        uiUpdateStateProcessor.onNext(UIState.WidgetClicked)
         stateChangeCallback?.onStateChange(null)
     }
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.gpsSignalQuality
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateGPSSignal(it) })
         addReaction(widgetModel.satelliteNumber
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateSatelliteCount(it) })
         addReaction(widgetModel.rtkEnabled
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateRtk(it) })
         addReaction(widgetModel.isRTKAccurate
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateRTKColor(it) })
         addReaction(widgetModel.productConnection
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateIconColor(it) })
         addReaction(widgetModel.isExternalGPSUsed
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateIcon(it) })
     }
     //endregion
@@ -302,22 +300,22 @@ open class GPSSignalWidget @JvmOverloads constructor(
         } else {
             0
         }
-        widgetStateDataProcessor.onNext(GPSSignalQualityUpdate(gpsLevel))
+        widgetStateDataProcessor.onNext(GPSSignalQualityUpdated(gpsLevel))
         gpsSignalImageView.setImageLevel(gpsLevel)
     }
 
     private fun updateSatelliteCount(satelliteCount: Int) {
-        widgetStateDataProcessor.onNext(SatelliteCountUpdate(satelliteCount))
+        widgetStateDataProcessor.onNext(SatelliteCountUpdated(satelliteCount))
         satelliteCountTextView.text = String.format(Locale.getDefault(), "%d", satelliteCount)
     }
 
     private fun updateRtk(rtkEnabled: Boolean) {
-        widgetStateDataProcessor.onNext(RTKEnabledUpdate(rtkEnabled))
+        widgetStateDataProcessor.onNext(RTKEnabledUpdated(rtkEnabled))
         rtkEnabledTextView.text = if (rtkEnabled) getString(R.string.uxsdk_gps_rtk_enabled) else ""
     }
 
     private fun updateRTKColor(isRTKAccurate: Boolean) {
-        widgetStateDataProcessor.onNext(IsRTKAccurateUpdate(isRTKAccurate))
+        widgetStateDataProcessor.onNext(RTKAccurateUpdated(isRTKAccurate))
         rtkEnabledTextView.textColor = if (isRTKAccurate) rtkAccurateTextColor else rtkInaccurateTextColor
     }
 
@@ -333,14 +331,14 @@ open class GPSSignalWidget @JvmOverloads constructor(
     }
 
     private fun updateIcon(isExternalGPSUsed: Boolean) {
-        widgetStateDataProcessor.onNext(IsExternalGPSUsedUpdate(isExternalGPSUsed))
+        widgetStateDataProcessor.onNext(ExternalGPSUsedUpdated(isExternalGPSUsed))
         gpsIconImageView.imageDrawable = if (isExternalGPSUsed) externalGPSIcon else gpsIcon
     }
 
     private fun checkAndUpdateIconColor() {
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateIconColor(it) }, logErrorConsumer(TAG, "Update Icon Color ")))
         }
     }
@@ -348,7 +346,7 @@ open class GPSSignalWidget @JvmOverloads constructor(
     private fun checkAndUpdateRTKColor() {
         if (!isInEditMode) {
             addDisposable(widgetModel.isRTKAccurate.firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateRTKColor(it) }, logErrorConsumer(TAG, "Update RTK Color ")))
         }
     }
@@ -356,7 +354,7 @@ open class GPSSignalWidget @JvmOverloads constructor(
     private fun checkAndUpdateIcon() {
         if (!isInEditMode) {
             addDisposable(widgetModel.isExternalGPSUsed.firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateIcon(it) }, logErrorConsumer(TAG, "Update Icon ")))
         }
     }
@@ -500,63 +498,65 @@ open class GPSSignalWidget @JvmOverloads constructor(
     //endregion
 
     //region Hooks
+
     /**
-     * Get the [GPSSignalWidgetUIState] updates
+     * Get the [ModelState] updates
      */
-    fun getUIStateUpdates(): Flowable<GPSSignalWidgetUIState> {
-        return uiUpdateStateProcessor
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
+        return super.getWidgetStateUpdate()
+    }
+
+    /**
+     * Get the [UIState] updates
+     */
+    fun getUIStateUpdates(): Flowable<UIState> {
+        return uiUpdateStateProcessor.onBackpressureBuffer()
     }
 
     /**
      * Widget UI update State
      */
-    sealed class GPSSignalWidgetUIState {
+    sealed class UIState {
         /**
          * Widget click update
          */
-        object WidgetClick : GPSSignalWidgetUIState()
-    }
-
-    /**
-     * Get the [GPSSignalWidgetState] updates
-     */
-    override fun getWidgetStateUpdate(): Flowable<GPSSignalWidgetState> {
-        return super.getWidgetStateUpdate()
+        object WidgetClicked : UIState()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class GPSSignalWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : GPSSignalWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * GPS signal quality / strength update
          */
-        data class GPSSignalQualityUpdate(val signalQuality: Int) : GPSSignalWidgetState()
+        data class GPSSignalQualityUpdated(val signalQuality: Int) : ModelState()
 
         /**
          * Satellite count update
          */
-        data class SatelliteCountUpdate(val satelliteCount: Int) : GPSSignalWidgetState()
+        data class SatelliteCountUpdated(val satelliteCount: Int) : ModelState()
 
         /**
          * RTK enabled state update
          */
-        data class RTKEnabledUpdate(val isRTKEnabled: Boolean) : GPSSignalWidgetState()
+        data class RTKEnabledUpdated(val isRTKEnabled: Boolean) : ModelState()
 
         /**
          * RTK accuracy update
          */
-        data class IsRTKAccurateUpdate(val isRTKAccurate: Boolean) : GPSSignalWidgetState()
+        data class RTKAccurateUpdated(val isRTKAccurate: Boolean) : ModelState()
 
         /**
          * External GPS usage update
          */
-        data class IsExternalGPSUsedUpdate(val isExternalGPSUsed: Boolean) : GPSSignalWidgetState()
+        data class ExternalGPSUsedUpdated(val isExternalGPSUsed: Boolean) : ModelState()
     }
     //endregion
 

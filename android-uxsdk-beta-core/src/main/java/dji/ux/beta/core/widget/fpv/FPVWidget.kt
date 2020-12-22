@@ -37,6 +37,7 @@ import androidx.annotation.FloatRange
 import androidx.annotation.StyleRes
 import androidx.constraintlayout.widget.Guideline
 import androidx.core.content.res.use
+import dji.common.camera.CameraVideoStreamSource
 import dji.common.camera.SettingsDefinitions
 import dji.keysdk.KeyManager
 import dji.log.DJILog
@@ -44,20 +45,22 @@ import dji.sdk.camera.VideoFeeder.VideoDataListener
 import dji.sdk.codec.DJICodecManager
 import dji.sdk.util.VideoSizeCalculatorUtil
 import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
+import dji.thirdparty.io.reactivex.functions.Action
 import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.ux.beta.R
-import dji.ux.beta.core.base.ConstraintLayoutWidget
+import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.base.SchedulerProvider
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
+import dji.ux.beta.core.module.FlatCameraModule
 import dji.ux.beta.core.ui.CenterPointView
 import dji.ux.beta.core.ui.GridLineView
 import dji.ux.beta.core.util.DisplayUtil
 import dji.ux.beta.core.util.SettingDefinitions
 import dji.ux.beta.core.util.SettingDefinitions.CameraSide
-import dji.ux.beta.core.widget.fpv.FPVWidget.FPVWidgetState
-import dji.ux.beta.core.widget.fpv.FPVWidget.FPVWidgetState.*
+import dji.ux.beta.core.widget.fpv.FPVWidget.ModelState
+import dji.ux.beta.core.widget.fpv.FPVWidget.ModelState.*
 import java.util.*
 
 private const val TAG = "FPVWidget"
@@ -73,7 +76,7 @@ open class FPVWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<FPVWidgetState>(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener {
+) : ConstraintLayoutWidget<ModelState>(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener {
     //region Fields
     private var codecManager: DJICodecManager? = null
     private val videoSizeCalculator: VideoSizeCalculatorUtil = VideoSizeCalculatorUtil()
@@ -94,13 +97,14 @@ open class FPVWidget @JvmOverloads constructor(
 
     private val widgetModel by lazy {
         val videoDataListener = VideoDataListener { videoBuffer: ByteArray?, size: Int ->
-            widgetStateDataProcessor.onNext(VideoFeedUpdate(videoBuffer, size))
+            widgetStateDataProcessor.onNext(VideoFeedUpdated(videoBuffer, size))
             codecManager?.sendDataToDecoder(videoBuffer, size, videoFeed)
         }
 
         FPVWidgetModel(DJISDKModel.getInstance(),
                 ObservableInMemoryKeyedStore.getInstance(),
-                videoDataListener)
+                videoDataListener,
+                FlatCameraModule())
     }
 
     /**
@@ -128,7 +132,7 @@ open class FPVWidget @JvmOverloads constructor(
     var isGridLinesEnabled = true
         set(isGridLinesEnabled) {
             field = isGridLinesEnabled
-            gridLineView.visibility = if (isGridLinesEnabled) View.VISIBLE else View.GONE
+            updateGridLineVisibility()
         }
 
     /**
@@ -284,7 +288,7 @@ open class FPVWidget @JvmOverloads constructor(
 
     //endregion
 
-    //region Constructors
+    //region Constructor
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         inflate(context, R.layout.uxsdk_widget_fpv, this)
     }
@@ -319,7 +323,7 @@ open class FPVWidget @JvmOverloads constructor(
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.model
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe {
                     if (codecManager == null) {
                         videoSurface?.let {
@@ -329,26 +333,27 @@ open class FPVWidget @JvmOverloads constructor(
                     }
                 })
         addReaction(widgetModel.videoFeedSource
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { videoFeed: DJICodecManager.VideoSource ->
-                    widgetStateDataProcessor.onNext(VideoFeedSourceUpdate(videoFeed))
+                    widgetStateDataProcessor.onNext(VideoFeedSourceUpdated(videoFeed))
                     this.videoFeed = videoFeed
+                    updateGridLineVisibility()
                     codecManager?.switchSource(videoFeed)
                 })
         addReaction(widgetModel.orientation
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { orientation: SettingsDefinitions.Orientation -> updateOrientation(orientation) })
         addReaction(widgetModel.cameraName
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { cameraName: String -> updateCameraName(cameraName) })
         addReaction(widgetModel.cameraSide
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { cameraSide: CameraSide -> updateCameraSide(cameraSide) })
         addReaction(widgetModel.hasVideoViewChanged
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { delayCalculator() })
         addReaction(widgetModel.productConnection
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateConnectionState(it) })
     }
 
@@ -422,6 +427,20 @@ open class FPVWidget @JvmOverloads constructor(
     }
 
     /**
+     * Set the [cameraVideoStreamSource] for multi-lens cameras.
+     *
+     * @return Disposable
+     */
+    fun setCameraVideoStreamSource(cameraVideoStreamSource: CameraVideoStreamSource) {
+        addDisposable(widgetModel.setCameraVideoStreamSource(cameraVideoStreamSource)
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(Action {
+                    // do nothing
+                }, logErrorConsumer(TAG, "set camera video stream source ")))
+        stateChangeCallback?.onStreamSourceChange(cameraVideoStreamSource)
+    }
+
+    /**
      * Sets a callback to retrieve the [DJICodecManager] object.
      *
      * @param callback A callback that is invoked when the [DJICodecManager] changes.
@@ -458,7 +477,7 @@ open class FPVWidget @JvmOverloads constructor(
         }
         gridLineView.adjustDimensions(relativeWidth, relativeHeight)
         stateChangeCallback?.onFPVSizeChange(FPVSize(relativeWidth, relativeHeight))
-        widgetStateDataProcessor.onNext(FPVSizeUpdate(relativeWidth, relativeHeight))
+        widgetStateDataProcessor.onNext(FPVSizeUpdated(relativeWidth, relativeHeight))
     }
 
     private fun delayCalculator() {
@@ -482,7 +501,7 @@ open class FPVWidget @JvmOverloads constructor(
     }
 
     private fun updateOrientation(orientation: SettingsDefinitions.Orientation) {
-        widgetStateDataProcessor.onNext(OrientationUpdate(orientation))
+        widgetStateDataProcessor.onNext(OrientationUpdated(orientation))
         videoSizeCalculator.setVideoIsRotated(orientation == SettingsDefinitions.Orientation.PORTRAIT)
         rotationAngle = if (orientation == SettingsDefinitions.Orientation.PORTRAIT) {
             PORTRAIT_ROTATION_ANGLE
@@ -493,7 +512,7 @@ open class FPVWidget @JvmOverloads constructor(
     }
 
     private fun updateCameraName(cameraName: String) {
-        widgetStateDataProcessor.onNext(CameraNameUpdate(cameraName))
+        widgetStateDataProcessor.onNext(CameraNameUpdated(cameraName))
         cameraNameTextView.text = cameraName
         if (cameraName.isNotEmpty() && isCameraSourceNameVisible) {
             cameraNameTextView.visibility = View.VISIBLE
@@ -504,7 +523,7 @@ open class FPVWidget @JvmOverloads constructor(
     }
 
     private fun updateCameraSide(cameraSide: CameraSide) {
-        widgetStateDataProcessor.onNext(CameraSideUpdate(cameraSide))
+        widgetStateDataProcessor.onNext(CameraSideUpdated(cameraSide))
         if (cameraSide == CameraSide.UNKNOWN) {
             cameraSideTextView.text = ""
             cameraSideTextView.visibility = View.GONE
@@ -530,7 +549,7 @@ open class FPVWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.cameraName
                     .firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { cameraName: String -> updateCameraName(cameraName) },
                             logErrorConsumer(TAG, "updateCameraName")))
         }
@@ -540,10 +559,15 @@ open class FPVWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.cameraSide
                     .firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { cameraSide: CameraSide -> updateCameraSide(cameraSide) },
                             logErrorConsumer(TAG, "updateCameraSide")))
         }
+    }
+
+    private fun updateGridLineVisibility() {
+        gridLineView.visibility = if (isGridLinesEnabled
+                && videoFeed != DJICodecManager.VideoSource.FPV) View.VISIBLE else View.GONE
     }
     //endregion
 
@@ -680,6 +704,11 @@ open class FPVWidget @JvmOverloads constructor(
         fun onCameraSideChange(cameraSide: CameraSide?)
 
         /**
+         * Called when the camera stream source has changed
+         */
+        fun onStreamSourceChange(streamSource: CameraVideoStreamSource?)
+
+        /**
          * Called when the size of the video feed has changed
          */
         fun onFPVSizeChange(size: FPVSize?)
@@ -687,46 +716,48 @@ open class FPVWidget @JvmOverloads constructor(
     //endregion
 
     //region Hooks
+
     /**
-     * Get the [FPVWidgetState] updates
+     * Get the [ModelState] updates
      */
-    override fun getWidgetStateUpdate(): Flowable<FPVWidgetState> {
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
         return super.getWidgetStateUpdate()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class FPVWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : FPVWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * Orientation update
          */
-        data class OrientationUpdate(val orientation: SettingsDefinitions.Orientation) : FPVWidgetState()
+        data class OrientationUpdated(val orientation: SettingsDefinitions.Orientation) : ModelState()
 
         /**
          * Video feed update
          */
-        data class VideoFeedSourceUpdate(val videoFeed: DJICodecManager.VideoSource) : FPVWidgetState()
+        data class VideoFeedSourceUpdated(val videoFeed: DJICodecManager.VideoSource) : ModelState()
 
         /**
          * Video feed size update
          */
-        data class FPVSizeUpdate(val width: Int, val height: Int) : FPVWidgetState()
+        data class FPVSizeUpdated(val width: Int, val height: Int) : ModelState()
 
         /**
          * Camera name update
          */
-        data class CameraNameUpdate(val cameraName: String) : FPVWidgetState()
+        data class CameraNameUpdated(val cameraName: String) : ModelState()
 
         /**
          * Camera side update
          */
-        data class CameraSideUpdate(val cameraSide: CameraSide) : FPVWidgetState()
+        data class CameraSideUpdated(val cameraSide: CameraSide) : ModelState()
 
         /**
          * Video feed update
@@ -734,11 +765,11 @@ open class FPVWidget @JvmOverloads constructor(
          * @property videoBuffer H.264 or H.265 raw video data. See [SettingsDefinitions.VideoFileCompressionStandard]
          * @property size The data size
          */
-        data class VideoFeedUpdate(val videoBuffer: ByteArray?, val size: Int) : FPVWidgetState() {
+        data class VideoFeedUpdated(val videoBuffer: ByteArray?, val size: Int) : ModelState() {
             override fun equals(other: Any?): Boolean {
                 if (this === other) return true
                 if (other?.javaClass != javaClass) return false
-                other as VideoFeedUpdate
+                other as VideoFeedUpdated
                 return Arrays.equals(videoBuffer, other.videoBuffer) && size == other.size
             }
 

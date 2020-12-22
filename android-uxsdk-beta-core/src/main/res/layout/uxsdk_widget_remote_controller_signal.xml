@@ -45,7 +45,6 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
         android:src="@drawable/uxsdk_signal_level_list"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

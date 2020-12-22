@@ -25,8 +25,37 @@
 
 package dji.ux.beta.core.extension
 
+import dji.ux.beta.core.util.UnitConversionUtil
+import dji.ux.beta.core.util.UnitConversionUtil.UnitType
 
 /**
  * Convert milliVolts to Volts
  */
 fun Float.milliVoltsToVolts(): Float = this / 1000f
+
+/**
+ * Convert velocity to appropriate value by unit
+ */
+fun Float.toVelocity(unitType: UnitType): Float {
+    return if (unitType == UnitType.IMPERIAL) {
+        UnitConversionUtil.convertMetersPerSecToMilesPerHr(this)
+    } else this
+}
+
+/**
+ * Convert distance to appropriate value by unit
+ */
+fun Float.toDistance(unitType: UnitType): Float {
+    return if (unitType == UnitType.IMPERIAL) {
+        UnitConversionUtil.convertMetersToFeet(this)
+    } else this
+}
+
+/**
+ * Convert distance to appropriate value by unit
+ */
+fun Double.toDistance(unitType: UnitType): Double {
+    return if (unitType == UnitType.IMPERIAL) {
+        UnitConversionUtil.convertMetersToFeet(this)
+    } else this
+}

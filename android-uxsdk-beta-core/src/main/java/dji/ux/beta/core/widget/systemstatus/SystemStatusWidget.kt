@@ -40,19 +40,24 @@ import androidx.core.content.res.use
 import dji.common.logics.warningstatuslogic.WarningStatusItem
 import dji.common.logics.warningstatuslogic.WarningStatusItem.WarningLevel
 import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
 import dji.thirdparty.io.reactivex.disposables.Disposable
 import dji.thirdparty.io.reactivex.functions.BiFunction
 import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.ux.beta.R
-import dji.ux.beta.core.base.*
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore
+import dji.thirdparty.io.reactivex.processors.PublishProcessor
+import dji.ux.beta.core.R
+import dji.ux.beta.core.base.DJISDKModel
+import dji.ux.beta.core.base.SchedulerProvider
+import dji.ux.beta.core.base.WidgetSizeDescription
+import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
+import dji.ux.beta.core.communication.GlobalPreferencesManager
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
+import dji.ux.beta.core.communication.OnStateChangeCallback
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
 import dji.ux.beta.core.util.UnitConversionUtil
-import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget.SystemStatusWidgetState
-import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget.SystemStatusWidgetState.ProductConnected
-import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget.SystemStatusWidgetState.SystemStatusUpdated
+import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget.ModelState
+import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget.ModelState.ProductConnected
+import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget.ModelState.SystemStatusUpdated
 import java.util.*
 
 private const val TAG = "SystemStatusWidget"
@@ -71,16 +76,16 @@ open class SystemStatusWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<SystemStatusWidgetState>(context, attrs, defStyleAttr), View.OnClickListener {
+) : ConstraintLayoutWidget<ModelState>(context, attrs, defStyleAttr), View.OnClickListener {
     //region Fields
     private val systemStatusTextView: TextView = findViewById(R.id.textview_system_status)
     private val systemStatusBackgroundImageView: ImageView = findViewById(R.id.imageview_system_status_background)
     private val blinkAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.uxsdk_anim_blink)
+    protected val uiUpdateStateProcessor: PublishProcessor<UIState> = PublishProcessor.create()
 
     private val widgetModel by lazy {
         SystemStatusWidgetModel(DJISDKModel.getInstance(),
                 ObservableInMemoryKeyedStore.getInstance(),
-                SchedulerProvider.getInstance(),
                 GlobalPreferencesManager.getInstance())
     }
 
@@ -105,7 +110,7 @@ open class SystemStatusWidget @JvmOverloads constructor(
 
     /**
      * Call back for when the widget is tapped.
-     * This can be used to link the widget to [dji.ux.beta.core.panelwidget.systemstatus.SystemStatusListPanelWidget]
+     * This can be used to link the widget to [dji.ux.beta.core.panel.systemstatus.SystemStatusListPanelWidget]
      */
     var stateChangeCallback: OnStateChangeCallback<Any>? = null
 
@@ -136,7 +141,7 @@ open class SystemStatusWidget @JvmOverloads constructor(
 
     //endregion
 
-    //region Constructors
+    //region Constructor
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         inflate(context, R.layout.uxsdk_widget_system_status, this)
     }
@@ -167,18 +172,19 @@ open class SystemStatusWidget @JvmOverloads constructor(
 
     override fun reactToModelChanges() {
         addReaction(widgetModel.systemStatus
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateUI(it) })
         addReaction(reactToCompassError())
         addReaction(widgetModel.warningStatusMessageData
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { updateMessage(it) })
         addReaction(widgetModel.productConnection
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe { widgetStateDataProcessor.onNext(ProductConnected(it)) })
     }
 
     override fun onClick(v: View?) {
+        uiUpdateStateProcessor.onNext(UIState.WidgetClicked)
         stateChangeCallback?.onStateChange(null)
     }
     //endregion
@@ -227,7 +233,7 @@ open class SystemStatusWidget @JvmOverloads constructor(
     private fun reactToCompassError(): Disposable {
         return Flowable.combineLatest(widgetModel.systemStatus, widgetModel.isMotorOn,
                 BiFunction<WarningStatusItem, Boolean, Pair<WarningStatusItem, Boolean>> { first: WarningStatusItem, second: Boolean -> Pair(first, second) })
-                .observeOn(AndroidSchedulers.mainThread())
+                .observeOn(SchedulerProvider.ui())
                 .subscribe(Consumer { values: Pair<WarningStatusItem, Boolean> -> updateVoiceNotification(values.first, values.second) },
                         logErrorConsumer(TAG, "react to Compass Error: "))
     }
@@ -241,7 +247,7 @@ open class SystemStatusWidget @JvmOverloads constructor(
     private fun checkAndUpdateUI() {
         if (!isInEditMode) {
             addDisposable(widgetModel.systemStatus.firstOrError()
-                    .observeOn(AndroidSchedulers.mainThread())
+                    .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateUI(it) }, logErrorConsumer(TAG, "Update UI ")))
         }
     }
@@ -395,27 +401,47 @@ open class SystemStatusWidget @JvmOverloads constructor(
 
     //endregion
 
-    //region hooks
+    //region Hooks
+
     /**
-     * Get the [SystemStatusWidgetState] updates
+     * Get the [ModelState] updates
      */
-    override fun getWidgetStateUpdate(): Flowable<SystemStatusWidgetState> {
+    @SuppressWarnings
+    override fun getWidgetStateUpdate(): Flowable<ModelState> {
         return super.getWidgetStateUpdate()
+    }
+
+    /**
+     * Get the [UIState] updates
+     */
+    fun getUIStateUpdates(): Flowable<UIState> {
+        return uiUpdateStateProcessor.onBackpressureBuffer()
+    }
+
+    /**
+     * Class defines widget UI states
+     */
+    sealed class UIState {
+
+        /**
+         * Widget click update
+         */
+        object WidgetClicked : UIState()
     }
 
     /**
      * Class defines the widget state updates
      */
-    sealed class SystemStatusWidgetState {
+    sealed class ModelState {
         /**
          * Product connection update
          */
-        data class ProductConnected(val isConnected: Boolean) : SystemStatusWidgetState()
+        data class ProductConnected(val isConnected: Boolean) : ModelState()
 
         /**
          * System status update
          */
-        data class SystemStatusUpdated(val status: WarningStatusItem) : SystemStatusWidgetState()
+        data class SystemStatusUpdated(val status: WarningStatusItem) : ModelState()
     }
 
     /**
@@ -435,15 +461,11 @@ open class SystemStatusWidget @JvmOverloads constructor(
 
         companion object {
             @JvmStatic
+            val values = values()
+
+            @JvmStatic
             fun find(value: Int): DefaultMode {
-                var result = COLOR
-                for (i in values().indices) {
-                    if (values()[i].value == value) {
-                        result = values()[i]
-                        break
-                    }
-                }
-                return result
+                return values.find { it.value == value } ?: COLOR
             }
         }
     }

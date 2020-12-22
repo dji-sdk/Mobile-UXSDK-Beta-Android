@@ -23,11 +23,29 @@
 
 package dji.ux.beta.core.model;
 
+/**
+ * {@link WarningMessage} errors
+ */
 public enum WarningMessageError {
 
+    /**
+     * Vision/Obstacle avoidance sensor message
+     */
     VISION_AVOID(1004),
+
+    /**
+     * There are aircraft in vicinity
+     */
     OTHER_AIRCRAFT_NEARBY(1022),
+
+    /**
+     *  Error due to customer use
+     */
     CUSTOMER_USE_ERROR(10000),
+
+    /**
+     *  Unknown error
+     */
     UNKNOWN(0);
 
     private int value;
@@ -44,11 +62,20 @@ public enum WarningMessageError {
         return value == b;
     }
 
+    private static WarningMessageError[] values;
+
+    public static WarningMessageError[] getValues() {
+        if (values == null) {
+            values = values();
+        }
+        return values;
+    }
+
     public static WarningMessageError find(int b) {
         WarningMessageError result = UNKNOWN;
-        for (int i = 0; i < values().length; i++) {
-            if (values()[i]._equals(b)) {
-                result = values()[i];
+        for (int i = 0; i < getValues().length; i++) {
+            if (getValues()[i]._equals(b)) {
+                result = getValues()[i];
                 break;
             }
         }

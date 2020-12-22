@@ -23,18 +23,19 @@
 
 include ':android-uxsdk-beta-core'
 include ':android-uxsdk-beta-cameracore'
-include ':android-uxsdk-beta-hardwareaccessory'
+include ':android-uxsdk-beta-accessory'
 include ':android-uxsdk-beta-map'
 include ':android-uxsdk-beta-training'
 include ':android-uxsdk-beta-visualcamera'
-include ':android-uxsdk-beta-intelligentflight'
+include ':android-uxsdk-beta-flight'
 include ':android-uxsdk-beta-sample'
+
 
 project(':android-uxsdk-beta-core').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-core')
 project(':android-uxsdk-beta-cameracore').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-cameracore')
-project(':android-uxsdk-beta-hardwareaccessory').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-hardwareaccessory')
+project(':android-uxsdk-beta-accessory').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-accessory')
 project(':android-uxsdk-beta-map').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-map')
 project(':android-uxsdk-beta-training').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-training')
 project(':android-uxsdk-beta-visualcamera').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-visualcamera')
-project(':android-uxsdk-beta-intelligentflight').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-intelligentflight')
+project(':android-uxsdk-beta-flight').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-flight')
 project(':android-uxsdk-beta-sample').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-sample')

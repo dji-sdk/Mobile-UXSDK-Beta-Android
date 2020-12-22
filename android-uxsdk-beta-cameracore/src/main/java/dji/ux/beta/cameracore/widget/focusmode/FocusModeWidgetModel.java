@@ -26,19 +26,19 @@ package dji.ux.beta.cameracore.widget.focusmode;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.FocusMode;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
-import dji.ux.beta.core.base.GlobalPreferencesInterface;
-import dji.ux.beta.core.base.SchedulerProviderInterface;
 import dji.ux.beta.core.base.WidgetModel;
-import dji.ux.beta.core.base.uxsdkkeys.GlobalPreferenceKeys;
-import dji.ux.beta.core.base.uxsdkkeys.ObservableInMemoryKeyedStore;
-import dji.ux.beta.core.base.uxsdkkeys.UXKey;
-import dji.ux.beta.core.base.uxsdkkeys.UXKeys;
+import dji.ux.beta.core.communication.GlobalPreferenceKeys;
+import dji.ux.beta.core.communication.GlobalPreferencesInterface;
+import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.communication.UXKey;
+import dji.ux.beta.core.communication.UXKeys;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
@@ -51,8 +51,9 @@ import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
  */
 public class FocusModeWidgetModel extends WidgetModel {
 
-    //region fields
+    //region Fields
     private static final String TAG = "FocusModeWidgetModel";
+    private final DataProcessor<Boolean> isFocusModeSupportedDataProcessor;
     private final DataProcessor<FocusMode> focusModeDataProcessor;
     private final DataProcessor<Boolean> isAFCSupportedProcessor;
     private final DataProcessor<Boolean> isAFCEnabledKeyProcessor;
@@ -63,19 +64,19 @@ public class FocusModeWidgetModel extends WidgetModel {
     private DJIKey focusModeKey;
     private UXKey controlModeKey;
     private int cameraIndex = CameraIndex.CAMERA_INDEX_0.getIndex();
-    private SchedulerProviderInterface schedulerProvider;
+    private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.ZOOM;
     //endregion
 
-    //region lifecycle
+    //region Lifecycle
     public FocusModeWidgetModel(@NonNull DJISDKModel djiSdkModel,
                                 @NonNull ObservableInMemoryKeyedStore keyedStore,
-                                @Nullable GlobalPreferencesInterface preferencesManager,
-                                @NonNull SchedulerProviderInterface schedulerProvider) {
+                                @Nullable GlobalPreferencesInterface preferencesManager) {
         super(djiSdkModel, keyedStore);
         focusModeDataProcessor = DataProcessor.create(FocusMode.UNKNOWN);
         isAFCSupportedProcessor = DataProcessor.create(false);
         isAFCEnabledKeyProcessor = DataProcessor.create(false);
         isAFCEnabledProcessor = DataProcessor.create(false);
+        isFocusModeSupportedDataProcessor = DataProcessor.create(false);
         controlModeProcessor = DataProcessor.create(SettingDefinitions.ControlMode.SPOT_METER);
         if (preferencesManager != null) {
             isAFCEnabledKeyProcessor.onNext(preferencesManager.getAFCEnabled());
@@ -84,14 +85,13 @@ public class FocusModeWidgetModel extends WidgetModel {
         }
         this.preferencesManager = preferencesManager;
         this.keyedStore = keyedStore;
-        this.schedulerProvider = schedulerProvider;
     }
 
     @Override
     protected void inSetup() {
-        focusModeKey = CameraKey.create(CameraKey.FOCUS_MODE, cameraIndex);
+        focusModeKey = djiSdkModel.createLensKey(CameraKey.FOCUS_MODE, cameraIndex, lensType.value());
         bindDataProcessor(focusModeKey, focusModeDataProcessor);
-        DJIKey isAFCSupportedKey = CameraKey.create(CameraKey.IS_AFC_SUPPORTED, cameraIndex);
+        DJIKey isAFCSupportedKey = djiSdkModel.createLensKey(CameraKey.IS_AFC_SUPPORTED, cameraIndex, lensType.value());
         bindDataProcessor(isAFCSupportedKey, isAFCSupportedProcessor);
         UXKey afcEnabledKey = UXKeys.create(GlobalPreferenceKeys.AFC_ENABLED);
         bindDataProcessor(afcEnabledKey, isAFCEnabledKeyProcessor);
@@ -120,6 +120,16 @@ public class FocusModeWidgetModel extends WidgetModel {
         isAFCEnabledProcessor.onNext(isAFCEnabledKeyProcessor.getValue() && isAFCSupportedProcessor.getValue());
     }
 
+    @Override
+    protected void onProductConnectionChanged(boolean isConnected) {
+        super.onProductConnectionChanged(isConnected);
+        if (isConnected) {
+            isFocusModeSupportedDataProcessor.onNext(djiSdkModel.isKeySupported(focusModeKey));
+        } else {
+            isFocusModeSupportedDataProcessor.onNext(false);
+        }
+    }
+
     //endregion
 
     //region Actions
@@ -145,6 +155,26 @@ public class FocusModeWidgetModel extends WidgetModel {
     }
 
     /**
+     * Get the current type of the lens the widget model is reacting to
+     *
+     * @return current lens type
+     */
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return lensType;
+    }
+
+    /**
+     * Set the type of the lens for which the widget model should react
+     *
+     * @param lensType lens type
+     */
+    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+        this.lensType = lensType;
+        restart();
+    }
+
+    /**
      * Switch between focus modes
      *
      * @return Completable representing the success/failure of set action
@@ -154,7 +184,6 @@ public class FocusModeWidgetModel extends WidgetModel {
         final FocusMode nextFocusMode = getNextFocusMode(currentFocusMode);
 
         return djiSdkModel.setValue(focusModeKey, nextFocusMode)
-                .subscribeOn(schedulerProvider.io())
                 .doOnComplete(() -> onFocusModeUpdate(nextFocusMode))
                 .doOnError(error -> focusModeDataProcessor.onNext(currentFocusMode));
     }
@@ -192,6 +221,15 @@ public class FocusModeWidgetModel extends WidgetModel {
      */
     public Flowable<Boolean> isAFCEnabled() {
         return isAFCEnabledProcessor.toFlowable();
+    }
+
+    /**
+     * Check if focus mode change is supported
+     *
+     * @return Flowable with boolean true - supported false - not supported
+     */
+    public Flowable<Boolean> isFocusModeChangeSupported() {
+        return isFocusModeSupportedDataProcessor.toFlowable();
     }
     //endregion
 
