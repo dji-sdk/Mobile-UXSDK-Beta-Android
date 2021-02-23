@@ -68,7 +68,7 @@ android {
 
 dependencies {
     api project(path: ':android-uxsdk-beta-core')
-    implementation ('com.dji:dji-sdk:4.14-trial1', {
+    implementation ('com.dji:dji-sdk:4.14', {
         /**
          * Comment the "library-anti-distortion" if your app needs Anti Distortion for Mavic 2 Pro
          * and Mavic 2 Zoom.
@@ -80,7 +80,7 @@ dependencies {
         exclude module: 'library-anti-distortion'
         exclude module: 'fly-safe-database'
     })
-    compileOnly ('com.dji:dji-sdk-provided:4.14-trial1')
+    compileOnly ('com.dji:dji-sdk-provided:4.14')
 
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
