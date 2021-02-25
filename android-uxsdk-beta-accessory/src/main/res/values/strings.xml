@@ -22,6 +22,27 @@
   -->
 
 <resources>
+    <!-- Speaker Panel -->
+    <string name="uxsdk_speaker_panel_header">Speaker Settings</string>
+    <string name="uxsdk_speaker_panel_volume">Speaker Volume</string>
+    <string name="uxsdk_speaker_panel_broadcast">Record Audio</string>
+    <string name="uxsdk_speaker_panel_local_audio">Play Audio</string>
+    <string name="uxsdk_speaker_panel_temporary_switch">Persist file</string>
+    <string name="uxsdk_speaker_panel_play_instant_switch">Instant Play</string>
+    <string name="uxsdk_speaker_panel_play_repeat_mode">Play in Loop</string>
+    <string name="uxsdk_speaker_panel_tap_to_record">Tap to record</string>
+    <string name="uxsdk_speaker_panel_list_prefix">"AUD %s"</string>
+    <string name="uxsdk_speaker_record_permission_required">"Please enable microphone permissions in the app settings to record audio."</string>
+
+    <!-- Spotlight -->
+    <string name="uxsdk_spotlight">Spotlight</string>
+    <string name="uxsdk_spotlight_enabled">Enabled</string>
+    <string name="uxsdk_spotlight_settings">Spotlight Settings</string>
+    <string name="uxsdk_spotlight_brightness">Brightness</string>
+    <string name="uxsdk_spotlight_brightness_warning">To ease eye strain, max brightness is reduced to 50% when aircraft is not flying.</string>
+    <string name="uxsdk_spotlight_temperature">Temperature</string>
+    <string name="uxsdk_spotlight_brightness_value">%1$d%%</string>
+    <string name="uxsdk_spotlight_temperature_value">%1$.1f°C</string>
 
     <!-- RTK Widget -->
     <string name="uxsdk_rtk_panel_antenna_1">Antenna 1</string>
@@ -76,4 +97,11 @@
     <string name="uxsdk_rtk_type_custom_rtk">Custom Network RTK</string>
     <string name="uxsdk_rtk_status_desc">%1$s Status:</string>
 
+    <!--MFIO Config -->
+    <string name="uxsdk_enable_power_supply_port">Enable Power Supply Port</string>
+    <string name="uxsdk_port_one">PORT 1</string>
+    <string name="uxsdk_port_two">PORT 2</string>
+    <string name="uxsdk_port_three">PORT 3</string>
+    <string name="uxsdk_port_open">OPEN</string>
+    <string name="uxsdk_port_close">CLOSE</string>
 </resources>

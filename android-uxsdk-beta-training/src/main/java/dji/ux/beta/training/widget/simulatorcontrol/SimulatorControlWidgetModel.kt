@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -65,7 +65,9 @@ class SimulatorControlWidgetModel(djiSdkModel: DJISDKModel,
     private val simulatorWindDataProcessor: DataProcessor<SimulatorWindData> = DataProcessor.create(windBuilder.build())
     private val simulatorActiveDataProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val simulatorWindDataKey: DJIKey = FlightControllerKey.create(FlightControllerKey.SIMULATOR_WIND_DATA)
+    //endregion
 
+    //region Lifecycle
     override fun inSetup() {
         val simulatorStateKey: DJIKey = FlightControllerKey.create(FlightControllerKey.SIMULATOR_STATE)
         bindDataProcessor(simulatorStateKey, simulatorStateDataProcessor)
@@ -76,10 +78,12 @@ class SimulatorControlWidgetModel(djiSdkModel: DJISDKModel,
         bindDataProcessor(simulatorActiveKey, simulatorActiveDataProcessor)
     }
 
-    override fun inCleanup() { // No clean up needed
+    override fun inCleanup() {
+        // No clean up needed
     }
 
-    override fun updateStates() { // No states to update
+    override fun updateStates() {
+        // No states to update
     }
     //endregion
 

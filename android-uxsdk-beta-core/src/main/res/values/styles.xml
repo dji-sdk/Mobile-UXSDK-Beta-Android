@@ -95,6 +95,12 @@
         <item name="uxsdk_list_item_title">@string/uxsdk_list_item_aircraft_battery_temp</item>
     </style>
 
+    <style name="UXSDKCompassStatusListItem">
+        <item name="uxsdk_list_item_icon">@drawable/uxsdk_ic_compass_status</item>
+        <item name="uxsdk_list_item_title">@string/uxsdk_list_item_compass_status</item>
+        <item name="uxsdk_list_item_button_text">@string/uxsdk_system_status_calibrate</item>
+    </style>
+
     <style name="UXSDKEMMCStatusListItem">
         <item name="uxsdk_list_item_icon">@drawable/uxsdk_ic_emmc</item>
         <item name="uxsdk_list_item_title">@string/uxsdk_list_item_emmc</item>
@@ -104,6 +110,11 @@
     <style name="UXSDKFlightModeListItem">
         <item name="uxsdk_list_item_icon">@drawable/uxsdk_ic_flight_mode_list_item</item>
         <item name="uxsdk_list_item_title">@string/uxsdk_list_item_flight_mode_title</item>
+    </style>
+
+    <style name="UXSDKIMUListItem">
+        <item name="uxsdk_list_item_icon">@drawable/uxsdk_ic_imu_status</item>
+        <item name="uxsdk_list_item_title">@string/uxsdk_list_item_imu_status</item>
     </style>
 
     <style name="UXSDKMaxAltitudeListItem">
@@ -166,6 +177,11 @@
     <style name="UXSDKUnitModeListItem">
         <item name="uxsdk_list_item_icon">@drawable/uxsdk_ic_unit_type</item>
         <item name="uxsdk_list_item_title">@string/uxsdk_list_item_unit_mode</item>
+    </style>
+
+    <style name="UXSDKVisionSensorsListItem">
+        <item name="uxsdk_list_item_icon">@drawable/uxsdk_ic_vision_sensors</item>
+        <item name="uxsdk_list_item_title">@string/uxsdk_list_item_vision_sensors</item>
     </style>
 
     <style name="UXSDKAMSLAltitudeWidget">

@@ -30,10 +30,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,6 +48,7 @@ import com.dji.mapkit.core.maps.DJIMap;
 import com.dji.mapkit.core.models.annotations.DJIMarker;
 import com.dji.mapkit.core.models.annotations.DJIMarkerOptions;
 import com.dji.ux.beta.sample.R;
+import com.dji.ux.beta.sample.view.SettingsDrawerView;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -109,7 +107,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
     @BindView(R.id.line_color)
     protected TextView lineColor;
     @BindView(R.id.settings_scroll_view)
-    protected ScrollView scrollView;
+    protected SettingsDrawerView scrollView;
     @BindView(R.id.btn_settings)
     protected ImageView btnPanel;
 
@@ -288,7 +286,7 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
 
     @OnClick(R.id.btn_settings)
     public void onSettingsClick() {
-        movePanel();
+        scrollView.movePanel(btnPanel);
     }
 
     @OnClick(R.id.btn_fly_zone)
@@ -327,51 +325,6 @@ public class MapWidgetActivity extends AppCompatActivity implements SeekBar.OnSe
         imageView.setSelected(true);
         selectedIcon.setSelected(false);
         selectedIcon = imageView;
-    }
-
-    /**
-     * Expands and collapses the panel.
-     */
-    private void movePanel() {
-        int translationStart;
-        int translationEnd;
-        if (isPanelOpen) {
-            translationStart = 0;
-            translationEnd = -scrollView.getWidth();
-        } else {
-
-            scrollView.bringToFront();
-            translationStart = -scrollView.getWidth();
-            translationEnd = 0;
-        }
-        TranslateAnimation animate = new TranslateAnimation(
-                translationStart, translationEnd, 0, 0);
-        animate.setDuration(300);
-        animate.setFillAfter(true);
-        animate.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                // do nothing
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                if (isPanelOpen) {
-                    mapWidget.bringToFront();
-
-                }
-                btnPanel.bringToFront();
-                isPanelOpen = !isPanelOpen;
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-                // do nothing
-            }
-        });
-        scrollView.startAnimation(animate);
-
     }
 
     @Override

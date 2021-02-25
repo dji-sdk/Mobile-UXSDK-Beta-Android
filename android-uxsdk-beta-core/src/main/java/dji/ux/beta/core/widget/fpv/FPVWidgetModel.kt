@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -48,6 +48,7 @@ import dji.ux.beta.core.base.UXSDKError
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.module.FlatCameraModule
+import dji.ux.beta.core.module.LensModule
 import dji.ux.beta.core.util.CameraUtil
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.ProductUtil
@@ -64,6 +65,7 @@ private const val TAG = "FPVWidgetModel"
 class FPVWidgetModel(djiSdkModel: DJISDKModel,
                      keyedStore: ObservableInMemoryKeyedStore,
                      private val videoDataListener: VideoDataListener?,
+                     private val transcodedVideoDataListener: VideoDataListener?,
                      private val flatCameraModule: FlatCameraModule
 ) : WidgetModel(djiSdkModel, keyedStore) {
 
@@ -78,8 +80,10 @@ class FPVWidgetModel(djiSdkModel: DJISDKModel,
     private val videoFeedSourceProcessor: DataProcessor<DJICodecManager.VideoSource> = DataProcessor.create(DJICodecManager.VideoSource.UNKNOWN)
     private val cameraNameProcessor: DataProcessor<String> = DataProcessor.create("")
     private val cameraSideProcessor: DataProcessor<CameraSide> = DataProcessor.create(CameraSide.UNKNOWN)
+    private val lensModule = LensModule()
 
     private var currentVideoFeed: VideoFeed? = null
+    private var transcodedVideoFeed: VideoFeed? = null
     private var currentModel: Model? = null
     private var cameraVideoStreamSource: CameraVideoStreamSource = CameraVideoStreamSource.ZOOM
     //endregion
@@ -144,6 +148,7 @@ class FPVWidgetModel(djiSdkModel: DJISDKModel,
     //region Constructor
     init {
         addModule(flatCameraModule)
+        addModule(lensModule)
     }
     //endregion
 
@@ -152,10 +157,10 @@ class FPVWidgetModel(djiSdkModel: DJISDKModel,
         //TODO: Add peak threshold, overexposure
         val modelNameKey = ProductKey.create(ProductKey.MODEL_NAME)
         val orientationKey = CameraKey.create(CameraKey.ORIENTATION)
-        val photoAspectRatioKey = djiSdkModel.createLensKey(CameraKey.PHOTO_ASPECT_RATIO,
+        val photoAspectRatioKey = lensModule.createLensKey(CameraKey.PHOTO_ASPECT_RATIO,
                 currentCameraIndex.index,
                 CameraUtil.getLensIndex(cameraVideoStreamSource, cameraNameProcessor.value))
-        val videoResolutionAndFrameRateKey = djiSdkModel.createLensKey(CameraKey.RESOLUTION_FRAME_RATE,
+        val videoResolutionAndFrameRateKey = lensModule.createLensKey(CameraKey.RESOLUTION_FRAME_RATE,
                 currentCameraIndex.index,
                 CameraUtil.getLensIndex(cameraVideoStreamSource, cameraNameProcessor.value))
         bindDataProcessor(modelNameKey, modelNameDataProcessor) { model: Any? ->
@@ -174,6 +179,13 @@ class FPVWidgetModel(djiSdkModel: DJISDKModel,
         addDisposable(flatCameraModule.cameraModeDataProcessor.toFlowable()
                 .doOnNext(videoViewChangedConsumer)
                 .subscribe(Consumer { }, logErrorConsumer(TAG, "camera mode: ")))
+        addDisposable(lensModule.isLensArrangementUpdated()
+                .observeOn(SchedulerProvider.io())
+                .subscribe(Consumer { value: Boolean ->
+                    if (value) {
+                        restart()
+                    }
+                }, logErrorConsumer(TAG, "on lens arrangement updated")))
 
         val primaryVideoFeedPhysicalSourceKey = AirLinkKey.createOcuSyncLinkKey(AirLinkKey.PRIMARY_VIDEO_FEED_PHYSICAL_SOURCE)
         addDisposable(djiSdkModel.addListener(primaryVideoFeedPhysicalSourceKey, this)
@@ -200,6 +212,11 @@ class FPVWidgetModel(djiSdkModel: DJISDKModel,
         currentVideoFeed?.let {
             if (it.listeners.contains(videoDataListener)) {
                 it.removeVideoDataListener(videoDataListener)
+            }
+        }
+        transcodedVideoFeed?.let {
+            if (it.listeners.contains(transcodedVideoDataListener)) {
+                it.removeVideoDataListener(transcodedVideoDataListener)
             }
         }
     }
@@ -284,6 +301,7 @@ class FPVWidgetModel(djiSdkModel: DJISDKModel,
             } else if (videoSource == SettingDefinitions.VideoSource.SECONDARY) {
                 registerLiveVideo(it.secondaryVideoFeed, false)
             }
+            registerTranscodedVideo(it.provideTranscodedVideoFeed())
         }
     }
 
@@ -307,6 +325,18 @@ class FPVWidgetModel(djiSdkModel: DJISDKModel,
                 } else {
                     DJICodecManager.VideoSource.FPV
                 })
+    }
+
+    private fun registerTranscodedVideo(videoFeed: VideoFeed?) {
+        if (videoFeed != null && transcodedVideoDataListener != null) {
+            transcodedVideoFeed?.let {
+                if (it.listeners.contains(transcodedVideoDataListener)) {
+                    it.removeVideoDataListener(transcodedVideoDataListener)
+                }
+            }
+            transcodedVideoFeed = videoFeed
+            transcodedVideoFeed?.addVideoDataListener(transcodedVideoDataListener)
+        }
     }
 
     private fun switchToExternalCameraChannel() {

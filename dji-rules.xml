@@ -3268,18 +3268,6 @@ public class Foo extends TestCase {
         </example>
     </rule>
 
-    <rule name="JUnitTestsShouldIncludeAssert"
-          since="2.0"
-          message="JUnit tests should include assert() or fail()"
-          class="net.sourceforge.pmd.lang.java.rule.junit.JUnitTestsShouldIncludeAssertRule"
-          externalInfoUrl="${pmd.website.baseurl}/rules/java/junit.html#JUnitTestsShouldIncludeAssert">
-        <description>
-            This makes the tests more robust, and using assert
-            with messages provide the developer a clearer idea of what the test does.
-        </description>
-        <priority>3</priority>
-    </rule>
-
     <rule name="TestClassWithoutTestCases"
           since="3.0"
           message="This class name ends with 'Test' but contains no test cases"
@@ -3530,9 +3518,17 @@ PrimaryExpression/PrimarySuffix/Arguments/ArgumentList
           class="net.sourceforge.pmd.lang.java.rule.naming.MethodNamingConventionsRule"
           externalInfoUrl="${pmd.website.baseurl}/rules/java/naming.html#MethodNamingConventions">
         <description>
-            Method names should always begin with a lower case character, and should not contain underscores.
+            Method names should always begin with a lower case character, and should not contain underscores except unit tests.
         </description>
         <priority>1</priority>
+        <properties>
+            <property name="methodPattern" value="[a-z][a-zA-Z0-9]*" />
+            <property name="staticPattern" value="[a-z][a-zA-Z0-9]*" />
+            <property name="nativePattern" value="[a-z][a-zA-Z0-9]*" />
+            <property name="junit3TestPattern" value="test[A-Z0-9][a-zA-Z0-9_]*" />
+            <property name="junit4TestPattern" value="[a-z][a-zA-Z0-9_]*" />
+            <property name="junit5TestPattern" value="[a-z][a-zA-Z0-9_]*" />
+        </properties>
     </rule>
 
     <rule name="ClassNamingConventions"

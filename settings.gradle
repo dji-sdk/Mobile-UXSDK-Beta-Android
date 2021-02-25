@@ -29,7 +29,8 @@ include ':android-uxsdk-beta-training'
 include ':android-uxsdk-beta-visualcamera'
 include ':android-uxsdk-beta-flight'
 include ':android-uxsdk-beta-sample'
-
+include ':android-uxsdk-beta-test'
+include ':android-uxsdk-beta-media'
 
 project(':android-uxsdk-beta-core').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-core')
 project(':android-uxsdk-beta-cameracore').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-cameracore')
@@ -39,3 +40,5 @@ project(':android-uxsdk-beta-training').projectDir = new File(rootProject.projec
 project(':android-uxsdk-beta-visualcamera').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-visualcamera')
 project(':android-uxsdk-beta-flight').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-flight')
 project(':android-uxsdk-beta-sample').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-sample')
+project(':android-uxsdk-beta-test').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-test')
+project(':android-uxsdk-beta-media').projectDir = new File(rootProject.projectDir, 'android-uxsdk-beta-media')

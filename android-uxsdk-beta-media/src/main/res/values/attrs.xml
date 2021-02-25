@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<resources>
+    <attr name="uxsdk_accessLockerHeaderTextColor" format="color" />
+    <attr name="uxsdk_accessLockerHeaderTextSize" format="dimension" />
+    <attr name="uxsdk_accessLockerHeaderTextAppearance" format="reference" />
+    <attr name="uxsdk_accessLockerHeaderBackground" format="reference" />
+    <attr name="uxsdk_accessLockerMessageTextColor" format="color" />
+    <attr name="uxsdk_accessLockerMessageTextSize" format="dimension" />
+    <attr name="uxsdk_accessLockerMessageTextAppearance" format="reference" />
+    <attr name="uxsdk_accessLockerMessageBackground" format="reference" />
+    <attr name="uxsdk_accessLockerCancelTextColor" format="color" />
+    <attr name="uxsdk_accessLockerCancelTextSize" format="dimension" />
+    <attr name="uxsdk_accessLockerCancelTextAppearance" format="reference" />
+    <attr name="uxsdk_accessLockerCancelBackground" format="reference" />
+    <attr name="uxsdk_accessLockerSaveTextColor" format="color" />
+    <attr name="uxsdk_accessLockerSaveTextSize" format="dimension" />
+    <attr name="uxsdk_accessLockerSaveTextAppearance" format="reference" />
+    <attr name="uxsdk_accessLockerSaveBackground" format="reference" />
+    <attr name="uxsdk_accessLockerFormatTextColor" format="color" />
+    <attr name="uxsdk_accessLockerFormatTextSize" format="dimension" />
+    <attr name="uxsdk_accessLockerFormatTextAppearance" format="reference" />
+    <attr name="uxsdk_accessLockerFormatBackground" format="reference" />
+    <attr name="uxsdk_accessLockerInputTextColor" format="color" />
+    <attr name="uxsdk_accessLockerInputTextSize" format="dimension" />
+    <attr name="uxsdk_accessLockerInputTextAppearance" format="reference" />
+    <attr name="uxsdk_accessLockerInputBackground" format="reference" />
+    <attr name="uxsdk_accessLockerRemoveTextColor" format="color" />
+    <attr name="uxsdk_accessLockerRemoveTextSize" format="dimension" />
+    <attr name="uxsdk_accessLockerRemoveTextAppearance" format="reference" />
+    <attr name="uxsdk_accessLockerRemoveBackground" format="reference" />
+
+    <declare-styleable name="AccessLockerIndicatorWidget">
+        <attr name="uxsdk_iconBackground" />
+        <attr name="uxsdk_accessLockerNotInitialized" format="reference" />
+        <attr name="uxsdk_accessLockerUnlocked" format="reference" />
+        <attr name="uxsdk_accessLockerLocked" format="reference" />
+        <!-- Insert ID of the Access Locker Control widget that needs to react to a state change on this widget.
+        See {@link dji.ux.beta.media.widget.accesslocker.AccessLockerIndicatorWidget}
+        and {@link dji.ux.beta.media.widget.accesslocker.AccessLockerControlWidget}. -->
+        <attr name="uxsdk_onStateChange" />
+    </declare-styleable>
+
+    <declare-styleable name="AccessLockerSelectActionWidget">
+        <attr name="uxsdk_accessLockerHeaderTextColor" />
+        <attr name="uxsdk_accessLockerHeaderTextSize" />
+        <attr name="uxsdk_accessLockerHeaderTextAppearance" />
+        <attr name="uxsdk_accessLockerHeaderBackground" />
+
+        <attr name="uxsdk_accessLockerMessageTextColor" />
+        <attr name="uxsdk_accessLockerMessageTextSize" />
+        <attr name="uxsdk_accessLockerMessageTextAppearance" />
+        <attr name="uxsdk_accessLockerMessageBackground" />
+
+        <attr name="uxsdk_accessLockerCancelTextColor" />
+        <attr name="uxsdk_accessLockerCancelTextSize" />
+        <attr name="uxsdk_accessLockerCancelTextAppearance" />
+        <attr name="uxsdk_accessLockerCancelBackground" />
+
+        <attr name="uxsdk_accessLockerRemoveTextColor" />
+        <attr name="uxsdk_accessLockerRemoveTextSize" />
+        <attr name="uxsdk_accessLockerRemoveTextAppearance" />
+        <attr name="uxsdk_accessLockerRemoveBackground" />
+
+        <attr name="uxsdk_accessLockerChangeTextColor" format="color" />
+        <attr name="uxsdk_accessLockerChangeTextSize" format="dimension" />
+        <attr name="uxsdk_accessLockerChangeTextAppearance" format="reference" />
+        <attr name="uxsdk_accessLockerChangeBackground" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="AccessLockerRemovePasswordWidget">
+        <attr name="uxsdk_accessLockerHeaderTextColor" />
+        <attr name="uxsdk_accessLockerHeaderTextSize" />
+        <attr name="uxsdk_accessLockerHeaderTextAppearance" />
+        <attr name="uxsdk_accessLockerHeaderBackground" />
+
+        <attr name="uxsdk_accessLockerMessageTextColor" />
+        <attr name="uxsdk_accessLockerMessageTextSize" />
+        <attr name="uxsdk_accessLockerMessageTextAppearance" />
+        <attr name="uxsdk_accessLockerMessageBackground" />
+
+        <attr name="uxsdk_accessLockerCancelTextColor" />
+        <attr name="uxsdk_accessLockerCancelTextSize" />
+        <attr name="uxsdk_accessLockerCancelTextAppearance" />
+        <attr name="uxsdk_accessLockerCancelBackground" />
+
+        <attr name="uxsdk_accessLockerRemoveTextColor" />
+        <attr name="uxsdk_accessLockerRemoveTextSize" />
+        <attr name="uxsdk_accessLockerRemoveTextAppearance" />
+        <attr name="uxsdk_accessLockerRemoveBackground" />
+
+        <attr name="uxsdk_accessLockerFormatTextColor" />
+        <attr name="uxsdk_accessLockerFormatTextSize" />
+        <attr name="uxsdk_accessLockerFormatTextAppearance" />
+        <attr name="uxsdk_accessLockerFormatBackground" />
+    </declare-styleable>
+
+    <declare-styleable name="AccessLockerSetPasswordWidget">
+        <attr name="uxsdk_accessLockerHeaderTextColor" />
+        <attr name="uxsdk_accessLockerHeaderTextSize" />
+        <attr name="uxsdk_accessLockerHeaderTextAppearance" />
+        <attr name="uxsdk_accessLockerHeaderBackground" />
+
+        <attr name="uxsdk_accessLockerMessageTextColor" />
+        <attr name="uxsdk_accessLockerMessageTextSize" />
+        <attr name="uxsdk_accessLockerMessageTextAppearance" />
+        <attr name="uxsdk_accessLockerMessageBackground" />
+
+        <attr name="uxsdk_accessLockerCancelTextColor" />
+        <attr name="uxsdk_accessLockerCancelTextSize" />
+        <attr name="uxsdk_accessLockerCancelTextAppearance" />
+        <attr name="uxsdk_accessLockerCancelBackground" />
+
+        <attr name="uxsdk_accessLockerSaveTextColor" />
+        <attr name="uxsdk_accessLockerSaveTextSize" />
+        <attr name="uxsdk_accessLockerSaveTextAppearance" />
+        <attr name="uxsdk_accessLockerSaveBackground" />
+
+        <attr name="uxsdk_accessLockerInputTextColor" />
+        <attr name="uxsdk_accessLockerInputTextSize" />
+        <attr name="uxsdk_accessLockerInputTextAppearance" />
+        <attr name="uxsdk_accessLockerInputBackground" />
+    </declare-styleable>
+
+    <declare-styleable name="AccessLockerFormatAircraftWidget">
+        <attr name="uxsdk_accessLockerHeaderTextColor" />
+        <attr name="uxsdk_accessLockerHeaderTextSize" />
+        <attr name="uxsdk_accessLockerHeaderTextAppearance" />
+        <attr name="uxsdk_accessLockerHeaderBackground" />
+
+        <attr name="uxsdk_accessLockerMessageTextColor" />
+        <attr name="uxsdk_accessLockerMessageTextSize" />
+        <attr name="uxsdk_accessLockerMessageTextAppearance" />
+        <attr name="uxsdk_accessLockerMessageBackground" />
+
+        <attr name="uxsdk_accessLockerCancelTextColor" />
+        <attr name="uxsdk_accessLockerCancelTextSize" />
+        <attr name="uxsdk_accessLockerCancelTextAppearance" />
+        <attr name="uxsdk_accessLockerCancelBackground" />
+
+        <attr name="uxsdk_accessLockerFormatTextColor" />
+        <attr name="uxsdk_accessLockerFormatTextSize" />
+        <attr name="uxsdk_accessLockerFormatTextAppearance" />
+        <attr name="uxsdk_accessLockerFormatBackground" />
+
+    </declare-styleable>
+
+    <declare-styleable name="AccessLockerEnterPasswordWidget">
+        <attr name="uxsdk_accessLockerHeaderTextColor" />
+        <attr name="uxsdk_accessLockerHeaderTextSize" />
+        <attr name="uxsdk_accessLockerHeaderTextAppearance" />
+        <attr name="uxsdk_accessLockerHeaderBackground" />
+
+        <attr name="uxsdk_accessLockerMessageTextColor" />
+        <attr name="uxsdk_accessLockerMessageTextSize" />
+        <attr name="uxsdk_accessLockerMessageTextAppearance" />
+        <attr name="uxsdk_accessLockerMessageBackground" />
+
+        <attr name="uxsdk_accessLockerCancelTextColor" />
+        <attr name="uxsdk_accessLockerCancelTextSize" />
+        <attr name="uxsdk_accessLockerCancelTextAppearance" />
+        <attr name="uxsdk_accessLockerCancelBackground" />
+
+        <attr name="uxsdk_accessLockerInputTextColor" />
+        <attr name="uxsdk_accessLockerInputTextSize" />
+        <attr name="uxsdk_accessLockerInputTextAppearance" />
+        <attr name="uxsdk_accessLockerInputBackground" />
+
+        <attr name="uxsdk_accessLockerFormatTextColor" />
+        <attr name="uxsdk_accessLockerFormatTextSize" />
+        <attr name="uxsdk_accessLockerFormatTextAppearance" />
+        <attr name="uxsdk_accessLockerFormatBackground" />
+
+        <attr name="uxsdk_accessLockerUnlockAircraftTextColor" format="color" />
+        <attr name="uxsdk_accessLockerUnlockAircraftTextSize" format="dimension" />
+        <attr name="uxsdk_accessLockerUnlockAircraftTextAppearance" format="reference" />
+        <attr name="uxsdk_accessLockerUnlockAircraftBackground" format="reference" />
+
+    </declare-styleable>
+
+    <declare-styleable name="AccessLockerChangePasswordWidget">
+        <attr name="uxsdk_accessLockerHeaderTextColor" />
+        <attr name="uxsdk_accessLockerHeaderTextSize" />
+        <attr name="uxsdk_accessLockerHeaderTextAppearance" />
+        <attr name="uxsdk_accessLockerHeaderBackground" />
+
+        <attr name="uxsdk_accessLockerMessageTextColor" />
+        <attr name="uxsdk_accessLockerMessageTextSize" />
+        <attr name="uxsdk_accessLockerMessageTextAppearance" />
+        <attr name="uxsdk_accessLockerMessageBackground" />
+
+        <attr name="uxsdk_accessLockerCancelTextColor" />
+        <attr name="uxsdk_accessLockerCancelTextSize" />
+        <attr name="uxsdk_accessLockerCancelTextAppearance" />
+        <attr name="uxsdk_accessLockerCancelBackground" />
+
+        <attr name="uxsdk_accessLockerInputTextColor" />
+        <attr name="uxsdk_accessLockerInputTextSize" />
+        <attr name="uxsdk_accessLockerInputTextAppearance" />
+        <attr name="uxsdk_accessLockerInputBackground" />
+
+        <attr name="uxsdk_accessLockerFormatTextColor" />
+        <attr name="uxsdk_accessLockerFormatTextSize" />
+        <attr name="uxsdk_accessLockerFormatTextAppearance" />
+        <attr name="uxsdk_accessLockerFormatBackground" />
+
+        <attr name="uxsdk_accessLockerSaveTextColor" />
+        <attr name="uxsdk_accessLockerSaveTextSize" />
+        <attr name="uxsdk_accessLockerSaveTextAppearance" />
+        <attr name="uxsdk_accessLockerSaveBackground" />
+
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="dji.ux.beta.cameracore.widget.cameraisoandeisetting.CameraISOAndEISettingWidget">
+
+    <TextView
+        android:id="@+id/textview_iso_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/uxsdk_camera_exposure_iso_title"
+        android:textColor="@color/uxsdk_white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_camera_setting_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/uxsdk_black_30_percent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_iso_title" />
+
+    <dji.ux.beta.core.ui.SeekBarView
+        android:id="@+id/seekbar_ei"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_iso_title"
+        app:uxsdk_maxValueVisible="true"
+        app:uxsdk_minValueVisible="true" />
+
+    <TextView
+        android:id="@+id/button_iso_auto"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/uxsdk_selector_auto_iso_circle"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/uxsdk_camera_exposure_iso_auto"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="@dimen/uxsdk_text_size_small"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/seekbar_iso"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textview_iso_title" />
+
+    <dji.ux.beta.core.ui.SeekBarView
+        android:id="@+id/seekbar_iso"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button_iso_auto"
+        app:layout_constraintTop_toBottomOf="@+id/textview_iso_title"
+        app:uxsdk_maxValueVisible="true"
+        app:uxsdk_minValueVisible="true" />
+
+</merge>

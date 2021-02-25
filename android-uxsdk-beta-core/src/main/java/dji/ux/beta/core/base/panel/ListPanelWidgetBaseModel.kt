@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,8 +28,7 @@ import androidx.annotation.IntRange
 import dji.thirdparty.io.reactivex.Flowable
 import dji.ux.beta.core.util.DataProcessor
 
-// TODO:
-// * Documentation UX-5195
+// TODO: Documentation
 
 /**
  * The base model for the [ListPanelWidget]

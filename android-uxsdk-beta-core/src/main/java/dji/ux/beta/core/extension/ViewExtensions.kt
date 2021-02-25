@@ -158,6 +158,19 @@ var ImageView.imageDrawable: Drawable?
     }
 
 /**
+ * Update the color filter for the ImageView.
+ * If the color is [INVALID_COLOR] or null the color filter
+ * will be removed.
+ */
+fun ImageView.updateColorFilter(color: Int?) {
+    if (color == null || color == INVALID_RESOURCE) {
+        this.clearColorFilter()
+    } else {
+        this.setColorFilter(color)
+    }
+}
+
+/**
  * Show an alert dialog.
  * @param dialogTheme The style of the dialog
  * @param isCancellable Dismiss the dialog when touch outside its bounds

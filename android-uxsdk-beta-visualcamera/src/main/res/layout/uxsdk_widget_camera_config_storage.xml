@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2020 DJI
+  ~ Copyright (c) 2018-2021 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -39,17 +39,6 @@
         tools:src="@drawable/uxsdk_ic_config_internal_none" />
 
     <TextView
-        android:id="@+id/textview_camera_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:textColor="@color/uxsdk_white_50_percent"
-        android:textSize="@dimen/uxsdk_text_size_small"
-        app:layout_constraintStart_toEndOf="@+id/imageview_storage_icon"
-        app:layout_constraintTop_toTopOf="@+id/textview_status_capacity_title"
-        tools:text="Black &amp; White" />
-
-    <TextView
         android:id="@+id/textview_image_format"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,8 +56,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="right"
-        app:constraint_referenced_ids="imageview_storage_icon, textview_camera_color,
-        textview_image_format" />
+        app:constraint_referenced_ids="imageview_storage_icon, textview_image_format" />
 
     <TextView
         android:id="@+id/textview_status_capacity_title"

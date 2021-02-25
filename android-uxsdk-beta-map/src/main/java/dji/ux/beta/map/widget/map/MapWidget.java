@@ -86,6 +86,9 @@ import dji.ux.beta.core.util.ViewUtil;
 import dji.ux.beta.core.widget.useraccount.UserAccountLoginWidget;
 import dji.ux.beta.map.R;
 
+import static dji.ux.beta.core.extension.TypedArrayExtensions.INVALID_COLOR;
+import static dji.ux.beta.core.extension.TypedArrayExtensions.INVALID_DIMENSION;
+
 /**
  * MapWidget displays the aircraft's state and information on the map. This
  * includes aircraft location, home location, aircraft trail path, aircraft

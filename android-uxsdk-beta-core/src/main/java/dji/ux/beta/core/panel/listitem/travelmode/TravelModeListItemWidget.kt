@@ -302,8 +302,10 @@ open class TravelModeListItemWidget @JvmOverloads constructor(
                 successDialogIcon = it
             }
 
-            enterTravelModeButtonString = typedArray.getString(R.styleable.TravelModeListItemWidget_uxsdk_enter_travel_mode_button_string, enterTravelModeButtonString)
-            exitTravelModeButtonString = typedArray.getString(R.styleable.TravelModeListItemWidget_uxsdk_exit_travel_mode_button_string, exitTravelModeButtonString)
+            enterTravelModeButtonString = typedArray.getString(R.styleable.TravelModeListItemWidget_uxsdk_enter_travel_mode_button_string,
+                    enterTravelModeButtonString)
+            exitTravelModeButtonString = typedArray.getString(R.styleable.TravelModeListItemWidget_uxsdk_exit_travel_mode_button_string,
+                    exitTravelModeButtonString)
             typedArray.getResourceIdAndUse(R.styleable.TravelModeListItemWidget_uxsdk_list_item_dialog_theme) {
                 dialogTheme = it
             }

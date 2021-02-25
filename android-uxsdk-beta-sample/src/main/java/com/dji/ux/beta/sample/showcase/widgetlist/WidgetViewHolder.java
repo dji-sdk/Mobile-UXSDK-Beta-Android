@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 package com.dji.ux.beta.sample.showcase.widgetlist;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -32,11 +33,16 @@ import androidx.annotation.Nullable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.ParameterizedType;
+import java.util.Arrays;
 
 import dji.log.DJILog;
+import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.widget.FrameLayoutWidget;
 import dji.ux.beta.core.util.DisplayUtil;
+import kotlin.jvm.JvmClassMappingKt;
+import kotlin.reflect.KClass;
 
 /**
  * A view holder for a single widget.
@@ -91,16 +97,34 @@ public class WidgetViewHolder {
                     layoutWidthPx,
                     layoutHeightPx);
             widget.setLayoutParams(simulatorIndicatorParams);
-        } catch (InstantiationException e) {
-            DJILog.e(TAG, e);
-        } catch (NoSuchMethodException e) {
-            DJILog.e(TAG, e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | NoSuchMethodException | IllegalAccessException e) {
             DJILog.e(TAG, e);
         } catch (InvocationTargetException e) {
             DJILog.e(TAG, e + " " + e.getCause());
         }
         return widget;
+    }
+
+    @Nullable
+    public Flowable getHooks() {
+        try {
+            Class<?> hooksClass = (Class<?>) ((ParameterizedType) clazz
+                    .getGenericSuperclass()).getActualTypeArguments()[0];
+
+            //TODO use this code to create filter dialog
+            Log.d(TAG, Arrays.toString(getKClass(hooksClass).getSealedSubclasses().toArray()));
+
+            if (widget instanceof ConstraintLayoutWidget) {
+                ConstraintLayoutWidget constraintLayoutWidget = (ConstraintLayoutWidget) widget;
+                return constraintLayoutWidget.getWidgetStateUpdate();
+            } else if (widget instanceof FrameLayoutWidget) {
+                FrameLayoutWidget frameLayoutWidget = (FrameLayoutWidget) widget;
+                return frameLayoutWidget.getWidgetStateUpdate();
+            }
+        } catch (ClassCastException e) {
+            DJILog.e(TAG, e);
+        }
+        return null;
     }
 
     /**
@@ -129,5 +153,9 @@ public class WidgetViewHolder {
             return "[0,0]";
         }
         return "[" + (widget.getMeasuredWidth()) + "," + (widget.getMeasuredHeight()) + "]";
+    }
+
+    private static <T> KClass<T> getKClass(Class<T> cls){
+        return JvmClassMappingKt.getKotlinClass(cls);
     }
 }

@@ -215,19 +215,20 @@ class BatteryWidgetModel(
                                        goHomeBattery: Int,
                                        isFlying: Boolean,
                                        voltage: Float): BatteryStatus {
-        if (percentage < 0 || voltage < 0f) {
-            return BatteryStatus.UNKNOWN
+        return if (percentage < 0 || voltage < 0f) {
+            BatteryStatus.UNKNOWN
         } else if (warningRecord.isOverHeated) {
-            return BatteryStatus.OVERHEATING
+            BatteryStatus.OVERHEATING
         } else if (warningRecord.hasError()) {
-            return BatteryStatus.ERROR
+            BatteryStatus.ERROR
         } else if (BatteryThresholdBehavior.LAND_IMMEDIATELY == batteryThresholdBehavior) {
-            return BatteryStatus.WARNING_LEVEL_2
+            BatteryStatus.WARNING_LEVEL_2
         } else if (BatteryThresholdBehavior.GO_HOME == batteryThresholdBehavior
                 || (percentage <= goHomeBattery && isFlying)) {
-            return BatteryStatus.WARNING_LEVEL_1
+            BatteryStatus.WARNING_LEVEL_1
+        } else {
+            BatteryStatus.NORMAL
         }
-        return BatteryStatus.NORMAL
     }
 
     /**

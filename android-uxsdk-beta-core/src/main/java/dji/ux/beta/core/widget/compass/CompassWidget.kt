@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -389,14 +389,18 @@ open class CompassWidget @JvmOverloads constructor(
         updateNorthHeadingUI(compassWidgetState.phoneAzimuth)
         updateAircraftHeadingUI(compassWidgetState.phoneAzimuth, compassWidgetState.aircraftAttitude)
 
-        val viewCoordinates = getAircraftLocationCoordinates(compassWidgetState.phoneAzimuth, compassWidgetState.aircraftState, compassWidgetState.currentLocationState)
+        val viewCoordinates = getAircraftLocationCoordinates(compassWidgetState.phoneAzimuth,
+                compassWidgetState.aircraftState,
+                compassWidgetState.currentLocationState)
         updateAircraftLocationUI(getMaxDistance(compassWidgetState.aircraftState, compassWidgetState.currentLocationState),
                 calculateScale(compassWidgetState.aircraftState.distance),
                 viewCoordinates)
 
-        updateGimbalHeadingUI(compassWidgetState.gimbalHeading, compassWidgetState.aircraftAttitude.yaw.toFloat() - compassWidgetState.phoneAzimuth)
+        updateGimbalHeadingUI(compassWidgetState.gimbalHeading,
+                compassWidgetState.aircraftAttitude.yaw.toFloat() - compassWidgetState.phoneAzimuth)
 
-        val secondViewCoordinates = getSecondGPSLocationCoordinates(compassWidgetState.phoneAzimuth, compassWidgetState.currentLocationState, compassWidgetState.aircraftState)
+        val secondViewCoordinates = getSecondGPSLocationCoordinates(compassWidgetState.phoneAzimuth,
+                compassWidgetState.currentLocationState, compassWidgetState.aircraftState)
         updateSecondGPSLocationUI(compassWidgetState.centerType, secondViewCoordinates)
     }
     //endregion

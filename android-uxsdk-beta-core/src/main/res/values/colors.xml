@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2020 DJI
+  ~ Copyright (c) 2018-2021 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -103,6 +103,11 @@
     <color name="uxsdk_user_account_login_widget_background">#1FA3F6</color>
     <color name="uxsdk_user_account_login_widget_pressed_background">#801FA3F6</color>
 
+    <color name="uxsdk_gray_calibration_background">@color/uxsdk_gray_45</color>
+    <color name="uxsdk_blue_calibration_fill">#00d8ff</color>
+    <color name="uxsdk_gray_calibration_button">@color/uxsdk_gray_45</color>
+    <color name="uxsdk_progress_stroke_color">@color/uxsdk_blue_highlight</color>
+
     <!--BatteryWidget-->
     <color name="uxsdk_battery_healthy">@color/uxsdk_green</color>
     <color name="uxsdk_battery_overheating">@color/uxsdk_yellow_500</color>
@@ -133,4 +138,9 @@
 
     <!--FPV-->
     <color name="uxsdk_fpv_text_background">#991c2831</color>
+
+    <!--Gimbal Source-->
+    <color name="uxsdk_gimbal_source_1">@color/uxsdk_yellow</color>
+    <color name="uxsdk_gimbal_source_2">@color/uxsdk_blue_highlight</color>
+    <color name="uxsdk_gimbal_source_3">#6F53FF</color>
 </resources>

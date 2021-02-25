@@ -25,20 +25,25 @@
 <resources>
 
     <attr name="uxsdk_cameraSettingBackgroundColor" format="color" />
+    <attr name="uxsdk_iconTint" format="color" />
 
     <declare-styleable name="AutoExposureLockWidget">
         <attr name="uxsdk_cameraIndex" />
         <attr name="uxsdk_lensType" />
+        <attr name="uxsdk_widgetTitleBackground" />
         <attr name="uxsdk_widgetTitleTextAppearance" />
         <attr name="uxsdk_widgetTitleTextSize" />
-        <attr name="uxsdk_widgetTitleTextColor" />
-        <attr name="uxsdk_autoExposureLockDrawableTint" format="color|reference" />
-        <attr name="uxsdk_autoExposureUnlockDrawableTint" format="color|reference" />
-        <attr name="uxsdk_autoExposureLockDrawable" format="reference" />
-        <attr name="uxsdk_autoExposureUnlockDrawable" format="reference" />
+        <attr name="uxsdk_disconnectedTextColor" format="color|reference" />
+        <attr name="uxsdk_autoExposureLockTextColor" format="color|reference" />
+        <attr name="uxsdk_autoExposureUnlockTextColor" format="color|reference" />
+        <attr name="uxsdk_disconnectedIconColor" format="color|reference" />
+        <attr name="uxsdk_autoExposureLockIconColor" format="color|reference" />
+        <attr name="uxsdk_autoExposureUnlockIconColor" format="color|reference" />
+        <attr name="uxsdk_autoExposureLockIcon" format="reference" />
+        <attr name="uxsdk_autoExposureUnlockIcon" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="ExposureSettingsIndicatorWidget">
+    <declare-styleable name="CameraSettingsIndicatorWidget">
         <attr name="uxsdk_cameraIndex" />
         <attr name="uxsdk_lensType" />
         <attr name="uxsdk_iconBackground" />
@@ -47,10 +52,89 @@
         <attr name="uxsdk_programModeDrawable" format="reference" />
         <attr name="uxsdk_manualModeDrawable" format="reference" />
         <attr name="uxsdk_unknownModeDrawable" format="reference" />
+        <attr name="uxsdk_iconTint"/>
         <!-- Insert ID of the Camera exposure settings panel that needs to react to a state change on this widget.
-        See {@link dji.ux.beta.core.widget.cameraaction.exposuresettingsindicator.ExposureSettingsIndicatorWidget.setStateChangeCallback}
+        See {@link dji.ux.beta.core.widget.cameraaction.exposuresettingsindicator.CameraSettingsIndicatorWidget.setStateChangeCallback}
         and //TODO -->
         <attr name="uxsdk_onStateChange" />
+    </declare-styleable>
+
+    <declare-styleable name="CameraEVSettingWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
+        <attr name="uxsdk_widgetTitleTextSize" />
+        <attr name="uxsdk_widgetTitleTextColor" />
+        <attr name="uxsdk_widgetTitleBackground" />
+        <attr name="uxsdk_widgetTitleTextAppearance" />
+        <attr name="uxsdk_cameraSettingBackgroundColor" />
+        <attr name="uxsdk_minusIcon" format="reference" />
+        <attr name="uxsdk_minusIconBackground" format="reference" />
+        <attr name="uxsdk_evValueTextAppearance" />
+        <attr name="uxsdk_evValueTextColor" />
+        <attr name="uxsdk_evValueBackgroundDrawable" />
+        <attr name="uxsdk_evValueTextSize" />
+        <attr name="uxsdk_plusIcon" format="reference" />
+        <attr name="uxsdk_plusIconBackground" format="reference" />
+        <attr name="uxsdk_evStatusTextAppearance" format="reference" />
+        <attr name="uxsdk_evStatusTextColor" format="color|reference" />
+        <attr name="uxsdk_evStatusBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_evStatusTextSize" format="dimension" />
+        <attr name="uxsdk_evStatusLineColor" format="color" />
+        <attr name="uxsdk_evStatusHighlightedLineColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="CameraISOAndEISettingWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
+        <attr name="uxsdk_widgetTitleTextSize" />
+        <attr name="uxsdk_widgetTitleTextColor" />
+        <attr name="uxsdk_widgetTitleBackground" />
+        <attr name="uxsdk_widgetTitleTextAppearance" />
+        <attr name="uxsdk_cameraSettingBackgroundColor" />
+        <attr name="uxsdk_autoISOButtonTextAppearance" format="reference" />
+        <attr name="uxsdk_autoISOButtonTextColor" format="color|reference" />
+        <attr name="uxsdk_autoISOButtonBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_autoISOButtonTextSize" format="dimension" />
+        <attr name="uxsdk_seekBarTrackIcon" format="reference" />
+        <attr name="uxsdk_seekBarTrackIconBackground" format="reference" />
+        <attr name="uxsdk_seekBarThumbIcon" format="reference" />
+        <attr name="uxsdk_seekBarThumbIconBackground" format="reference" />
+        <attr name="uxsdk_seekBarValueTextAppearance" format="reference" />
+        <attr name="uxsdk_seekBarValueTextColor" format="color|reference" />
+        <attr name="uxsdk_seekBarValueBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_seekBarValueTextSize" format="dimension" />
+        <attr name="uxsdk_seekBarMinValueTextAppearance" format="reference" />
+        <attr name="uxsdk_seekBarMinValueTextColor" format="color|reference" />
+        <attr name="uxsdk_seekBarMinValueBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_seekBarMinValueTextSize" format="dimension" />
+        <attr name="uxsdk_seekBarMaxValueTextAppearance" format="reference" />
+        <attr name="uxsdk_seekBarMaxValueTextColor" format="color|reference" />
+        <attr name="uxsdk_seekBarMaxValueBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_seekBarMaxValueTextSize" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CameraExposureModeSettingWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
+        <attr name="uxsdk_programTextAppearance" format="reference" />
+        <attr name="uxsdk_programTextSize" format="dimension" />
+        <attr name="uxsdk_programTextColor" format="color|reference" />
+        <attr name="uxsdk_programTextBackground" format="reference" />
+        <attr name="uxsdk_programIcon" format="reference" />
+        <attr name="uxsdk_programIconBackground" format="reference" />
+        <attr name="uxsdk_programBackground" format="reference" />
+        <attr name="uxsdk_shutterTextAppearance" format="reference" />
+        <attr name="uxsdk_shutterTextSize" format="dimension" />
+        <attr name="uxsdk_shutterTextColor" format="color|reference" />
+        <attr name="uxsdk_shutterBackground" format="reference" />
+        <attr name="uxsdk_apertureTextAppearance" format="reference" />
+        <attr name="uxsdk_apertureTextSize" format="dimension" />
+        <attr name="uxsdk_apertureTextColor" format="color|reference" />
+        <attr name="uxsdk_apertureBackground" format="reference" />
+        <attr name="uxsdk_manualTextAppearance" format="reference" />
+        <attr name="uxsdk_manualTextSize" format="dimension" />
+        <attr name="uxsdk_manualTextColor" format="color|reference" />
+        <attr name="uxsdk_manualBackground" format="reference" />
     </declare-styleable>
 
     <declare-styleable name="FocusExposureSwitchWidget">
@@ -59,7 +143,10 @@
         <attr name="uxsdk_manualFocusDrawable" format="reference" />
         <attr name="uxsdk_autoFocusDrawable" format="reference" />
         <attr name="uxsdk_meteringDrawable" format="reference" />
-        <attr name="uxsdk_iconBackground" />
+        <attr name="uxsdk_manualFocusIconColor" format="color|reference" />
+        <attr name="uxsdk_autoFocusIconColor" format="color|reference" />
+        <attr name="uxsdk_meteringIconColor" format="color|reference" />
+
     </declare-styleable>
 
     <declare-styleable name="FocusModeWidget">
@@ -67,18 +154,54 @@
         <attr name="uxsdk_lensType" />
         <attr name="uxsdk_widgetTitleTextSize" />
         <attr name="uxsdk_widgetTitleBackground" />
-        <attr name="uxsdk_activeModeTextColor" format="reference" />
-        <attr name="uxsdk_inactiveModeTextColor" format="reference" />
+        <attr name="uxsdk_activeModeTextColor" format="color|reference" />
+        <attr name="uxsdk_inactiveModeTextColor" format="color|reference" />
+        <attr name="uxsdk_disconnectedStateTextColor" format="color|reference" />
     </declare-styleable>
 
-    <declare-styleable name="CameraSettingsMenuIndicatorWidget">
-        <attr name="uxsdk_settingsTextBackground" format="reference" />
-        <attr name="uxsdk_settingsTextSize" format="dimension" />
-        <attr name="uxsdk_settingsTextColor" format="color" />
-        <!-- Insert ID of the Camera exposure settings panel that needs to react to a state change on this widget.
-        See {@link dji.ux.beta.core.widget.cameraaction.camerasettingsindicator.CameraSettingsMenuIndicatorWidget.setStateChangeCallback}
-        and //TODO -->
-        <attr name="uxsdk_onStateChange" />
+    <declare-styleable name="GimbalPitchWidget">
+        <!--Define index for dual gimbal products-->
+        <attr name="uxsdk_gimbalIndex" />
+        <!--With appearance any default text attribute can be changed-->
+        <attr name="uxsdk_labelsTextAppearance" />
+        <attr name="uxsdk_labelEnabled" format="boolean" />
+        <attr name="uxsdk_labelsTextSize" />
+        <attr name="uxsdk_labelsTextColor" />
+        <attr name="uxsdk_labelsBackground" />
+        <attr name="uxsdk_indicatorEndColor" format="color" />
+        <attr name="uxsdk_indicatorHorizontalColor" format="color" />
+        <attr name="uxsdk_indicatorNormalColor" format="color" />
+        <attr name="uxsdk_positivePitchBackgroundColor" format="color" />
+        <attr name="uxsdk_linesColor" format="color" />
+        <attr name="uxsdk_horizontalPitchLineColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="ManualFocusWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
+        <attr name="uxsdk_rulerLinesColor" />
+        <attr name="uxsdk_macroFocusIcon" format="reference" />
+        <attr name="uxsdk_macroFocusIconBackground" format="reference" />
+        <attr name="uxsdk_infinityFocusIcon" format="reference" />
+        <attr name="uxsdk_infinityFocusIconBackground" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="WheelWidget">
+        <attr name="uxsdk_widgetTitleTextSize" />
+        <attr name="uxsdk_widgetTitleTextColor" />
+        <attr name="uxsdk_widgetTitleBackground" />
+        <attr name="uxsdk_widgetTitleTextAppearance" />
+        <attr name="uxsdk_cameraSettingBackgroundColor" />
+        <attr name="uxsdk_wheelStyle" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="CameraShutterSettingWidget">
+        <attr name="uxsdk_cameraIndex" />
+        <attr name="uxsdk_lensType" />
+        <attr name="uxsdk_normalExposureHighlightColor" format="color|reference" />
+        <attr name="uxsdk_exposureErrorHighlightColor" format="color|reference" />
+        <attr name="uxsdk_exposureErrorTextColor" format="color|reference" />
+
     </declare-styleable>
 
     <declare-styleable name="PhotoVideoSwitchWidget">
@@ -86,6 +209,7 @@
         <attr name="uxsdk_iconBackground" />
         <attr name="uxsdk_photoModeIcon" format="reference" />
         <attr name="uxsdk_videoModeIcon" format="reference" />
+        <attr name="uxsdk_iconTint"/>
     </declare-styleable>
 
     <declare-styleable name="RecordVideoWidget">
@@ -131,6 +255,24 @@
         <attr name="uxsdk_foregroundIconBackground" />
     </declare-styleable>
 
+    <declare-styleable name="WheelView">
+        <attr name="uxsdk_highlightColor" format="color|reference" />
+        <attr name="uxsdk_markColor" format="color|reference" />
+        <attr name="uxsdk_markTextColor" format="color|reference" />
+        <attr name="uxsdk_outOfRangeMarkerColor" format="color|reference" />
+        <attr name="uxsdk_intervalFactor" format="float" />
+        <attr name="uxsdk_markRatio" format="float" />
+        <attr name="uxsdk_cursorHeight" format="dimension" />
+        <attr name="uxsdk_markTextSize" format="dimension" />
+        <attr name="uxsdk_centerMarkTextSize" format="dimension" />
+        <attr name="uxsdk_additionalCenterMark" format="string|reference" />
+        <attr name="uxsdk_wheelType">
+            <enum name="VALUES_ONLY" value="0" />
+            <enum name="MARKER_LINES_AND_VALUES" value="1" />
+            <enum name="MARKER_MICRO_LINES_AND_VALUES" value="2" />
+        </attr>
+    </declare-styleable>
+
     <declare-styleable name="FPVInteractionWidget">
         <attr name="uxsdk_cameraIndex" />
         <attr name="uxsdk_gimbalIndex" />
@@ -153,6 +295,15 @@
         <attr name="uxsdk_spotMeteringEnabled" format="boolean" />
         <attr name="uxsdk_gimbalControlEnabled" format="boolean" />
         <attr name="uxsdk_interactionEnabled" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="FocusExposureBarPanelWidget">
+        <!-- E.g., app:excludeItem="focus_exposure_switch|auto_exposure_lock" -->
+        <attr name="uxsdk_excludeFocusExposureBarItem">
+            <flag name="focus_exposure_switch" value="1"/>
+            <flag name="auto_exposure_lock" value="2"/>
+            <flag name="focus_mode" value="4" />
+        </attr>
     </declare-styleable>
 
 </resources>

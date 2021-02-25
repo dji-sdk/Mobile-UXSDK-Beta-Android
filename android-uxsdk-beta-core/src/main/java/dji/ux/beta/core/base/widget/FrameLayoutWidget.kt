@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -162,12 +162,12 @@ abstract class FrameLayoutWidget<T> @JvmOverloads constructor(
      *
      * @return update with widget state
      */
-    open fun getWidgetStateUpdate(): Flowable<T> = widgetStateDataProcessor.onBackpressureBuffer()
+    open fun getWidgetStateUpdate(): Flowable<T> = widgetStateDataProcessor
+            .distinctUntilChanged()
+            .onBackpressureBuffer()
     //endregion
 
     companion object {
         private const val TAG: String = "FrameLayoutWidget"
-        const val INVALID_RESOURCE: Int = -1
-        const val INVALID_COLOR: Int = 0
     }
 }

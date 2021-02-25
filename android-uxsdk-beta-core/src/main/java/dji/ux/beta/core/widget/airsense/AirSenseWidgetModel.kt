@@ -85,8 +85,10 @@ class AirSenseWidgetModel @JvmOverloads constructor(
         return when (warningLevel) {
             AirSenseWarningLevel.LEVEL_2 -> sendWarningMessage(reason, warningSolution, WarningMessage.Level.WARNING, WarningMessage.Action.INSERT)
                     .andThen(sendWarningMessage(reason, dangerousSolution, WarningMessage.Level.DANGEROUS, WarningMessage.Action.REMOVE))
-            AirSenseWarningLevel.LEVEL_3, AirSenseWarningLevel.LEVEL_4 -> sendWarningMessage(reason, warningSolution, WarningMessage.Level.WARNING, WarningMessage.Action.REMOVE)
-                    .andThen(sendWarningMessage(reason, dangerousSolution, WarningMessage.Level.DANGEROUS, WarningMessage.Action.INSERT))
+            AirSenseWarningLevel.LEVEL_3, AirSenseWarningLevel.LEVEL_4 -> {
+                sendWarningMessage(reason, warningSolution, WarningMessage.Level.WARNING, WarningMessage.Action.REMOVE)
+                        .andThen(sendWarningMessage(reason, dangerousSolution, WarningMessage.Level.DANGEROUS, WarningMessage.Action.INSERT))
+            }
             else -> sendWarningMessage(reason, warningSolution, WarningMessage.Level.WARNING, WarningMessage.Action.REMOVE)
                     .andThen(sendWarningMessage(reason, dangerousSolution, WarningMessage.Level.DANGEROUS, WarningMessage.Action.REMOVE))
         }

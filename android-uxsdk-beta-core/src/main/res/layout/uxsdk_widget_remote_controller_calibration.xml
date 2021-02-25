@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+    <!-- stick calibration views-->
+
+    <TextView
+        android:id="@+id/step_1_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/uxsdk_rc_calibration_1"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="@dimen/uxsdk_text_size_normal_medium" />
+
+    <ImageView
+        android:id="@+id/sticks_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/uxsdk_rc_calibration_image_margin"
+        android:src="@drawable/uxsdk_ic_rc_calibration_sticks"
+        app:layout_constraintBottom_toBottomOf="@+id/left_stick"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/left_stick"
+        app:layout_constraintTop_toTopOf="@+id/left_stick"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:ignore="ContentDescription" />
+
+    <dji.ux.beta.core.widget.calibration.CalibrationCrossView
+        android:id="@+id/left_stick"
+        android:layout_width="@dimen/uxsdk_rc_calibration_stick_width"
+        android:layout_height="@dimen/uxsdk_rc_calibration_stick_width"
+        app:layout_constraintLeft_toRightOf="@+id/sticks_image"
+        app:layout_constraintRight_toLeftOf="@+id/right_stick"
+        app:layout_constraintTop_toBottomOf="@+id/step_1_text"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <dji.ux.beta.core.widget.calibration.CalibrationCrossView
+        android:id="@+id/right_stick"
+        android:layout_width="@dimen/uxsdk_rc_calibration_stick_width"
+        android:layout_height="@dimen/uxsdk_rc_calibration_stick_width"
+        app:layout_constraintLeft_toRightOf="@+id/left_stick"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/step_1_text"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <!-- wheel calibration views-->
+
+    <TextView
+        android:id="@+id/step_2_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/uxsdk_rc_calibration_2"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="@dimen/uxsdk_text_size_normal_medium"
+        app:layout_constraintTop_toBottomOf="@+id/left_stick" />
+
+    <!-- left wheel -->
+
+    <ImageView
+        android:id="@+id/left_dial_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/uxsdk_ic_rc_calibration_left_dial"
+        app:layout_constraintBottom_toTopOf="@+id/right_dial_image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/left_dial_left_image"
+        app:layout_constraintTop_toBottomOf="@+id/step_2_text"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/left_dial_left_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/uxsdk_ic_rc_left_dial_down"
+        app:layout_constraintBottom_toBottomOf="@+id/left_dial_image"
+        app:layout_constraintLeft_toRightOf="@+id/left_dial_image"
+        app:layout_constraintRight_toLeftOf="@+id/left_dial_progress"
+        app:layout_constraintTop_toTopOf="@+id/left_dial_image"
+        tools:ignore="ContentDescription" />
+
+    <dji.ux.beta.core.widget.calibration.CalibrationProgressBar
+        android:id="@+id/left_dial_progress"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_rc_calibration_progress_line_width"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/left_dial_image"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toRightOf="@+id/left_dial_left_image"
+        app:layout_constraintRight_toLeftOf="@+id/left_dial_right_image"
+        app:layout_constraintTop_toTopOf="@+id/left_dial_image" />
+
+    <ImageView
+        android:id="@+id/left_dial_right_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/uxsdk_ic_rc_left_dial_up"
+        app:layout_constraintBottom_toBottomOf="@+id/left_dial_image"
+        app:layout_constraintLeft_toRightOf="@+id/left_dial_progress"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/left_dial_image"
+        tools:ignore="ContentDescription" />
+
+    <!-- right wheel -->
+
+    <ImageView
+        android:id="@+id/right_dial_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/uxsdk_ic_rcpro_calibration_right_dial"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/right_dial_left_image"
+        app:layout_constraintTop_toBottomOf="@+id/left_dial_image"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/right_dial_left_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:src="@drawable/uxsdk_ic_rc_right_dial_up"
+        app:layout_constraintBottom_toBottomOf="@id/right_dial_image"
+        app:layout_constraintLeft_toRightOf="@+id/right_dial_image"
+        app:layout_constraintRight_toLeftOf="@+id/right_dial_progress"
+        app:layout_constraintTop_toTopOf="@+id/right_dial_image"
+        tools:ignore="ContentDescription" />
+
+    <dji.ux.beta.core.widget.calibration.CalibrationProgressBar
+        android:id="@+id/right_dial_progress"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_rc_calibration_progress_line_width"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/right_dial_image"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toRightOf="@+id/right_dial_left_image"
+        app:layout_constraintRight_toLeftOf="@+id/right_dial_right_image"
+        app:layout_constraintTop_toTopOf="@+id/right_dial_image" />
+
+    <ImageView
+        android:id="@+id/right_dial_right_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
+        android:src="@drawable/uxsdk_ic_rc_right_dial_down"
+        app:layout_constraintBottom_toBottomOf="@+id/right_dial_image"
+        app:layout_constraintLeft_toRightOf="@+id/right_dial_progress"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/right_dial_image"
+        tools:ignore="ContentDescription" />
+
+    <!-- dials -->
+
+    <TextView
+        android:id="@+id/step_3_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/uxsdk_rc_pro_calibration_3"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="@dimen/uxsdk_text_size_normal_medium"
+        app:layout_constraintTop_toBottomOf="@+id/right_dial_image" />
+
+    <ImageView
+        android:id="@+id/left_lever_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="34dp"
+        android:src="@drawable/uxsdk_ic_rcpro_calibration_left_lever"
+        app:layout_constraintBottom_toTopOf="@+id/message"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/right_lever_image"
+        app:layout_constraintTop_toBottomOf="@+id/step_3_text"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/left_lever_top_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/uxsdk_ic_rc_left_lever_up"
+        app:layout_constraintBottom_toTopOf="@+id/left_lever_progress"
+        app:layout_constraintLeft_toRightOf="@+id/left_lever_image"
+        app:layout_constraintTop_toBottomOf="@+id/step_3_text"
+        tools:ignore="ContentDescription" />
+
+    <dji.ux.beta.core.widget.calibration.CalibrationProgressBar
+        android:id="@+id/left_lever_progress"
+        android:layout_width="@dimen/uxsdk_rc_calibration_progress_line_width"
+        android:layout_height="132dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/left_lever_bottom_image"
+        app:layout_constraintLeft_toLeftOf="@+id/left_lever_top_image"
+        app:layout_constraintRight_toRightOf="@+id/left_lever_top_image"
+        app:layout_constraintTop_toBottomOf="@+id/left_lever_top_image"
+        app:uxsdk_orientation="vertical" />
+
+    <ImageView
+        android:id="@+id/left_lever_bottom_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/uxsdk_ic_rc_left_lever_down"
+        app:layout_constraintBottom_toTopOf="@+id/message"
+        app:layout_constraintLeft_toLeftOf="@+id/left_lever_top_image"
+        app:layout_constraintRight_toRightOf="@+id/left_lever_top_image"
+        app:layout_constraintTop_toBottomOf="@+id/left_lever_progress"
+        tools:ignore="ContentDescription" />
+
+    <!-- right dial -->
+
+    <ImageView
+        android:id="@+id/right_lever_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="34dp"
+        android:src="@drawable/uxsdk_ic_rcpro_calibration_right_lever"
+        app:layout_constraintBottom_toTopOf="@+id/message"
+        app:layout_constraintLeft_toRightOf="@+id/left_lever_image"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/step_3_text"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
+        android:id="@+id/right_lever_top_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/uxsdk_ic_rc_right_lever_up"
+        app:layout_constraintBottom_toTopOf="@+id/right_lever_progress"
+        app:layout_constraintLeft_toRightOf="@+id/right_lever_image"
+        app:layout_constraintTop_toBottomOf="@+id/step_3_text"
+        tools:ignore="ContentDescription" />
+
+    <dji.ux.beta.core.widget.calibration.CalibrationProgressBar
+        android:id="@+id/right_lever_progress"
+        android:layout_width="@dimen/uxsdk_rc_calibration_progress_line_width"
+        android:layout_height="132dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/right_lever_bottom_image"
+        app:layout_constraintLeft_toLeftOf="@+id/right_lever_top_image"
+        app:layout_constraintRight_toRightOf="@+id/right_lever_top_image"
+        app:layout_constraintTop_toBottomOf="@+id/right_lever_top_image"
+        app:uxsdk_orientation="vertical" />
+
+    <ImageView
+        android:id="@+id/right_lever_bottom_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/uxsdk_ic_rc_right_lever_down"
+        app:layout_constraintBottom_toBottomOf="@+id/left_lever_bottom_image"
+        app:layout_constraintLeft_toLeftOf="@+id/right_lever_top_image"
+        app:layout_constraintRight_toRightOf="@+id/right_lever_top_image"
+        app:layout_constraintTop_toTopOf="@+id/left_lever_bottom_image"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/uxsdk_rc_calibration_message_margin_top"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="@dimen/uxsdk_text_size_small"
+        app:layout_constraintBottom_toTopOf="@id/calibration_button"
+        app:layout_constraintTop_toBottomOf="@id/left_lever_bottom_image" />
+
+    <Button
+        android:id="@+id/calibration_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/uxsdk_rc_calibration_message_margin_top"
+        android:background="@drawable/uxsdk_selector_blue_rect_mask"
+        android:text="@string/uxsdk_rc_calibrate"
+        android:textAllCaps="false"
+        android:textColor="@color/uxsdk_rc_calibration_btn_text"
+        android:textSize="@dimen/uxsdk_text_size_normal_medium"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/message" />
+
+    <dji.ux.beta.core.widget.calibration.CalibrationSquareView
+        android:id="@+id/calibration_left_stick"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/message"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/calibration_right_stick"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+    <dji.ux.beta.core.widget.calibration.CalibrationSquareView
+        android:id="@+id/calibration_right_stick"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/calibration_left_stick"
+        app:layout_constraintLeft_toRightOf="@+id/calibration_left_stick"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/calibration_left_stick"
+        tools:visibility="visible" />
+
+    <dji.ux.beta.core.widget.calibration.CalibrationDialView
+        android:id="@+id/calibration_dial"
+        android:layout_width="@dimen/uxsdk_rc_calibration_dial_width"
+        android:layout_height="@dimen/uxsdk_rc_calibration_dial_height"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/message"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+</merge>

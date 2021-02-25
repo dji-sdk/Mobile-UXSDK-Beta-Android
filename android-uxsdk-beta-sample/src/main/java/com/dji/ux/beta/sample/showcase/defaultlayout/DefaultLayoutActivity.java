@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -39,7 +39,6 @@ import com.dji.ux.beta.sample.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import dji.common.airlink.PhysicalSource;
 import dji.common.product.Model;
 import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
 import dji.thirdparty.io.reactivex.disposables.CompositeDisposable;
@@ -49,7 +48,6 @@ import dji.ux.beta.core.extension.ViewExtensions;
 import dji.ux.beta.core.panel.systemstatus.SystemStatusListPanelWidget;
 import dji.ux.beta.core.panel.topbar.TopBarPanelWidget;
 import dji.ux.beta.core.util.DisplayUtil;
-import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.widget.fpv.FPVWidget;
 import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget;
 import dji.ux.beta.core.widget.radar.RadarWidget;
@@ -75,8 +73,6 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     protected FPVInteractionWidget fpvInteractionWidget;
     @BindView(R.id.widget_map)
     protected MapWidget mapWidget;
-    @BindView(R.id.widget_secondary_fpv)
-    protected FPVWidget secondaryFPVWidget;
     @BindView(R.id.root_view)
     protected ConstraintLayout parentView;
     @BindView(R.id.widget_panel_system_status_list)
@@ -167,9 +163,6 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         super.onResume();
         mapWidget.onResume();
         compositeDisposable = new CompositeDisposable();
-        compositeDisposable.add(secondaryFPVWidget.getCameraName()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::updateSecondaryVideoVisibility));
 
         compositeDisposable.add(systemStatusListPanelWidget.closeButtonPressed()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -247,14 +240,6 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     }
 
     /**
-     * Handles a click event on the secondary FPV widget
-     */
-    @OnClick(R.id.widget_secondary_fpv)
-    public void onSecondaryFPVClick() {
-        swapVideoSource();
-    }
-
-    /**
      * Swaps the FPV and Map Widgets.
      *
      * @param view The thumbnail view that was clicked.
@@ -300,32 +285,6 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         //shrink second widget
         ResizeAnimation shrinkAnimation = new ResizeAnimation(viewToShrink, deviceWidth, deviceHeight, widgetWidth, widgetHeight, widgetMargin);
         viewToShrink.startAnimation(shrinkAnimation);
-    }
-
-    /**
-     * Swap the video sources of the FPV and secondary FPV widgets.
-     */
-    private void swapVideoSource() {
-        if (secondaryFPVWidget.getVideoSource() == SettingDefinitions.VideoSource.SECONDARY) {
-            fpvWidget.setVideoSource(SettingDefinitions.VideoSource.SECONDARY);
-            secondaryFPVWidget.setVideoSource(SettingDefinitions.VideoSource.PRIMARY);
-        } else {
-            fpvWidget.setVideoSource(SettingDefinitions.VideoSource.PRIMARY);
-            secondaryFPVWidget.setVideoSource(SettingDefinitions.VideoSource.SECONDARY);
-        }
-    }
-
-    /**
-     * Hide the secondary FPV widget when there is no secondary camera.
-     *
-     * @param cameraName The name of the secondary camera.
-     */
-    private void updateSecondaryVideoVisibility(String cameraName) {
-        if (cameraName.equals(PhysicalSource.UNKNOWN.name())) {
-            secondaryFPVWidget.setVisibility(View.GONE);
-        } else {
-            secondaryFPVWidget.setVisibility(View.VISIBLE);
-        }
     }
     //endregion
 

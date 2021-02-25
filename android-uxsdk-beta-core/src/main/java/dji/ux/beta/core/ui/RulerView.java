@@ -42,25 +42,20 @@ import androidx.annotation.ColorInt;
 import dji.ux.beta.core.R;
 
 /**
- *
  * A custom view used to display a scale with increase and decrease buttons
- *
  */
 public class RulerView extends View {
 
-    private static final String TAG = "RulerView";
-
     protected final static int DEFAULT_INTERVAL = 10; // Default scale interval value
     protected final static int DEFAULT_NUMBER = 13;
-
+    private static final String TAG = "RulerView";
+    protected final RectF tmpRect = new RectF();
     protected int width = 0;
     protected int height = 0;
     protected Paint drawPaint = null;
-
     protected Drawable selectDrawable = null;
     protected int scaleColor = 0;
     protected int scalePadding = 0;
-
     protected float density = 0;
     protected int minVelocity = 0;
     protected int maxVelocity = 0;
@@ -68,8 +63,6 @@ public class RulerView extends View {
     protected VelocityTracker velocityTracker = null;
     protected int offsetY = 0;
     protected int lastTouchY = 0;
-    protected final RectF tmpRect = new RectF();
-
     protected int maxSize = 2000;
     protected int curSize = 0;
     protected int interval = DEFAULT_INTERVAL;
@@ -108,6 +101,15 @@ public class RulerView extends View {
     }
 
     /**
+     * Get the max size of the ruler
+     *
+     * @return integer value
+     */
+    public int getMaxSize() {
+        return maxSize;
+    }
+
+    /**
      * Set the max size of the ruler
      *
      * @param max integer value
@@ -125,15 +127,6 @@ public class RulerView extends View {
             }
             postInvalidate();
         }
-    }
-
-    /**
-     * Get the max size of the ruler
-     *
-     * @return integer value
-     */
-    public int getMaxSize() {
-        return maxSize;
     }
 
     /**
@@ -170,6 +163,15 @@ public class RulerView extends View {
     }
 
     /**
+     * Get the cursor position of the ruler
+     *
+     * @return integer value
+     */
+    public int getCurSize() {
+        return curSize;
+    }
+
+    /**
      * Sets the new value and uses a scrolling animation to update the new state.
      *
      * @param size integer value
@@ -184,15 +186,6 @@ public class RulerView extends View {
             final int step = (int) (Math.abs(curSize - size) * 1.0f / 8 + 1);
             post(new ScrollRunnable(curSize, size, step));
         }
-    }
-
-    /**
-     * Get the cursor position of the ruler
-     *
-     * @return integer value
-     */
-    public int getCurSize() {
-        return curSize;
     }
 
     /**
@@ -446,10 +439,85 @@ public class RulerView extends View {
         return (int) (((1 - factor) * (1 - factor) * 0.95f + 0.05f) * 255);
     }
 
+    /**
+     * Check if ruler scrolling is enabled
+     *
+     * @return boolean value true- enabled false - disabled
+     */
+    public boolean isRulerEnabled() {
+        return isRulerEnabled;
+    }
+
+    /**
+     * Enable or disable the scroll
+     *
+     * @param isEnabled true- scroll enabled false - scroll disabled
+     */
+    public void setRulerEnabled(boolean isEnabled) {
+        isRulerEnabled = isEnabled;
+    }
+
+    /**
+     * Get the ruler scale color
+     *
+     * @return integer value representing color
+     */
+    @ColorInt
+    public int getScaleColor() {
+        return scaleColor;
+    }
+
+    /**
+     * Set the ruler scale color
+     *
+     * @param scaleColor integer value representing color
+     */
+    public void setScaleColor(@ColorInt int scaleColor) {
+        this.scaleColor = scaleColor;
+        drawPaint.setColor(scaleColor);
+        invalidate();
+    }
+
+    /**
+     * Interface to track updates of the ruler srcoll
+     */
+    public interface OnRulerScrollListener {
+        /**
+         * Indicate start of scroll action
+         *
+         * @param rulerView current instance of {@link RulerView}
+         */
+        void onScrollingStarted(final RulerView rulerView);
+
+        /**
+         * Indicate stop of scroll action
+         *
+         * @param rulerView current instance of {@link RulerView}
+         */
+        void onScrollingFinished(final RulerView rulerView);
+    }
+
+
+    /**
+     * Interface to track changes in ruler
+     */
+    public interface OnRulerChangeListener {
+
+        /**
+         * Indicate ruler changed
+         *
+         * @param rulerView current instance of {@link RulerView}
+         * @param newSize   update size
+         * @param oldSize   old size
+         * @param fromUser  is the update from user interaction
+         */
+        void onChanged(final RulerView rulerView, final int newSize, final int oldSize, final boolean fromUser);
+    }
+
     private final class ScrollRunnable implements Runnable {
-        private int mStartSize;
-        private int mEndSize;
-        private int mStep;
+        private final int mStartSize;
+        private final int mEndSize;
+        private final int mStep;
         private boolean mbAdd = false;
 
         private ScrollRunnable(final int start, final int end) {
@@ -523,83 +591,6 @@ public class RulerView extends View {
                 }
             }
         }
-    }
-
-    /**
-     * Interface to track updates of the ruler srcoll
-     */
-    public interface OnRulerScrollListener {
-        /**
-         * Indicate start of scroll action
-         *
-         * @param rulerView current instance of {@link RulerView}
-         */
-        void onScrollingStarted(final RulerView rulerView);
-
-        /**
-         * Indicate stop of scroll action
-         *
-         * @param rulerView current instance of {@link RulerView}
-         */
-        void onScrollingFinished(final RulerView rulerView);
-    }
-
-
-    /**
-     * Interface to track changes in ruler
-     *
-     */
-    public interface OnRulerChangeListener {
-
-        /**
-         * Indicate ruler changed
-         *
-         * @param rulerView current instance of {@link RulerView}
-         * @param newSize update size
-         * @param oldSize old size
-         * @param fromUser is the update from user interaction
-         */
-        void onChanged(final RulerView rulerView, final int newSize, final int oldSize, final boolean fromUser);
-    }
-
-    /**
-     * Enable or disable the scroll
-     *
-     * @param isEnabled true- scroll enabled false - scroll disabled
-     */
-    public void setRulerEnabled(boolean isEnabled) {
-        isRulerEnabled = isEnabled;
-    }
-
-    /**
-     * Check if ruler scrolling is enabled
-     *
-     * @return boolean value true- enabled false - disabled
-     */
-    public boolean isRulerEnabled() {
-        return isRulerEnabled;
-    }
-
-
-    /**
-     * Set the ruler scale color
-     *
-     * @param scaleColor integer value representing color
-     */
-    public void setScaleColor(@ColorInt int scaleColor) {
-        this.scaleColor = scaleColor;
-        drawPaint.setColor(scaleColor);
-        invalidate();
-    }
-
-    /**
-     * Get the ruler scale color
-     *
-     * @return integer value representing color
-     */
-    @ColorInt
-    public int getScaleColor() {
-        return scaleColor;
     }
 
 }

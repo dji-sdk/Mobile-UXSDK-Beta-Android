@@ -407,9 +407,13 @@ class SlidingDialog @JvmOverloads constructor(
         super.show()
     }
 
-    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {}
+    override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+        //Do nothing
+    }
 
-    override fun onStartTrackingTouch(seekBar: SeekBar) {}
+    override fun onStartTrackingTouch(seekBar: SeekBar) {
+        //Do nothing
+    }
 
     override fun onStopTrackingTouch(seekBar: SeekBar) {
         handleSbStopTrack()

@@ -209,7 +209,7 @@ open class TopBarPanelWidget @JvmOverloads constructor(
 
     @SuppressLint("Recycle")
     override fun initAttributes(attrs: AttributeSet) {
-        guidelinePercent = 0.3f
+        setGuidelinePercent(0.3f, 0.3f)
         itemsMarginTop = getDimension(R.dimen.uxsdk_bar_panel_margin).toInt()
         itemsMarginBottom = getDimension(R.dimen.uxsdk_bar_panel_margin).toInt()
 

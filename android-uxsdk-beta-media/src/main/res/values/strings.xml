@@ -1,0 +1,72 @@
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<resources>
+    <!-- Access Locker -->
+    <string name="uxsdk_access_locker">Access Locker</string>
+    <string name="uxsdk_set_password">Set Password</string>
+    <string name="uxsdk_enter_password">Enter Password</string>
+    <string name="uxsdk_confirm_password">Confirm Password</string>
+    <string name="uxsdk_change_password">Change Password</string>
+    <string name="uxsdk_change_password_button">Change</string>
+    <string name="uxsdk_cancel_button">Cancel</string>
+    <string name="uxsdk_enter_current_password">Enter Current Password</string>
+    <string name="uxsdk_enter_new_password">Enter New Password</string>
+    <string name="uxsdk_confirm_new_password">Confirm New Password</string>
+    <string name="uxsdk_change_password_message">Passwords can contain uppercase and lowercase letters and numbers.
+    </string>
+    <string name="uxsdk_enter_security_password">Enter Password</string>
+    <string name="uxsdk_security_password_warning">The password is stored locally on the aircraft. Password retrieval is not
+        available for this reason. DJI is not able to reset your password. If you forget your password, you will need to
+        format the aircraft to remove the password. Formatting the aircraft will delete all data in its storage.
+    </string>
+    <string name="uxsdk_format_aircraft">Format Aircraft</string>
+    <string name="uxsdk_format_button">Format</string>
+    <string name="uxsdk_unlock">Unlock</string>
+    <string name="uxsdk_remove_password">Remove Password</string>
+    <string name="uxsdk_enter_password_to_remove">Enter Password To Remove</string>
+    <string name="uxsdk_remove">Remove</string>
+    <string name="uxsdk_select_action_header">Change or Remove Password</string>
+    <string name="uxsdk_select_action_message">The current password is required in order to change or remove the password
+    </string>
+    <string name="uxsdk_remove_password_warning">This will remove the password and leave the aircraft unsecured.</string>
+    <string name="uxsdk_empty_field_error">Field cannot be empty</string>
+    <string name="uxsdk_passwords_do_not_match_error">Passwords do not match</string>
+    <string name="uxsdk_password_set_successfully">Password set successfully</string>
+    <string name="uxsdk_password_set_failed">Setting password failed: %1$s. Please try again.</string>
+    <string name="uxsdk_set_password_warning">Your password is used to ensure the secure use of your aircraft. After setting a
+        password, it will be required to control the aircraft and for reading aircraft memory when the aircraft is
+        connected to a computer as an external device. Password retrieval is not
+        available as password is stored locally on the aircraft. Passwords can contain uppercase and lowercase letters and numbers.
+    </string>
+    <string name="uxsdk_aircraft_unlocked_successfully">Aircraft unlocked successfully</string>
+    <string name="uxsdk_aircraft_formatted_successfully">Aircraft formatted successfully</string>
+    <string name="uxsdk_aircraft_format_failed">Format aircraft failed: %1$s.</string>
+    <string name="uxsdk_format_aircraft_confirmation">Formatting the aircraft will delete all data in its storage. Are you
+        sure you want to format the aircraft?
+    </string>
+    <string name="uxsdk_password_removed_successfully">Password removed successfully</string>
+    <string name="uxsdk_remove_password_failed">Remove password failed: %1$s. Please try again.</string>
+    <string name="uxsdk_password_changed_successfully">Password changed successfully</string>
+    <string name="uxsdk_change_password_failed">Change password failed: %1$s. Please try again.</string>
+</resources>

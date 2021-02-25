@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -80,6 +80,11 @@ public abstract class WidgetModel {
 
     //region Lifecycle
 
+    /**
+     * Add the module to this WidgetModel's lifecycle
+     *
+     * @param baseModule The module to add
+     */
     protected void addModule(@NonNull BaseModule baseModule) {
         if (isStarted()) {
             throw new IllegalStateException("WidgetModel is already setup. Modules should" +
@@ -136,7 +141,7 @@ public abstract class WidgetModel {
     /**
      * Restart the widget model by cleaning up and then setting up the widget model again
      */
-    protected void restart() {
+    protected synchronized void restart() {
         if (isStarted()) {
             cleanup();
             setup();

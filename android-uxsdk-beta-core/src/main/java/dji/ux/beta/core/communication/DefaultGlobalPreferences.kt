@@ -28,6 +28,7 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.core.content.edit
+import dji.common.camera.ColorWaveformSettings.ColorWaveformDisplayState
 import dji.ux.beta.core.ui.CenterPointView
 import dji.ux.beta.core.ui.GridLineView.GridLineType
 import dji.ux.beta.core.util.SettingDefinitions
@@ -71,6 +72,16 @@ class DefaultGlobalPreferences(context: Context) : GlobalPreferencesInterface {
         set(neverShown) =
             sharedPreferences.edit { putBoolean(PREF_AIR_SENSE_TERMS_NEVER_SHOWN, neverShown) }
 
+    override var colorWaveformDisplayState: ColorWaveformDisplayState
+        get() = ColorWaveformDisplayState.find(sharedPreferences.getInt(COLOR_WAVEFORM_DISPLAY_STATE,
+                ColorWaveformDisplayState.EXPOSURE.value()))
+        set(displayState) =
+            sharedPreferences.edit { putInt(COLOR_WAVEFORM_DISPLAY_STATE, displayState.value()) }
+
+    override var isColorWaveformEnabled: Boolean
+        get() = sharedPreferences.getBoolean(COLOR_WAVEFORM_ENABLED, true)
+        set(isOpen) = sharedPreferences.edit { putBoolean(COLOR_WAVEFORM_ENABLED, isOpen) }
+
     override var gridLineType: GridLineType
         get() = GridLineType.find(sharedPreferences.getInt(PREF_GRID_LINE_TYPE,
                 GridLineType.NONE.value))
@@ -107,6 +118,8 @@ class DefaultGlobalPreferences(context: Context) : GlobalPreferencesInterface {
         private const val PREF_GLOBAL_UNIT_TYPE: String = "globalUnitType"
         private const val PREF_TEMPERATURE_UNIT_TYPE: String = "temperatureUnitType"
         private const val PREF_AIR_SENSE_TERMS_NEVER_SHOWN: String = "airSenseTerms"
+        private const val COLOR_WAVEFORM_ENABLED: String = "colorWaveformEnabled"
+        private const val COLOR_WAVEFORM_DISPLAY_STATE: String = "colorWaveformDisplayState"
         private const val PREF_GRID_LINE_TYPE: String = "gridLineType"
         private const val PREF_CENTER_POINT_TYPE: String = "centerPointType"
         private const val PREF_CENTER_POINT_COLOR: String = "centerPointColor"

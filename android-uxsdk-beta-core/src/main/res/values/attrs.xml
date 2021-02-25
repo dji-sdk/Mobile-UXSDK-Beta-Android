@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2020 DJI
+  ~ Copyright (c) 2018-2021 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -25,6 +25,9 @@
 <resources>
 
     <declare-styleable name="SeekBarView">
+        <attr name="uxsdk_max" format="integer" />
+        <attr name="uxsdk_progress" format="integer" />
+        <attr name="uxsdk_enabled" format="boolean" />
         <attr name="uxsdk_minValueVisible" format="boolean" />
         <attr name="uxsdk_maxValueVisible" format="boolean" />
         <attr name="uxsdk_minusVisible" format="boolean" />
@@ -95,15 +98,6 @@
     <attr name="uxsdk_connectedStateIconColor" format="color" />
     <attr name="uxsdk_disconnectedStateIconColor" format="color" />
 
-    <attr name="uxsdk_imageFormatTextAppearance" format="reference" />
-    <attr name="uxsdk_imageFormatTextColor" format="color" />
-    <attr name="uxsdk_imageFormatTextBackground" format="reference" />
-    <attr name="uxsdk_imageFormatTextSize" format="dimension" />
-    <attr name="uxsdk_capacityValueTextAppearance" format="reference" />
-    <attr name="uxsdk_capacityValueTextColor" format="color" />
-    <attr name="uxsdk_capacityValueTextBackground" format="reference" />
-    <attr name="uxsdk_capacityValueTextSize" format="dimension" />
-
     <attr name="uxsdk_evValueTextAppearance" format="reference" />
     <attr name="uxsdk_evValueTextSize" format="dimension" />
     <attr name="uxsdk_evValueTextColor" format="color|reference" />
@@ -122,6 +116,35 @@
     <attr name="uxsdk_checkBoxTextColor" format="reference" />
     <attr name="uxsdk_checkBoxTextBackground" format="reference" />
     <attr name="uxsdk_checkBoxTextAppearance" format="reference" />
+
+    <attr name="uxsdk_label_string" format="string|reference" />
+    <attr name="uxsdk_label_text_size" format="dimension|reference" />
+    <attr name="uxsdk_label_text_color" format="color|reference" />
+    <attr name="uxsdk_label_text_appearance" format="reference" />
+    <attr name="uxsdk_label_background" format="reference" />
+    <attr name="uxsdk_label_visibility" format="boolean" />
+    <attr name="uxsdk_value_string" format="string|reference" />
+    <attr name="uxsdk_value_text_size" format="dimension|reference" />
+    <attr name="uxsdk_value_text_color" format="color|reference" />
+    <attr name="uxsdk_value_text_appearance" format="reference" />
+    <attr name="uxsdk_value_background" format="reference" />
+    <attr name="uxsdk_value_visibility" format="boolean" />
+    <attr name="uxsdk_value_gravity">
+        <flag name="bottom" value="80" />
+        <flag name="center" value="17" />
+        <flag name="center_horizontal" value="1" />
+        <flag name="center_vertical" value="16" />
+        <flag name="clip_horizontal" value="8" />
+        <flag name="clip_vertical" value="128" />
+        <flag name="end" value="8388613" />
+        <flag name="fill" value="119" />
+        <flag name="fill_horizontal" value="7" />
+        <flag name="fill_vertical" value="112" />
+        <flag name="left" value="3" />
+        <flag name="right" value="5" />
+        <flag name="start" value="8388611" />
+        <flag name="top" value="48" />
+    </attr>
 
     <declare-styleable name="BatteryWidget">
         <attr name="uxsdk_voltageVisibility" format="boolean" />
@@ -245,7 +268,14 @@
         <attr name="uxsdk_visionIconBackground" format="reference" />
         <attr name="uxsdk_disconnectedStateIconColor" />
     </declare-styleable>
-    
+
+    <declare-styleable name="CalibrationProgressBar">
+        <attr name="uxsdk_orientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+    </declare-styleable>
+
     <declare-styleable name="RemoteControllerSignalWidget">
         <attr name="uxsdk_rcIcon" format="reference" />
         <attr name="uxsdk_rcSignalIcon" format="reference" />
@@ -372,7 +402,48 @@
         and {@link dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget}. -->
         <attr name="uxsdk_onStateChange" />
     </declare-styleable>
-
+    <declare-styleable name="RemoteControllerCalibrationWidget">
+        <attr name="uxsdk_stepsTextBackground" format="reference" />
+        <attr name="uxsdk_stepsTextAppearance" format="reference" />
+        <attr name="uxsdk_stepsTextColor" format="color" />
+        <attr name="uxsdk_stepsTextSize" format="dimension" />
+        <attr name="uxsdk_stickImageDrawable" format="reference" />
+        <attr name="uxsdk_proStickImageDrawable" format="reference" />
+        <attr name="uxsdk_stickImageBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_leftDialImageDrawable" format="reference" />
+        <attr name="uxsdk_proLeftDialImageDrawable" format="reference" />
+        <attr name="uxsdk_leftDialImageBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_leftDialLeftArrowImageDrawable" format="reference" />
+        <attr name="uxsdk_leftDialRightArrowImageDrawable" format="reference" />
+        <attr name="uxsdk_arrowBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_rightDialImageDrawable" format="reference" />
+        <attr name="uxsdk_rightDialImageBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_rightDialLeftArrowImageDrawable" format="reference" />
+        <attr name="uxsdk_rightDialRightArrowImageDrawable" format="reference" />
+        <attr name="uxsdk_leftLeverImageDrawable" format="reference" />
+        <attr name="uxsdk_leftLeverImageBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_leftLeverTopArrowImageDrawable" format="reference" />
+        <attr name="uxsdk_leftLeverBottomArrowImageDrawable" format="reference" />
+        <attr name="uxsdk_rightLeverImageDrawable" format="reference" />
+        <attr name="uxsdk_rightLeverImageBackgroundDrawable" format="reference" />
+        <attr name="uxsdk_rightLeverTopArrowImageDrawable" format="reference" />
+        <attr name="uxsdk_rightLeverBottomArrowImageDrawable" format="reference" />
+        <attr name="uxsdk_messageTextBackground" />
+        <attr name="uxsdk_messageTextAppearance" />
+        <attr name="uxsdk_messageTextColor" format="color" />
+        <attr name="uxsdk_messageTextSize" />
+        <attr name="uxsdk_buttonBackground" />
+        <attr name="uxsdk_buttonTextAppearance" />
+        <attr name="uxsdk_buttonTextColor" />
+        <attr name="uxsdk_buttonTextSize" />
+        <attr name="uxsdk_calibrationProgressColor" format="color" />
+        <attr name="uxsdk_calibrationBorderColor" format="color" />
+        <attr name="uxsdk_calibrationProgressBackgroundColor" format="color" />
+        <attr name="uxsdk_calibrationTextColor" format="color" />
+        <attr name="uxsdk_mavicCalibrationCircleColor" format="color" />
+        <attr name="uxsdk_calibrationTextSize" format="dimension" />
+        <attr name="uxsdk_mavicCalibrationTextSize" format="dimension" />
+    </declare-styleable>
     <declare-styleable name="RadarWidget">
         <attr name="uxsdk_forwardImages" format="reference" />
         <attr name="uxsdk_backwardImages" format="reference" />
@@ -444,7 +515,8 @@
         <attr name="uxsdk_itemsMarginRight" format="dimension" />
         <attr name="uxsdk_itemsMarginBottom" format="dimension" />
         <attr name="uxsdk_itemsSpacing" format="dimension" />
-        <attr name="uxsdk_guidelinePercent" format="float" />
+        <attr name="uxsdk_leftEndGuidelinePercent" format="float" />
+        <attr name="uxsdk_rightStartGuidelinePercent" format="float" />
         <attr name="uxsdk_leftBias" format="float" />
         <attr name="uxsdk_rightBias" format="float" />
         <attr name="uxsdk_leftChainStyle">
@@ -648,6 +720,9 @@
         <!-- E.g., app:excludeItem="flight_mode|rc_stick_mode" -->
         <attr name="uxsdk_excludeItem">
             <flag name="flight_mode" value="1"/>
+            <flag name="compass" value="2"/>
+            <flag name="vision_sensor" value="4"/>
+            <flag name="radio_quality" value="8"/>
             <flag name="rc_stick_mode" value="16"/>
             <flag name="rc_battery" value="32"/>
             <flag name="aircraft_battery_temperature" value="64"/>
@@ -697,34 +772,19 @@
     </declare-styleable>
 
     <declare-styleable name="BaseTelemetryWidget">
-        <attr name="uxsdk_label_string" format="string|reference" />
-        <attr name="uxsdk_label_text_size" format="dimension|reference" />
-        <attr name="uxsdk_label_text_color" format="color|reference" />
-        <attr name="uxsdk_label_text_appearance" format="reference" />
-        <attr name="uxsdk_label_background" format="reference" />
-        <attr name="uxsdk_label_visibility" format="boolean" />
-        <attr name="uxsdk_value_string" format="string|reference" />
-        <attr name="uxsdk_value_text_size" format="dimension|reference" />
-        <attr name="uxsdk_value_text_color" format="color|reference" />
-        <attr name="uxsdk_value_text_appearance" format="reference" />
-        <attr name="uxsdk_value_background" format="reference" />
-        <attr name="uxsdk_value_visibility" format="boolean" />
-        <attr name="uxsdk_value_gravity">
-            <flag name="bottom" value="80" />
-            <flag name="center" value="17" />
-            <flag name="center_horizontal" value="1" />
-            <flag name="center_vertical" value="16" />
-            <flag name="clip_horizontal" value="8" />
-            <flag name="clip_vertical" value="128" />
-            <flag name="end" value="8388613" />
-            <flag name="fill" value="119" />
-            <flag name="fill_horizontal" value="7" />
-            <flag name="fill_vertical" value="112" />
-            <flag name="left" value="3" />
-            <flag name="right" value="5" />
-            <flag name="start" value="8388611" />
-            <flag name="top" value="48" />
-        </attr>
+        <attr name="uxsdk_label_string"/>
+        <attr name="uxsdk_label_text_size"/>
+        <attr name="uxsdk_label_text_color"/>
+        <attr name="uxsdk_label_text_appearance"/>
+        <attr name="uxsdk_label_background"/>
+        <attr name="uxsdk_label_visibility"/>
+        <attr name="uxsdk_value_string"/>
+        <attr name="uxsdk_value_text_size"/>
+        <attr name="uxsdk_value_text_color"/>
+        <attr name="uxsdk_value_text_appearance"/>
+        <attr name="uxsdk_value_background"/>
+        <attr name="uxsdk_value_visibility"/>
+        <attr name="uxsdk_value_gravity"/>
         <attr name="uxsdk_unit_string" format="string|reference" />
         <attr name="uxsdk_unit_text_size" format="dimension|reference" />
         <attr name="uxsdk_unit_text_color" format="color|reference" />

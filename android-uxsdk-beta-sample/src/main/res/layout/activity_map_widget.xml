@@ -37,16 +37,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
+    <com.dji.ux.beta.sample.view.SettingsDrawerView
         android:id="@+id/settings_scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:drawerPosition="left"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintWidth_percent="0.35">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toggles"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/dark_gray"
@@ -54,37 +56,24 @@
 
             <TextView
                 android:id="@+id/settings_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
-                android:background="@color/transparent"
-                android:gravity="center"
-                android:padding="5dp"
+                style="@style/SettingHeader"
                 android:text="@string/map_settings"
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/settings_separator"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/map_settings_item_separator"
-                android:background="@color/colorAccent"
+                style="@style/SettingHeaderSeparator"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settings_text" />
 
             <TextView
                 android:id="@+id/center_selector_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:padding="5dp"
+                style="@style/SettingItem"
+                android:layout_marginTop="0dp"
                 android:text="@string/center_map"
-                android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="@+id/map_center_selector"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -95,7 +84,7 @@
                 android:id="@+id/map_center_selector"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                android:layout_marginTop="@dimen/module_settings_item_separator"
                 android:background="@color/transparent"
                 android:orientation="horizontal"
                 app:layout_constraintLeft_toRightOf="@+id/center_selector_label"
@@ -110,7 +99,6 @@
                     android:button="@null"
                     android:checked="true"
                     android:drawableStart="@drawable/uxsdk_ic_compass_aircraft"
-                    android:drawableLeft="@drawable/uxsdk_ic_compass_aircraft"
                     android:padding="8dp"
                     android:textColor="@drawable/selector_map_type_text" />
 
@@ -121,7 +109,6 @@
                     android:background="@drawable/selector_map_type_bg"
                     android:button="@null"
                     android:drawableStart="@drawable/uxsdk_ic_compass_home"
-                    android:drawableLeft="@drawable/uxsdk_ic_compass_home"
                     android:padding="8dp"
                     android:textColor="@drawable/selector_map_type_text" />
 
@@ -132,7 +119,6 @@
                     android:background="@drawable/selector_map_type_bg"
                     android:button="@null"
                     android:drawableStart="@android:drawable/ic_notification_clear_all"
-                    android:drawableLeft="@android:drawable/ic_notification_clear_all"
                     android:padding="8dp"
                     android:textColor="@drawable/selector_map_type_text" />
 
@@ -140,44 +126,32 @@
 
             <CheckBox
                 android:id="@+id/home_point"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                style="@style/SettingItem"
                 android:checked="true"
                 android:text="@string/show_home_point"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/map_center_selector" />
 
             <CheckBox
                 android:id="@+id/login_state_indicator"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                style="@style/SettingItem"
                 android:checked="true"
                 android:text="@string/dji_account_indicator"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_point" />
 
             <Spinner
                 android:id="@+id/map_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
-                android:background="@drawable/bg_spinner"
+                style="@style/SettingSpinner"
+                android:layout_marginTop="@dimen/module_settings_item_separator"
                 android:entries="@array/mapTypeArray"
-                android:paddingRight="30dp"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/login_state_indicator" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_map_provider_test"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
-                android:background="@drawable/selector_map_type_bg"
-                android:padding="10dp"
+                style="@style/SettingButton"
                 android:text="@string/map_overlay"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -185,57 +159,37 @@
 
             <TextView
                 android:id="@+id/fly_zone_settings_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_separator"
-                android:background="@color/transparent"
-                android:gravity="center"
-                android:padding="5dp"
+                style="@style/SettingHeader"
                 android:text="@string/fly_zone_settings"
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_map_provider_test" />
 
             <View
                 android:id="@+id/fly_zone_settings_separator"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/map_settings_item_separator"
-                android:background="@color/colorAccent"
+                style="@style/SettingHeaderSeparator"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fly_zone_settings_text" />
 
             <CheckBox
                 android:id="@+id/flyzone_legend"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                style="@style/SettingItem"
                 android:text="@string/fly_zone_legend"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fly_zone_settings_separator" />
 
             <CheckBox
                 android:id="@+id/flyzone_unlock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                style="@style/SettingItem"
                 android:checked="true"
                 android:text="@string/unlock_flyzones"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flyzone_legend" />
 
-            <Button
+            <TextView
                 android:id="@+id/btn_fly_zone"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
-                android:background="@drawable/selector_map_type_bg"
-                android:padding="10dp"
+                style="@style/SettingButton"
                 android:text="@string/fly_zone"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -243,156 +197,104 @@
 
             <TextView
                 android:id="@+id/flight_settings_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_separator"
-                android:background="@color/transparent"
-                android:gravity="center"
-                android:padding="5dp"
+                style="@style/SettingHeader"
                 android:text="@string/flight_settings"
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_fly_zone" />
 
             <View
                 android:id="@+id/flight_settings_separator"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/map_settings_item_separator"
-                android:background="@color/colorAccent"
+                style="@style/SettingHeaderSeparator"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flight_settings_text" />
 
             <CheckBox
                 android:id="@+id/home_direction"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                style="@style/SettingItem"
                 android:checked="true"
                 android:text="@string/home_direction"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flight_settings_separator" />
 
             <CheckBox
                 android:id="@+id/lock_bounds"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                style="@style/SettingItem"
                 android:checked="true"
                 android:text="@string/auto_frame"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_direction" />
 
             <CheckBox
                 android:id="@+id/flight_path"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                style="@style/SettingItem"
                 android:checked="true"
                 android:text="@string/show_flight_path"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lock_bounds" />
 
             <CheckBox
                 android:id="@+id/gimbal_yaw"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                style="@style/SettingItem"
                 android:checked="true"
                 android:text="@string/show_gimbal_yaw"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flight_path" />
 
             <TextView
                 android:id="@+id/clear_flight_path"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
-                android:background="@drawable/selector_map_type_bg"
-                android:gravity="center"
-                android:padding="8dp"
+                style="@style/SettingButton"
                 android:text="@string/clear_flight_path"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/gimbal_yaw" />
 
             <TextView
                 android:id="@+id/other_settings_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_separator"
-                android:background="@color/transparent"
-                android:gravity="center"
-                android:padding="5dp"
+                style="@style/SettingHeader"
                 android:text="@string/other_settings"
-                android:textColor="@color/white"
-                android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/clear_flight_path" />
 
             <View
                 android:id="@+id/other_settings_separator"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_margin="@dimen/map_settings_item_separator"
-                android:background="@color/colorAccent"
+                style="@style/SettingHeaderSeparator"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/other_settings_text" />
 
             <TextView
                 android:id="@+id/icon_change_settings_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
+                style="@style/SettingItem"
                 android:padding="5dp"
                 android:text="@string/icon_change_settings"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/other_settings_separator" />
 
             <Spinner
                 android:id="@+id/icon_spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
-                android:background="@drawable/bg_spinner"
+                style="@style/SettingSpinner"
+                android:layout_marginTop="@dimen/module_settings_item_separator"
                 android:entries="@array/iconArray"
-                android:paddingRight="30dp"
-                android:spinnerMode="dropdown"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon_change_settings_text" />
 
             <TextView
                 android:id="@+id/replace"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
-                android:background="@drawable/selector_map_type_bg"
-                android:gravity="center"
-                android:padding="8dp"
+                style="@style/SettingButton"
                 android:text="@string/replace_icon"
-                android:textAllCaps="true"
-                android:textColor="@color/black"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon_spinner" />
 
             <ImageView
                 android:id="@+id/icon_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                android:layout_marginTop="@dimen/module_settings_item_separator"
                 android:background="@drawable/selector_icon_bg"
                 android:padding="8dp"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
@@ -406,7 +308,7 @@
                 android:id="@+id/icon_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                android:layout_marginTop="@dimen/module_settings_item_separator"
                 android:background="@drawable/selector_icon_bg"
                 android:padding="8dp"
                 app:layout_constraintLeft_toRightOf="@+id/icon_1"
@@ -419,7 +321,7 @@
                 android:id="@+id/icon_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                android:layout_marginTop="@dimen/module_settings_item_separator"
                 android:background="@drawable/selector_icon_bg"
                 android:padding="8dp"
                 app:layout_constraintLeft_toRightOf="@+id/icon_2"
@@ -432,7 +334,7 @@
                 android:id="@+id/icon_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                android:layout_marginTop="@dimen/module_settings_item_separator"
                 android:background="@drawable/selector_icon_bg"
                 android:padding="8dp"
                 app:layout_constraintLeft_toRightOf="@+id/icon_3"
@@ -447,7 +349,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/replace"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                android:layout_marginTop="@dimen/module_settings_item_separator"
                 android:layout_toRightOf="@id/icon_4"
                 android:background="@drawable/selector_icon_bg"
                 android:padding="8dp"
@@ -459,23 +361,17 @@
 
             <TextView
                 android:id="@+id/line_color_settings_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
+                style="@style/SettingItem"
                 android:padding="5dp"
                 android:text="@string/line_color_settings"
-                android:textColor="@color/white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon_1" />
 
             <Spinner
                 android:id="@+id/line_spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
-                android:background="@drawable/bg_spinner"
+                style="@style/SettingSpinner"
+                android:layout_marginTop="@dimen/module_settings_item_separator"
                 android:entries="@array/lineTypeArray"
-                android:paddingRight="30dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line_color_settings_text" />
@@ -484,7 +380,7 @@
                 android:id="@+id/line_width_picker"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
+                android:layout_marginTop="@dimen/module_settings_item_separator"
                 android:max="100"
                 android:progress="5"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -493,21 +389,15 @@
 
             <TextView
                 android:id="@+id/line_color"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/map_settings_item_separator"
-                android:background="@drawable/selector_map_type_bg"
-                android:gravity="center"
-                android:padding="8dp"
+                style="@style/SettingButton"
                 android:text="@string/new_color"
-                android:textAllCaps="true"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line_width_picker" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+    </com.dji.ux.beta.sample.view.SettingsDrawerView>
 
     <ImageView
         android:id="@+id/btn_settings"

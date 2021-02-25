@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2018-2020 DJI
+  ~ Copyright (c) 2018-2021 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,25 @@
 
 <resources>
     <string name="dji_ux_sample_app_name">DJI UX Sample App</string>
+    <string name="uxsdk_os_samples">DJI UXSDK Beta Sample App</string>
     <string name="no_product">No product connected</string>
+    <string name="rc_calibration">RC Calibration</string>
+    <string name="histogram">Histogram</string>
+    <string name="toggle_widget_view">Toggle Widget View</string>
+    <string name="toggle_list_view">Toggle List View</string>
+    <string name="color_waveform">Color Waveform</string>
+    <string name="video_source">Video Source</string>
+    <string name="video_stream_source">Lens</string>
+    <string name="assign_source">Assign Source</string>
+    <string name="grid">Grid Settings</string>
+    <string name="type">Type</string>
+    <string name="grid_line_color">Line Color</string>
+    <string name="grid_line_width">Line Width</string>
+    <string name="center_point">Center Point Settings</string>
+    <string name="center_point_color">Color</string>
+    <string name="visibility">Visibility</string>
+    <string name="orientation">Orientation</string>
+    <string name="resize">Resize FPV</string>
     <string name="wsbridge_ip">WSBridge IP</string>
     <string name="sdk_version">Version: %1$s</string>
     <string name="product_name">Product Name: %1$s</string>
@@ -32,9 +50,46 @@
     <string name="registered">Registered</string>
     <string name="logs">Logs</string>
     <string name="showcase">Showcase</string>
+    <string name="development">Development</string>
+    <string name="widgets">Custom Widgets</string>
     <string name="widget_list">Widget List</string>
     <string name="default_layout">Default Layout</string>
-    <string name="map">Map</string>
+    <string name="map">Map Module</string>
+    <string name="core_widgets">Core Module</string>
+    <string name="fpv_settings">Video Settings</string>
+    <string name="hooks">Hooks</string>
+    <string name="panels">Panels Activity</string>
+    <string name="facebook_app_id">552267745197953</string>
+    <string-array name="grid_line_type_array">
+        <item>None</item>
+        <item>Parallel</item>
+        <item>Parallel/Diagonal</item>
+    </string-array>
+    <string-array name="fpv_source_array">
+        <item>Auto</item>
+        <item>Primary</item>
+        <item>Secondary</item>
+    </string-array>
+    <string-array name="fpv_source_h20_array">
+        <item>Wide</item>
+        <item>Zoom</item>
+    </string-array>
+    <string-array name="fpv_source_h20t_array">
+        <item>Wide</item>
+        <item>Zoom</item>
+        <item>Thermal</item>
+    </string-array>
+    <string-array name="orientation_array">
+        <item>Landscape</item>
+        <item>Portrait</item>
+    </string-array>
+
+    <string name="port_fpv">Port / FPV</string>
+    <string name="starboard_fpv">Starboard / FPV</string>
+    <string name="port_starboard">Port / Starboard</string>
+    <string name="top_fpv">Top / FPV</string>
+    <string name="port_top">Port / Top</string>
+    <string name="starboard_top">Starboard / Top</string>
 
     <!--Map Widget Activity-->
     <string name="provider_google_maps">Google Maps</string>
@@ -74,6 +129,12 @@
     <string name="marker_drag_started">Marker %1$d drag started</string>
     <string name="marker_drag_ended">Marker %1$d drag ended</string>
     <string name="marker_clicked">Marker %1$d clicked</string>
+    <string name="pick_a_panel">Pick a Panel:</string>
+    <string name="horizontal_top_bar_panel">Horizontal Top Bar Panel</string>
+    <string name="sample_list_panel">Single List Panel</string>
+    <string name="sample_list_panel_custom">Single List Panel - Custom</string>
+    <string name="navigation_list_panel">Navigation List Panel</string>
+    <string name="navigation_list_panel_custom">Navigation List Panel - Custom</string>
     <string-array name="iconArray">
         <item>Aircraft</item>
         <item>Home</item>

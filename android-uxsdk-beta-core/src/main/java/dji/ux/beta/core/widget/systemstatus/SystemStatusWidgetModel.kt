@@ -50,7 +50,8 @@ class SystemStatusWidgetModel(djiSdkModel: DJISDKModel,
     private val areMotorsOnDataProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val maxHeightProcessor: DataProcessor<Int> = DataProcessor.create(0)
     private val unitTypeProcessor: DataProcessor<UnitConversionUtil.UnitType> = DataProcessor.create(UnitConversionUtil.UnitType.METRIC)
-    private val warningStatusMessageProcessor: DataProcessor<WarningStatusMessageData> = DataProcessor.create(WarningStatusMessageData("", 0f, UnitConversionUtil.UnitType.METRIC))
+    private val warningStatusMessageProcessor: DataProcessor<WarningStatusMessageData> =
+            DataProcessor.create(WarningStatusMessageData("", 0f, UnitConversionUtil.UnitType.METRIC))
     private val sendVoiceNotificationKey: UXKey = UXKeys.create(MessagingKeys.SEND_VOICE_NOTIFICATION)
     //endregion
 

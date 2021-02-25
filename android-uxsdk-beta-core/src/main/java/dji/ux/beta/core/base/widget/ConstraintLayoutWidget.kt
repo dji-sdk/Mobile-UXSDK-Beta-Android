@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -159,12 +159,11 @@ abstract class ConstraintLayoutWidget<T> @JvmOverloads constructor(
      *
      * @return update with widget state
      */
-    open fun getWidgetStateUpdate(): Flowable<T> = widgetStateDataProcessor.onBackpressureBuffer()
+    open fun getWidgetStateUpdate(): Flowable<T> = widgetStateDataProcessor
+            .distinctUntilChanged()
+            .onBackpressureBuffer()
 
     companion object {
         private const val TAG = "ConstraintLayoutWidget"
-        const val INVALID_RESOURCE = -1
-        const val INVALID_COLOR = 0
-        const val INVALID_DIMENSION = 0f
     }
 }

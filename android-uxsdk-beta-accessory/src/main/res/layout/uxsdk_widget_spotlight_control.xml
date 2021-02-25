@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="dji.ux.beta.accessory.widget.spotlight.SpotlightControlWidget"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/spotlight_header_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/uxsdk_spotlight_row_margin"
+        android:gravity="center_horizontal"
+        android:text="@string/uxsdk_spotlight_settings"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/spotlight_temperature_label"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_spotlight_row_height"
+        android:layout_marginLeft="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_spotlight_row_margin"
+        android:gravity="center_vertical"
+        android:text="@string/uxsdk_spotlight_temperature"
+        android:textColor="@color/uxsdk_white"
+        app:layout_constraintHorizontal_weight="0.8"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/spotlight_temperature_value"
+        app:layout_constraintTop_toBottomOf="@+id/spotlight_header_text" />
+
+    <TextView
+        android:id="@+id/spotlight_temperature_value"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_spotlight_row_height"
+        android:layout_marginLeft="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_spotlight_row_margin"
+        android:textColor="@color/uxsdk_white"
+        app:layout_constraintHorizontal_weight="0.2"
+        app:layout_constraintLeft_toRightOf="@+id/spotlight_temperature_label"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spotlight_header_text" />
+
+    <TextView
+        android:id="@+id/spotlight_enabled_label"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_spotlight_row_height"
+        android:layout_marginLeft="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_spotlight_row_margin"
+        android:gravity="center_vertical"
+        android:text="@string/uxsdk_spotlight_enabled"
+        android:textColor="@color/uxsdk_white"
+        app:layout_constraintHorizontal_weight="0.8"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/spotlight_enabled_switch"
+        app:layout_constraintTop_toBottomOf="@+id/spotlight_temperature_label" />
+
+    <Switch
+        android:id="@+id/spotlight_enabled_switch"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_spotlight_row_height"
+        android:layout_marginLeft="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_spotlight_row_margin"
+        android:backgroundTint="@color/uxsdk_gray_45"
+        app:layout_constraintHorizontal_weight="0.2"
+        app:layout_constraintLeft_toRightOf="@+id/spotlight_enabled_label"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spotlight_temperature_value" />
+
+    <TextView
+        android:id="@+id/spotlight_brightness_label"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_spotlight_row_height"
+        android:layout_marginLeft="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_spotlight_row_margin"
+        android:gravity="center_vertical"
+        android:text="@string/uxsdk_spotlight_brightness"
+        android:textColor="@color/uxsdk_white"
+        app:layout_constraintHorizontal_weight="0.3"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/spotlight_brightness_seekbar"
+        app:layout_constraintTop_toBottomOf="@+id/spotlight_enabled_label" />
+
+    <SeekBar
+        android:id="@+id/spotlight_brightness_seekbar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_spotlight_row_height"
+        android:layout_marginLeft="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_spotlight_row_margin"
+        android:progressBackgroundTint="@color/uxsdk_gray_45"
+        app:layout_constraintHorizontal_weight="0.7"
+        app:layout_constraintLeft_toRightOf="@+id/spotlight_brightness_label"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spotlight_enabled_switch" />
+
+    <TextView
+        android:id="@+id/spotlight_warning"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_spotlight_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_spotlight_row_margin"
+        android:gravity="center_vertical"
+        android:text="@string/uxsdk_spotlight_brightness_warning"
+        android:textColor="@color/uxsdk_white"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spotlight_brightness_label" />
+
+</merge>

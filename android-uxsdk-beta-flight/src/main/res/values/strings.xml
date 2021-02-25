@@ -22,6 +22,12 @@
   -->
 
 <resources>
+    <!-- APAS Widget -->
+    <string name="uxsdk_apas_widget_active">APAS has been enabled.</string>
+    <string name="uxsdk_apas_widget_temp_disabled">Required conditions not met. APAS is temporarily disabled.</string>
+    <string name="uxsdk_apas_widget_flight_distance_limit_reached">Flight distance limit reached. APAS is temporarily disabled.</string>
+    <string name="uxsdk_apas_safety_warning_dialog_title">Safety Warnings</string>
+    <string name="uxsdk_apas_safety_warning_dialog_message">When enabled, the aircraft will attempt to automatically avoid obstacles when flying forward and backward with the remote controller. Left and right flight speed and gain will be reduced. Fly with caution and avoid using this function when ambient light is weak or obstacles are small.</string>
 
     <!-- Take Off Widget -->
 

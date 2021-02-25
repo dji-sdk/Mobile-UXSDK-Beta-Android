@@ -26,6 +26,18 @@
 
     <attr name="uxsdk_dialogTheme" format="reference" />
 
+    <declare-styleable name="APASWidget">
+        <attr name="uxsdk_apasDisabledDrawable" format="reference" />
+        <attr name="uxsdk_apasEnabledDrawable" format="reference" />
+        <attr name="uxsdk_apasActiveDrawable" format="reference" />
+        <attr name="uxsdk_apasDisabledIconColor" format="color|reference" />
+        <attr name="uxsdk_apasEnabledIconColor" format="color|reference" />
+        <attr name="uxsdk_apasActiveIconColor" format="color|reference" />
+        <attr name="uxsdk_safetyWarningDialogTheme" format="integer|reference" />
+        <attr name="uxsdk_safetyWarningDialogIcon" format="reference" />
+    </declare-styleable>
+
+
     <declare-styleable name="TakeOffWidget">
         <attr name="uxsdk_takeOffActionDrawable" format="reference" />
         <attr name="uxsdk_landActionDrawable" format="reference" />

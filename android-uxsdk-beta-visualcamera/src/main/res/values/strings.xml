@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2018-2020 DJI
+  ~ Copyright (c) 2018-2021 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -185,4 +185,6 @@
     <string name="uxsdk_exposure_iso_title">ISO</string>
     <string name="uxsdk_white_balance_title">WB %1$s</string>
     <string name="uxsdk_white_balance_temp">%1$dK</string>
+    <string name="uxsdk_video_frame_resolution">%1$s/%2$s</string>
+    <string name="uxsdk_color_title">COLOR</string>
 </resources>

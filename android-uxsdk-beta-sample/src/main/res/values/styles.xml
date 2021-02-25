@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2018-2020 DJI
+  ~ Copyright (c) 2018-2021 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -33,8 +33,89 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="MapTheme" parent="AppTheme">
+    <!-- Theme for module activities. -->
+    <style name="ModuleTheme" parent="AppTheme">
         <item name="android:textColorSecondary">@color/colorAccent</item>
+    </style>
+
+    <!-- Themes used in module activities -->
+    <style name="SettingSpinner">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_spinner</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
+
+    <style name="SettingHeader">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/map_settings_separator</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="SettingHeaderSeparator">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_margin">@dimen/module_settings_item_separator</item>
+        <item name="android:background">@color/colorAccent</item>
+    </style>
+
+    <style name="SettingItem">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/module_settings_item_separator</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="SettingLabel" parent="SettingItem">
+        <item name="android:paddingStart">7dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+    </style>
+
+    <style name="SettingButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/module_settings_item_separator</item>
+        <item name="android:background">@drawable/selector_map_type_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="SampleBasePanel">
+        <item name="uxsdk_titleBarBackgroundColor">@color/white</item>
+        <item name="uxsdk_backButtonIconColor">@color/black</item>
+        <item name="uxsdk_closeButtonIconColor">@color/black</item>
+        <item name="uxsdk_titleTextAppearance">@style/TextAppearance.AppCompat.Body2</item>
+        <item name="uxsdk_titleTextColor">@color/black</item>
+    </style>
+
+    <style name="UXSDKSystemStatusListThemeExample">
+        <item name="android:background">@color/white</item>
+        <item name="uxsdk_list_item_title_text_color">@color/uxsdk_black</item>
+        <item name="uxsdk_titleBarBackgroundColor">@color/white</item>
+        <item name="uxsdk_titleTextColor">@color/uxsdk_black</item>
+        <item name="uxsdk_list_item_button_text_color">@color/uxsdk_blue</item>
+        <item name="uxsdk_backButtonIconColor">@color/uxsdk_black</item>
+        <item name="uxsdk_closeButtonIconColor">@color/uxsdk_black</item>
+        <item name="uxsdk_list_item_disconnected_color">@color/uxsdk_light_gray_700</item>
+    </style>
+
+    <style name="TopBarTheme">
+        <item name="uxsdk_textSize">@dimen/topbar_text_size</item>
+        <item name="uxsdk_satelliteCountTextSize">@dimen/topbar_small_text_size</item>
+        <item name="uxsdk_rtkEnabledTextSize">@dimen/topbar_small_text_size</item>
+        <item name="uxsdk_frequencyBandTextSize">@dimen/topbar_small_text_size</item>
+        <item name="uxsdk_singlePercentTextSize">@dimen/single_battery_text_size</item>
+        <item name="uxsdk_dualPercentTextSize">@dimen/dual_battery_text_size</item>
+        <item name="uxsdk_dualVoltageTextSize">@dimen/dual_battery_text_size</item>
     </style>
 
 </resources>

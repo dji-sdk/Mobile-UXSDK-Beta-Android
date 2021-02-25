@@ -154,7 +154,7 @@ abstract class PanelNavigationView @JvmOverloads constructor(
         if (isAnimationEnabled && previousView != null) {
             view.isEnabled = false
             previousView.isEnabled = false
-            addViewToTopAnimation.addListener(onEnd = fun(_) {
+            addViewToTopAnimation.addListener(onEnd = {
                 post {
                     view.isEnabled = true
                     previousView.isEnabled = true
@@ -191,7 +191,7 @@ abstract class PanelNavigationView @JvmOverloads constructor(
         if (isAnimationEnabled) {
             viewToRemove.isEnabled = false
             viewToAdd.isEnabled = false
-            removeViewFromTopAnimation.addListener(onEnd = fun(_) {
+            removeViewFromTopAnimation.addListener(onEnd = {
                 post {
                     viewToRemove.isEnabled = true
                     viewToAdd.isEnabled = true

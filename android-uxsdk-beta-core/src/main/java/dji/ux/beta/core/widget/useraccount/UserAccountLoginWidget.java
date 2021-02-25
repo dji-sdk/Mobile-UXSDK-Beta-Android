@@ -57,6 +57,9 @@ import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.OnStateChangeCallback;
 
+import static dji.ux.beta.core.extension.TypedArrayExtensions.INVALID_COLOR;
+import static dji.ux.beta.core.extension.TypedArrayExtensions.INVALID_RESOURCE;
+
 /**
  * User Account Login Widget
  * <p>

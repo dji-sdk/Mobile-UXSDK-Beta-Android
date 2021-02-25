@@ -31,14 +31,13 @@ import androidx.annotation.Nullable;
 
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.widget.cameracapture.CameraCaptureWidget;
-import dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator.CameraSettingsMenuIndicatorWidget;
-import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettingsindicator.ExposureSettingsIndicatorWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator.CameraSettingsIndicatorWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch.PhotoVideoSwitchWidget;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 
 /**
  * Compound widget which combines the state and interaction related to camera.
- * It includes {@link CameraSettingsMenuIndicatorWidget}, {@link ExposureSettingsIndicatorWidget},
+ * It includes {@link CameraSettingsIndicatorWidget},
  * {@link PhotoVideoSwitchWidget} and {@link CameraCaptureWidget}.
  * <p>
  * The widget gives access to all the child widgets.
@@ -46,10 +45,9 @@ import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 public class CameraControlsWidget extends ConstraintLayoutWidget {
 
     //region Fields
-    private CameraSettingsMenuIndicatorWidget cameraSettingsMenuIndicatorWidget;
     private PhotoVideoSwitchWidget photoVideoSwitchWidget;
     private CameraCaptureWidget cameraCaptureWidget;
-    private ExposureSettingsIndicatorWidget exposureSettingsIndicatorWidget;
+    private CameraSettingsIndicatorWidget cameraSettingsIndicatorWidget;
     //endregion
 
     //region Lifecycle
@@ -71,8 +69,7 @@ public class CameraControlsWidget extends ConstraintLayoutWidget {
         setBackgroundResource(R.drawable.uxsdk_background_black_rectangle);
         cameraCaptureWidget = findViewById(R.id.widget_camera_control_camera_capture);
         photoVideoSwitchWidget = findViewById(R.id.widget_camera_control_photo_video_switch);
-        exposureSettingsIndicatorWidget = findViewById(R.id.widget_camera_control_camera_exposure_settings);
-        cameraSettingsMenuIndicatorWidget = findViewById(R.id.widget_camera_control_camera_settings_menu);
+        cameraSettingsIndicatorWidget = findViewById(R.id.widget_camera_control_camera_settings);
     }
 
     @Override
@@ -100,23 +97,13 @@ public class CameraControlsWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Get the camera settings menu widget
+     * Get the camera settings widget
      *
-     * @return {@link CameraSettingsMenuIndicatorWidget}
+     * @return {@link CameraSettingsIndicatorWidget}
      */
     @NonNull
-    public CameraSettingsMenuIndicatorWidget getCameraSettingsMenuIndicatorWidget() {
-        return cameraSettingsMenuIndicatorWidget;
-    }
-
-    /**
-     * Get the exposure settings widget
-     *
-     * @return {@link ExposureSettingsIndicatorWidget}
-     */
-    @NonNull
-    public ExposureSettingsIndicatorWidget getExposureSettingsIndicatorWidget() {
-        return exposureSettingsIndicatorWidget;
+    public CameraSettingsIndicatorWidget getCameraSettingsIndicatorWidget() {
+        return cameraSettingsIndicatorWidget;
     }
 
     /**
@@ -127,24 +114,6 @@ public class CameraControlsWidget extends ConstraintLayoutWidget {
     @NonNull
     public PhotoVideoSwitchWidget getPhotoVideoSwitchWidget() {
         return photoVideoSwitchWidget;
-    }
-
-    /**
-     * Show/Hide {@link CameraSettingsMenuIndicatorWidget}
-     *
-     * @param isVisible boolean true - visible  false - gone
-     */
-    public void setCameraSettingsMenuIndicatorWidgetVisibility(boolean isVisible) {
-        cameraSettingsMenuIndicatorWidget.setVisibility(isVisible ? VISIBLE : GONE);
-    }
-
-    /**
-     * Check if {@link CameraSettingsMenuIndicatorWidget} is visible
-     *
-     * @return boolean true - visible  false - gone
-     */
-    public boolean isCameraSettingsMenuIndicatorWidgetVisible() {
-        return cameraSettingsMenuIndicatorWidget.getVisibility() == VISIBLE;
     }
 
     /**
@@ -184,21 +153,21 @@ public class CameraControlsWidget extends ConstraintLayoutWidget {
     }
 
     /**
-     * Show/Hide {@link ExposureSettingsIndicatorWidget}
+     * Show/Hide {@link CameraSettingsIndicatorWidget}
      *
      * @param isVisible boolean  true - visible  false - gone
      */
-    public void setExposureSettingsIndicatorWidgetVisibility(boolean isVisible) {
-        exposureSettingsIndicatorWidget.setVisibility(isVisible ? VISIBLE : GONE);
+    public void setCameraSettingsIndicatorWidgetVisibility(boolean isVisible) {
+        cameraSettingsIndicatorWidget.setVisibility(isVisible ? VISIBLE : GONE);
     }
 
     /**
-     * Check if {@link ExposureSettingsIndicatorWidget}
+     * Check if {@link CameraSettingsIndicatorWidget}
      *
      * @return boolean  true - visible  false - gone
      */
-    public boolean isExposureSettingsIndicatorWidgetVisible() {
-        return exposureSettingsIndicatorWidget.getVisibility() == VISIBLE;
+    public boolean isCameraSettingsIndicatorWidgetVisible() {
+        return cameraSettingsIndicatorWidget.getVisibility() == VISIBLE;
     }
 
     //endregion

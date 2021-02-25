@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2021 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/view_picker_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="@dimen/uxsdk_spacing_normal"
+        android:background="@color/gray_4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.3" />
+
+    <TextView
+        android:id="@+id/text_view_picker_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/uxsdk_spacing_micro"
+        android:text="@string/pick_a_panel"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/view_picker_container"
+        app:layout_constraintStart_toStartOf="@+id/view_picker_container"
+        app:layout_constraintTop_toTopOf="@+id/view_picker_container" />
+
+    <ScrollView
+        android:id="@+id/scroll_view_picker"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/uxsdk_spacing_normal"
+        app:layout_constraintBottom_toBottomOf="@+id/view_picker_container"
+        app:layout_constraintEnd_toEndOf="@+id/view_picker_container"
+        app:layout_constraintStart_toStartOf="@+id/view_picker_container"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_picker_title">
+
+        <RadioGroup
+            android:id="@+id/radio_group_panels"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radio_button_hor_top_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/horizontal_top_bar_panel"
+                android:textColor="@color/white"
+                app:buttonTint="@color/uxsdk_blue" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radio_button_sample_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sample_list_panel"
+                android:textColor="@color/white"
+                app:buttonTint="@color/uxsdk_blue" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radio_button_sample_list_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sample_list_panel_custom"
+                android:textColor="@color/white"
+                app:buttonTint="@color/uxsdk_blue" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radio_button_sample_list_navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/navigation_list_panel"
+                android:textColor="@color/white"
+                app:buttonTint="@color/uxsdk_blue" />
+
+            <androidx.appcompat.widget.AppCompatRadioButton
+                android:id="@+id/radio_button_sample_list_navigation_custom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/navigation_list_panel_custom"
+                android:textColor="@color/white"
+                app:buttonTint="@color/uxsdk_blue" />
+
+        </RadioGroup>
+
+    </ScrollView>
+
+    <dji.ux.beta.core.panel.topbar.TopBarPanelWidget
+        android:id="@+id/panel_top_bar"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/uxsdk_spacing_normal"
+        android:background="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.08"
+        app:layout_constraintStart_toEndOf="@+id/view_picker_container"
+        app:layout_constraintTop_toTopOf="parent"
+        app:uxsdk_excludeTopBarItem="simulator_indicator|connection"
+        app:uxsdk_itemsMarginRight="@dimen/uxsdk_spacing_normal"
+        app:uxsdk_itemsSpacing="@dimen/uxsdk_spacing_micro"
+        tools:visibility="gone" />
+
+    <dji.ux.beta.core.panel.telemetry.TelemetryPanelWidget
+        android:id="@+id/panel_flight_telemetry"
+        android:layout_width="400dp"
+        android:layout_height="150dp"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/uxsdk_spacing_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view_picker_container"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
+
+    <com.dji.ux.beta.sample.development.panel.TestToolbarPanel
+        android:id="@+id/panel_tool_bar"
+        android:layout_width="425dp"
+        android:layout_height="300dp"
+        android:background="@color/uxsdk_black"
+        android:layout_marginTop="@dimen/uxsdk_spacing_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/view_picker_container"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

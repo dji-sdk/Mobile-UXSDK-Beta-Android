@@ -20,9 +20,17 @@
   ~ SOFTWARE.
   ~
   -->
-
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="#b2000000" />
-    <corners android:radius="2dp" />
-</shape>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/uxsdk_black_80_percent" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/uxsdk_black_70_percent" />
+            <corners android:radius="2dp" />
+        </shape>
+    </item>
+</selector>

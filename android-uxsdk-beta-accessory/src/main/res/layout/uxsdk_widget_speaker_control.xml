@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="dji.ux.beta.accessory.widget.speaker.SpeakerControlWidget">
+
+    <TextView
+        android:id="@+id/text_view_speaker_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+        android:gravity="center"
+        android:text="@string/uxsdk_speaker_panel_header"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_speaker_volume"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_speaker_row_height"
+        android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+        android:gravity="center_vertical"
+        android:text="@string/uxsdk_speaker_panel_volume"
+        android:textColor="@color/uxsdk_white"
+        app:layout_constraintHorizontal_weight="0.38"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/volume_seek_bar"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_speaker_title" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/volume_seek_bar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_speaker_row_height"
+        android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+        android:progressBackgroundTint="@color/uxsdk_gray_45"
+        app:layout_constraintHorizontal_weight="0.58"
+        app:layout_constraintLeft_toRightOf="@+id/text_view_speaker_volume"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_speaker_title" />
+
+    <TextView
+        android:id="@+id/tab_instant_broadcast"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_speaker_row_height"
+        android:layout_marginStart="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+        android:background="@drawable/uxsdk_selector_speaker_widget_broadcast_tab"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/uxsdk_speaker_panel_broadcast"
+        android:textColor="@color/uxsdk_selector_speaker_tab_colors"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_weight="0.4"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/tab_local_file"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_speaker_volume" />
+
+    <TextView
+        android:id="@+id/tab_local_file"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/uxsdk_speaker_row_height"
+        android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginEnd="@dimen/uxsdk_speaker_row_margin"
+        android:background="@drawable/uxsdk_selector_speaker_widget_local_file_tab"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/uxsdk_speaker_panel_local_audio"
+        android:textColor="@color/uxsdk_selector_speaker_tab_colors"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_weight="0.4"
+        app:layout_constraintLeft_toRightOf="@+id/tab_instant_broadcast"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_speaker_volume" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/record_button_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_instant_broadcast">
+
+        <TextView
+            android:id="@+id/text_view_persist_file"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/uxsdk_speaker_row_height"
+            android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+            android:gravity="center_vertical"
+            android:text="@string/uxsdk_speaker_panel_temporary_switch"
+            android:textColor="@color/uxsdk_white"
+            app:layout_constraintHorizontal_weight="0.7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/audio_temporary_switch"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Switch
+            android:id="@+id/audio_temporary_switch"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/uxsdk_speaker_row_height"
+            android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintLeft_toRightOf="@+id/text_view_persist_file"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_view_instant_play"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/uxsdk_speaker_row_height"
+            android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+            android:gravity="center_vertical"
+            android:text="@string/uxsdk_speaker_panel_play_instant_switch"
+            android:textColor="@color/uxsdk_white"
+            app:layout_constraintHorizontal_weight="0.7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/instant_play_switch"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_persist_file" />
+
+        <Switch
+            android:id="@+id/instant_play_switch"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/uxsdk_speaker_row_height"
+            android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintLeft_toRightOf="@+id/text_view_instant_play"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/audio_temporary_switch" />
+
+        <ImageView
+            android:id="@+id/start_broadcast_button"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toTopOf="@+id/audio_record_status_text_view"
+            app:layout_constraintHeight_percent="0.6"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_persist_file"
+            app:layout_constraintWidth_percent="0.6"
+            app:srcCompat="@drawable/uxsdk_selector_speaker_record_button"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/audio_record_status_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/uxsdk_speaker_row_margin"
+            android:gravity="center"
+            android:text="@string/uxsdk_speaker_panel_tap_to_record"
+            android:textColor="@color/uxsdk_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_broadcast_button" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/file_list_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+        android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tab_instant_broadcast">
+
+        <TextView
+            android:id="@+id/text_view_loop_mode"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/uxsdk_speaker_row_height"
+            android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+            android:gravity="center_vertical"
+            android:text="@string/uxsdk_speaker_panel_play_repeat_mode"
+            android:textColor="@color/uxsdk_white"
+            app:layout_constraintHorizontal_weight="0.7"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/loop_play_switch"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Switch
+            android:id="@+id/loop_play_switch"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/uxsdk_speaker_row_height"
+            android:layout_marginLeft="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginTop="@dimen/uxsdk_speaker_row_margin"
+            android:layout_marginRight="@dimen/uxsdk_speaker_row_margin"
+            app:layout_constraintHorizontal_weight="0.3"
+            app:layout_constraintLeft_toRightOf="@+id/text_view_loop_mode"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/audio_file_list_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_loop_mode"
+            app:layout_constraintWidth_percent="0.9" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</merge>

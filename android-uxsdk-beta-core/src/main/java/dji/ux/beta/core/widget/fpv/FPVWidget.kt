@@ -100,10 +100,14 @@ open class FPVWidget @JvmOverloads constructor(
             widgetStateDataProcessor.onNext(VideoFeedUpdated(videoBuffer, size))
             codecManager?.sendDataToDecoder(videoBuffer, size, videoFeed)
         }
+        val transcodedVideoDataListener = VideoDataListener { videoBuffer: ByteArray?, size: Int ->
+            widgetStateDataProcessor.onNext(TranscodedVideoFeedUpdated(videoBuffer, size))
+        }
 
         FPVWidgetModel(DJISDKModel.getInstance(),
                 ObservableInMemoryKeyedStore.getInstance(),
                 videoDataListener,
+                transcodedVideoDataListener,
                 FlatCameraModule())
     }
 
@@ -298,7 +302,9 @@ open class FPVWidget @JvmOverloads constructor(
             fpvTextureView.surfaceTextureListener = this
             rotationAngle = LANDSCAPE_ROTATION_ANGLE
 
-            videoSizeCalculator.setListener { width: Int, height: Int, relativeWidth: Int, relativeHeight: Int -> changeView(width, height, relativeWidth, relativeHeight) }
+            videoSizeCalculator.setListener { width: Int, height: Int, relativeWidth: Int, relativeHeight: Int ->
+                changeView(width, height, relativeWidth, relativeHeight)
+            }
         }
         attrs?.let { initAttributes(context, it) }
     }
@@ -761,6 +767,8 @@ open class FPVWidget @JvmOverloads constructor(
 
         /**
          * Video feed update
+         * For products that need lens distortion calibration, this hook will never be emitted. In this case, use
+         * [TranscodedVideoFeedUpdated] instead.
          *
          * @property videoBuffer H.264 or H.265 raw video data. See [SettingsDefinitions.VideoFileCompressionStandard]
          * @property size The data size
@@ -769,8 +777,31 @@ open class FPVWidget @JvmOverloads constructor(
             override fun equals(other: Any?): Boolean {
                 if (this === other) return true
                 if (other?.javaClass != javaClass) return false
-                other as VideoFeedUpdated
-                return Arrays.equals(videoBuffer, other.videoBuffer) && size == other.size
+                (other as VideoFeedUpdated).let {
+                    return Arrays.equals(videoBuffer, it.videoBuffer) && size == it.size
+                }
+            }
+
+            override fun hashCode(): Int {
+                var result = if (videoBuffer != null) Arrays.hashCode(videoBuffer) else 0
+                result = 31 * result + size
+                return result
+            }
+        }
+
+        /**
+         * Transcoded video feed update
+         *
+         * @property videoBuffer H.264 transcoded video data. See [VideoFeeder.provideTranscodedVideoFeed]
+         * @property size The data size
+         */
+        data class TranscodedVideoFeedUpdated(val videoBuffer: ByteArray?, val size: Int) : ModelState() {
+            override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (other?.javaClass != javaClass) return false
+                (other as TranscodedVideoFeedUpdated).let {
+                    return Arrays.equals(videoBuffer, it.videoBuffer) && size == it.size
+                }
             }
 
             override fun hashCode(): Int {

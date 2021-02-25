@@ -44,6 +44,13 @@ abstract class BaseModule {
      * Cleanup method for post-usage destruction that must be implemented
      */
     protected abstract fun cleanup()
+
+    /**
+     * Restarts the given [widgetModel]
+     */
+    protected open fun restart(widgetModel: WidgetModel) {
+        widgetModel.restart()
+    }
     //endregion
 
     /**

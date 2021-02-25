@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -45,12 +45,14 @@ import dji.keysdk.GimbalKey;
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.GlobalPreferenceKeys;
 import dji.ux.beta.core.communication.GlobalPreferencesInterface;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.UXKey;
 import dji.ux.beta.core.communication.UXKeys;
+import dji.ux.beta.core.module.LensModule;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.ProductUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
@@ -64,6 +66,7 @@ import dji.ux.beta.core.util.SettingDefinitions.GimbalIndex;
 public class FPVInteractionWidgetModel extends WidgetModel {
 
     //region Constants
+    private static final String TAG = "FPVInteractionWidMod";
     private static final int NUM_ROWS = 8;
     private static final int NUM_COLUMNS = 12;
     //endregion
@@ -82,6 +85,7 @@ public class FPVInteractionWidgetModel extends WidgetModel {
     private DJIKey meteringModeKey;
     private Rotation.Builder builder;
     private UXKey controlModeKey;
+    private LensModule lensModule;
     //endregion
 
     //region Constructor
@@ -101,22 +105,31 @@ public class FPVInteractionWidgetModel extends WidgetModel {
         builder = new Rotation.Builder().mode(RotationMode.SPEED);
         this.preferencesManager = preferencesManager;
         this.keyedStore = keyedStore;
+        lensModule = new LensModule();
+        addModule(lensModule);
     }
     //endregion
 
     //region Lifecycle
     @Override
     protected void inSetup() {
-        focusTargetKey = djiSdkModel.createLensKey(CameraKey.FOCUS_TARGET, cameraIndex, lensIndex);
-        meteringTargetKey = djiSdkModel.createLensKey(CameraKey.SPOT_METERING_TARGET, cameraIndex, lensIndex);
-        meteringModeKey = djiSdkModel.createLensKey(CameraKey.METERING_MODE, cameraIndex, lensIndex);
+        focusTargetKey = lensModule.createLensKey(CameraKey.FOCUS_TARGET, cameraIndex, lensIndex);
+        meteringTargetKey = lensModule.createLensKey(CameraKey.SPOT_METERING_TARGET, cameraIndex, lensIndex);
+        meteringModeKey = lensModule.createLensKey(CameraKey.METERING_MODE, cameraIndex, lensIndex);
         bindDataProcessor(meteringModeKey, meteringModeProcessor, meteringMode -> setMeteringMode((MeteringMode) meteringMode));
-        DJIKey aeLockedKey = djiSdkModel.createLensKey(CameraKey.AE_LOCK, cameraIndex, lensIndex);
+        DJIKey aeLockedKey = lensModule.createLensKey(CameraKey.AE_LOCK, cameraIndex, lensIndex);
         bindDataProcessor(aeLockedKey, aeLockedProcessor);
         DJIKey capabilitiesKey = GimbalKey.create(GimbalKey.CAPABILITIES, gimbalIndex);
         bindDataProcessor(capabilitiesKey, capabilitiesMapProcessor);
         controlModeKey = UXKeys.create(GlobalPreferenceKeys.CONTROL_MODE);
         bindDataProcessor(controlModeKey, controlModeProcessor);
+        addDisposable(lensModule.isLensArrangementUpdated()
+                .observeOn(SchedulerProvider.io())
+                .subscribe(value -> {
+                    if (value) {
+                        restart();
+                    }
+                }, logErrorConsumer(TAG, "on lens arrangement updated")));
 
         if (preferencesManager != null) {
             preferencesManager.setUpListener();
@@ -165,6 +178,7 @@ public class FPVInteractionWidgetModel extends WidgetModel {
      */
     public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
         this.cameraIndex = cameraIndex.getIndex();
+        lensModule.setCameraIndex(this, cameraIndex);
         restart();
     }
 

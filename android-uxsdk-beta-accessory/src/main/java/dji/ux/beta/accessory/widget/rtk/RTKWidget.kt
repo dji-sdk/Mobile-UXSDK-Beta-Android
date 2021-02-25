@@ -18,7 +18,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- *
+ *  
  */
 
 package dji.ux.beta.accessory.widget.rtk
@@ -185,7 +185,7 @@ open class RTKWidget @JvmOverloads constructor(
     //region Constructor
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         inflate(context, R.layout.uxsdk_widget_rtk, this)
-        setBackgroundResource(R.drawable.uxsdk_background_black_rectangle)
+        background = background ?: getDrawable(R.drawable.uxsdk_background_black_rectangle)
     }
 
     init {

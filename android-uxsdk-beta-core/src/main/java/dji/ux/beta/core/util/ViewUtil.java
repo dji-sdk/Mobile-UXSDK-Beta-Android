@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,12 +29,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.widget.CompoundButtonCompat;
 import androidx.core.widget.ImageViewCompat;
 
 import dji.log.DJILog;
@@ -74,6 +76,27 @@ public final class ViewUtil {
      */
     public static void tintImage(@NonNull ImageView imageView, @NonNull ColorStateList colorStateList) {
         ImageViewCompat.setImageTintList(imageView, colorStateList);
+    }
+
+    /**
+     * Applies a tint for unchecked and checked states of a check box
+     *
+     * @param checkBox The check box to apply the tints to
+     * @param uncheckedColor The tint for the unchecked check box state
+     * @param checkedColor The tint for the checked check box state
+     */
+    public static void tintCheckBox(@NonNull CheckBox checkBox, @ColorInt int uncheckedColor, @ColorInt int checkedColor) {
+        ColorStateList colorStateList = new ColorStateList(
+                new int[][] {
+                        new int[] { -android.R.attr.state_checked }, // unchecked
+                        new int[] {  android.R.attr.state_checked }  // checked
+                },
+                new int[] {
+                        uncheckedColor,
+                        checkedColor
+                }
+        );
+        CompoundButtonCompat.setButtonTintList(checkBox, colorStateList);
     }
 
     /**

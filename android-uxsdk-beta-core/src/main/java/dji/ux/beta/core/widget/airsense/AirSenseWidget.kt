@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -152,7 +152,7 @@ open class AirSenseWidget @JvmOverloads constructor(
      */
     @get:StyleRes
     @setparam:StyleRes
-    var termsLinkTextAppearance = 0
+    var termsLinkTextAppearance = INVALID_RESOURCE
 
     /**
      * The text color for the terms link text view
@@ -171,14 +171,14 @@ open class AirSenseWidget @JvmOverloads constructor(
      */
     @get:Dimension
     @setparam:Dimension
-    var termsLinkTextSize: Float = 0f
+    var termsLinkTextSize: Float = INVALID_DIMENSION
 
     /**
      * The text appearance of the check box label
      */
     @get:StyleRes
     @setparam:StyleRes
-    var checkBoxTextAppearance = 0
+    var checkBoxTextAppearance = INVALID_RESOURCE
 
     /**
      * The text color state list of the check box label
@@ -195,7 +195,7 @@ open class AirSenseWidget @JvmOverloads constructor(
      */
     @get:Dimension
     @setparam:Dimension
-    var checkBoxTextSize: Float = 0f
+    var checkBoxTextSize: Float = INVALID_DIMENSION
     //endregion
 
     //region Constructor
@@ -338,7 +338,7 @@ open class AirSenseWidget @JvmOverloads constructor(
 
             override fun updateDrawState(ds: TextPaint) {
                 super.updateDrawState(ds)
-                if (termsLinkTextColor != 0) {
+                if (termsLinkTextColor != INVALID_RESOURCE) {
                     ds.color = termsLinkTextColor
                 }
             }

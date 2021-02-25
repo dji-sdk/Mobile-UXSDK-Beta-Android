@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,6 +24,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     lintOptions {
@@ -115,6 +116,17 @@ dependencies {
     })
     compileOnly ('com.dji:dji-sdk-provided:4.14')
 
+    // Test
+    testImplementation "junit:junit:4.12"
+    testImplementation 'org.robolectric:robolectric:3.6.1'
+    //testImplementation 'org.mockito:mockito-core:2.7.2'
+    androidTestImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    androidTestImplementation 'com.jayway.awaitility:awaitility:1.7.0'
+
     // UXSDK dependencies
     implementation 'androidx.annotation:annotation:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
@@ -146,9 +158,13 @@ dependencies {
     // Sample app dependencies
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+    kapt 'com.jakewharton:butterknife-compiler:10.0.0'
+    implementation 'com.github.QuadFlask:colorpicker:0.0.15'
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.21")
 
     // UXSDK Modules
     implementation project(path: ':android-uxsdk-beta-cameracore')
+    implementation project(path: ':android-uxsdk-beta-media')
     implementation project(path: ':android-uxsdk-beta-accessory')
     implementation project(path: ':android-uxsdk-beta-map')
     implementation project(path: ':android-uxsdk-beta-training')

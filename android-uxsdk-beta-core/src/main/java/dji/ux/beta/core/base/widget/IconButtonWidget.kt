@@ -52,26 +52,8 @@ abstract class IconButtonWidget<T> @JvmOverloads constructor(
 
     protected val foregroundImageView: ImageView = findViewById(R.id.image_view_button)
     protected val uiUpdateStateProcessor: PublishProcessor<UIState> = PublishProcessor.create()
-
-    /**
-     * The color of the icon when the product is connected
-     */
-    @get:ColorInt
-    var connectedStateIconColor: Int = getColor(R.color.uxsdk_transparent)
-        set(@ColorInt value) {
-            field = value
-            checkAndUpdateIconColor()
-        }
-
-    /**
-     * The color of the icon when the product is disconnected
-     */
-    @get:ColorInt
-    var disconnectedStateIconColor: Int = getColor(R.color.uxsdk_gray_58)
-        set(@ColorInt value) {
-            field = value
-            checkAndUpdateIconColor()
-        }
+    private var connectedStateIconColor: Int = getColor(R.color.uxsdk_transparent)
+    private var disconnectedStateIconColor: Int = getColor(R.color.uxsdk_gray_58)
 
     /**
      * Get current background of foregroundImageView
@@ -134,6 +116,33 @@ abstract class IconButtonWidget<T> @JvmOverloads constructor(
     fun getUIStateUpdates(): Flowable<UIState> {
         return uiUpdateStateProcessor.onBackpressureBuffer()
     }
+
+    /**
+     * Set the color of the icon when the product is connected
+     */
+    fun setConnectedStateIconColor(@ColorInt color: Int) {
+        connectedStateIconColor = color
+        checkAndUpdateIconColor()
+    }
+
+    /**
+     * Get the color of the icon when the product is connected
+     */
+    fun getConnectedStateIconColor(): Int = connectedStateIconColor
+
+    /**
+     * Set the color of the icon when the product is disconnected
+     */
+    fun setDisconnectedStateIconColor(@ColorInt color: Int) {
+        disconnectedStateIconColor = color
+        checkAndUpdateIconColor()
+    }
+
+    /**
+     * Get the color of the icon when the product is disconnected
+     */
+    fun getDisconnectedStateIconColor(): Int = disconnectedStateIconColor
+
 
     /**
      * Widget UI update State

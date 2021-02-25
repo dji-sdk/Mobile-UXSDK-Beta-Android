@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -97,12 +97,12 @@ open class UnitModeListItemWidget @JvmOverloads constructor(
      */
     @get:StyleRes
     @setparam:StyleRes
-    var checkBoxTextAppearance = 0
+    var checkBoxTextAppearance = INVALID_RESOURCE
 
     /**
      * The text color state list of the check box label
      */
-    var checkBoxTextColor: ColorStateList? = null
+    var checkBoxTextColor: ColorStateList? = ColorStateList.valueOf(getColor(R.color.uxsdk_white))
 
     /**
      * The background of the check box
@@ -114,7 +114,7 @@ open class UnitModeListItemWidget @JvmOverloads constructor(
      */
     @get:Dimension
     @setparam:Dimension
-    var checkBoxTextSize: Float = 0f
+    var checkBoxTextSize: Float = INVALID_DIMENSION
 
     //endregion
 
@@ -211,7 +211,6 @@ open class UnitModeListItemWidget @JvmOverloads constructor(
         builder.setCancelable(true)
         builder.setTitle(getString(R.string.uxsdk_list_item_unit_mode))
         val neverShowAgainCheckBox = view.findViewById<CheckBox>(R.id.checkbox_dont_show_again)
-        neverShowAgainCheckBox.setTextColor(getColor(R.color.uxsdk_white))
         if (checkBoxTextAppearance != INVALID_RESOURCE) {
             neverShowAgainCheckBox.setTextAppearance(context, checkBoxTextAppearance)
         }

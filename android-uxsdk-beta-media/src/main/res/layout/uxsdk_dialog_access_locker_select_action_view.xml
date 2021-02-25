@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="dji.ux.beta.media.widget.accesslocker.dialogwidgets.AccessLockerSelectActionWidget">
+
+    <TextView
+        android:id="@+id/text_view_select_action_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/uxsdk_access_locker_padding"
+        android:text="@string/uxsdk_select_action_header"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="@dimen/uxsdk_access_locker_button_text_size"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_header_separator"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginBottom="@dimen/uxsdk_access_locker_row_margin"
+        android:background="@color/uxsdk_gray_45"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_select_action_header" />
+
+    <TextView
+        android:id="@+id/text_view_select_action_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/uxsdk_access_locker_element_margin"
+        android:padding="@dimen/uxsdk_access_locker_padding"
+        android:text="@string/uxsdk_select_action_message"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="@dimen/uxsdk_text_size_normal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_header_separator" />
+
+    <TextView
+        android:id="@+id/text_view_cancel_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/uxsdk_access_locker_element_margin"
+        android:background="@drawable/uxsdk_selector_dialog_button_background"
+        android:gravity="end|center_vertical"
+        android:padding="@dimen/uxsdk_access_locker_padding"
+        android:text="@string/uxsdk_cancel_button"
+        android:textColor="@color/uxsdk_selector_dialog_button_text"
+        android:textSize="@dimen/uxsdk_access_locker_button_text_size"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_select_action_message" />
+
+    <TextView
+        android:id="@+id/text_view_change_password_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/uxsdk_access_locker_element_margin"
+        android:layout_marginEnd="@dimen/uxsdk_access_locker_element_margin"
+        android:layout_marginTop="@dimen/uxsdk_access_locker_element_margin"
+        android:background="@drawable/uxsdk_selector_dialog_button_background"
+        android:gravity="end|center_vertical"
+        android:padding="@dimen/uxsdk_access_locker_padding"
+        android:text="@string/uxsdk_change_password_button"
+        android:textColor="@color/uxsdk_selector_dialog_button_text"
+        android:textSize="@dimen/uxsdk_access_locker_button_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/text_view_remove_password_item"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_select_action_message" />
+
+    <TextView
+        android:id="@+id/text_view_remove_password_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/uxsdk_access_locker_element_margin"
+        android:layout_marginEnd="@dimen/uxsdk_access_locker_element_margin"
+        android:layout_marginTop="@dimen/uxsdk_access_locker_element_margin"
+        android:background="@drawable/uxsdk_selector_dialog_button_background"
+        android:gravity="end|center_vertical"
+        android:padding="@dimen/uxsdk_access_locker_padding"
+        android:text="@string/uxsdk_remove"
+        android:textColor="@color/uxsdk_selector_dialog_button_text"
+        android:textSize="@dimen/uxsdk_access_locker_button_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_select_action_message" />
+
+</merge>

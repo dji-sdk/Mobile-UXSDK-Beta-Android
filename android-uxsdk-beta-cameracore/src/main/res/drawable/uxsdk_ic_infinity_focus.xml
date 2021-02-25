@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="14dp"
+    android:height="6dp"
+    android:viewportWidth="14"
+    android:viewportHeight="6">
+  <path
+      android:pathData="M13.216,3.228C13.0675,3.9745 12.6906,4.5985 12.0423,5.0913C10.855,5.9941 9.0592,5.9676 7.9391,4.9953C7.5721,4.6768 7.2631,4.3034 6.9117,3.9385C6.4513,4.3296 6.0925,4.6271 5.7426,4.9329C4.8276,5.733 3.7335,5.9444 2.5614,5.5938C1.3769,5.2394 0.6437,4.4619 0.4264,3.3233C0.4201,3.29 0.3955,3.2597 0.3794,3.228L0.3794,2.5217C0.511,1.9805 0.7111,1.4711 1.1213,1.0406C2.3573,-0.2567 4.3687,-0.3565 5.7429,0.8185C6.0907,1.116 6.4401,1.412 6.8085,1.7255C7.1607,1.4202 7.5061,1.1235 7.8482,0.8236C8.7606,0.0238 9.8515,-0.1969 11.027,0.156C12.1977,0.5075 12.9342,1.2713 13.1668,2.395C13.1757,2.4385 13.1992,2.4796 13.216,2.5217L13.216,3.228L13.216,3.228ZM5.3739,2.9203C5.0684,2.6101 4.7846,2.2788 4.4523,1.994C3.8989,1.5197 3.1219,1.5457 2.6016,2.022C2.0864,2.4934 2.0707,3.234 2.5658,3.7088C3.074,4.1962 3.8924,4.238 4.4493,3.7791C4.795,3.4941 5.1043,3.1728 5.3739,2.9203L5.3739,2.9203ZM8.1158,2.8767C8.5024,3.2063 8.8502,3.5316 9.2311,3.8208C9.7812,4.2385 10.581,4.1649 11.0617,3.6795C11.5236,3.2129 11.5049,2.4836 11.0196,2.0304C10.5229,1.5668 9.7446,1.5179 9.2097,1.9385C8.8415,2.2281 8.4999,2.5454 8.1158,2.8767L8.1158,2.8767Z"
+      android:strokeWidth="1"
+      android:fillColor="#FFFFFF"
+      android:fillType="evenOdd"
+      android:strokeColor="#00000000"/>
+</vector>

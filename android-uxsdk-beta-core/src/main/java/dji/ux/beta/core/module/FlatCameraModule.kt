@@ -45,9 +45,11 @@ class FlatCameraModule : BaseModule() {
     private val isFlatCameraModeSupportedDataProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val flatCameraModeDataProcessor: DataProcessor<FlatCameraMode> = DataProcessor.create(FlatCameraMode.UNKNOWN)
     private var cameraIndex = CameraIndex.CAMERA_INDEX_0.index
-    private var cameraModeKey: CameraKey = CameraKey.create(CameraKey.MODE, cameraIndex)
-    private var shootPhotoModeKey: CameraKey = CameraKey.create(CameraKey.SHOOT_PHOTO_MODE, cameraIndex)
-    private var flatCameraModeKey: CameraKey = CameraKey.create(CameraKey.FLAT_CAMERA_MODE, cameraIndex)
+
+    //Camera keys need to be re-initialized every time setup is called to get the new camera index / lens type
+    private lateinit var cameraModeKey: CameraKey
+    private lateinit var shootPhotoModeKey: CameraKey
+    private lateinit var flatCameraModeKey: CameraKey
 
     /**
      * The camera mode.
@@ -68,13 +70,13 @@ class FlatCameraModule : BaseModule() {
         bindDataProcessor(widgetModel, shootPhotoModeKey, shootPhotoModeProcessor)
 
         val isFlatCameraModeSupportedKey = CameraKey.create(CameraKey.IS_FLAT_CAMERA_MODE_SUPPORTED, cameraIndex)
-        bindDataProcessor(widgetModel, isFlatCameraModeSupportedKey, isFlatCameraModeSupportedDataProcessor, Consumer { isFlatCameraModeSupported ->
+        bindDataProcessor(widgetModel, isFlatCameraModeSupportedKey, isFlatCameraModeSupportedDataProcessor, Consumer { isFlatCameraModeSupported: Any ->
             if (isFlatCameraModeSupported as Boolean) {
                 updateModes(flatCameraModeDataProcessor.value)
             }
         })
         flatCameraModeKey = CameraKey.create(CameraKey.FLAT_CAMERA_MODE, cameraIndex)
-        bindDataProcessor(widgetModel, flatCameraModeKey, flatCameraModeDataProcessor, Consumer { flatCameraMode: Any ->
+        bindDataProcessor(widgetModel, flatCameraModeKey, flatCameraModeDataProcessor, Consumer {flatCameraMode: Any ->
             if (isFlatCameraModeSupportedDataProcessor.value) {
                 updateModes(flatCameraMode as FlatCameraMode)
             }

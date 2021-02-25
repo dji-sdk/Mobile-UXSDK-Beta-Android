@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (c) 2018-2020 DJI
   ~
@@ -48,10 +49,26 @@
     <string name="uxsdk_battery_percent">%1$d%%</string>
     <string name="uxsdk_battery_voltage_unit">%.2f V</string>
 
+    <string name="uxsdk_rc_calibrate">Calibrate</string>
+    <string name="uxsdk_rc_start">Start</string>
+    <string name="uxsdk_rc_finish">Done</string>
+    <string name="uxsdk_rc_middle_message">Center both control sticks, then press Start to begin calibration.</string>
+    <string name="uxsdk_rc_limits_message">Push all sticks throughout their maximum range and repeat several times. Then press Done to complete the calibration.</string>
+    <string name="uxsdk_rc_calibration_1">1. Stick Calibration: Move the sticks through their entire range of motion repeatedly.</string>
+    <string name="uxsdk_rc_calibration_2">2. Left Dial Calibration: Turn the left dial up to its limit repeatedly.</string>
+    <string name="uxsdk_rc_pro_calibration_2">2. Dial Calibration: Turn the dials up to their limits repeatedly.</string>
+    <string name="uxsdk_rc_pro_calibration_3">3. Lever Calibration: Turn the levers up to their limits repeatedly.</string>
+    <string name="uxsdk_rc_mavic_dial_calibration">Turn the left dial to the left or right as indicated.</string>
+    <string name="uxsdk_rc_mavic_calibration">Tap Calibrate and follow instructions.</string>
+    <string name="uxsdk_rc_mavic_stick_calibration">Push the stick as indicated. Repeat.</string>
+    <string name="uxsdk_rc_dial_calibration">Turn the left dial to the left or right as indicated.</string>
+
     <string name="uxsdk_gps_rtk_enabled">R</string>
 
     <string name="uxsdk_home_location_letter">H</string>
 
+    <!-- Panel Live Stream -->
+    <string name="uxsdk_live_stream_panel_header">Live Stream Panel</string>
 
     <!-- Telemetry widgets -->
     <string name="uxsdk_unit_meters">m</string>
@@ -171,9 +188,13 @@
     <string name="uxsdk_altitude_range_meters">(%1$d~%2$dm)</string>
     <string name="uxsdk_altitude_range_feet">≈ (%1$d~%2$dft)</string>
 
+    <string name="uxsdk_list_item_vision_sensors">Vision Sensors</string>
     <string name="uxsdk_system_status_disabled">Disabled</string>
     <string name="uxsdk_system_status_normal">Normal</string>
+    <string name="uxsdk_system_status_calibrate">Calibrate</string>
 
+    <string name="uxsdk_list_item_compass_status">Compass</string>
+    <string name="uxsdk_list_item_imu_status">IMU</string>
 
     <!-- System Status List -->
     <string name="uxsdk_system_status_list_title">System Status List</string>

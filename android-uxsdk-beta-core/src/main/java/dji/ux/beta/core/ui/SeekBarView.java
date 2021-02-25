@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -124,6 +124,9 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     private void initAttributes(@NonNull Context context, @Nullable AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SeekBarView);
 
+        setMax(typedArray.getInt(R.styleable.SeekBarView_uxsdk_max, 0));
+        setProgress(typedArray.getInt(R.styleable.SeekBarView_uxsdk_progress, 0));
+        enable(typedArray.getBoolean(R.styleable.SeekBarView_uxsdk_enabled, false));
         setMinValueVisibility(typedArray.getBoolean(R.styleable.SeekBarView_uxsdk_minValueVisible, false));
         setMaxValueVisibility(typedArray.getBoolean(R.styleable.SeekBarView_uxsdk_maxValueVisible, false));
         setMinusVisibility(typedArray.getBoolean(R.styleable.SeekBarView_uxsdk_minusVisible, false));
@@ -221,19 +224,19 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
     }
 
     /**
+     * Get the text above the seek bar progress indicator
+     */
+    public String getText() {
+        return seekBarValueText.getText().toString();
+    }
+
+    /**
      * Set the text above the seek bar progress indicator
      *
      * @param text The text to display above the progress indicator
      */
     public void setText(@Nullable String text) {
         seekBarValueText.setText(text);
-    }
-
-    /**
-     * Get the text above the seek bar progress indicator
-     */
-    public String getText() {
-        return seekBarValueText.getText().toString();
     }
 
     /**

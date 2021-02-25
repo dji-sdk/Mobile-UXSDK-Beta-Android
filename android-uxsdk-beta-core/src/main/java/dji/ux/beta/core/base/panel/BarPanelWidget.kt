@@ -164,16 +164,30 @@ abstract class BarPanelWidget<T> @JvmOverloads constructor(
         }
 
     /**
-     * The percentage between the left and the right.
+     * The percentage for the end of left section.
      * 0.5 distributes both sides equally.
      */
     @FloatRange(from = 0.0, to = 1.0)
-    var guidelinePercent: Float = 0.5f
-        set(value) {
+    var guidelineLeftPercent: Float = 0.5f
+        private set(value) {
             field = value
             val constraintSet = ConstraintSet()
             constraintSet.clone(this)
-            constraintSet.setGuidelinePercent(midGuideline.id, field)
+            constraintSet.setGuidelinePercent(leftEndGuideline.id, field)
+            constraintSet.applyTo(this)
+        }
+
+    /**
+     * The percentage for the start of right section.
+     * 0.5 distributes both sides equally.
+     */
+    @FloatRange(from = 0.0, to = 1.0)
+    var guidelineRightPercent: Float = 0.5f
+        private set(value) {
+            field = value
+            val constraintSet = ConstraintSet()
+            constraintSet.clone(this)
+            constraintSet.setGuidelinePercent(rightStartGuideline.id, field)
             constraintSet.applyTo(this)
         }
     //endregion
@@ -181,7 +195,8 @@ abstract class BarPanelWidget<T> @JvmOverloads constructor(
     //region Private Properties
     private var leftPanelItems: MutableList<PanelItem> = arrayListOf()
     private var rightPanelItems: MutableList<PanelItem> = arrayListOf()
-    private val midGuideline = Guideline(context)
+    private val leftEndGuideline = Guideline(context)
+    private val rightStartGuideline = Guideline(context)
     //endregion
 
     //region Constructor
@@ -201,14 +216,19 @@ abstract class BarPanelWidget<T> @JvmOverloads constructor(
                 } else {
                     ConstraintSet.HORIZONTAL_GUIDELINE
                 }
-        midGuideline.id = ViewIDGenerator.generateViewId()
-        addView(midGuideline)
+        leftEndGuideline.id = ViewIDGenerator.generateViewId()
+        rightStartGuideline.id = ViewIDGenerator.generateViewId()
+        addView(leftEndGuideline)
+        addView(rightStartGuideline)
 
         val constraintSet = ConstraintSet()
         constraintSet.clone(this)
 
-        constraintSet.create(midGuideline.id, guidelineOrientation)
-        constraintSet.setGuidelinePercent(midGuideline.id, guidelinePercent)
+        constraintSet.create(leftEndGuideline.id, guidelineOrientation)
+        constraintSet.setGuidelinePercent(leftEndGuideline.id, guidelineLeftPercent)
+
+        constraintSet.create(rightStartGuideline.id, guidelineOrientation)
+        constraintSet.setGuidelinePercent(rightStartGuideline.id, guidelineRightPercent)
 
         constraintSet.applyTo(this)
     }
@@ -231,8 +251,11 @@ abstract class BarPanelWidget<T> @JvmOverloads constructor(
             typedArray.getDimensionAndUse(R.styleable.BarPanelWidget_uxsdk_itemsSpacing) {
                 itemSpacing = it.toInt()
             }
-            typedArray.getFloatAndUse(R.styleable.BarPanelWidget_uxsdk_guidelinePercent) {
-                guidelinePercent = it
+            typedArray.getFloatAndUse(R.styleable.BarPanelWidget_uxsdk_leftEndGuidelinePercent) {
+                guidelineLeftPercent = it
+            }
+            typedArray.getFloatAndUse(R.styleable.BarPanelWidget_uxsdk_rightStartGuidelinePercent) {
+                guidelineRightPercent = it
             }
             typedArray.getFloatAndUse(R.styleable.BarPanelWidget_uxsdk_leftBias) {
                 leftBias = it
@@ -244,7 +267,7 @@ abstract class BarPanelWidget<T> @JvmOverloads constructor(
                 leftChainStyle = it.toChainStyle()
             }
             typedArray.getIntAndUse(R.styleable.BarPanelWidget_uxsdk_rightChainStyle) {
-                leftChainStyle = it.toChainStyle()
+                rightChainStyle = it.toChainStyle()
             }
         }
     }
@@ -325,7 +348,7 @@ abstract class BarPanelWidget<T> @JvmOverloads constructor(
         val endID =
                 if (isFirstItem(currentIndex)) {
                     if (isLeft) ConstraintSet.PARENT_ID
-                    else midGuideline.id
+                    else rightStartGuideline.id
                 } else {
                     panelItems[currentIndex - 1].view.id
                 }
@@ -352,7 +375,7 @@ abstract class BarPanelWidget<T> @JvmOverloads constructor(
                 else ConstraintSet.BOTTOM
         val endID =
                 if (isLastItem(panelItems, currentIndex)) {
-                    if (isLeft) midGuideline.id
+                    if (isLeft) leftEndGuideline.id
                     else ConstraintSet.PARENT_ID
                 } else {
                     panelItems[currentIndex + 1].view.id
@@ -519,6 +542,26 @@ abstract class BarPanelWidget<T> @JvmOverloads constructor(
      */
     fun removeAllRightWidgets() {
         removeAllPanelItem(rightPanelItems)
+    }
+
+    /**
+     * Set the guideline percent for the guidelines of left and right section.
+     * The value of left should be less than or equal to right.
+     *
+     * @param left - Float value for the guideline for the end of left section.
+     * @param right - Float value for the guideline for the start of right section.
+     *
+     * @return Boolean - true if the value is updated, false if value is not updated.
+     *
+     */
+    fun setGuidelinePercent(left: Float, right: Float): Boolean {
+        return if (left <= right) {
+            guidelineLeftPercent = left
+            guidelineRightPercent = right
+            true
+        } else {
+            false
+        }
     }
 
     private fun getLeftWidget(@IntRange(from = 0) index: Int, panelItems: MutableList<PanelItem>): PanelItem? =

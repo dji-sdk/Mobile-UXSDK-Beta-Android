@@ -91,10 +91,12 @@ open class SystemStatusSmartListModel @JvmOverloads constructor(
 
     //region Lifecycle
     override fun inSetUp() {
+        //Do nothing
     }
 
 
     override fun inCleanUp() {
+        //Do nothing
     }
 
     override fun onAircraftModelChanged(model: Model) {

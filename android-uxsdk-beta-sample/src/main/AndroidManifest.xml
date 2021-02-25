@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2020 DJI
+  ~ Copyright (c) 2018-2021 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -109,7 +109,10 @@
             android:name=".showcase.widgetlist.WidgetsActivity"
             android:screenOrientation="sensorLandscape" />
 
-        <!-- Add android:windowSoftInputMode="adjustNothing" to activity tag if API 30-->
+        <activity
+            android:name=".development.customization.CustomizationActivity"
+            android:screenOrientation="sensorLandscape" />
+
         <activity
             android:name=".showcase.defaultlayout.DefaultLayoutActivity"
             android:screenOrientation="sensorLandscape"
@@ -121,7 +124,12 @@
             android:label="Map Widget"
             android:launchMode="singleTop"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/MapTheme" />
+            android:theme="@style/ModuleTheme" />
+
+        <activity
+            android:name=".showcase.core.CoreWidgetsActivity"
+            android:screenOrientation="sensorLandscape"
+            android:theme="@style/ModuleTheme" />
 
         <activity
             android:name=".DJIConnectionControlActivity"
@@ -134,6 +142,10 @@
                 android:name="android.hardware.usb.action.USB_ACCESSORY_ATTACHED"
                 android:resource="@xml/accessory_filter" />
         </activity>
+
+        <activity android:name=".development.panel.PanelActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="sensorLandscape" />
 
     </application>
 

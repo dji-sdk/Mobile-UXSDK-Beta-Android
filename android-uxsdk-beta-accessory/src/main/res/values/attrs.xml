@@ -25,6 +25,15 @@
 <resources>
 
     <attr name="uxsdk_rtkSeparatorsColor" format="color" />
+    <attr name="uxsdk_switchThumbIcon" format="reference" />
+    <attr name="uxsdk_seekbarThumbIcon" format="reference" />
+
+    <declare-styleable name="BeaconWidget">
+        <attr name="uxsdk_beaconInactiveIcon" format="reference" />
+        <attr name="uxsdk_beaconActiveIcon" format="reference" />
+        <attr name="uxsdk_beaconInactiveIconColor" format="color|reference" />
+        <attr name="uxsdk_beaconActiveIconColor" format="color|reference" />
+    </declare-styleable>
 
     <declare-styleable name="RTKWidget">
         <attr name="uxsdk_rtkDescriptionTextAppearance" format="reference" />
@@ -78,6 +87,75 @@
         <attr name="uxsdk_beiDouSatellitesVisibility" format="boolean" />
         <attr name="uxsdk_glonassSatellitesVisibility" format="boolean" />
         <attr name="uxsdk_galileoSatellitesVisibility" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="SpeakerIndicatorWidget">
+        <attr name="uxsdk_iconBackground" />
+        <attr name="uxsdk_onStateChange" />
+        <attr name="uxsdk_speakerActiveDrawable" format="reference" />
+        <attr name="uxsdk_speakerInactiveDrawable" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SpeakerControlWidget">
+        <attr name="uxsdk_fileListTextSize" format="dimension" />
+        <attr name="uxsdk_fileListTextColor" format="color" />
+        <attr name="uxsdk_fileListTextBackground" format="reference" />
+        <attr name="uxsdk_fileListIconBackground" format="reference" />
+        <attr name="uxsdk_fileListDeleteIcon" format="reference" />
+        <attr name="uxsdk_fileListPlayIcon" format="reference" />
+        <attr name="uxsdk_fileListStopIcon" format="reference" />
+        <attr name="uxsdk_switchThumbIcon" />
+        <attr name="uxsdk_seekbarThumbIcon" />
+        <attr name="uxsdk_recordButtonIcon" format="reference" />
+        <attr name="uxsdk_recordButtonBackground" format="reference" />
+        <attr name="uxsdk_recordTimerTextSize" format="dimension" />
+        <attr name="uxsdk_recordTimerTextColor" format="color" />
+        <attr name="uxsdk_recordTimerTextAppearance" format="reference" />
+        <attr name="uxsdk_recordTimerTextBackground" format="reference" />
+        <attr name="uxsdk_tabTextAppearance" format="reference" />
+        <attr name="uxsdk_tabTextSize" format="dimension" />
+        <attr name="uxsdk_tabTextColor" format="color" />
+        <attr name="uxsdk_tabBroadcastBackgroundSelector" format="reference" />
+        <attr name="uxsdk_tabFileListBackgroundSelector" format="reference" />
+        <attr name="uxsdk_labelsTextSize" />
+        <attr name="uxsdk_labelsTextColor" />
+        <attr name="uxsdk_labelsBackground" />
+        <attr name="uxsdk_labelsTextAppearance" />
+        <attr name="uxsdk_widgetTitleTextSize" />
+        <attr name="uxsdk_widgetTitleTextColor" />
+        <attr name="uxsdk_widgetTitleBackground" />
+        <attr name="uxsdk_widgetTitleTextAppearance" />
+    </declare-styleable>
+
+    <declare-styleable name="SpotlightControlWidget">
+        <attr name="uxsdk_switchThumbIcon" />
+        <attr name="uxsdk_seekbarThumbIcon" />
+        <attr name="uxsdk_labelsTextSize" />
+        <attr name="uxsdk_labelsTextColor" />
+        <attr name="uxsdk_labelsBackground" />
+        <attr name="uxsdk_labelsTextAppearance" />
+        <attr name="uxsdk_widgetTitleTextSize" />
+        <attr name="uxsdk_widgetTitleTextColor" />
+        <attr name="uxsdk_widgetTitleBackground" />
+        <attr name="uxsdk_widgetTitleTextAppearance" />
+        <attr name="uxsdk_warningTextSize" format="dimension" />
+        <attr name="uxsdk_warningTextColor" format="color" />
+        <attr name="uxsdk_warningTextBackground" format="reference" />
+        <attr name="uxsdk_warningTextAppearance" format="reference" />
+        <attr name="uxsdk_temperatureValueTextSize" format="dimension" />
+        <attr name="uxsdk_temperatureValueTextColor" format="color" />
+        <attr name="uxsdk_temperatureValueTextBackground" format="reference" />
+        <attr name="uxsdk_temperatureValueTextAppearance" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SpotlightIndicatorWidget">
+        <attr name="uxsdk_iconBackground" />
+        <attr name="uxsdk_spotlightEnabled" format="reference" />
+        <attr name="uxsdk_spotlightDisabled" format="reference" />
+        <!-- Insert ID of the spotlight widget that needs to react to a state change on this widget.
+       See {@link dji.ux.beta.accessory.widget.spotlight.SpotlightIndicatorWidget.setStateChangeCallback}
+       and {@link dji/ux/os/widget/spotlight/SpotlightControlWidget}. -->
+        <attr name="uxsdk_onStateChange" />
     </declare-styleable>
 
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (c) 2018-2020 DJI
+  ~ Copyright (c) 2018-2021 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,21 @@
   -->
 
 <resources>
+    <dimen name="image_drop_down_height">30dp</dimen>
     <dimen name="map_settings_separator">15dp</dimen>
-    <dimen name="map_settings_item_separator">5dp</dimen>
+    <dimen name="module_settings_item_separator">5dp</dimen>
     <dimen name="mini_map_height">100dp</dimen>
     <dimen name="mini_map_width">150dp</dimen>
     <dimen name="mini_map_margin">12dp</dimen>
 
     <dimen name="topbar_padding">3dp</dimen>
+    <dimen name="topbar_text_size">16sp</dimen>
+    <dimen name="topbar_small_text_size">6sp</dimen>
     <dimen name="camera_config_height">35dp</dimen>
     <dimen name="camera_bar_height">35dp</dimen>
     <dimen name="camera_bar_padding">6dp</dimen>
+    <dimen name="single_battery_text_size">14sp</dimen>
+    <dimen name="dual_battery_text_size">8sp</dimen>
+    <dimen name="title_bar_size">56dp</dimen>
     <dimen name="top_bar_percent_height">0.1</dimen>
 </resources>

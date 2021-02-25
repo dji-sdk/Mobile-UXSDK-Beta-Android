@@ -29,17 +29,6 @@
     android:layout_height="match_parent"
     tools:parentTag="dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget">
 
-    <dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator.CameraSettingsMenuIndicatorWidget
-        android:id="@+id/widget_camera_control_camera_settings_menu"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/widget_camera_control_photo_video_switch"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="2" />
-
     <dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch.PhotoVideoSwitchWidget
         android:id="@+id/widget_camera_control_photo_video_switch"
         android:layout_width="0dp"
@@ -48,29 +37,26 @@
         app:layout_constraintBottom_toTopOf="@+id/widget_camera_control_camera_capture"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/widget_camera_control_camera_settings_menu"
-        app:layout_constraintVertical_weight="3" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <dji.ux.beta.cameracore.widget.cameracapture.CameraCaptureWidget
         android:id="@+id/widget_camera_control_camera_capture"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/widget_camera_control_camera_exposure_settings"
+        app:layout_constraintBottom_toTopOf="@+id/widget_camera_control_camera_settings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/widget_camera_control_photo_video_switch"
-        app:layout_constraintVertical_weight="4" />
+        app:layout_constraintTop_toBottomOf="@+id/widget_camera_control_photo_video_switch" />
 
-    <dji.ux.beta.cameracore.widget.cameracontrols.exposuresettingsindicator.ExposureSettingsIndicatorWidget
-        android:id="@+id/widget_camera_control_camera_exposure_settings"
+    <dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator.CameraSettingsIndicatorWidget
+        android:id="@+id/widget_camera_control_camera_settings"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/widget_camera_control_camera_capture"
-        app:layout_constraintVertical_weight="2" />
+        app:layout_constraintTop_toBottomOf="@+id/widget_camera_control_camera_capture" />
 
 </merge>

@@ -180,8 +180,12 @@ open class VerticalVelocityWidget @JvmOverloads constructor(
         when (verticalVelocityState) {
             VerticalVelocityState.ProductDisconnected -> updateToDisconnectedState()
             is VerticalVelocityState.Idle -> updateVelocityState(0.0f, verticalVelocityState.unitType, null)
-            is VerticalVelocityState.UpwardVelocity -> updateVelocityState(verticalVelocityState.velocity, verticalVelocityState.unitType, upwardVelocityIcon)
-            is VerticalVelocityState.DownwardVelocity -> updateVelocityState(verticalVelocityState.velocity, verticalVelocityState.unitType, downwardVelocityIcon)
+            is VerticalVelocityState.UpwardVelocity -> {
+                updateVelocityState(verticalVelocityState.velocity, verticalVelocityState.unitType, upwardVelocityIcon)
+            }
+            is VerticalVelocityState.DownwardVelocity -> {
+                updateVelocityState(verticalVelocityState.velocity, verticalVelocityState.unitType, downwardVelocityIcon)
+            }
         }
 
     }

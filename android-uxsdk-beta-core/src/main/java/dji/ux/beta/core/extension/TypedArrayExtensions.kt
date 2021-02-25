@@ -33,6 +33,7 @@ import androidx.annotation.StyleableRes
 const val INVALID_RESOURCE = -1
 const val INVALID_DIMENSION = -1f
 const val INVALID_STRING = ""
+const val INVALID_COLOR = 0
 
 /**
  * Retrieve the string value for the attribute at [index].

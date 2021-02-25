@@ -28,4 +28,11 @@
         <attr name="uxsdk_sampleNavigationListPanelWidgetStyle" format="reference" />
         <attr name="uxsdk_secondSampleNavigationListPanelWidgetStyle" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="SettingsDrawerView">
+        <attr name="drawerPosition">
+            <enum name="left" value="0" />
+            <enum name="right" value="1" />
+        </attr>
+    </declare-styleable>
 </resources>

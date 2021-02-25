@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -73,7 +73,7 @@ class RadarWidgetModel(djiSdkModel: DJISDKModel,
     private val isMotorOnProcessor: DataProcessor<Boolean> = DataProcessor.create(false)
     private val flightModeProcessor: DataProcessor<FlightMode> = DataProcessor.create(FlightMode.GPS_ATTI)
     private val radarDistancesProcessor: DataProcessor<IntArray> = DataProcessor.create(intArrayOf())
-    private val horizontalRadarDistanceProcessor: DataProcessor<Float> = DataProcessor.create(DEFAULT_RADAR_DISTANCE)
+    private val horizontalMaxPerceptionDistanceProcessor: DataProcessor<Float> = DataProcessor.create(DEFAULT_RADAR_DISTANCE)
     private val horizontalAvoidanceDistanceProcessor: DataProcessor<Float> = DataProcessor.create(DEFAULT_AVOIDANCE_DISTANCE)
     private val unitTypeProcessor: DataProcessor<UnitConversionUtil.UnitType> = DataProcessor.create(UnitConversionUtil.UnitType.METRIC)
     private val obstacleAvoidanceLevelProcessor: DataProcessor<ObstacleAvoidanceLevel> = DataProcessor.create(ObstacleAvoidanceLevel.NONE)
@@ -179,7 +179,7 @@ class RadarWidgetModel(djiSdkModel: DJISDKModel,
         val isMotorOnKey: DJIKey = FlightControllerKey.create(FlightControllerKey.ARE_MOTOR_ON)
         val flightModeKey: DJIKey = FlightControllerKey.create(FlightControllerKey.FLIGHT_MODE)
         val radarDistancesKey: DJIKey = FlightControllerKey.createFlightAssistantKey(FlightControllerKey.OMNI_PERCEPTION_RADAR_BIRD_VIEW_DISTANCE)
-        val horizontalRadarDistanceKey: DJIKey = FlightControllerKey.createFlightAssistantKey(FlightControllerKey.OMNI_HORIZONTAL_RADAR_DISTANCE)
+        val horizontalMaxPerceptionDistanceKey: DJIKey = FlightControllerKey.createFlightAssistantKey(FlightControllerKey.OMNI_HORIZONTAL_RADAR_DISTANCE)
         val horizontalAvoidanceDistanceKey: DJIKey = FlightControllerKey.createFlightAssistantKey(FlightControllerKey.OMNI_HORIZONTAL_AVOIDANCE_DISTANCE)
         bindDataProcessor(visionDetectionStateKey, visionDetectionStateProcessor) { visionDetectionState: Any? ->
             obstacleAvoidanceLevelProcessor.onNext(getObstacleAvoidanceLevel(visionDetectionState as VisionDetectionState))
@@ -195,7 +195,7 @@ class RadarWidgetModel(djiSdkModel: DJISDKModel,
             val distanceInMeters = getMinDistance(radarDistances).toDouble() / MM_IN_METER
             obstacleAvoidanceLevelProcessor.onNext(getObstacleAvoidanceLevel(distanceInMeters.toFloat()))
         }
-        bindDataProcessor(horizontalRadarDistanceKey, horizontalRadarDistanceProcessor)
+        bindDataProcessor(horizontalMaxPerceptionDistanceKey, horizontalMaxPerceptionDistanceProcessor)
         bindDataProcessor(horizontalAvoidanceDistanceKey, horizontalAvoidanceDistanceProcessor)
         val unitKey = UXKeys.create(GlobalPreferenceKeys.UNIT_TYPE)
         bindDataProcessor(unitKey, unitTypeProcessor)
@@ -319,7 +319,7 @@ class RadarWidgetModel(djiSdkModel: DJISDKModel,
             when {
                 distanceInMeters < 0 -> ObstacleDetectionSectorWarning.UNKNOWN
                 distanceInMeters >= MAX_PERCEPTION_DISTANCE -> ObstacleDetectionSectorWarning.INVALID
-                distanceInMeters > horizontalRadarDistanceProcessor.value -> ObstacleDetectionSectorWarning.LEVEL_1
+                distanceInMeters > horizontalMaxPerceptionDistanceProcessor.value -> ObstacleDetectionSectorWarning.LEVEL_1
                 distanceInMeters > horizontalAvoidanceDistanceProcessor.value + 2 -> ObstacleDetectionSectorWarning.LEVEL_4
                 else -> ObstacleDetectionSectorWarning.LEVEL_6
             }
@@ -338,9 +338,11 @@ class RadarWidgetModel(djiSdkModel: DJISDKModel,
 
     private fun getObstacleAvoidanceLevel(distanceInMeters: Float): ObstacleAvoidanceLevel {
         return when {
-            distanceInMeters > horizontalRadarDistanceProcessor.value -> ObstacleAvoidanceLevel.NONE
-            distanceInMeters >= horizontalRadarDistanceProcessor.value / 3 + horizontalAvoidanceDistanceProcessor.value * 2 / 3 -> ObstacleAvoidanceLevel.LEVEL_1
-            distanceInMeters >= horizontalRadarDistanceProcessor.value / 6 + horizontalAvoidanceDistanceProcessor.value * 5 / 6 -> ObstacleAvoidanceLevel.LEVEL_2
+            distanceInMeters > horizontalMaxPerceptionDistanceProcessor.value -> ObstacleAvoidanceLevel.NONE
+            distanceInMeters >= horizontalMaxPerceptionDistanceProcessor.value / 3 +
+                    horizontalAvoidanceDistanceProcessor.value * 2 / 3 -> ObstacleAvoidanceLevel.LEVEL_1
+            distanceInMeters >= horizontalMaxPerceptionDistanceProcessor.value / 6 +
+                    horizontalAvoidanceDistanceProcessor.value * 5 / 6 -> ObstacleAvoidanceLevel.LEVEL_2
             else -> ObstacleAvoidanceLevel.LEVEL_3
         }
     }

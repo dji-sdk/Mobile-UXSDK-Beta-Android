@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,7 @@ import dji.ux.beta.core.base.WidgetSizeDescription
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
+import dji.ux.beta.core.util.DisplayUtil
 import dji.ux.beta.core.widget.battery.BatteryWidget.ModelState
 import dji.ux.beta.core.widget.battery.BatteryWidget.ModelState.BatteryStateUpdated
 import dji.ux.beta.core.widget.battery.BatteryWidget.ModelState.ProductConnected
@@ -572,7 +573,7 @@ open class BatteryWidget @JvmOverloads constructor(
             }
 
             typedArray.getDimensionAndUse(R.styleable.BatteryWidget_uxsdk_singlePercentTextSize) {
-                singleBatteryPercentageTextSize = it
+                singleBatteryPercentageTextSize = DisplayUtil.pxToSp(context, it)
             }
 
             typedArray.getResourceIdAndUse(R.styleable.BatteryWidget_uxsdk_singleIconUnknown) {
@@ -599,7 +600,7 @@ open class BatteryWidget @JvmOverloads constructor(
             }
 
             typedArray.getDimensionAndUse(R.styleable.BatteryWidget_uxsdk_dualPercentTextSize) {
-                dualBatteryPercentageTextSize = it
+                dualBatteryPercentageTextSize = DisplayUtil.pxToSp(context, it)
             }
 
             typedArray.getColorAndUse(R.styleable.BatteryWidget_uxsdk_percentTextColorUnknown) {
@@ -626,7 +627,7 @@ open class BatteryWidget @JvmOverloads constructor(
             }
 
             typedArray.getDimensionAndUse(R.styleable.BatteryWidget_uxsdk_dualPercentTextSize) {
-                dualBatteryVoltageTextSize = it
+                dualBatteryVoltageTextSize = DisplayUtil.pxToSp(context, it)
             }
 
             typedArray.getColorAndUse(R.styleable.BatteryWidget_uxsdk_voltageTextColorUnknown) {

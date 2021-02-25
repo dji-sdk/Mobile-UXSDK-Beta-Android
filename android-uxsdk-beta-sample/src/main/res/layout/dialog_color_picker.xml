@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2021 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:padding="32dp">
+
+    <com.flask.colorpicker.ColorPickerView
+        android:id="@+id/color_picker_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        app:alphaSlider="true"
+        app:density="12"
+        app:lightnessSlider="true"
+        app:wheelType="FLOWER"
+        app:lightnessSliderView="@+id/v_lightness_slider"
+        app:alphaSliderView="@+id/v_alpha_slider"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <com.flask.colorpicker.slider.LightnessSlider
+        android:id="@+id/v_lightness_slider"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        app:inVerticalOrientation="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/color_picker_view"
+        app:layout_constraintBottom_toBottomOf="parent"  />
+
+    <com.dji.ux.beta.sample.view.VerticalAlphaSlider
+        android:id="@+id/v_alpha_slider"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        app:inVerticalOrientation="true"
+        app:layout_constraintStart_toEndOf="@id/v_lightness_slider"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"  />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -32,6 +32,7 @@ import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.view.contains
 import dji.ux.beta.core.R
+import dji.ux.beta.core.extension.INVALID_COLOR
 import dji.ux.beta.core.extension.getColor
 import dji.ux.beta.core.extension.hide
 import dji.ux.beta.core.extension.show
@@ -172,8 +173,8 @@ abstract class FreeFormPanelWidget<T> @JvmOverloads constructor(
      */
     fun splitPane(paneId: Int, splitType: SplitType, proportions: Array<Float>): List<Int> {
         // Pane has already been split or pane does not exist
-        val parentPane = paneMap[paneId]
-        if (parentPane == null || parentPane.isSplit) {
+        val parentPane = paneMap[paneId] ?: return emptyList()
+        if (parentPane.isSplit) {
             return emptyList()
         }
 
@@ -182,12 +183,8 @@ abstract class FreeFormPanelWidget<T> @JvmOverloads constructor(
             return emptyList()
         }
 
-        val sum = proportions.sum()
-
         // Sum of proportions cannot exceed 1 which is the total size
-        if (sum > 1f) {
-            return emptyList()
-        }
+        val sum = proportions.sum().takeIf { it <= 1f } ?: return emptyList()
 
         // Remove all the debug labels
         removeDebugViews()

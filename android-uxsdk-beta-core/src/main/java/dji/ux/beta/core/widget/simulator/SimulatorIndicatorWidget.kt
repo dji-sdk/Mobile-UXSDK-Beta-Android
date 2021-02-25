@@ -101,7 +101,7 @@ open class SimulatorIndicatorWidget @JvmOverloads constructor(
     //region Lifecycle
     init {
         attrs?.let { initAttributes(context, it) }
-        connectedStateIconColor = getColor(R.color.uxsdk_white)
+        setConnectedStateIconColor(getColor(R.color.uxsdk_white))
     }
 
     override fun reactToModelChanges() {
@@ -164,11 +164,11 @@ open class SimulatorIndicatorWidget @JvmOverloads constructor(
             foregroundImageView.clearColorFilter()
         } else if (isConnected) {
             foregroundImageView.imageDrawable = simulatorInactiveIcon
-            foregroundImageView.setColorFilter(connectedStateIconColor, PorterDuff.Mode.SRC_IN)
+            foregroundImageView.setColorFilter(getConnectedStateIconColor(), PorterDuff.Mode.SRC_IN)
 
         } else {
             foregroundImageView.imageDrawable = simulatorInactiveIcon
-            foregroundImageView.setColorFilter(disconnectedStateIconColor, PorterDuff.Mode.SRC_IN)
+            foregroundImageView.setColorFilter(getDisconnectedStateIconColor(), PorterDuff.Mode.SRC_IN)
 
         }
     }

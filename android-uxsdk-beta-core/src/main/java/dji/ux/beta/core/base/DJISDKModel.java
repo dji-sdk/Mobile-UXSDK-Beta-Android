@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
 
 package dji.ux.beta.core.base;
 
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -33,7 +32,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import dji.common.error.DJIError;
-import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.keysdk.KeyManager;
 import dji.keysdk.callback.ActionCallback;
@@ -41,7 +39,6 @@ import dji.keysdk.callback.GetCallback;
 import dji.keysdk.callback.KeyListener;
 import dji.keysdk.callback.SetCallback;
 import dji.log.DJILog;
-import dji.sdk.camera.Camera;
 import dji.thirdparty.io.reactivex.BackpressureStrategy;
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
@@ -230,42 +227,6 @@ public class DJISDKModel {
         }
 
         return false;
-    }
-
-    /**
-     * Create a lens key or camera key, depending on whether the product has multi lens support.
-     *
-     * @param keyName           A valid CameraKey name
-     * @param componentIndex    The index of the camera component.
-     * @param subComponentIndex The index of the camera sub-component.
-     * @return A camera key.
-     */
-    @NonNull
-    public CameraKey createLensKey(@NonNull String keyName,
-                                   @IntRange(from = 0, to = MAX_COMPONENT_INDEX) int componentIndex,
-                                   @IntRange(from = 0, to = MAX_COMPONENT_INDEX) int subComponentIndex) {
-        boolean isMultiLensCameraSupported = false;
-        if (getCacheValue(CameraKey.create(CameraKey.IS_MULTI_LENS_CAMERA_SUPPORTED, componentIndex)) != null) {
-            isMultiLensCameraSupported = (boolean) getCacheValue(CameraKey.create(CameraKey.IS_MULTI_LENS_CAMERA_SUPPORTED, componentIndex));
-        }
-        if (!isMultiLensCameraSupported) {
-            String displayName = "";
-            if (getCacheValue(CameraKey.create(CameraKey.DISPLAY_NAME)) != null) {
-                displayName = (String) getCacheValue(CameraKey.create(CameraKey.DISPLAY_NAME));
-            }
-            if (Camera.DisplayNameXT2_VL.equals(displayName) ||
-                    Camera.DisplayNameMavic2EnterpriseDual_VL.equals(displayName)) {
-                if (subComponentIndex == Camera.XT2_IR_CAMERA_INDEX) {
-                    return CameraKey.create(keyName, subComponentIndex);
-                } else {
-                    return CameraKey.create(keyName, componentIndex);
-                }
-            } else {
-                return CameraKey.create(keyName, componentIndex);
-            }
-        } else {
-            return CameraKey.createLensKey(keyName, componentIndex, subComponentIndex);
-        }
     }
     //endregion
 

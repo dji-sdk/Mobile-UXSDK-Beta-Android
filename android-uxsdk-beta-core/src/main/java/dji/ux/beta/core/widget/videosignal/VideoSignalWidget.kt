@@ -264,9 +264,11 @@ open class VideoSignalWidget @JvmOverloads constructor(
 
     private fun reactToOcuSyncFrequencyStateChange(): Disposable {
         return Flowable.combineLatest(
-                widgetModel.ocuSyncFrequencyBand,
-                widgetModel.ocuSyncFrequencyPointIndex,
-                BiFunction<OcuSyncFrequencyBand, Int, Pair<OcuSyncFrequencyBand, Int>> { ocuSyncFrequencyBand, signalQuality -> Pair.create(ocuSyncFrequencyBand, signalQuality) })
+                        widgetModel.ocuSyncFrequencyBand,
+                        widgetModel.ocuSyncFrequencyPointIndex,
+                        BiFunction<OcuSyncFrequencyBand, Int, Pair<OcuSyncFrequencyBand, Int>> { ocuSyncFrequencyBand, signalQuality ->
+                            Pair.create(ocuSyncFrequencyBand, signalQuality)
+                        })
                 .observeOn(SchedulerProvider.ui())
                 .subscribe { values ->
                     widgetStateDataProcessor.onNext(OcuSyncFrequencyBandUpdated(values.first))

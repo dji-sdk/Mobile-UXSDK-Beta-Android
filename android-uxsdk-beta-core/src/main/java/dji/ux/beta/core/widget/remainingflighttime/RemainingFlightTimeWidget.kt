@@ -338,9 +338,21 @@ open class RemainingFlightTimeWidget @JvmOverloads constructor(
 
     private fun drawFlightText(canvas: Canvas, roundedBgWidth: Float, textWidth: Float) {
         flightTimeRoundedBackgroundPaint.strokeCap = Paint.Cap.ROUND
-        val start = if (usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth > 0) usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth / 2 - textWidth / 2.5f else flightTimeRoundedBackgroundPaint.strokeWidth / 2.0f
-        val end = if (usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth > 0) usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth / 2 + textWidth / 2.5f else roundedBgWidth / 2 + textWidth / 2.5f
-        val textStart = if (usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth > 0) usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth / 2 - textWidth / 2 else flightTimeRoundedBackgroundPaint.strokeWidth / 2.5f
+        val start = if (usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth > 0) {
+            usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth / 2 - textWidth / 2.5f
+        } else {
+            flightTimeRoundedBackgroundPaint.strokeWidth / 2.0f
+        }
+        val end = if (usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth > 0) {
+            usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth / 2 + textWidth / 2.5f
+        } else {
+            roundedBgWidth / 2 + textWidth / 2.5f
+        }
+        val textStart = if (usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth > 0) {
+            usableViewWidth * remainingBatteryChargePercentage / 100f - roundedBgWidth / 2 - textWidth / 2
+        } else {
+            flightTimeRoundedBackgroundPaint.strokeWidth / 2.5f
+        }
         canvas.drawPoint(start,
                 viewHeight / 2f, flightTimeRoundedBackgroundPaint)
         canvas.drawPoint(end, viewHeight / 2f, flightTimeRoundedBackgroundPaint)
@@ -348,7 +360,11 @@ open class RemainingFlightTimeWidget @JvmOverloads constructor(
                 flightTimeRoundedBackgroundPaint)
         canvas.drawText(flightTimeText,
                 textStart,
-                viewHeight / 2f + if (flightTimeTextBounds.height() > homeLetterBounds.height()) flightTimeTextBounds.height() / 2.5f else homeLetterBounds.height() / 1.5f,
+                viewHeight / 2f + if (flightTimeTextBounds.height() > homeLetterBounds.height()) {
+                    flightTimeTextBounds.height() / 2.5f
+                } else {
+                    homeLetterBounds.height() / 1.5f
+                },
                 flightTimeTextPaint)
     }
 

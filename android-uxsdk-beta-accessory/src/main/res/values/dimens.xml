@@ -23,6 +23,14 @@
   -->
 
 <resources>
+    <!-- Spotlight Widget -->
+    <dimen name="uxsdk_spotlight_row_height">30dp</dimen>
+    <dimen name="uxsdk_spotlight_row_margin">5dp</dimen>
+
+    <!-- Speaker Widget -->
+    <dimen name="uxsdk_speaker_row_height">30dp</dimen>
+    <dimen name="uxsdk_speaker_row_margin">5dp</dimen>
+
     <!-- RTK Widget -->
     <dimen name="uxsdk_setting_rtk_satellite_item_desc_width">120dp</dimen>
 </resources>

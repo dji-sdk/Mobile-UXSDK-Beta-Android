@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -47,6 +47,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.dji.ux.beta.sample.development.customization.CustomizationActivity;
+import com.dji.ux.beta.sample.development.panel.PanelActivity;
+import com.dji.ux.beta.sample.showcase.core.CoreWidgetsActivity;
 import com.dji.ux.beta.sample.showcase.defaultlayout.DefaultLayoutActivity;
 import com.dji.ux.beta.sample.showcase.map.MapWidgetActivity;
 import com.dji.ux.beta.sample.showcase.widgetlist.WidgetsActivity;
@@ -370,6 +373,20 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         startActivity(intent);
     }
 
+    @OnClick(R.id.core_widgets)
+    public void onCoreWidgetsClick() {
+        Intent intent = new Intent(this, CoreWidgetsActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Starts the {@link CustomizationActivity}.
+     */
+    @OnClick(R.id.widget_button)
+    public void onWidgetClick() {
+        Intent intent = new Intent(this, CustomizationActivity.class);
+        startActivity(intent);
+    }
 
     /**
      * Displays a menu of map providers before launching the {@link MapWidgetActivity}. Disables
@@ -387,6 +404,12 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         popupMenu.findItem(R.id.here_map).setEnabled(MapUtil.isHereMapsSupported());
         popupMenu.findItem(R.id.google_map).setEnabled(MapUtil.isGoogleMapsSupported(this));
         popup.show();
+    }
+
+    @OnClick(R.id.panel_button)
+    public void onPanelClick(View view) {
+        Intent intent = new Intent(this, PanelActivity.class);
+        startActivity(intent);
     }
 
     /**

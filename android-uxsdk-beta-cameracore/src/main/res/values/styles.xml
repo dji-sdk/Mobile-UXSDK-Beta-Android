@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<resources>
+    <style name="UXSDKGimbalPitchWidgetDefault">
+        <item name="uxsdk_labelsTextSize">12sp</item>
+        <item name="uxsdk_labelEnabled">true</item>
+        <item name="uxsdk_labelsTextColor">@color/uxsdk_black</item>
+        <item name="uxsdk_labelsBackground">@drawable/uxsdk_background_gimbal_pitch_text</item>
+        <item name="uxsdk_indicatorEndColor">@color/uxsdk_red</item>
+        <item name="uxsdk_indicatorHorizontalColor">@color/uxsdk_blue_highlight</item>
+        <item name="uxsdk_indicatorNormalColor">@color/uxsdk_white</item>
+        <item name="uxsdk_positivePitchBackgroundColor">@color/uxsdk_black</item>
+        <item name="uxsdk_linesColor">@color/uxsdk_white</item>
+        <item name="uxsdk_horizontalPitchLineColor">@color/uxsdk_red</item>
+    </style>
+
+    <style name="UXSDKWheelView">
+        <item name="uxsdk_highlightColor">@color/uxsdk_blue_highlight</item>
+        <item name="uxsdk_markColor">@color/uxsdk_white_85_percent</item>
+        <item name="uxsdk_markTextColor">@color/uxsdk_white_85_percent</item>
+        <item name="uxsdk_outOfRangeMarkerColor">@color/uxsdk_gray_640</item>
+        <item name="uxsdk_cursorHeight">@dimen/uxsdk_wheel_view_cursor_size</item>
+        <item name="uxsdk_markTextSize">@dimen/uxsdk_wheel_view_normal_text_size</item>
+        <item name="uxsdk_centerMarkTextSize">@dimen/uxsdk_wheel_view_center_text_size</item>
+        <item name="uxsdk_wheelType">VALUES_ONLY</item>
+    </style>
+</resources>

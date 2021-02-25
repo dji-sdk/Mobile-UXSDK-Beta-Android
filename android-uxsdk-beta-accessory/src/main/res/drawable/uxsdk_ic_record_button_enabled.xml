@@ -1,0 +1,55 @@
+<!--
+  ~ Copyright (c) 2018-2020 DJI
+  ~
+  ~ Permission is hereby granted, free of charge, to any person obtaining a copy
+  ~ of this software and associated documentation files (the "Software"), to deal
+  ~ in the Software without restriction, including without limitation the rights
+  ~ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  ~ copies of the Software, and to permit persons to whom the Software is
+  ~ furnished to do so, subject to the following conditions:
+  ~
+  ~ The above copyright notice and this permission notice shall be included in all
+  ~ copies or substantial portions of the Software.
+  ~
+  ~ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  ~ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  ~ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  ~ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  ~ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  ~ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  ~ SOFTWARE.
+  ~
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+  <path
+      android:pathData="M60,110C87.614,110 110,87.614 110,60C110,32.386 87.614,10 60,10C32.386,10 10,32.386 10,60C10,87.614 32.386,110 60,110Z"
+      android:strokeWidth="1"
+      android:fillColor="#000000"
+      android:fillAlpha="1"
+      android:fillType="evenOdd"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M60,108C86.51,108 108,86.51 108,60C108,33.49 86.51,12 60,12C33.49,12 12,33.49 12,60C12,86.51 33.49,108 60,108Z"
+      android:strokeWidth="4"
+      android:fillColor="#000000"
+      android:fillAlpha="0.6"
+      android:fillType="evenOdd"
+      android:strokeColor="#FFFFFF"/>
+  <path
+      android:pathData="M60,60m-40,0a40,40 0,1 1,80 0a40,40 0,1 1,-80 0"
+      android:strokeWidth="1"
+      android:fillColor="#D93035"
+      android:fillType="evenOdd"
+      android:strokeColor="#00000000"/>
+  <path
+      android:pathData="M60.5,65.526C64.176,65.526 67.121,62.564 67.121,58.895L67.143,45.632C67.143,41.962 64.176,39 60.5,39C56.824,39 53.857,41.962 53.857,45.632L53.857,58.895C53.857,62.564 56.824,65.526 60.5,65.526L60.5,65.526ZM72.236,58.895C72.236,65.526 66.611,70.168 60.5,70.168C54.389,70.168 48.764,65.526 48.764,58.895L45,58.895C45,66.455 51.023,72.666 58.286,73.749L58.286,81L62.714,81L62.714,73.749C69.977,72.688 76,66.455 76,58.895L72.236,58.895L72.236,58.895Z"
+      android:strokeWidth="1"
+      android:fillColor="#FFFFFF"
+      android:fillType="evenOdd"
+      android:strokeColor="#00000000"/>
+</vector>

@@ -58,6 +58,8 @@ import dji.ux.beta.core.util.CameraUtil;
 import dji.ux.beta.core.util.ProductUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
+import static dji.ux.beta.core.extension.TypedArrayExtensions.INVALID_RESOURCE;
+
 /**
  * Record Video Widget
  * <p>

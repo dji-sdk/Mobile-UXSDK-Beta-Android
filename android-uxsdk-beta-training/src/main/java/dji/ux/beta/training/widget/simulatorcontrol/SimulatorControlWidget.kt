@@ -634,7 +634,7 @@ open class SimulatorControlWidget @JvmOverloads constructor(
     }
 
     init {
-        setBackgroundResource(R.drawable.uxsdk_background_black_rectangle)
+        background = background ?: getDrawable(R.drawable.uxsdk_background_black_rectangle)
         initViewElements()
         attrs?.let { initAttributes(context, it) }
     }

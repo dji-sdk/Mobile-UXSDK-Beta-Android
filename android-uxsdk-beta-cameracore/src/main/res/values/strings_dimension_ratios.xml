@@ -23,6 +23,13 @@
   -->
 
 <resources>
+    <string name="uxsdk_widget_aperture_settings_ratio" translatable="false">W,3:1</string>
     <string name="uxsdk_widget_auto_exposure_lock_ratio" translatable="false">W,10:9</string>
     <string name="uxsdk_widget_camera_controls_ratio" translatable="false">W,1:4</string>
+    <string name="uxsdk_widget_camera_ev_setting_ratio" translatable="false">W,7:2</string>
+    <string name="uxsdk_widget_camera_exposure_mode_setting_ratio" translatable="false">W,16:3</string>
+    <string name="uxsdk_widget_camera_iso_and_ei_setting_ratio" translatable="false">W,7:2</string>
+    <string name="uxsdk_widget_gimbal_pitch_ratio" translatable="false">W,11:60</string>
+    <string name="uxsdk_widget_manual_focus_ratio" translatable="false">W,1:5</string>
+    <string name="uxsdk_widget_shutter_settings_ratio" translatable="false">W,3:1</string>
 </resources>

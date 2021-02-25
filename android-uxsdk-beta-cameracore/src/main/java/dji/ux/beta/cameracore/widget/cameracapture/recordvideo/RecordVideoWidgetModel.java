@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018-2020 DJI
+ * Copyright (c) 2018-2021 DJI
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,8 +34,10 @@ import dji.keysdk.DJIKey;
 import dji.thirdparty.io.reactivex.Completable;
 import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.module.LensModule;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions;
 
@@ -46,6 +48,10 @@ import dji.ux.beta.core.util.SettingDefinitions;
  * logic and communication
  */
 public class RecordVideoWidgetModel extends WidgetModel {
+
+    //region Constants
+    private static final String TAG = "RercordVideoWidgetModel";
+    //endregion
 
     //region Constants
     private static final int INVALID_AVAILABLE_RECORDING_TIME = -1;
@@ -77,6 +83,7 @@ public class RecordVideoWidgetModel extends WidgetModel {
     private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.ZOOM;
     private DJIKey stopVideoRecordingKey;
     private DJIKey startVideoRecordingKey;
+    private LensModule lensModule;
     //endregion
 
     //region Constructor
@@ -108,6 +115,8 @@ public class RecordVideoWidgetModel extends WidgetModel {
         ssdRecordingTime = DataProcessor.create(INVALID_AVAILABLE_RECORDING_TIME);
         cameraSSDVideoLicenseDataProcessor = DataProcessor.create(CameraSSDVideoLicense.Unknown);
         recordingStateProcessor = DataProcessor.create(RecordingState.UNKNOWN);
+        lensModule = new LensModule();
+        addModule(lensModule);
     }
     //endregion
 
@@ -147,12 +156,19 @@ public class RecordVideoWidgetModel extends WidgetModel {
         bindDataProcessor(ssdRecordingTimeKey, ssdRecordingTime);
         bindDataProcessor(ssdVideoLicenseKey, cameraSSDVideoLicenseDataProcessor);
         // Resolution and Frame Rates
-        DJIKey nonSSDRecordedVideoParametersKey = djiSdkModel.createLensKey(CameraKey.RESOLUTION_FRAME_RATE, cameraIndex, lensType.value());
+        DJIKey nonSSDRecordedVideoParametersKey = lensModule.createLensKey(CameraKey.RESOLUTION_FRAME_RATE, cameraIndex, lensType.value());
         DJIKey ssdRecordedVideoParametersKey = CameraKey.create(CameraKey.SSD_VIDEO_RESOLUTION_AND_FRAME_RATE, cameraIndex);
         bindDataProcessor(nonSSDRecordedVideoParametersKey, nonSSDRecordedVideoParameters);
         bindDataProcessor(ssdRecordedVideoParametersKey, ssdRecordedVideoParameters);
         startVideoRecordingKey = CameraKey.create(CameraKey.START_RECORD_VIDEO, cameraIndex);
         stopVideoRecordingKey = CameraKey.create(CameraKey.STOP_RECORD_VIDEO, cameraIndex);
+        addDisposable(lensModule.isLensArrangementUpdated()
+                .observeOn(SchedulerProvider.io())
+                .subscribe(value -> {
+                    if (value) {
+                        restart();
+                    }
+                }, logErrorConsumer(TAG, "on lens arrangement updated")));
     }
 
     @Override
@@ -232,6 +248,7 @@ public class RecordVideoWidgetModel extends WidgetModel {
      */
     public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
         this.cameraIndex = cameraIndex.getIndex();
+        lensModule.setCameraIndex(this, cameraIndex);
         restart();
     }
 

@@ -41,8 +41,7 @@ import dji.ux.beta.cameracore.widget.cameracapture.CameraCaptureWidget;
 import dji.ux.beta.cameracore.widget.cameracapture.recordvideo.RecordVideoWidget;
 import dji.ux.beta.cameracore.widget.cameracapture.shootphoto.ShootPhotoWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget;
-import dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator.CameraSettingsMenuIndicatorWidget;
-import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettingsindicator.ExposureSettingsIndicatorWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator.CameraSettingsIndicatorWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch.PhotoVideoSwitchWidget;
 import dji.ux.beta.cameracore.widget.focusexposureswitch.FocusExposureSwitchWidget;
 import dji.ux.beta.cameracore.widget.focusmode.FocusModeWidget;
@@ -146,8 +145,6 @@ public class WidgetsActivity extends AppCompatActivity implements WidgetListFrag
                 new WidgetViewHolder(CameraConfigWBWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.camera_controls_widget_title,
                 new WidgetViewHolder(CameraControlsWidget.class, 50, 213)));
-        widgetListItems.add(new WidgetListItem(R.string.camera_settings_menu_indicator_widget_title,
-                new WidgetViewHolder(CameraSettingsMenuIndicatorWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.compass_widget_title,
                 new WidgetViewHolder(CompassWidget.class, ViewGroup.LayoutParams.WRAP_CONTENT, 91)));
         widgetListItems.add(new WidgetListItem(R.string.connection_widget_title,
@@ -157,7 +154,7 @@ public class WidgetsActivity extends AppCompatActivity implements WidgetListFrag
         widgetListItems.add(new WidgetListItem(R.string.distance_rc_widget_title,
                 new WidgetViewHolder(DistanceRCWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.exposure_settings_indicator_widget_title,
-                new WidgetViewHolder(ExposureSettingsIndicatorWidget.class)));
+                new WidgetViewHolder(CameraSettingsIndicatorWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.flight_mode_widget_title,
                 new WidgetViewHolder(FlightModeWidget.class, ViewGroup.LayoutParams.WRAP_CONTENT, 50)));
         widgetListItems.add(new WidgetListItem(R.string.focus_exposure_switch_widget_title,

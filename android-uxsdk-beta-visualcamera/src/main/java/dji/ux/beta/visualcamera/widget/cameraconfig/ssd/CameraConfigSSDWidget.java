@@ -58,6 +58,9 @@ import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.visualcamera.R;
 
+import static dji.ux.beta.core.extension.TypedArrayExtensions.INVALID_COLOR;
+import static dji.ux.beta.core.extension.TypedArrayExtensions.INVALID_RESOURCE;
+
 /**
  * Shows the camera's current capacity and other information for the SSD storage.
  */

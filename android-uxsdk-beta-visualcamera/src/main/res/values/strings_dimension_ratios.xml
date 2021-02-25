@@ -25,4 +25,7 @@
 <resources>
     <string name="uxsdk_widget_base_camera_info_ratio" translatable="false">2:1</string>
     <string name="uxsdk_widget_camera_config_ssd_ratio" translatable="false">W,5:1</string>
+    <string name="uxsdk_widget_color_waveform_ratio" translatable="false">4:3</string>
+    <string name="uxsdk_widget_histogram_ratio" translatable="false">W,2:1</string>
+    <string name="uxsdk_widget_manual_zoom_ratio" translatable="false">W,1:5</string>
 </resources>

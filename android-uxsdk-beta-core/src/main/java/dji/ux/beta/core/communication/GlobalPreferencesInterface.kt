@@ -24,6 +24,7 @@
 package dji.ux.beta.core.communication
 
 import androidx.annotation.ColorInt
+import dji.common.camera.ColorWaveformSettings.ColorWaveformDisplayState
 import dji.ux.beta.core.ui.CenterPointView.CenterPointType
 import dji.ux.beta.core.ui.GridLineView.GridLineType
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode
@@ -69,6 +70,16 @@ interface GlobalPreferencesInterface {
      * Boolean value indicating if the AirSense terms should never be shown.
      */
     var isAirSenseTermsNeverShown: Boolean
+
+    /**
+     * [ColorWaveformDisplayState] value for the display state for the color waveform.
+     */
+    var colorWaveformDisplayState: ColorWaveformDisplayState
+
+    /**
+     * Boolean value to indicate if the color waveform is enabled.
+     */
+    var isColorWaveformEnabled: Boolean
 
     /**
      * [GridLineType] for the grid line overlay.

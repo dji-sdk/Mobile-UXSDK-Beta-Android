@@ -1,0 +1,97 @@
+/*
+ * Copyright (c) 2018-2020 DJI
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    lintOptions {
+        abortOnError = false
+    }
+    compileSdkVersion 29
+    buildToolsVersion "29.0.3"
+    publishNonDefault true
+    resourcePrefix "uxsdk_"
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 29
+        versionCode 1
+        versionName "5.0"
+        vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        mock {
+            debuggable true
+        }
+        bridge {
+            debuggable true
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+    testBuildType "debug"
+    aaptOptions {
+        // PNG optimization
+        cruncherEnabled true
+    }
+}
+
+dependencies {
+    api project(path: ':android-uxsdk-beta-core')
+
+    implementation ('com.dji:dji-sdk:4.14', {
+        /**
+         * Comment the "library-anti-distortion" if your app needs Anti Distortion for Mavic 2 Pro
+         * and Mavic 2 Zoom.
+         * Comment the "fly-safe-database" if you don't need a smaller apk for release. When
+         * uncommented, we will download it when DJISDKManager.getInstance().registerApp
+         * is called, and it won't register success without fly-safe-database.
+         * Both will greatly reduce the size of the APK.
+         */
+        exclude module: 'library-anti-distortion'
+        exclude module: 'fly-safe-database'
+    })
+    compileOnly ('com.dji:dji-sdk-provided:4.14')
+
+    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation 'androidx.media:media:1.0.0'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
+}

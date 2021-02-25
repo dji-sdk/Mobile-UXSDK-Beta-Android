@@ -42,13 +42,15 @@ outputDirectory = args.output
 outputPath = "/build/outputs/aar/"
 outputExtension = ".aar"
 
-
+# Internal Repo name
+directoryName = "android-uxsdk-os"
 # External Repo name
-directoryName = "android-uxsdk-beta"
+#directoryName = "android-uxsdk-beta"
 
-
+# Internal Gradle Wrapper path
+gradleWrapper = "../../android-sdk-as/"
 # External Gradle Wrapper path
-gradleWrapper = "../"
+#gradleWrapper = "../.gradlew"
 
 if branchName:
 	print ("************ Checking out Branch " + branchName + " **************")
@@ -70,7 +72,7 @@ if outputDirectory:
 else:
 	sp.Popen("mkdir android-uxsdk-beta", shell=True)
 	outputDirectory = "./android-uxsdk-beta/"
-modules =["android-uxsdk-beta-core", "android-uxsdk-beta-cameracore", "android-uxsdk-beta-accessory", "android-uxsdk-beta-map", "android-uxsdk-beta-training", "android-uxsdk-beta-visualcamera", "android-uxsdk-beta-flight"]
+modules =["android-uxsdk-beta-core", "android-uxsdk-beta-cameracore", "android-uxsdk-beta-media",  "android-uxsdk-beta-accessory", "android-uxsdk-beta-flight", "android-uxsdk-beta-map", "android-uxsdk-beta-training", "android-uxsdk-beta-visualcamera"]
 
 
 for module in modules:

@@ -47,6 +47,31 @@
     <dimen name="uxsdk_seekbar_half_radius">21dp</dimen>
     <dimen name="uxsdk_leftmenu_thumb_radius">42dp</dimen>
 
+    <dimen name="uxsdk_gimbal_pitch_seek_bar_width">10dp</dimen>
+    <dimen name="uxsdk_gimbal_pitch_seek_bar_height">140dp</dimen>
+    <dimen name="uxsdk_gimbal_pitch_text_width">35dp</dimen>
+
+    <dimen name="uxsdk_rc_calibration_image_margin">10dp</dimen>
+    <dimen name="uxsdk_rc_calibration_stick_width">150dp</dimen>
+    <dimen name="uxsdk_rc_calibration_stick_margin">20dp</dimen>
+    <dimen name="uxsdk_rc_calibration_small_circle_radius">5dp</dimen>
+    <dimen name="uxsdk_rc_calibration_large_circle_radius">9dp</dimen>
+    <dimen name="uxsdk_rc_calibration_line_padding">7dp</dimen>
+    <dimen name="uxsdk_rc_calibration_line_width">2dp</dimen>
+    <dimen name="uxsdk_rc_calibration_text_width">30dp</dimen>
+    <dimen name="uxsdk_rc_calibration_text_size">14sp</dimen>
+    <dimen name="uxsdk_rc_calibration_progress_text_padding">2dp</dimen>
+    <dimen name="uxsdk_rc_calibration_progress_line_width">2dp</dimen>
+    <dimen name="uxsdk_rc_calibration_progress_divider_width">2dp</dimen>
+    <dimen name="uxsdk_rc_calibration_message_margin_top">10dp</dimen>
+    <dimen name="uxsdk_rc_calibration_dial_width">260dp</dimen>
+    <dimen name="uxsdk_rc_calibration_dial_height">220dp</dimen>
+    <dimen name="uxsdk_rc_calibration_dial_circle_radius">15dp</dimen>
+    <dimen name="uxsdk_rc_calibration_dial_baseX">115dp</dimen>
+    <dimen name="uxsdk_rc_calibration_dial_baseY">20dp</dimen>
+    <dimen name="uxsdk_rc_calibration_dial_alpha">25dp</dimen>
+    <dimen name="uxsdk_rc_calibration_dial_beta">7dp</dimen>
+
     <dimen name="uxsdk_simulator_row_height">45dp</dimen>
     <dimen name="uxsdk_simulator_seek_bar_margin">10dp</dimen>
     <dimen name="uxsdk_simulator_row_margin">5dp</dimen>
