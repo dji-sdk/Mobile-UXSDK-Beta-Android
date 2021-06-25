@@ -95,9 +95,8 @@
 -keep class android.support.** { *; }
 -keep class android.media.** { *; }
 -keep class okio.** { *; }
--keep class com.lmax.disruptor.** {
-    *;
-}
+-keep class com.lmax.disruptor.** { *; }
+-keep class com.qx.wz.dj.rtcm.* { *; }
 
 -dontwarn com.mapbox.services.android.location.LostLocationEngine
 -dontwarn com.mapbox.services.android.location.MockLocationEngine
