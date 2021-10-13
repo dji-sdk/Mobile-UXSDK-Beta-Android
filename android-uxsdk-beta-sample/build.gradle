@@ -95,7 +95,7 @@ android {
 
 dependencies {
 
-    implementation ('com.dji:dji-sdk:4.15', {
+    implementation ('com.dji:dji-sdk:4.15.1', {
         /**
          * Comment the "library-anti-distortion" if your app needs Anti Distortion for Mavic 2 Pro
          * and Mavic 2 Zoom.
@@ -113,7 +113,7 @@ dependencies {
          */
         // exclude group: 'com.amap.api'
     })
-    compileOnly ('com.dji:dji-sdk-provided:4.15')
+    compileOnly ('com.dji:dji-sdk-provided:4.15.1')
 
     // UXSDK dependencies
     implementation 'androidx.annotation:annotation:1.0.0'
@@ -157,5 +157,4 @@ dependencies {
 }
 repositories {
     mavenLocal()
-    maven { url 'https://mapbox.bintray.com/mapbox' }
 }
