@@ -32,23 +32,18 @@ import android.util.Pair;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import dji.common.camera.SSDOperationState;
 import dji.common.camera.SettingsDefinitions.SDCardOperationState;
 import dji.common.camera.SettingsDefinitions.ShootPhotoMode;
 import dji.common.camera.SettingsDefinitions.StorageLocation;
 import dji.log.DJILog;
-import dji.thirdparty.io.reactivex.Completable;
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.Single;
-import dji.thirdparty.io.reactivex.disposables.Disposable;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.ui.ProgressRingView;
 import dji.ux.beta.cameracore.util.CameraActionSound;
@@ -58,6 +53,10 @@ import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.ProductUtil;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 import static dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
@@ -141,12 +140,8 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
 
     @Override
     protected void reactToModelChanges() {
-        addReaction(
-                widgetModel.isShootingPhoto()
-                        .observeOn(SchedulerProvider.ui())
-                        .subscribe(
-                                this::onIsShootingPhotoChange,
-                                logErrorConsumer(TAG, "isShootingPhoto: ")));
+        addReaction(widgetModel.isShootingPhoto().observeOn(SchedulerProvider.ui())
+                .subscribe(this::onIsShootingPhotoChange, logErrorConsumer(TAG, "isShootingPhoto: ")));
         addReaction(reactToCanStartOrStopShootingPhoto());
         addReaction(reactToPhotoStateAndPhotoStorageState());
     }
@@ -164,18 +159,16 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
             Single<Boolean> stop = widgetModel.canStopShootingPhoto().firstOrError();
             Single<Boolean> start = widgetModel.canStartShootingPhoto().firstOrError();
 
-            addDisposable(Single.zip(stop, start, Pair::new)
-                    .flatMapCompletable(pairs -> {
-                        if (pairs.first) {
-                            return widgetModel.stopShootPhoto();
-                        } else if (pairs.second) {
-                            return widgetModel.startShootPhoto();
-                        }
-                        return Completable.complete();
-                    }).observeOn(SchedulerProvider.ui())
-                    .subscribe(
-                            () -> {
-                            }, logErrorConsumer(TAG, "Start Stop Shoot Photo")));
+            addDisposable(Single.zip(stop, start, Pair::new).flatMapCompletable(pairs -> {
+                if (pairs.first) {
+                    return widgetModel.stopShootPhoto();
+                } else if (pairs.second) {
+                    return widgetModel.startShootPhoto();
+                }
+                return Completable.complete();
+            }).observeOn(SchedulerProvider.ui())
+                    .subscribe(() -> {
+                    }, logErrorConsumer(TAG, "Start Stop Shoot Photo")));
         }
     }
     //endregion
@@ -254,19 +247,14 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     }
 
     private Disposable reactToPhotoStateAndPhotoStorageState() {
-        return Flowable.combineLatest(widgetModel.getCameraPhotoState(),
-                widgetModel.getCameraStorageState(),
-                Pair::new)
+        return Flowable.combineLatest(widgetModel.getCameraPhotoState(), widgetModel.getCameraStorageState(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateCameraForegroundResource(values.first, values.second),
                         logErrorConsumer(TAG, "reactToPhotoStateAndPhotoStorageState "));
     }
 
     private Disposable reactToCanStartOrStopShootingPhoto() {
-        return Flowable.combineLatest(
-                widgetModel.canStartShootingPhoto(),
-                widgetModel.canStopShootingPhoto(),
-                Pair::new)
+        return Flowable.combineLatest(widgetModel.canStartShootingPhoto(), widgetModel.canStopShootingPhoto(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateImages(values.first, values.second),
                         logErrorConsumer(TAG, "reactToCanStartOrStopShootingPhoto: "));

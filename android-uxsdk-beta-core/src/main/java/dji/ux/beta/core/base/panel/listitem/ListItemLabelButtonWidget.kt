@@ -34,8 +34,8 @@ import android.widget.TextView
 import androidx.annotation.*
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.res.use
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.processors.PublishProcessor
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.processors.PublishProcessor
 import dji.ux.beta.core.R
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.ViewIDGenerator

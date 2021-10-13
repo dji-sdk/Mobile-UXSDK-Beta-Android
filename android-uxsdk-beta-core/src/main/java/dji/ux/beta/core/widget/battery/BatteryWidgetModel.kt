@@ -29,7 +29,7 @@ import dji.common.battery.WarningRecord
 import dji.common.flightcontroller.BatteryThresholdBehavior
 import dji.keysdk.BatteryKey
 import dji.keysdk.FlightControllerKey
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore

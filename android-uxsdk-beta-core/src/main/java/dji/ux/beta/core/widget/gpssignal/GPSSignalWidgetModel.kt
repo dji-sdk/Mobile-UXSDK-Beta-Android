@@ -28,8 +28,8 @@ import dji.common.flightcontroller.PositioningSolution
 import dji.common.flightcontroller.RTKState
 import dji.common.flightcontroller.RedundancySensorUsedState
 import dji.keysdk.FlightControllerKey
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.functions.Consumer
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider
 import dji.ux.beta.core.base.WidgetModel

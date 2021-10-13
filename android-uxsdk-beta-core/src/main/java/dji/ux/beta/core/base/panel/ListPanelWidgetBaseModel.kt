@@ -25,7 +25,7 @@ package dji.ux.beta.core.base.panel
 
 import android.view.View
 import androidx.annotation.IntRange
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.util.DataProcessor
 
 // TODO:

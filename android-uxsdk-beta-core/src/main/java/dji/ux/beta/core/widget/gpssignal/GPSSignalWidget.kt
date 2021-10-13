@@ -38,9 +38,9 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StyleRes
 import androidx.core.content.res.use
 import dji.common.flightcontroller.GPSSignalLevel
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.thirdparty.io.reactivex.processors.PublishProcessor
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.processors.PublishProcessor
 import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider

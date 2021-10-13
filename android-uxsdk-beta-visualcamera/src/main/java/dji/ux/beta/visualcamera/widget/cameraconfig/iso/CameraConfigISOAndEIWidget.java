@@ -40,8 +40,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 
 import dji.common.camera.SettingsDefinitions;
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
@@ -388,8 +388,10 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigISOAndEIWidget);
 
-        setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigISOAndEIWidget_uxsdk_cameraIndex, 0)));
-        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigISOAndEIWidget_uxsdk_lensType, 0)));
+        if (!isInEditMode()){
+            setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigISOAndEIWidget_uxsdk_cameraIndex, 0)));
+            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigISOAndEIWidget_uxsdk_lensType, 0)));
+        }
 
         int isoAndEITitleTextAppearanceId =
                 typedArray.getResourceId(R.styleable.CameraConfigISOAndEIWidget_uxsdk_isoAndEITitleTextAppearance,

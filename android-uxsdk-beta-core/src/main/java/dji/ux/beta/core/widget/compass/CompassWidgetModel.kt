@@ -36,7 +36,7 @@ import dji.keysdk.DJIKey
 import dji.keysdk.FlightControllerKey
 import dji.keysdk.GimbalKey
 import dji.keysdk.RemoteControllerKey
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore

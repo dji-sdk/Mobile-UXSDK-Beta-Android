@@ -23,20 +23,20 @@
 
 package dji.ux.beta.visualcamera.widget.cameraconfig.iso;
 
-import androidx.annotation.NonNull;
+import org.reactivestreams.Publisher;
 
+import androidx.annotation.NonNull;
 import dji.common.camera.ExposureSettings;
 import dji.common.camera.SettingsDefinitions;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.functions.Function;
-import dji.thirdparty.org.reactivestreams.Publisher;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.functions.Function;
 
 /**
  * Widget Model for the {@link CameraConfigISOAndEIWidget} used to define

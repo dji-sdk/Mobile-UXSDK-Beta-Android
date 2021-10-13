@@ -34,19 +34,17 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import dji.common.camera.SSDOperationState;
 import dji.common.camera.SettingsDefinitions;
-import dji.thirdparty.io.reactivex.Completable;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.util.CameraActionSound;
 import dji.ux.beta.cameracore.widget.cameracapture.recordvideo.RecordVideoWidgetModel.RecordingState;
@@ -57,6 +55,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.CameraUtil;
 import dji.ux.beta.core.util.ProductUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
+import io.reactivex.rxjava3.core.Completable;
 
 /**
  * Record Video Widget
@@ -199,7 +198,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RecordVideoWidget);
         setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.RecordVideoWidget_uxsdk_cameraIndex, 0)));
-        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.RecordVideoWidget_uxsdk_lensType, 0)));
+        setLensType(typedArray.getInt(R.styleable.RecordVideoWidget_uxsdk_lensType, 0));
 
         int textAppearance = typedArray.getResourceId(R.styleable.RecordVideoWidget_uxsdk_timerTextAppearance, INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
@@ -374,9 +373,9 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
      *
      * @param lensType lens type
      */
-    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+    public void setLensType(@NonNull int lensType) {
         if (!isInEditMode()) {
-            widgetModel.setLensType(lensType);
+            widgetModel.setLensType(SettingsDefinitions.LensType.find(lensType));
         }
     }
 

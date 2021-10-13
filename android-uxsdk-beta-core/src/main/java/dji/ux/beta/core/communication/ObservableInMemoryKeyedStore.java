@@ -23,21 +23,20 @@
 
 package dji.ux.beta.core.communication;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import dji.log.DJILog;
-import dji.thirdparty.io.reactivex.Completable;
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.disposables.Disposable;
-import dji.thirdparty.io.reactivex.processors.PublishProcessor;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.UXSDKError;
 import dji.ux.beta.core.base.UXSDKErrorDescription;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.processors.PublishProcessor;
 
 /**
  * `ObservableInMemoryKeyedStore` provides access to the keyed interface using `UXKeys` and

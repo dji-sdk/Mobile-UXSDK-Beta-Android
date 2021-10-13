@@ -30,9 +30,8 @@ import dji.keysdk.DJIKey
 import dji.keysdk.FlightControllerKey
 import dji.keysdk.ProductKey
 import dji.keysdk.RemoteControllerKey
-import dji.thirdparty.io.reactivex.Completable
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.Single
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.GlobalPreferenceKeys
@@ -42,6 +41,8 @@ import dji.ux.beta.core.communication.UXKeys
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.ProductUtil
 import dji.ux.beta.core.util.UnitConversionUtil
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 private const val TAKEOFF_HEIGHT: Float = 1.2f
 private const val PRECISION_TAKEOFF_HEIGHT: Float = 6f

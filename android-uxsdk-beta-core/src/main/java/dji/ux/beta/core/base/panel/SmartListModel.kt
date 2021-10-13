@@ -28,12 +28,12 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.IntRange
 import dji.common.product.Model
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.SchedulerProvider
-import dji.thirdparty.io.reactivex.disposables.CompositeDisposable
-import dji.thirdparty.io.reactivex.disposables.Disposable
-import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.thirdparty.io.reactivex.processors.PublishProcessor
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.processors.PublishProcessor
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.panel.systemstatus.SmartListInternalModel

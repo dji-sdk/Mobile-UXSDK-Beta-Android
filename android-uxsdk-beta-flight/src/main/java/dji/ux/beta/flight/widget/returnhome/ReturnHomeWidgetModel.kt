@@ -28,8 +28,8 @@ import dji.common.remotecontroller.RCMode
 import dji.keysdk.DJIKey
 import dji.keysdk.FlightControllerKey
 import dji.keysdk.RemoteControllerKey
-import dji.thirdparty.io.reactivex.Completable
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProviderInterface
 import dji.ux.beta.core.base.WidgetModel
@@ -40,6 +40,7 @@ import dji.ux.beta.core.communication.UXKeys
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.LocationUtil
 import dji.ux.beta.core.util.UnitConversionUtil
+import io.reactivex.rxjava3.core.Completable
 
 /**
  * Widget Model for the [ReturnHomeWidget] used to define

@@ -26,7 +26,7 @@ package dji.ux.beta.cameracore.widget.cameracapture;
 import androidx.annotation.NonNull;
 
 import dji.common.camera.SettingsDefinitions.CameraMode;
-import dji.thirdparty.io.reactivex.Flowable;
+import io.reactivex.rxjava3.core.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;

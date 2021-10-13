@@ -26,7 +26,7 @@ package dji.ux.beta.core.widget.distancerc
 import dji.common.remotecontroller.GPSData
 import dji.keysdk.FlightControllerKey
 import dji.keysdk.RemoteControllerKey
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.GlobalPreferenceKeys

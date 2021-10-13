@@ -25,8 +25,7 @@ package dji.ux.beta.core.module
 
 import dji.common.camera.SettingsDefinitions.*
 import dji.keysdk.CameraKey
-import dji.thirdparty.io.reactivex.Completable
-import dji.thirdparty.io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 import dji.ux.beta.core.base.BaseModule
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
@@ -35,6 +34,7 @@ import dji.ux.beta.core.extension.toFlatCameraMode
 import dji.ux.beta.core.extension.toShootPhotoMode
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex
+import io.reactivex.rxjava3.core.Completable
 
 /**
  * Abstraction for getting and setting camera mode and photo mode.

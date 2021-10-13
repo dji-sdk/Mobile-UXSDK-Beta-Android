@@ -28,14 +28,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Constraints;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import dji.common.camera.SettingsDefinitions.CameraMode;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.widget.cameracapture.recordvideo.RecordVideoWidget;

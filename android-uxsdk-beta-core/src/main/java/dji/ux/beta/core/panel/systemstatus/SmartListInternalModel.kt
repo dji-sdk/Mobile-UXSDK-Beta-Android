@@ -25,7 +25,7 @@ package dji.ux.beta.core.panel.systemstatus
 
 import dji.common.product.Model
 import dji.keysdk.ProductKey
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore

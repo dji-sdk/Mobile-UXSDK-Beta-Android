@@ -38,10 +38,9 @@ import dji.sdk.camera.VideoFeeder.VideoFeed
 import dji.sdk.codec.DJICodecManager
 import dji.sdk.products.Aircraft
 import dji.sdk.sdkmanager.DJISDKManager
-import dji.thirdparty.io.reactivex.Completable
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.functions.Action
-import dji.thirdparty.io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.functions.Action
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider
 import dji.ux.beta.core.base.UXSDKError
@@ -54,6 +53,7 @@ import dji.ux.beta.core.util.ProductUtil
 import dji.ux.beta.core.util.SettingDefinitions
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex
 import dji.ux.beta.core.util.SettingDefinitions.CameraSide
+import io.reactivex.rxjava3.core.Completable
 
 private const val TAG = "FPVWidgetModel"
 

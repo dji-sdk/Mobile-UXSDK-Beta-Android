@@ -25,10 +25,9 @@ package dji.ux.beta.core.communication;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import dji.thirdparty.io.reactivex.Completable;
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 public interface ObservableKeyedStore {
     /**

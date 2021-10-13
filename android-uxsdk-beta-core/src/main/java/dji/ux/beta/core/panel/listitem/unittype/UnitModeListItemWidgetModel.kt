@@ -23,8 +23,8 @@
 
 package dji.ux.beta.core.panel.listitem.unittype
 
-import dji.thirdparty.io.reactivex.Completable
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.*
@@ -32,6 +32,7 @@ import dji.ux.beta.core.panel.listitem.unittype.UnitModeListItemWidgetModel.Unit
 import dji.ux.beta.core.panel.listitem.unittype.UnitModeListItemWidgetModel.UnitTypeState.ProductDisconnected
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.UnitConversionUtil.UnitType
+import io.reactivex.rxjava3.core.Completable
 
 /**
  * Widget Model for the [UnitModeListItemWidget] used to define

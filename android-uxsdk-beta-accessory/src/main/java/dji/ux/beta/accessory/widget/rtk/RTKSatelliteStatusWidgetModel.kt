@@ -32,8 +32,8 @@ import dji.keysdk.DJIKey
 import dji.keysdk.FlightControllerKey
 import dji.keysdk.ProductKey
 import dji.sdk.network.RTKNetworkServiceProvider
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.functions.BiFunction
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.functions.BiFunction
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.GlobalPreferenceKeys

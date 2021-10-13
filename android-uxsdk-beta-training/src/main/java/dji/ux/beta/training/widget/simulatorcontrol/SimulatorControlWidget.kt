@@ -42,9 +42,9 @@ import dji.common.flightcontroller.simulator.SimulatorState
 import dji.common.flightcontroller.simulator.SimulatorWindData
 import dji.common.model.LocationCoordinate2D
 import dji.log.DJILog
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.thirdparty.io.reactivex.processors.PublishProcessor
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.processors.PublishProcessor
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider
 import dji.ux.beta.core.base.UXSDKError

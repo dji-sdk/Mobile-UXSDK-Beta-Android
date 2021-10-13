@@ -23,24 +23,23 @@
 
 package dji.ux.beta.core.base;
 
-import androidx.annotation.CheckResult;
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
 import dji.keysdk.DJIKey;
 import dji.keysdk.ProductKey;
 import dji.log.DJILog;
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.disposables.CompositeDisposable;
-import dji.thirdparty.io.reactivex.disposables.Disposable;
-import dji.thirdparty.io.reactivex.functions.Consumer;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.UXKey;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.RxUtil;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * Base WidgetModel class to be extended by all the individual
@@ -191,8 +190,7 @@ public abstract class WidgetModel {
      * @param dataProcessor DataProcessor to be bound
      */
     protected void bindDataProcessor(@NonNull DJIKey key, @NonNull DataProcessor<?> dataProcessor) {
-        bindDataProcessor(key, dataProcessor, o -> {
-        });
+        bindDataProcessor(key, dataProcessor, o -> { });
     }
 
     /**

@@ -27,11 +27,11 @@ import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.annotation.CheckResult
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.disposables.CompositeDisposable
-import dji.thirdparty.io.reactivex.disposables.Disposable
-import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.thirdparty.io.reactivex.processors.PublishProcessor
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.processors.PublishProcessor
 import dji.ux.beta.core.base.WidgetSizeDescription
 import dji.ux.beta.core.util.RxUtil
 

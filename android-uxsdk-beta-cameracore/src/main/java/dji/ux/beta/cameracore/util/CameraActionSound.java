@@ -27,7 +27,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import dji.thirdparty.io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.util.AudioUtil;
 

@@ -23,15 +23,14 @@
 
 package dji.ux.beta.core.base;
 
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import dji.common.error.DJIError;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
@@ -42,11 +41,11 @@ import dji.keysdk.callback.KeyListener;
 import dji.keysdk.callback.SetCallback;
 import dji.log.DJILog;
 import dji.sdk.camera.Camera;
-import dji.thirdparty.io.reactivex.BackpressureStrategy;
-import dji.thirdparty.io.reactivex.Completable;
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.FlowableEmitter;
-import dji.thirdparty.io.reactivex.Single;
+import io.reactivex.rxjava3.core.BackpressureStrategy;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.FlowableEmitter;
+import io.reactivex.rxjava3.core.Single;
 
 /**
  * Encapsulates communication with SDK KeyManager for SDKKeys.

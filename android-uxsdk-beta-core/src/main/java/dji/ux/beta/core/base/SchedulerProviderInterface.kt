@@ -23,7 +23,8 @@
 
 package dji.ux.beta.core.base
 
-import dji.thirdparty.io.reactivex.Scheduler
+import io.reactivex.rxjava3.core.Scheduler
+
 
 /**
  * Interface for creating multiple Schedulers

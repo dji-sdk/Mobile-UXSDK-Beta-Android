@@ -25,7 +25,7 @@ package dji.ux.beta.core.base
 
 import androidx.annotation.CheckResult
 import dji.keysdk.DJIKey
-import dji.thirdparty.io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.RxUtil
 

@@ -27,7 +27,7 @@ import dji.common.airlink.LightbridgeFrequencyBand
 import dji.common.airlink.OcuSyncFrequencyBand
 import dji.common.airlink.WiFiFrequencyBand
 import dji.keysdk.AirLinkKey
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore

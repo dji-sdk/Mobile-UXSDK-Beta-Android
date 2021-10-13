@@ -43,8 +43,8 @@ import androidx.annotation.Nullable;
 
 import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.FocusMode;
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;

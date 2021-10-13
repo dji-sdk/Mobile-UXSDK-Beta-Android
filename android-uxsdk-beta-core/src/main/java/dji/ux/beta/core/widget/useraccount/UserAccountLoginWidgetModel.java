@@ -26,21 +26,20 @@ package dji.ux.beta.core.widget.useraccount;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-
 import dji.common.error.DJIError;
 import dji.common.useraccount.UserAccountState;
 import dji.common.util.CommonCallbacks;
 import dji.log.DJILog;
 import dji.sdk.useraccount.UserAccountInformation;
 import dji.sdk.useraccount.UserAccountManager;
-import dji.thirdparty.io.reactivex.Completable;
-import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.UXSDKError;
 import dji.ux.beta.core.base.UXSDKErrorDescription;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 
 /**
  * User Account Login Widget Model

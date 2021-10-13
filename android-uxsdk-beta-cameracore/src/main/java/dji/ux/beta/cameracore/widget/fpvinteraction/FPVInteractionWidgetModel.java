@@ -26,14 +26,13 @@ package dji.ux.beta.cameracore.widget.fpvinteraction;
 import android.graphics.Point;
 import android.graphics.PointF;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import dji.common.camera.SettingsDefinitions.MeteringMode;
 import dji.common.gimbal.CapabilityKey;
 import dji.common.gimbal.Rotation;
@@ -42,8 +41,6 @@ import dji.common.util.DJIParamMinMaxCapability;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.keysdk.GimbalKey;
-import dji.thirdparty.io.reactivex.Completable;
-import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.GlobalPreferenceKeys;
@@ -56,6 +53,8 @@ import dji.ux.beta.core.util.ProductUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
 import dji.ux.beta.core.util.SettingDefinitions.GimbalIndex;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 
 /**
  * Widget Model for the {@link FPVInteractionWidget} used to define

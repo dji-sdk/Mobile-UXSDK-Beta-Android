@@ -24,18 +24,17 @@
 package dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch;
 
 import androidx.annotation.NonNull;
-
 import dji.common.camera.SettingsDefinitions.CameraMode;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
-import dji.thirdparty.io.reactivex.Completable;
-import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.module.FlatCameraModule;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 
 /**
  * Photo Video Switch Widget Model

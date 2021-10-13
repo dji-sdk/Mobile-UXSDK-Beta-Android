@@ -27,14 +27,15 @@ import dji.common.logics.warningstatuslogic.WarningStatusItem
 import dji.keysdk.DJIKey
 import dji.keysdk.DiagnosticsKey
 import dji.keysdk.FlightControllerKey
-import dji.thirdparty.io.reactivex.Completable
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.*
 import dji.ux.beta.core.model.VoiceNotificationType
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.UnitConversionUtil
+import io.reactivex.rxjava3.core.Completable
 
 /**
  * Widget Model for the [SystemStatusWidget] used to define

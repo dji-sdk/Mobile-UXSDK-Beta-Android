@@ -23,9 +23,9 @@
 
 package dji.ux.beta.core.base
 
-import dji.thirdparty.io.reactivex.Scheduler
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers
-import dji.thirdparty.io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.schedulers.Schedulers
 
 /**
  * A singleton class is used throughout the UXSDK for getting schedulers.

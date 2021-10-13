@@ -25,13 +25,14 @@ package dji.ux.beta.core.panel.listitem.ssdstatus
 
 import dji.common.camera.SSDOperationState
 import dji.keysdk.CameraKey
-import dji.thirdparty.io.reactivex.Completable
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.SettingDefinitions
+import io.reactivex.rxjava3.core.Completable
 
 /**
  * Widget Model for the [SSDStatusListItemWidget] used to define

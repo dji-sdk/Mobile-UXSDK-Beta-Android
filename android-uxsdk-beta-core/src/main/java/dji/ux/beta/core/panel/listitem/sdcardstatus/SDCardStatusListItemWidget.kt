@@ -32,7 +32,7 @@ import androidx.annotation.StyleRes
 import androidx.core.content.res.use
 import dji.common.camera.SettingsDefinitions.SDCardOperationState
 import dji.common.camera.SettingsDefinitions.SDCardOperationState.*
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider

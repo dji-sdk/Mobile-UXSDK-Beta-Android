@@ -35,10 +35,10 @@ import android.widget.TextView
 import androidx.annotation.*
 import androidx.core.content.res.use
 import dji.log.DJILog
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.disposables.Disposable
-import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.thirdparty.io.reactivex.processors.PublishProcessor
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.processors.PublishProcessor
 import dji.ux.beta.accessory.R
 import dji.ux.beta.accessory.widget.rtk.RTKEnabledWidget.ModelState
 import dji.ux.beta.accessory.widget.rtk.RTKEnabledWidget.ModelState.ProductConnected

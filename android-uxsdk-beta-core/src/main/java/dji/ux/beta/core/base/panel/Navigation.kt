@@ -32,8 +32,8 @@ import android.view.animation.AnimationUtils
 import android.widget.FrameLayout
 import androidx.annotation.AnimRes
 import androidx.core.content.res.use
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.processors.BehaviorProcessor
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.processors.BehaviorProcessor
 import dji.ux.beta.core.R
 import dji.ux.beta.core.extension.addListener
 import dji.ux.beta.core.extension.getResourceIdAndUse

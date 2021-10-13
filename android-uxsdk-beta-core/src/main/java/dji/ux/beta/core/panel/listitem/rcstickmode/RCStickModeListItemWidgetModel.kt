@@ -26,14 +26,14 @@ package dji.ux.beta.core.panel.listitem.rcstickmode
 import dji.common.remotecontroller.AircraftMappingStyle
 import dji.common.remotecontroller.AircraftMappingStyle.*
 import dji.keysdk.RemoteControllerKey
-import dji.thirdparty.io.reactivex.Completable
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.Single
-import dji.thirdparty.io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
+import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Single
 
 private const val TAG = "RCStickModeListItemWidgetModel"
 

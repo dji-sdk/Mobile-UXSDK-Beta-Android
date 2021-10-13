@@ -28,8 +28,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import dji.log.DJILog;
-import dji.thirdparty.io.reactivex.Observable;
-import dji.thirdparty.io.reactivex.disposables.Disposable;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.core.base.SchedulerProvider;
 
 /**

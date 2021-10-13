@@ -26,8 +26,8 @@ package dji.ux.beta.core.base;
 
 import androidx.annotation.NonNull;
 
-import dji.thirdparty.io.reactivex.Scheduler;
-import dji.thirdparty.io.reactivex.schedulers.TestScheduler;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.schedulers.TestScheduler;
 
 /**
  * Class to create schedulers for unit tests

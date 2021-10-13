@@ -24,9 +24,8 @@
 package dji.ux.beta.core.util;
 
 import androidx.annotation.NonNull;
-
 import dji.log.DJILog;
-import dji.thirdparty.io.reactivex.functions.Consumer;
+import io.reactivex.rxjava3.functions.Consumer;
 
 /**
  * Util class to help with reactive functions

@@ -36,11 +36,10 @@ import dji.common.flightcontroller.ObstacleDetectionSectorWarning
 import dji.common.flightcontroller.VisionDetectionState
 import dji.common.flightcontroller.VisionSensorPosition
 import dji.common.product.Model
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.Observable
-import dji.thirdparty.io.reactivex.disposables.Disposable
-import dji.thirdparty.io.reactivex.functions.BiFunction
-import dji.thirdparty.io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.BiFunction
+import io.reactivex.rxjava3.functions.Consumer
 import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider
@@ -56,6 +55,7 @@ import dji.ux.beta.core.util.UnitConversionUtil
 import dji.ux.beta.core.widget.radar.RadarWidget.ModelState
 import dji.ux.beta.core.widget.radar.RadarWidget.ModelState.*
 import dji.ux.beta.core.widget.radar.RadarWidgetModel.ObstacleAvoidanceLevel
+import io.reactivex.rxjava3.core.Observable
 
 private const val TAG = "RadarWidget"
 private const val ASPECT_RATIO = 17f / 8

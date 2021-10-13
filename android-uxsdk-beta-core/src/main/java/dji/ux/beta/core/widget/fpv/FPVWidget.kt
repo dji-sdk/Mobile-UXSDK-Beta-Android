@@ -44,9 +44,9 @@ import dji.log.DJILog
 import dji.sdk.camera.VideoFeeder.VideoDataListener
 import dji.sdk.codec.DJICodecManager
 import dji.sdk.util.VideoSizeCalculatorUtil
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.functions.Action
-import dji.thirdparty.io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.functions.Action
+import io.reactivex.rxjava3.functions.Consumer
 import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider

@@ -25,8 +25,6 @@ package dji.ux.beta.map.widget.map;
 
 import android.util.Pair;
 
-import androidx.annotation.NonNull;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,6 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
 import dji.common.error.DJIError;
 import dji.common.error.DJIFlySafeError;
 import dji.common.flightcontroller.LocationCoordinate3D;
@@ -47,10 +46,6 @@ import dji.keysdk.FlightControllerKey;
 import dji.keysdk.GimbalKey;
 import dji.sdk.flightcontroller.FlyZoneManager;
 import dji.sdk.sdkmanager.DJISDKManager;
-import dji.thirdparty.io.reactivex.Completable;
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.Single;
-import dji.thirdparty.io.reactivex.SingleOnSubscribe;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.UXSDKError;
@@ -58,6 +53,10 @@ import dji.ux.beta.core.base.UXSDKErrorDescription;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.core.SingleOnSubscribe;
 
 /**
  * Map Widget Model

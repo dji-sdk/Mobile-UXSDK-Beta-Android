@@ -30,19 +30,16 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
+import com.dji.ux.beta.sample.R;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.dji.ux.beta.sample.R;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dji.common.airlink.PhysicalSource;
 import dji.common.product.Model;
-import dji.thirdparty.io.reactivex.android.schedulers.AndroidSchedulers;
-import dji.thirdparty.io.reactivex.disposables.CompositeDisposable;
 import dji.ux.beta.accessory.widget.rtk.RTKWidget;
 import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
 import dji.ux.beta.core.extension.ViewExtensions;
@@ -58,6 +55,8 @@ import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget;
 import dji.ux.beta.core.widget.useraccount.UserAccountLoginWidget;
 import dji.ux.beta.map.widget.map.MapWidget;
 import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 /**
  * Displays a sample layout of widgets similar to that of the various DJI apps.

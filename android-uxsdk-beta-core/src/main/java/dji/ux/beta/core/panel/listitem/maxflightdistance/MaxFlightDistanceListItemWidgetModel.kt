@@ -26,8 +26,8 @@ package dji.ux.beta.core.panel.listitem.maxflightdistance
 import dji.common.util.DJIParamMinMaxCapability
 import dji.keysdk.DJIKey
 import dji.keysdk.FlightControllerKey
-import dji.thirdparty.io.reactivex.Completable
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.GlobalPreferenceKeys
@@ -36,6 +36,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.panel.listitem.maxflightdistance.MaxFlightDistanceListItemWidgetModel.MaxFlightDistanceState.*
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.UnitConversionUtil.*
+import io.reactivex.rxjava3.core.Completable
 import kotlin.math.roundToInt
 
 /**

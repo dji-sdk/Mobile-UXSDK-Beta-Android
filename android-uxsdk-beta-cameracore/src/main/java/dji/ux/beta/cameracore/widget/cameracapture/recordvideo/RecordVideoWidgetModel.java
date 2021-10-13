@@ -24,20 +24,19 @@
 package dji.ux.beta.cameracore.widget.cameracapture.recordvideo;
 
 import androidx.annotation.NonNull;
-
 import dji.common.camera.CameraSSDVideoLicense;
 import dji.common.camera.ResolutionAndFrameRate;
 import dji.common.camera.SSDOperationState;
 import dji.common.camera.SettingsDefinitions;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
-import dji.thirdparty.io.reactivex.Completable;
-import dji.thirdparty.io.reactivex.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.SettingDefinitions;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 
 /**
  * Record Video Widget Model

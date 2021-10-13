@@ -37,11 +37,11 @@ import androidx.annotation.StyleRes
 import androidx.core.content.res.use
 import dji.common.flightcontroller.flyzone.FlyZoneReturnToHomeState
 import dji.log.DJILog
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.SchedulerProvider
-import dji.thirdparty.io.reactivex.disposables.Disposable
-import dji.thirdparty.io.reactivex.functions.Consumer
-import dji.thirdparty.io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.disposables.Disposable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.schedulers.Schedulers
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.UXSDKError
 import dji.ux.beta.core.base.widget.IconButtonWidget

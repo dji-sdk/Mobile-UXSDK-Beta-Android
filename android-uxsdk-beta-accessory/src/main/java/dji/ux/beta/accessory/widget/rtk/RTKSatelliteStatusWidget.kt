@@ -43,8 +43,8 @@ import dji.common.flightcontroller.PositioningSolution
 import dji.common.flightcontroller.RTKState
 import dji.common.flightcontroller.rtk.NetworkServiceChannelState
 import dji.common.product.Model
-import dji.thirdparty.io.reactivex.Flowable
-import dji.thirdparty.io.reactivex.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.functions.Consumer
 import dji.ux.beta.accessory.R
 import dji.ux.beta.accessory.widget.rtk.RTKSatelliteStatusWidget.ModelState
 import dji.ux.beta.accessory.widget.rtk.RTKSatelliteStatusWidget.ModelState.*

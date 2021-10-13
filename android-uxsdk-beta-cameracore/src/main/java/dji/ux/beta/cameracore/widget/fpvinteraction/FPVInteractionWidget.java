@@ -32,20 +32,17 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import dji.common.airlink.PhysicalSource;
 import dji.common.camera.CameraVideoStreamSource;
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.disposables.Disposable;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
@@ -58,6 +55,8 @@ import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
 import dji.ux.beta.core.util.SettingDefinitions.GimbalIndex;
 import dji.ux.beta.core.widget.fpv.FPVWidget;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * This widget allows the user to interact with the FPVWidget.

@@ -25,8 +25,8 @@ package dji.ux.beta.core.util;
 
 import androidx.annotation.NonNull;
 
-import dji.thirdparty.io.reactivex.Flowable;
-import dji.thirdparty.io.reactivex.processors.BehaviorProcessor;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.processors.BehaviorProcessor;
 import dji.ux.beta.core.base.SchedulerProvider;
 
 /**

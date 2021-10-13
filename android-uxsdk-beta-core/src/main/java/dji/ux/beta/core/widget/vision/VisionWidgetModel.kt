@@ -31,8 +31,8 @@ import dji.common.product.Model
 import dji.keysdk.DJIKey
 import dji.keysdk.FlightControllerKey
 import dji.keysdk.ProductKey
-import dji.thirdparty.io.reactivex.Completable
-import dji.thirdparty.io.reactivex.Flowable
+import io.reactivex.rxjava3.functions.Consumer
+import io.reactivex.rxjava3.core.Flowable
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider
 import dji.ux.beta.core.base.WidgetModel
@@ -44,6 +44,7 @@ import dji.ux.beta.core.model.WarningMessage
 import dji.ux.beta.core.model.WarningMessageError
 import dji.ux.beta.core.util.DataProcessor
 import dji.ux.beta.core.util.ProductUtil
+import io.reactivex.rxjava3.core.Completable
 import java.util.*
 
 /**
