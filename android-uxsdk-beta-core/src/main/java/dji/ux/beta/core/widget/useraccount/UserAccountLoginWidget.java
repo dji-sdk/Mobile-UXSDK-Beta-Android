@@ -33,22 +33,19 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import dji.common.useraccount.UserAccountState;
 import dji.log.DJILog;
 import dji.sdk.useraccount.UserAccountInformation;
 import dji.sdk.useraccount.UserAccountManager;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.core.R;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
@@ -56,6 +53,8 @@ import dji.ux.beta.core.base.UXSDKError;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.OnStateChangeCallback;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * User Account Login Widget
@@ -364,6 +363,9 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
     }
 
     private void initDefaults() {
+        if (isInEditMode()){
+            return;
+        }
         setWidgetStateTextColor(UserAccountState.NOT_LOGGED_IN,
                 getResources().getColor(R.color.uxsdk_white_80_percent));
         setWidgetStateTextColor(UserAccountState.NOT_AUTHORIZED,

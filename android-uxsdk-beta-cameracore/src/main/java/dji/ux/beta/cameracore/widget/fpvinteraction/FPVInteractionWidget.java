@@ -494,6 +494,9 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
     }
 
     private void updateVisibility() {
+        if (isInEditMode()){
+            return;
+        }
         if (PhysicalSource.FPV_CAM.toString().equals(cameraName) || !isInteractionEnabledAtomic.get()) {
             setVisibility(View.GONE);
         } else {

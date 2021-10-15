@@ -362,7 +362,9 @@ public class CameraConfigApertureWidget extends ConstraintLayoutWidget {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigApertureWidget);
 
         setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigApertureWidget_uxsdk_cameraIndex, 0)));
-        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigApertureWidget_uxsdk_lensType, 0)));
+        if (!isInEditMode()){
+            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigApertureWidget_uxsdk_lensType, 0)));
+        }
 
         int apertureTitleTextAppearanceId =
                 typedArray.getResourceId(R.styleable.CameraConfigApertureWidget_uxsdk_apertureTitleTextAppearance,

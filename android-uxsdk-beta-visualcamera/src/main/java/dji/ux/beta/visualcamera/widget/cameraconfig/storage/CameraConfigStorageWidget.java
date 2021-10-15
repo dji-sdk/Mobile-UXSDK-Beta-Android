@@ -32,16 +32,15 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.CameraColor;
 import dji.common.camera.SettingsDefinitions.CameraMode;
@@ -866,8 +865,9 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigStorageWidget);
 
         setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigStorageWidget_uxsdk_cameraIndex, 0)));
-        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigStorageWidget_uxsdk_lensType, 0)));
-
+        if (!isInEditMode()){
+            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigStorageWidget_uxsdk_lensType, 0)));
+        }
         if (typedArray.getDrawable(R.styleable.CameraConfigStorageWidget_uxsdk_internalStorageNotInsertedIcon) != null) {
             setInternalStorageIcon(StorageIconState.NOT_INSERTED, typedArray.getDrawable(R.styleable.CameraConfigStorageWidget_uxsdk_internalStorageNotInsertedIcon));
         }

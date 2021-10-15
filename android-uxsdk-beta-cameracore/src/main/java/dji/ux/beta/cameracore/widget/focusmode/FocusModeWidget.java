@@ -220,7 +220,9 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FocusModeWidget);
         setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.FocusModeWidget_uxsdk_cameraIndex, 0)));
-        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FocusModeWidget_uxsdk_lensType, 0)));
+        if (!isInEditMode()){
+            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FocusModeWidget_uxsdk_lensType, 0)));
+        }
         activeColor = typedArray.getColor(R.styleable.FocusModeWidget_uxsdk_activeModeTextColor, getResources().getColor(R.color.uxsdk_green));
         inactiveColor = typedArray.getColor(R.styleable.FocusModeWidget_uxsdk_inactiveModeTextColor, getResources().getColor(R.color.uxsdk_white));
         Drawable background = typedArray.getDrawable(R.styleable.FocusModeWidget_uxsdk_widgetTitleBackground);

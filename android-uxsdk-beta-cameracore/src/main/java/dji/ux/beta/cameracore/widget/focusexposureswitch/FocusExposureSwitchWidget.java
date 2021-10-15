@@ -172,7 +172,9 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FocusExposureSwitchWidget);
         setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.FocusExposureSwitchWidget_uxsdk_cameraIndex, 0)));
-        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FocusExposureSwitchWidget_uxsdk_lensType, 0)));
+        if (!isInEditMode()) {
+            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FocusExposureSwitchWidget_uxsdk_lensType, 0)));
+        }
         if (typedArray.getDrawable(R.styleable.FocusExposureSwitchWidget_uxsdk_meteringDrawable) != null) {
             spotMeterDrawable = typedArray.getDrawable(R.styleable.FocusExposureSwitchWidget_uxsdk_meteringDrawable);
         }

@@ -170,7 +170,9 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AutoExposureLockWidget);
         setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.AutoExposureLockWidget_uxsdk_cameraIndex, 0)));
-        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.AutoExposureLockWidget_uxsdk_lensType, 0)));
+        if (!isInEditMode()){
+            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.AutoExposureLockWidget_uxsdk_lensType, 0)));
+        }
         ColorStateList colorStateList = typedArray.getColorStateList(R.styleable.AutoExposureLockWidget_uxsdk_widgetTitleTextColor);
         if (colorStateList != null) {
             setTitleTextColor(colorStateList);

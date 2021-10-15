@@ -98,8 +98,7 @@ abstract class SmartListModel @JvmOverloads constructor(
     /**
      * Widget model to detect the connected product.
      */
-    val widgetModel = SmartListInternalModel(djiSdkModel = DJISDKModel.getInstance(),
-            uxKeyManager = ObservableInMemoryKeyedStore.getInstance())
+    private var widgetModel : SmartListInternalModel? = null
     private var currentOrderList: MutableList<WidgetID> = mutableListOf()
     private val createdWidgetsMap: MutableMap<WidgetID, View> = mutableMapOf()
     private var activeWidgetList: List<View> = emptyList()
@@ -118,13 +117,12 @@ abstract class SmartListModel @JvmOverloads constructor(
         currentOrderList = registeredWidgetIDList.toMutableList()
         buildAndInstallWidgets(defaultActiveWidgetSet)
         compositeDisposable = CompositeDisposable()
-        widgetModel.setup()
-        addDisposable(widgetModel.productConnection
-                .observeOn(SchedulerProvider.ui())
+        widgetModel = SmartListInternalModel(djiSdkModel = DJISDKModel.getInstance(), uxKeyManager = ObservableInMemoryKeyedStore.getInstance())
+        widgetModel?.setup()
+        addDisposable(widgetModel!!.productConnection.observeOn(SchedulerProvider.ui())
                 .subscribe(Consumer { onProductConnectionChanged(it) },
                         RxUtil.logErrorConsumer("SmartListModel", "Error on Product changed. ")))
-        addDisposable(widgetModel.aircraftModel
-                .observeOn(SchedulerProvider.ui())
+        addDisposable(widgetModel!!.aircraftModel.observeOn(SchedulerProvider.ui())
                 .subscribe(Consumer { onAircraftModelChanged(it) },
                         RxUtil.logErrorConsumer("SmartListModel", "Error on Aircraft Model Changed. ")))
 
@@ -137,7 +135,7 @@ abstract class SmartListModel @JvmOverloads constructor(
      */
     fun cleanUp() {
         inCleanUp()
-        widgetModel.cleanup()
+        widgetModel?.cleanup()
         disposeAll()
     }
 

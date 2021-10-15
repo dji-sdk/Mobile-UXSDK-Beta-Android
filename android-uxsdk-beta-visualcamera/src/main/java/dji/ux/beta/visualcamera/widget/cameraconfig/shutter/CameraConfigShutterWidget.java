@@ -362,8 +362,9 @@ public class CameraConfigShutterWidget extends ConstraintLayoutWidget {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigShutterWidget);
 
         setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigShutterWidget_uxsdk_cameraIndex, 0)));
-        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigShutterWidget_uxsdk_lensType, 0)));
-
+        if (!isInEditMode()){
+            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigShutterWidget_uxsdk_lensType, 0)));
+        }
         int shutterTitleTextAppearanceId =
                 typedArray.getResourceId(R.styleable.CameraConfigShutterWidget_uxsdk_shutterTitleTextAppearance,
                         INVALID_RESOURCE);

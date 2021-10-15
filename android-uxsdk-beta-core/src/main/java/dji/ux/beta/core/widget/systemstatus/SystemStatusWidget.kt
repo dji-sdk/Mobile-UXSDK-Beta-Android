@@ -89,12 +89,19 @@ open class SystemStatusWidget @JvmOverloads constructor(
                 GlobalPreferencesManager.getInstance())
     }
 
-    private val textColorMap: MutableMap<WarningLevel, Int> =
+    private val textColorMap: MutableMap<WarningLevel, Int> by lazy {
+        if (isInEditMode) {
+            mutableMapOf<WarningLevel, Int>()
+        } else {
             mutableMapOf(
-                    WarningLevel.ERROR to getColor(R.color.uxsdk_status_error),
-                    WarningLevel.WARNING to getColor(R.color.uxsdk_status_warning),
-                    WarningLevel.GOOD to getColor(R.color.uxsdk_status_good),
-                    WarningLevel.OFFLINE to getColor(R.color.uxsdk_status_offline))
+                WarningLevel.ERROR to getColor(R.color.uxsdk_status_error),
+                WarningLevel.WARNING to getColor(R.color.uxsdk_status_warning),
+                WarningLevel.GOOD to getColor(R.color.uxsdk_status_good),
+                WarningLevel.OFFLINE to getColor(R.color.uxsdk_status_offline)
+            )
+        }
+    }
+
     private val backgroundDrawableMap: MutableMap<WarningLevel, Drawable?> = mutableMapOf()
     private val compassErrorString: String = getString(R.string.fpv_tip_compass_error)
 

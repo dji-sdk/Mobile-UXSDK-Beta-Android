@@ -378,7 +378,9 @@ public class CameraConfigWBWidget extends ConstraintLayoutWidget {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigWBWidget);
 
         setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigWBWidget_uxsdk_cameraIndex, 0)));
-        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigWBWidget_uxsdk_lensType, 0)));
+        if (!isInEditMode()) {
+            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigWBWidget_uxsdk_lensType, 0)));
+        }
 
         int wbTitleTextAppearanceId =
                 typedArray.getResourceId(R.styleable.CameraConfigWBWidget_uxsdk_wbTitleTextAppearance, INVALID_RESOURCE);

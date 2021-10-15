@@ -189,33 +189,33 @@
         android:id="@+id/widget_auto_exposure_lock"
         android:layout_width="@dimen/camera_bar_height"
         android:layout_height="@dimen/camera_bar_height"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:padding="@dimen/camera_bar_padding"
         app:layout_constraintEnd_toStartOf="@+id/widget_focus_mode"
-        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <dji.ux.beta.cameracore.widget.focusmode.FocusModeWidget
         android:id="@+id/widget_focus_mode"
         android:layout_width="@dimen/camera_bar_height"
         android:layout_height="@dimen/camera_bar_height"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:padding="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/widget_auto_exposure_lock"
         app:layout_constraintEnd_toStartOf="@+id/widget_focus_exposure_switch"
-        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <dji.ux.beta.cameracore.widget.focusexposureswitch.FocusExposureSwitchWidget
         android:id="@+id/widget_focus_exposure_switch"
         android:layout_width="@dimen/camera_bar_height"
         android:layout_height="@dimen/camera_bar_height"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:padding="@dimen/camera_bar_padding"
         app:layout_constraintBottom_toBottomOf="@+id/widget_auto_exposure_lock"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei" />
+        app:layout_constraintTop_toTopOf="@+id/widget_camera_config_iso_and_ei"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <!-- end camera bar -->
 
@@ -299,7 +299,8 @@
         app:layout_constraintDimensionRatio="@string/uxsdk_widget_default_ratio"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/widget_remaining_flight_time" />
+        app:layout_constraintTop_toBottomOf="@+id/widget_remaining_flight_time"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <dji.ux.beta.flight.widget.returnhome.ReturnHomeWidget
         android:id="@+id/widget_return_to_home"
@@ -313,7 +314,8 @@
         app:layout_constraintDimensionRatio="@string/uxsdk_widget_default_ratio"
         app:layout_constraintHeight_percent="0.1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/widget_take_off" />
+        app:layout_constraintTop_toBottomOf="@+id/widget_take_off"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
     <dji.ux.beta.accessory.widget.rtk.RTKWidget
         android:id="@+id/widget_rtk"

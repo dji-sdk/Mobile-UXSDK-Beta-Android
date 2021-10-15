@@ -231,30 +231,32 @@ open class RadarWidget @JvmOverloads constructor(
                 R.id.imageview_radar_forward_2,
                 R.id.imageview_radar_forward_3)
 
-        radarSections[VisionSensorPosition.NOSE.value()] =
-                MultiAngleRadarSectionViewHolder(forwardIds,
-                        R.id.textview_forward_distance,
-                        R.id.imageview_forward_arrow, this)
-
         val backwardIds = intArrayOf(R.id.imageview_radar_backward_0,
                 R.id.imageview_radar_backward_1,
                 R.id.imageview_radar_backward_2,
                 R.id.imageview_radar_backward_3)
 
-        radarSections[VisionSensorPosition.TAIL.value()] =
+        if(!isInEditMode){
+            radarSections[VisionSensorPosition.NOSE.value()] =
+                MultiAngleRadarSectionViewHolder(forwardIds,
+                    R.id.textview_forward_distance,
+                    R.id.imageview_forward_arrow, this)
+
+            radarSections[VisionSensorPosition.TAIL.value()] =
                 MultiAngleRadarSectionViewHolder(backwardIds,
-                        R.id.textview_backward_distance,
-                        R.id.imageview_backward_arrow, this)
+                    R.id.textview_backward_distance,
+                    R.id.imageview_backward_arrow, this)
 
-        radarSections[VisionSensorPosition.LEFT.value()] =
+            radarSections[VisionSensorPosition.LEFT.value()] =
                 SingleAngleRadarSectionViewHolder(R.id.imageview_radar_left,
-                        R.id.textview_left_distance,
-                        R.id.imageview_left_arrow, this)
+                    R.id.textview_left_distance,
+                    R.id.imageview_left_arrow, this)
 
-        radarSections[VisionSensorPosition.RIGHT.value()] =
+            radarSections[VisionSensorPosition.RIGHT.value()] =
                 SingleAngleRadarSectionViewHolder(R.id.imageview_radar_right,
-                        R.id.textview_right_distance,
-                        R.id.imageview_right_arrow, this)
+                    R.id.textview_right_distance,
+                    R.id.imageview_right_arrow, this)
+        }
 
         attrs?.let { initAttributes(context, it) }
     }

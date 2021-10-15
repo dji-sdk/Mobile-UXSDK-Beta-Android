@@ -30,13 +30,12 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.ExposureMode;
 import dji.ux.beta.cameracore.R;
@@ -79,9 +78,9 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     protected void initView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         inflate(context, R.layout.uxsdk_widget_exposure_settings_indicator, this);
         foregroundImageView = findViewById(R.id.image_view_exposure_settings_indicator);
-        initDefaults();
 
         if (!isInEditMode()) {
+            initDefaults();
             widgetModel = new ExposureSettingsIndicatorWidgetModel(DJISDKModel.getInstance(),
                     ObservableInMemoryKeyedStore.getInstance());
         }
@@ -164,7 +163,9 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ExposureSettingsIndicatorWidget);
         setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_cameraIndex, 0)));
-        setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_lensType, 0)));
+        if (!isInEditMode()){
+            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_lensType, 0)));
+        }
         stateChangeResourceId =
                 typedArray.getResourceId(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_onStateChange, INVALID_RESOURCE);
         Drawable drawable = typedArray.getDrawable(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_aperturePriorityModeDrawable);

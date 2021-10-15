@@ -79,14 +79,14 @@ open class FPVWidget @JvmOverloads constructor(
 ) : ConstraintLayoutWidget<ModelState>(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener {
     //region Fields
     private var codecManager: DJICodecManager? = null
-    private val videoSizeCalculator: VideoSizeCalculatorUtil = VideoSizeCalculatorUtil()
+    private var videoSizeCalculator: VideoSizeCalculatorUtil? = null
     private var videoSurface: SurfaceTexture? = null
     private var videoWidth = 0
     private var videoHeight = 0
     private var viewWidth = 0
     private var viewHeight = 0
     private var rotationAngle = 0
-    private var videoFeed = DJICodecManager.VideoSource.UNKNOWN
+    private var videoFeed : DJICodecManager.VideoSource? = null
     private val fpvTextureView: TextureView = findViewById(R.id.textureview_fpv)
     private val cameraNameTextView: TextView = findViewById(R.id.textview_camera_name)
     private val cameraSideTextView: TextView = findViewById(R.id.textview_camera_side)
@@ -298,7 +298,9 @@ open class FPVWidget @JvmOverloads constructor(
             fpvTextureView.surfaceTextureListener = this
             rotationAngle = LANDSCAPE_ROTATION_ANGLE
 
-            videoSizeCalculator.setListener { width: Int, height: Int, relativeWidth: Int, relativeHeight: Int -> changeView(width, height, relativeWidth, relativeHeight) }
+            videoSizeCalculator = VideoSizeCalculatorUtil()
+            videoFeed = DJICodecManager.VideoSource.UNKNOWN
+            videoSizeCalculator?.setListener { width: Int, height: Int, relativeWidth: Int, relativeHeight: Int -> changeView(width, height, relativeWidth, relativeHeight) }
         }
         attrs?.let { initAttributes(context, it) }
     }
@@ -489,12 +491,12 @@ open class FPVWidget @JvmOverloads constructor(
     private fun notifyCalculator() {
         try {
             if (videoWidth != 0 && videoHeight != 0) {
-                videoSizeCalculator.setVideoTypeBySize(videoWidth,
+                videoSizeCalculator?.setVideoTypeBySize(videoWidth,
                         videoHeight,
                         widgetModel.currentCameraIndex.index)
             }
-            videoSizeCalculator.setScreenTypeBySize(viewWidth, viewHeight)
-            videoSizeCalculator.calculateVideoSize()
+            videoSizeCalculator?.setScreenTypeBySize(viewWidth, viewHeight)
+            videoSizeCalculator?.calculateVideoSize()
         } catch (exception: Exception) {
             DJILog.e(TAG, "FPVNotifyCalculator: " + exception.localizedMessage)
         }
@@ -502,7 +504,7 @@ open class FPVWidget @JvmOverloads constructor(
 
     private fun updateOrientation(orientation: SettingsDefinitions.Orientation) {
         widgetStateDataProcessor.onNext(OrientationUpdated(orientation))
-        videoSizeCalculator.setVideoIsRotated(orientation == SettingsDefinitions.Orientation.PORTRAIT)
+        videoSizeCalculator?.setVideoIsRotated(orientation == SettingsDefinitions.Orientation.PORTRAIT)
         rotationAngle = if (orientation == SettingsDefinitions.Orientation.PORTRAIT) {
             PORTRAIT_ROTATION_ANGLE
         } else {

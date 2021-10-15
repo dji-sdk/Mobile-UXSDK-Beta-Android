@@ -74,10 +74,10 @@ public class CameraCaptureWidget extends ConstraintLayoutWidget {
     @Override
     protected void initView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         widgetMap = new HashMap<>();
-        addViewByMode(CameraMode.SHOOT_PHOTO, new ShootPhotoWidget(context));
-        addViewByMode(CameraMode.RECORD_VIDEO, new RecordVideoWidget(context));
 
         if (!isInEditMode()) {
+            addViewByMode(CameraMode.SHOOT_PHOTO, new ShootPhotoWidget(context));
+            addViewByMode(CameraMode.RECORD_VIDEO, new RecordVideoWidget(context));
             widgetModel =
                     new CameraCaptureWidgetModel(DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance());
         }

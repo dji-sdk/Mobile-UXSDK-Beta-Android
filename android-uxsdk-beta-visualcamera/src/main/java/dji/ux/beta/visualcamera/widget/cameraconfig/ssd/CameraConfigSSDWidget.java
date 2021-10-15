@@ -34,22 +34,19 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import dji.common.camera.CameraSSDVideoLicense;
 import dji.common.camera.ResolutionAndFrameRate;
 import dji.common.camera.SSDOperationState;
 import dji.common.camera.SettingsDefinitions;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
@@ -57,6 +54,8 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.visualcamera.R;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * Shows the camera's current capacity and other information for the SSD storage.
@@ -332,6 +331,9 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
 
     private void initDefaultIcons() {
         ssdIconMap = new HashMap<>();
+        if (isInEditMode()){
+            return;
+        }
         ssdIconMap.put(SSDOperationState.NOT_FOUND, getResources().getDrawable(R.drawable.uxsdk_ic_ssd_not_inserted_gray));
         ssdIconMap.put(SSDOperationState.UNKNOWN, getResources().getDrawable(R.drawable.uxsdk_ic_ssd_not_inserted_gray));
         ssdIconMap.put(SSDOperationState.IDLE, getResources().getDrawable(R.drawable.uxsdk_ic_ssd_icon));
