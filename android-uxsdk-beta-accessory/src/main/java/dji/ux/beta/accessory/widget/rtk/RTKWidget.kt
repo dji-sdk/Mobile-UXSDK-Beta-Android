@@ -50,6 +50,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.communication.OnStateChangeCallback
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
+import dji.ux.beta.core.util.RxUtil
 
 private const val TAG = "RTKWidget"
 
@@ -257,7 +258,7 @@ open class RTKWidget @JvmOverloads constructor(
                         }
                         uiUpdateStateProcessor.onNext(VisibilityUpdated(visibility == View.VISIBLE))
                     }
-                }, logErrorConsumer(TAG, "getRTKSupported: ")))
+                }, RxUtil.logErrorConsumer(TAG, "getRTKSupported: ")))
     }
     //endregion
 

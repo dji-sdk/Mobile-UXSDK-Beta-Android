@@ -32,6 +32,7 @@ import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
+import dji.ux.beta.core.util.RxUtil
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
 
@@ -85,13 +86,13 @@ class RCStickModeListItemWidgetModel(
     }
 
     override fun updateStates() {
-        if (productConnectionProcessor.value) {
+        if (productConnectionProcessor.value == true) {
             addDisposable(getControlStickMode()
                     .subscribe(Consumer {
                         if (it is AircraftMappingStyle) {
                             updateCurrentStickMode(it)
                         }
-                    }, logErrorConsumer(TAG, "getMappingStyle ")))
+                    }, RxUtil.logErrorConsumer(TAG, "getMappingStyle ")))
 
         } else {
             rcStickModeStateProcessor.onNext(RCStickModeState.ProductDisconnected)

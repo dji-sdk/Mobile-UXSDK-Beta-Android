@@ -47,10 +47,7 @@ import dji.ux.beta.core.base.UXSDKError
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.module.FlatCameraModule
-import dji.ux.beta.core.util.CameraUtil
-import dji.ux.beta.core.util.DataProcessor
-import dji.ux.beta.core.util.ProductUtil
-import dji.ux.beta.core.util.SettingDefinitions
+import dji.ux.beta.core.util.*
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex
 import dji.ux.beta.core.util.SettingDefinitions.CameraSide
 import io.reactivex.rxjava3.core.Completable
@@ -173,27 +170,27 @@ class FPVWidgetModel(djiSdkModel: DJISDKModel,
         bindDataProcessor(videoResolutionAndFrameRateKey, resolutionAndFrameRateProcessor, videoViewChangedConsumer)
         addDisposable(flatCameraModule.cameraModeDataProcessor.toFlowable()
                 .doOnNext(videoViewChangedConsumer)
-                .subscribe(Consumer { }, logErrorConsumer(TAG, "camera mode: ")))
+                .subscribe(Consumer { }, RxUtil.logErrorConsumer(TAG, "camera mode: ")))
 
         val primaryVideoFeedPhysicalSourceKey = AirLinkKey.createOcuSyncLinkKey(AirLinkKey.PRIMARY_VIDEO_FEED_PHYSICAL_SOURCE)
         addDisposable(djiSdkModel.addListener(primaryVideoFeedPhysicalSourceKey, this)
                 .subscribe(Consumer {
                     updateVideoFeed()
                     updateCameraDisplay()
-                }, logErrorConsumer(TAG, "Error listening to primary video feed physical source key ")))
+                }, RxUtil.logErrorConsumer(TAG, "Error listening to primary video feed physical source key ")))
         val secondaryVideoFeedPhysicalSourceKey = AirLinkKey.createOcuSyncLinkKey(AirLinkKey.SECONDARY_VIDEO_FEED_PHYSICAL_SOURCE)
         addDisposable(djiSdkModel.addListener(secondaryVideoFeedPhysicalSourceKey, this)
                 .subscribe(Consumer {
                     updateVideoFeed()
                     updateCameraDisplay()
-                }, logErrorConsumer(TAG, "Error listening to secondary video feed physical source key ")))
+                }, RxUtil.logErrorConsumer(TAG, "Error listening to secondary video feed physical source key ")))
         val rcModeKey = RemoteControllerKey.create(RemoteControllerKey.MODE)
         addDisposable(djiSdkModel.addListener(rcModeKey, this)
                 .subscribe(Consumer {
                     if (currentModel == Model.MATRICE_300_RTK) {
                         updateSources()
                     }
-                }, logErrorConsumer(TAG, "Error listening to RC Mode key ")))
+                }, RxUtil.logErrorConsumer(TAG, "Error listening to RC Mode key ")))
     }
 
     override fun inCleanup() {
@@ -316,7 +313,7 @@ class FPVWidgetModel(djiSdkModel: DJISDKModel,
             addDisposable(djiSdkModel.setValue(extVideoInputPortEnabledKey, true)
                     .subscribeOn(SchedulerProvider.io())
                     .subscribe(Action { setCameraChannelBandwidth() },
-                            logErrorConsumer(TAG, "SetExtVideoInputPortEnabled: ")))
+                            RxUtil.logErrorConsumer(TAG, "SetExtVideoInputPortEnabled: ")))
         } else {
             setCameraChannelBandwidth()
         }
@@ -326,7 +323,7 @@ class FPVWidgetModel(djiSdkModel: DJISDKModel,
         val bandwidthAllocationForLBVideoInputPort = AirLinkKey.createLightbridgeLinkKey(AirLinkKey.BANDWIDTH_ALLOCATION_FOR_LB_VIDEO_INPUT_PORT)
         addDisposable(djiSdkModel.setValue(bandwidthAllocationForLBVideoInputPort, 0.0f)
                 .subscribeOn(SchedulerProvider.io())
-                .subscribe(Action {}, logErrorConsumer(TAG, "SetBandwidthAllocationForLBVideoInputPort: ")))
+                .subscribe(Action {}, RxUtil.logErrorConsumer(TAG, "SetBandwidthAllocationForLBVideoInputPort: ")))
     }
 
     private fun updateCameraDisplay() {

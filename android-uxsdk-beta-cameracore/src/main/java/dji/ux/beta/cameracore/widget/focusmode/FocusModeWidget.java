@@ -40,11 +40,8 @@ import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.FocusMode;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
@@ -52,7 +49,10 @@ import dji.ux.beta.core.base.widget.FrameLayoutWidget;
 import dji.ux.beta.core.communication.GlobalPreferencesManager;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DisplayUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * Widget will display the current focus mode of aircraft camera.
@@ -146,7 +146,7 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(() -> {
                     // Do nothing
-                }, logErrorConsumer(TAG, "switch focus mode: ")));
+                }, RxUtil.logErrorConsumer(TAG, "switch focus mode: ")));
     }
 
     //endregion
@@ -159,7 +159,7 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateUI(values.first, values.second),
-                            logErrorConsumer(TAG, "check and update focus mode: ")));
+                            RxUtil.logErrorConsumer(TAG, "check and update focus mode: ")));
         }
     }
 
@@ -167,7 +167,7 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
         return Flowable.combineLatest(widgetModel.isAFCEnabled(), widgetModel.getFocusMode(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateUI(values.first, values.second),
-                        logErrorConsumer(TAG, "react to Focus Mode Change: "));
+                        RxUtil.logErrorConsumer(TAG, "react to Focus Mode Change: "));
     }
 
     private void updateVisibility(boolean isFocusModeChangeSupported) {

@@ -54,6 +54,7 @@ import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.CameraUtil;
 import dji.ux.beta.core.util.ProductUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import io.reactivex.rxjava3.core.Completable;
 
@@ -139,19 +140,19 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
                         .observeOn(SchedulerProvider.ui())
                         .subscribe(
                                 this::updateRecordingTime,
-                                logErrorConsumer(TAG, "record time: ")));
+                                RxUtil.logErrorConsumer(TAG, "record time: ")));
         addReaction(
                 widgetModel.getRecordingState()
                         .observeOn(SchedulerProvider.ui())
                         .subscribe(
                                 recordingState -> onIsRecordingVideoChange(recordingState, true),
-                                logErrorConsumer(TAG, "is recording: ")));
+                                RxUtil.logErrorConsumer(TAG, "is recording: ")));
         addReaction(
                 widgetModel.getCameraVideoStorageState()
                         .observeOn(SchedulerProvider.ui())
                         .subscribe(
                                 this::updateCameraForegroundResource,
-                                logErrorConsumer(TAG, "camera storage update: ")));
+                                RxUtil.logErrorConsumer(TAG, "camera storage update: ")));
     }
 
     @NonNull
@@ -172,7 +173,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
                     return Completable.complete();
                 }
             }).observeOn(SchedulerProvider.ui()).subscribe(() -> {
-            }, logErrorConsumer(TAG, "START STOP VIDEO")));
+            }, RxUtil.logErrorConsumer(TAG, "START STOP VIDEO")));
         }
     }
     //endregion
@@ -321,7 +322,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
             addDisposable(widgetModel.getCameraVideoStorageState().firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(this::updateCameraForegroundResource,
-                            logErrorConsumer(TAG, "check and update camera foreground resource: ")));
+                            RxUtil.logErrorConsumer(TAG, "check and update camera foreground resource: ")));
         }
     }
 
@@ -330,7 +331,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
             addDisposable(widgetModel.getRecordingState().firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(recordingState -> onIsRecordingVideoChange(recordingState, false),
-                            logErrorConsumer(TAG, "check and update camera foreground resource: ")));
+                            RxUtil.logErrorConsumer(TAG, "check and update camera foreground resource: ")));
         }
     }
     //endregion

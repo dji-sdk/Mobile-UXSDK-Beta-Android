@@ -43,6 +43,7 @@ import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.util.RxUtil;
 
 /**
  * Camera Capture Widget
@@ -106,7 +107,7 @@ public class CameraCaptureWidget extends ConstraintLayoutWidget {
                         .observeOn(SchedulerProvider.ui())
                         .subscribe(
                                 this::onCameraModeChange,
-                                logErrorConsumer(TAG, "Camera Mode Change: ")));
+                                RxUtil.logErrorConsumer(TAG, "Camera Mode Change: ")));
     }
 
     @NonNull

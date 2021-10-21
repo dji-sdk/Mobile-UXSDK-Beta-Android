@@ -40,6 +40,7 @@ import dji.ux.beta.core.base.widget.FrameLayoutWidget
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.getColorAndUse
 import dji.ux.beta.core.extension.getString
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidget.ModelState
 import dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidget.ModelState.*
 import dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidgetModel.RemainingFlightTimeData
@@ -359,7 +360,7 @@ open class RemainingFlightTimeWidget @JvmOverloads constructor(
                 BiFunction { first: Boolean, second: RemainingFlightTimeData -> Pair(first, second) })
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(Consumer { values: Pair<Boolean, RemainingFlightTimeData> -> onRemainingFlightTimeChange(values.first, values.second) },
-                        logErrorConsumer(TAG, "react to flight time update: "))
+                        RxUtil.logErrorConsumer(TAG, "react to flight time update: "))
     }
 
     private fun onRemainingFlightTimeChange(isAircraftFlying: Boolean,

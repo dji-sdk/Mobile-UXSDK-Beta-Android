@@ -50,6 +50,7 @@ import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.GlobalPreferencesManager;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.CameraUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
@@ -207,7 +208,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
         return Flowable.combineLatest(widgetModel.getControlMode(), widgetModel.isAeLocked(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateViewVisibility(values.first, values.second),
-                        logErrorConsumer(TAG, "reactToUpdateVisibility: "));
+                        RxUtil.logErrorConsumer(TAG, "reactToUpdateVisibility: "));
     }
 
     private void updateViewVisibility(ControlMode controlMode, boolean isAeLocked) {
@@ -274,7 +275,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
                             .firstOrError()
                             .observeOn(SchedulerProvider.ui())
                             .subscribe((Pair values) -> updateTarget((ControlMode) (values.first), (Boolean) (values.second), targetX, targetY),
-                                    logErrorConsumer(TAG, "Update Target: ")));
+                                    RxUtil.logErrorConsumer(TAG, "Update Target: ")));
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -389,7 +390,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
                         .observeOn(SchedulerProvider.ui())
                         .subscribe(() -> {
                             //do nothing
-                        }, logErrorConsumer(TAG, "updateTarget: ")));
+                        }, RxUtil.logErrorConsumer(TAG, "updateTarget: ")));
                 addDisposable(widgetModel.updateMetering(targetX, targetY)
                         .observeOn(SchedulerProvider.ui())
                         .subscribe(() -> {
@@ -424,7 +425,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(() -> {
                         //do nothing
-                    }, logErrorConsumer(TAG, "onExposureMeterSetFail: ")));
+                    }, RxUtil.logErrorConsumer(TAG, "onExposureMeterSetFail: ")));
         }
     }
 
@@ -488,7 +489,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
                                 .observeOn(SchedulerProvider.ui())
                                 .subscribe(() -> {
                                     //do nothing
-                                }, logErrorConsumer(TAG, "rotate gimbal: ")));
+                                }, RxUtil.logErrorConsumer(TAG, "rotate gimbal: ")));
                     }
                 });
     }

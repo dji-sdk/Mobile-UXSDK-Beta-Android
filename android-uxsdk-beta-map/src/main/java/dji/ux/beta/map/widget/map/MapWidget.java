@@ -37,12 +37,6 @@ import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.Group;
-
 import com.dji.mapkit.amap.provider.AMapProvider;
 import com.dji.mapkit.core.Mapkit;
 import com.dji.mapkit.core.camera.DJICameraUpdate;
@@ -64,6 +58,11 @@ import com.dji.mapkit.mapbox.provider.MapboxProvider;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.Group;
 import dji.common.flightcontroller.LocationCoordinate3D;
 import dji.common.flightcontroller.flyzone.CustomUnlockZone;
 import dji.common.flightcontroller.flyzone.FlyZoneCategory;
@@ -72,19 +71,20 @@ import dji.common.model.LocationCoordinate2D;
 import dji.common.useraccount.UserAccountState;
 import dji.log.DJILog;
 import dji.sdk.util.LocationUtil;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.OnStateChangeCallback;
 import dji.ux.beta.core.util.MathUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.ViewUtil;
 import dji.ux.beta.core.widget.useraccount.UserAccountLoginWidget;
 import dji.ux.beta.map.R;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * MapWidget displays the aircraft's state and information on the map. This
@@ -348,7 +348,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         addDisposable(widgetModel.enableCustomUnlockZoneOnAircraft(customUnlockZone)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(this::requestCustomUnlockZonesFromServer,
-                        logErrorConsumer(TAG, "request enable fly zone ")));
+                        RxUtil.logErrorConsumer(TAG, "request enable fly zone ")));
     }
 
     @Override
@@ -356,7 +356,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         addDisposable(widgetModel.disableCustomUnlockZoneOnAircraft()
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(this::requestCustomUnlockZonesFromServer,
-                        logErrorConsumer(TAG, "request disable fly zone ")));
+                        RxUtil.logErrorConsumer(TAG, "request disable fly zone ")));
     }
     //endregion
 
@@ -547,7 +547,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
                 .subscribe(values -> {
                     updateAircraftHeading(values.first);
                     setGimbalHeading(values.first, values.second);
-                }, logErrorConsumer(TAG, "react to Heading Update "));
+                }, RxUtil.logErrorConsumer(TAG, "react to Heading Update "));
     }
 
     /**
@@ -646,7 +646,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         addDisposable(widgetModel.getFlyZoneList()
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(this::onFlyZoneListUpdate,
-                        logErrorConsumer(TAG, "get fly zone list  ")));
+                        RxUtil.logErrorConsumer(TAG, "get fly zone list  ")));
     }
 
     private void onFlyZoneListUpdate(List<FlyZoneInformation> flyZoneInformationList) {
@@ -1038,7 +1038,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
                         if (listener != null) {
                             listener.onMapReady(map);
                         }
-                    }, logErrorConsumer(TAG, "updateAircraftAndHomeLocation")));
+                    }, RxUtil.logErrorConsumer(TAG, "updateAircraftAndHomeLocation")));
         });
         map.setOnMarkerClickListener(marker -> {
             String title = marker.getTitle();
@@ -1057,11 +1057,11 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
         addDisposable(widgetModel.getAircraftLocation()
                 .firstOrError()
                 .observeOn(SchedulerProvider.ui())
-                .subscribe(this::updateAircraftLocation, logErrorConsumer(TAG, "updateAircraftLocation")));
+                .subscribe(this::updateAircraftLocation, RxUtil.logErrorConsumer(TAG, "updateAircraftLocation")));
         addDisposable(widgetModel.getHomeLocation()
                 .firstOrError()
                 .observeOn(SchedulerProvider.ui())
-                .subscribe(this::updateHomeLocation, logErrorConsumer(TAG, "updateHomeLocation")));
+                .subscribe(this::updateHomeLocation, RxUtil.logErrorConsumer(TAG, "updateHomeLocation")));
     }
 
     private void emitMarkerClickEvent(DJIMarker marker) {
@@ -1509,7 +1509,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
                     widgetModel.getCustomUnlockZonesFromAircraft(), Pair::new)
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(result -> flyZoneHelper.onCustomUnlockZoneUpdate(result.second, result.first),
-                            logErrorConsumer(TAG, "get custom unlock zones ")));
+                            RxUtil.logErrorConsumer(TAG, "get custom unlock zones ")));
         }
     }
 
@@ -1521,7 +1521,7 @@ public class MapWidget extends ConstraintLayoutWidget implements View.OnTouchLis
             addDisposable(widgetModel.syncZonesToAircraft()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(this::requestCustomUnlockZonesFromServer,
-                            logErrorConsumer(TAG, "sync custom unlock zones ")));
+                            RxUtil.logErrorConsumer(TAG, "sync custom unlock zones ")));
         }
     }
 

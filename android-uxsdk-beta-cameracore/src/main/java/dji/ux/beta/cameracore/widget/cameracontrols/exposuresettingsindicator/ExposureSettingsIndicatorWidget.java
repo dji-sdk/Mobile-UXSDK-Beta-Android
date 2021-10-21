@@ -44,6 +44,7 @@ import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.FrameLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.OnStateChangeCallback;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
 /**
@@ -81,8 +82,7 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
 
         if (!isInEditMode()) {
             initDefaults();
-            widgetModel = new ExposureSettingsIndicatorWidgetModel(DJISDKModel.getInstance(),
-                    ObservableInMemoryKeyedStore.getInstance());
+            widgetModel = new ExposureSettingsIndicatorWidgetModel(DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance());
         }
 
         if (attrs != null) {
@@ -92,9 +92,7 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
 
     @Override
     protected void reactToModelChanges() {
-        addReaction(widgetModel.getExposureMode()
-                .observeOn(SchedulerProvider.ui())
-                .subscribe(this::updateUI));
+        addReaction(widgetModel.getExposureMode().observeOn(SchedulerProvider.ui()).subscribe(this::updateUI));
     }
 
     @NonNull
@@ -135,7 +133,7 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
             addDisposable(widgetModel.getExposureMode()
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(this::updateUI, logErrorConsumer(TAG, "get exposure mode")));
+                    .subscribe(this::updateUI, RxUtil.logErrorConsumer(TAG, "get exposure mode")));
         }
     }
 

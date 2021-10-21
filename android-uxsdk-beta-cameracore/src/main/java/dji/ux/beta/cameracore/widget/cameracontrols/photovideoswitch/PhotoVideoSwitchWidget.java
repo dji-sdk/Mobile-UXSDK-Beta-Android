@@ -33,12 +33,12 @@ import android.widget.ImageView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.FrameLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
 /**
@@ -125,7 +125,7 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(
                         () -> {
-                        }, logErrorConsumer(TAG, "Switch camera Mode")
+                        }, RxUtil.logErrorConsumer(TAG, "Switch camera Mode")
                 ));
     }
     //endregion
@@ -163,7 +163,7 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
         if (!isInEditMode()) {
             addDisposable(widgetModel.isPictureMode().firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(this::updateUI, logErrorConsumer(TAG, "Update UI ")));
+                    .subscribe(this::updateUI, RxUtil.logErrorConsumer(TAG, "Update UI ")));
         }
     }
     //endregion

@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import dji.keysdk.DJIKey;
 import dji.keysdk.ProductKey;
@@ -35,7 +34,6 @@ import dji.log.DJILog;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.UXKey;
 import dji.ux.beta.core.util.DataProcessor;
-import dji.ux.beta.core.util.RxUtil;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -233,18 +231,6 @@ public abstract class WidgetModel {
                                      @NonNull DataProcessor<?> dataProcessor,
                                      @NonNull Consumer<Object> sideEffectConsumer) {
         registerKey(key, dataProcessor::onNext, sideEffectConsumer);
-    }
-
-    /**
-     * Get a throwable error consumer for the given error.
-     *
-     * @param tag     Tag for the log
-     * @param message Message to be logged
-     * @return Throwable consumer
-     */
-    @CheckResult
-    protected Consumer<Throwable> logErrorConsumer(@NonNull String tag, @NonNull String message) {
-        return RxUtil.logErrorConsumer(tag, message);
     }
 
     private void registerKey(@NonNull DJIKey djiKey,

@@ -52,6 +52,7 @@ import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.CameraUtil;
 import dji.ux.beta.core.util.DisplayUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.visualcamera.R;
 
@@ -131,15 +132,15 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
     protected void reactToModelChanges() {
         addReaction(widgetModel.getImageFormat()
                 .observeOn(SchedulerProvider.ui())
-                .subscribe(this::updateImageFormatText, logErrorConsumer(TAG, "reactToUpdateImageFormat")));
+                .subscribe(this::updateImageFormatText, RxUtil.logErrorConsumer(TAG, "reactToUpdateImageFormat")));
 
         addReaction(widgetModel.getCameraStorageState()
                 .observeOn(SchedulerProvider.ui())
-                .subscribe(this::updateStatus, logErrorConsumer(TAG, "reactToUpdateStatus")));
+                .subscribe(this::updateStatus, RxUtil.logErrorConsumer(TAG, "reactToUpdateStatus")));
 
         addReaction(widgetModel.getCameraColor()
                 .observeOn(SchedulerProvider.ui())
-                .subscribe(this::updateColor, logErrorConsumer(TAG, "reactToUpdateColor")));
+                .subscribe(this::updateColor, RxUtil.logErrorConsumer(TAG, "reactToUpdateColor")));
     }
     //endregion
 
@@ -217,7 +218,7 @@ public class CameraConfigStorageWidget extends ConstraintLayoutWidget {
         if (!isInEditMode()) {
             addDisposable(widgetModel.getCameraStorageState().firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(this::updateForegroundDrawable, logErrorConsumer(TAG, "checkAndUpdateForegroundImage")));
+                    .subscribe(this::updateForegroundDrawable, RxUtil.logErrorConsumer(TAG, "checkAndUpdateForegroundImage")));
         }
     }
     //endregion

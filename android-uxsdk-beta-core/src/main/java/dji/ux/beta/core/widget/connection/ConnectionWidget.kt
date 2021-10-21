@@ -141,7 +141,7 @@ open class ConnectionWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.lastOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { updateUI(it) }, logErrorConsumer(TAG, "product connection")))
+                    .subscribe(Consumer { updateUI(it) }, RxUtil.logErrorConsumer(TAG, "product connection")))
         }
     }
     //endregion

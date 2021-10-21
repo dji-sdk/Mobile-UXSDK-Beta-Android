@@ -37,6 +37,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.UXKey;
 import dji.ux.beta.core.communication.UXKeys;
 import dji.ux.beta.core.util.DataProcessor;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import io.reactivex.rxjava3.core.Completable;
@@ -245,21 +246,21 @@ public class FocusModeWidgetModel extends WidgetModel {
                 addDisposable(keyedStore.setValue(controlModeKey, SettingDefinitions.ControlMode.AUTO_FOCUS)
                         .subscribe(() -> {
                             //do nothing
-                        }, logErrorConsumer(TAG, "setControlModeAutoFocus: ")));
+                        }, RxUtil.logErrorConsumer(TAG, "setControlModeAutoFocus: ")));
                 break;
             case AFC:
                 preferencesManager.setControlMode(SettingDefinitions.ControlMode.AUTO_FOCUS_CONTINUE);
                 addDisposable(keyedStore.setValue(controlModeKey, SettingDefinitions.ControlMode.AUTO_FOCUS_CONTINUE)
                         .subscribe(() -> {
                             //do nothing
-                        }, logErrorConsumer(TAG, "setControlModeAutoFocusContinuous: ")));
+                        }, RxUtil.logErrorConsumer(TAG, "setControlModeAutoFocusContinuous: ")));
                 break;
             case MANUAL:
                 preferencesManager.setControlMode(SettingDefinitions.ControlMode.MANUAL_FOCUS);
                 addDisposable(keyedStore.setValue(controlModeKey, SettingDefinitions.ControlMode.MANUAL_FOCUS)
                         .subscribe(() -> {
                             //do nothing
-                        }, logErrorConsumer(TAG, "setControlModeManualFocus: ")));
+                        }, RxUtil.logErrorConsumer(TAG, "setControlModeManualFocus: ")));
                 break;
             default:
                 break;

@@ -38,17 +38,17 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-
 import dji.common.camera.SettingsDefinitions;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DisplayUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.visualcamera.R;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * Shows the camera's current ISO or exposure index setting.
@@ -122,7 +122,7 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
         return Flowable.combineLatest(widgetModel.isEIMode(), widgetModel.getISO(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateTitle(values.first, values.second),
-                        logErrorConsumer(TAG, "react to update title: "));
+                        RxUtil.logErrorConsumer(TAG, "react to update title: "));
     }
 
     private void updateTitle(boolean isEIMode, SettingsDefinitions.ISO iso) {

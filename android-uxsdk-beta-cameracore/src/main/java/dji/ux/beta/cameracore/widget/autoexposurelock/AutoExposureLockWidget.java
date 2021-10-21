@@ -149,14 +149,14 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(() -> {
                     // Do nothing
-                }, logErrorConsumer(TAG, "set auto exposure lock: ")));
+                }, RxUtil.logErrorConsumer(TAG, "set auto exposure lock: ")));
     }
 
     private void checkAndUpdateAELock() {
         if (!isInEditMode()) {
             addDisposable(widgetModel.isAutoExposureLockOn().firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(this::onAELockChange, logErrorConsumer(TAG, "Update AE Lock ")));
+                    .subscribe(this::onAELockChange, RxUtil.logErrorConsumer(TAG, "Update AE Lock ")));
         }
     }
 

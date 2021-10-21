@@ -39,6 +39,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.UXKey;
 import dji.ux.beta.core.communication.UXKeys;
 import dji.ux.beta.core.util.DataProcessor;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
 import io.reactivex.rxjava3.core.Completable;
@@ -226,7 +227,7 @@ public class FocusExposureSwitchWidgetModel extends WidgetModel {
                             addDisposable(keyedStore.setValue(controlModeKey, ControlMode.SPOT_METER)
                                     .subscribe(() -> {
                                         //do nothing
-                                    }, logErrorConsumer(TAG, "setMeteringMode: ")));
+                                    }, RxUtil.logErrorConsumer(TAG, "setMeteringMode: ")));
                             DJILog.d(TAG, "Success");
                         }).doOnError(
                         error -> {

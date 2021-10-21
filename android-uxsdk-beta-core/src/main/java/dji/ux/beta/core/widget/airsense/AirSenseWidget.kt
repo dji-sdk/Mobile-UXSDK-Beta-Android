@@ -385,7 +385,7 @@ open class AirSenseWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.airSenseState.firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateIcon(it) }, logErrorConsumer(TAG, "Update Icon ")))
+                    .subscribe(Consumer { this.updateIcon(it) }, RxUtil.logErrorConsumer(TAG, "Update Icon ")))
         }
     }
     //endregion

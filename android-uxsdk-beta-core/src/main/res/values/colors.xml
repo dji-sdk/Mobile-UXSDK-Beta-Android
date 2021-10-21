@@ -133,4 +133,8 @@
 
     <!--FPV-->
     <color name="uxsdk_fpv_text_background">#991c2831</color>
+
+    <color name="uxsdk_black_transparent">#b2000000</color>
+    <color name="uxsdk_gray">#ff5e5e5e</color>
+
 </resources>

@@ -34,7 +34,6 @@ import android.widget.ImageView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import dji.common.camera.SettingsDefinitions;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
@@ -43,6 +42,7 @@ import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.FrameLayoutWidget;
 import dji.ux.beta.core.communication.GlobalPreferencesManager;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
 
@@ -121,7 +121,7 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(() -> {
                         //do nothing
-                    }, logErrorConsumer(TAG, "switchControlMode: ")));
+                    }, RxUtil.logErrorConsumer(TAG, "switchControlMode: ")));
         }
     }
 
@@ -165,7 +165,7 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
         if (!isInEditMode()) {
             addDisposable(widgetModel.getControlMode().firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(this::updateUI, logErrorConsumer(TAG, "Update UI ")));
+                    .subscribe(this::updateUI, RxUtil.logErrorConsumer(TAG, "Update UI ")));
         }
     }
 

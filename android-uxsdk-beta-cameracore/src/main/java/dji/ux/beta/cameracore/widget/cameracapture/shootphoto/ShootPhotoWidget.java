@@ -53,6 +53,7 @@ import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.ProductUtil;
+import dji.ux.beta.core.util.RxUtil;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
@@ -141,7 +142,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.isShootingPhoto().observeOn(SchedulerProvider.ui())
-                .subscribe(this::onIsShootingPhotoChange, logErrorConsumer(TAG, "isShootingPhoto: ")));
+                .subscribe(this::onIsShootingPhotoChange, RxUtil.logErrorConsumer(TAG, "isShootingPhoto: ")));
         addReaction(reactToCanStartOrStopShootingPhoto());
         addReaction(reactToPhotoStateAndPhotoStorageState());
     }
@@ -167,8 +168,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
                 }
                 return Completable.complete();
             }).observeOn(SchedulerProvider.ui())
-                    .subscribe(() -> {
-                    }, logErrorConsumer(TAG, "Start Stop Shoot Photo")));
+                    .subscribe(() -> { }, RxUtil.logErrorConsumer(TAG, "Start Stop Shoot Photo")));
         }
     }
     //endregion
@@ -250,14 +250,14 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
         return Flowable.combineLatest(widgetModel.getCameraPhotoState(), widgetModel.getCameraStorageState(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateCameraForegroundResource(values.first, values.second),
-                        logErrorConsumer(TAG, "reactToPhotoStateAndPhotoStorageState "));
+                        RxUtil.logErrorConsumer(TAG, "reactToPhotoStateAndPhotoStorageState "));
     }
 
     private Disposable reactToCanStartOrStopShootingPhoto() {
         return Flowable.combineLatest(widgetModel.canStartShootingPhoto(), widgetModel.canStopShootingPhoto(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateImages(values.first, values.second),
-                        logErrorConsumer(TAG, "reactToCanStartOrStopShootingPhoto: "));
+                        RxUtil.logErrorConsumer(TAG, "reactToCanStartOrStopShootingPhoto: "));
     }
 
     private void checkAndUpdatePhotoStateAndPhotoStorageState() {
@@ -268,7 +268,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateCameraForegroundResource(values.first, values.second),
-                            logErrorConsumer(TAG, "checkAndUpdatePhotoStateAndPhotoStorageState ")));
+                            RxUtil.logErrorConsumer(TAG, "checkAndUpdatePhotoStateAndPhotoStorageState ")));
         }
     }
 
@@ -281,7 +281,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateImages(values.first, values.second),
-                            logErrorConsumer(TAG, "checkAndUpdateCanStartOrStopShootingPhoto: ")));
+                            RxUtil.logErrorConsumer(TAG, "checkAndUpdateCanStartOrStopShootingPhoto: ")));
         }
     }
 

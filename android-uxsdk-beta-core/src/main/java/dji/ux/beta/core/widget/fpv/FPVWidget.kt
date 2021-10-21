@@ -57,6 +57,7 @@ import dji.ux.beta.core.module.FlatCameraModule
 import dji.ux.beta.core.ui.CenterPointView
 import dji.ux.beta.core.ui.GridLineView
 import dji.ux.beta.core.util.DisplayUtil
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.util.SettingDefinitions
 import dji.ux.beta.core.util.SettingDefinitions.CameraSide
 import dji.ux.beta.core.widget.fpv.FPVWidget.ModelState
@@ -438,7 +439,7 @@ open class FPVWidget @JvmOverloads constructor(
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(Action {
                     // do nothing
-                }, logErrorConsumer(TAG, "set camera video stream source ")))
+                }, RxUtil.logErrorConsumer(TAG, "set camera video stream source ")))
         stateChangeCallback?.onStreamSourceChange(cameraVideoStreamSource)
     }
 
@@ -553,7 +554,7 @@ open class FPVWidget @JvmOverloads constructor(
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { cameraName: String -> updateCameraName(cameraName) },
-                            logErrorConsumer(TAG, "updateCameraName")))
+                            RxUtil.logErrorConsumer(TAG, "updateCameraName")))
         }
     }
 
@@ -563,7 +564,7 @@ open class FPVWidget @JvmOverloads constructor(
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { cameraSide: CameraSide -> updateCameraSide(cameraSide) },
-                            logErrorConsumer(TAG, "updateCameraSide")))
+                            RxUtil.logErrorConsumer(TAG, "updateCameraSide")))
         }
     }
 

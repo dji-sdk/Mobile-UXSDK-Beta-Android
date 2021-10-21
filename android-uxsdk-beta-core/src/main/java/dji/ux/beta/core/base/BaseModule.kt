@@ -61,17 +61,4 @@ abstract class BaseModule {
                                          sideEffectConsumer: Consumer<Any> = Consumer {}) {
         widgetModel.bindDataProcessor(key, dataProcessor, sideEffectConsumer)
     }
-
-    /**
-     * Get a throwable error consumer for the given error.
-     *
-     * @param tag     Tag for the log
-     * @param message Message to be logged
-     * @return Throwable consumer
-     */
-    @CheckResult
-    protected open fun logErrorConsumer(tag: String, message: String): Consumer<Throwable?>? {
-        return RxUtil.logErrorConsumer(tag, message)
-    }
-
 }

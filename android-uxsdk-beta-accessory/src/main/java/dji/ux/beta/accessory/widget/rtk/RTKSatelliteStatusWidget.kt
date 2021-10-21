@@ -56,6 +56,7 @@ import dji.ux.beta.core.communication.GlobalPreferencesManager
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.util.UnitConversionUtil
 import java.util.*
 
@@ -867,7 +868,7 @@ open class RTKSatelliteStatusWidget @JvmOverloads constructor(
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { updateOrientationStatus(it.isHeadingValid, it.headingSolution) },
-                            logErrorConsumer(TAG, "updateOrientation")))
+                            RxUtil.logErrorConsumer(TAG, "updateOrientation")))
         }
     }
 
@@ -877,7 +878,7 @@ open class RTKSatelliteStatusWidget @JvmOverloads constructor(
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { updateModel(it) },
-                            logErrorConsumer(TAG, "updateModel")))
+                            RxUtil.logErrorConsumer(TAG, "updateModel")))
         }
     }
 

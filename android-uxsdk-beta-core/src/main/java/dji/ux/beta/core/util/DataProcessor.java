@@ -25,6 +25,7 @@ package dji.ux.beta.core.util;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.processors.BehaviorProcessor;
 import dji.ux.beta.core.base.SchedulerProvider;
@@ -85,7 +86,7 @@ public final class DataProcessor<T> {
      *
      * @return The latest value of the processor
      */
-    @NonNull
+    @Nullable
     public T getValue() {
         return processor.getValue();
     }

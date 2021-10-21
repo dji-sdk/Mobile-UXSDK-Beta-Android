@@ -52,6 +52,7 @@ import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DisplayUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.visualcamera.R;
 import io.reactivex.rxjava3.core.Flowable;
@@ -166,7 +167,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
         return Flowable.combineLatest(widgetModel.getSSDClipName(), widgetModel.getSSDColor(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateClipInfo(values.first, values.second),
-                        logErrorConsumer(TAG, "reactToUpdateClipInfo: "));
+                        RxUtil.logErrorConsumer(TAG, "reactToUpdateClipInfo: "));
     }
 
     private Flowable<Pair<SSDOperationState, Boolean>> getSSDState() {
@@ -185,7 +186,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
         return getSSDState()
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateSSDState(values.first, values.second),
-                        logErrorConsumer(TAG, "reactToUpdateSSDState: "));
+                        RxUtil.logErrorConsumer(TAG, "reactToUpdateSSDState: "));
     }
 
     private void checkAndUpdateSSDState() {
@@ -194,7 +195,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateSSDState(values.first, values.second),
-                            logErrorConsumer(TAG, "checkAndUpdateSSDState: ")));
+                            RxUtil.logErrorConsumer(TAG, "checkAndUpdateSSDState: ")));
         }
     }
     //endregion

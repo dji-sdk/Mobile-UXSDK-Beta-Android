@@ -234,7 +234,7 @@ open class VideoSignalWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateIconColor(it) }, logErrorConsumer(TAG, "Update Icon Color ")))
+                    .subscribe(Consumer { this.updateIconColor(it) }, RxUtil.logErrorConsumer(TAG, "Update Icon Color ")))
         }
     }
 
