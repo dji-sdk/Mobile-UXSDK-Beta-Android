@@ -68,6 +68,7 @@ import dji.ux.beta.core.widget.airsense.AirSenseWidget.ModelState
 import dji.ux.beta.core.widget.airsense.AirSenseWidget.ModelState.*
 import dji.ux.beta.core.widget.airsense.AirSenseWidget.UIState.*
 import dji.ux.beta.core.widget.airsense.AirSenseWidgetModel.AirSenseState
+import dji.ux.beta.core.util.RxUtil
 
 /**
  * Widget that displays an icon representing whether there are any aircraft nearby and how likely

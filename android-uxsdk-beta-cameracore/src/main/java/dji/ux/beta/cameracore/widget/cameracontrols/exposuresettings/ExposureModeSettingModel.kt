@@ -1,6 +1,7 @@
 package dji.ux.beta.cameracore.widget.cameracontrols.exposuresettings
 
 import android.widget.FrameLayout
+import com.dji.frame.util.V_JsonUtil
 import dji.common.camera.SettingsDefinitions
 import dji.common.camera.SettingsDefinitions.LensType
 import dji.keysdk.CameraKey
@@ -23,7 +24,7 @@ import io.reactivex.rxjava3.core.Flowable
  *
  * Copyright (c) 2021, DJI All Rights Reserved.
  */
-open class ExposureModeSettingModel @JvmOverloads constructor(
+open class ExposureModeSettingModel constructor(
     djiSdkModel: DJISDKModel,
     keyedStore: ObservableInMemoryKeyedStore
 ) : WidgetModel(djiSdkModel, keyedStore), ICameraIndex {
@@ -47,7 +48,6 @@ open class ExposureModeSettingModel @JvmOverloads constructor(
     override fun inSetup() {
         val exposureModeKey = djiSdkModel.createLensKey(CameraKey.EXPOSURE_MODE, cameraIndex, lensType.value())
         val exposureModeRangeKey = djiSdkModel.createLensKey(CameraKey.EXPOSURE_MODE_RANGE, cameraIndex, lensType.value())
-
         bindDataProcessor(exposureModeKey, exposureModeProcessor)
         bindDataProcessor(exposureModeRangeKey, exposureModeRangeProcessor)
     }

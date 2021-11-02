@@ -44,6 +44,7 @@ import dji.ux.beta.core.extension.getString
 import dji.ux.beta.core.extension.imageDrawable
 import dji.ux.beta.core.widget.connection.ConnectionWidget.ModelState
 import dji.ux.beta.core.widget.connection.ConnectionWidget.ModelState.ProductConnected
+import dji.ux.beta.core.util.RxUtil
 
 private const val TAG = "ConnectionWidget"
 

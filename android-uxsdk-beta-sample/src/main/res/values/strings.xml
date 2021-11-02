@@ -141,5 +141,7 @@
     <string name="rtk_enabled_widget_title">RTK Enabled Widget</string>
     <string name="rtk_satellite_status_widget_title">RTK Satellite Status Widget</string>
     <string name="remaining_flight_time_widget_title">Remaining Flight Time Widget</string>
+    <string name="exposure_mode_setting_widget_title">Exposure Mode Setting Widget</string>
+
 
 </resources>

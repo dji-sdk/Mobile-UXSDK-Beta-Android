@@ -38,13 +38,13 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-
 import dji.common.camera.SettingsDefinitions;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.ViewUtil;
 

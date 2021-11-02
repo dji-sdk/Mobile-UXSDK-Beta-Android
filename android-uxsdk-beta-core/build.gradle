@@ -78,6 +78,12 @@ dependencies {
          */
         exclude module: 'library-anti-distortion'
         exclude module: 'fly-safe-database'
+
+        /**
+         * Uncomment the following line to exclude Amap from the app.
+         * Note that Google Play Store does not allow APKs that include this library.
+         */
+        // exclude group: 'com.amap.api'
     })
     compileOnly ('com.dji:dji-sdk-provided:4.15.1')
 

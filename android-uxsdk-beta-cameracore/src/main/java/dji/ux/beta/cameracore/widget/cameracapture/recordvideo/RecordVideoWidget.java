@@ -107,9 +107,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
         centerImageView.setOnClickListener(this);
         cameraActionSound = new CameraActionSound(context);
         if (!isInEditMode()) {
-            widgetModel =
-                    new RecordVideoWidgetModel(DJISDKModel.getInstance(),
-                            ObservableInMemoryKeyedStore.getInstance());
+            widgetModel = new RecordVideoWidgetModel(DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance());
         }
         initDefaults();
         if (attrs != null) {
@@ -135,24 +133,15 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
 
     @Override
     protected void reactToModelChanges() {
-        addReaction(
-                widgetModel.getRecordingTimeInSeconds()
-                        .observeOn(SchedulerProvider.ui())
-                        .subscribe(
-                                this::updateRecordingTime,
-                                RxUtil.logErrorConsumer(TAG, "record time: ")));
-        addReaction(
-                widgetModel.getRecordingState()
-                        .observeOn(SchedulerProvider.ui())
-                        .subscribe(
-                                recordingState -> onIsRecordingVideoChange(recordingState, true),
-                                RxUtil.logErrorConsumer(TAG, "is recording: ")));
-        addReaction(
-                widgetModel.getCameraVideoStorageState()
-                        .observeOn(SchedulerProvider.ui())
-                        .subscribe(
-                                this::updateCameraForegroundResource,
-                                RxUtil.logErrorConsumer(TAG, "camera storage update: ")));
+        addReaction(widgetModel.getRecordingTimeInSeconds()
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(this::updateRecordingTime, RxUtil.logErrorConsumer(TAG, "record time: ")));
+        addReaction(widgetModel.getRecordingState()
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(recordingState -> onIsRecordingVideoChange(recordingState, true), RxUtil.logErrorConsumer(TAG, "is recording: ")));
+        addReaction(widgetModel.getCameraVideoStorageState()
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(this::updateCameraForegroundResource, RxUtil.logErrorConsumer(TAG, "camera storage update: ")));
     }
 
     @NonNull
