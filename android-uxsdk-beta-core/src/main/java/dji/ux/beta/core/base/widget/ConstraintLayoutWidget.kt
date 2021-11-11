@@ -27,6 +27,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.CheckResult
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.dji.frame.util.V_JsonUtil
 import dji.log.DJILog
 import dji.ux.beta.core.base.WidgetSizeDescription
 import dji.ux.beta.core.util.RxUtil

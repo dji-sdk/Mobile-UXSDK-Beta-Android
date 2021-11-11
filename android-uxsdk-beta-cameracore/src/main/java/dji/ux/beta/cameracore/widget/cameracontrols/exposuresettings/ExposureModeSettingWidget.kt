@@ -58,11 +58,11 @@ open class ExposureModeSettingWidget @JvmOverloads constructor(
     }
 
     override fun reactToModelChanges() {
-        addReaction(widgetModel.currentExposureModeRange.observeOn(SchedulerProvider.ui()).subscribe {
-            updateExposureModeRange(it)
-        })
-        addReaction(widgetModel.currentExposureMode.observeOn(SchedulerProvider.ui()).subscribe {
+        addReaction(widgetModel.exposureModeProcessor.toFlowable().observeOn(SchedulerProvider.ui()).subscribe {
             updateExposureMode(it)
+        })
+        addReaction(widgetModel.exposureModeRangeProcessor.toFlowable().observeOn(SchedulerProvider.ui()).subscribe {
+            updateExposureModeRange(it)
         })
     }
 

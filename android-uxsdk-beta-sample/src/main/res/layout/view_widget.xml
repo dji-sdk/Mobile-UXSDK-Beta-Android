@@ -33,7 +33,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="12dp"
-        android:background="@color/gray_45"
+        android:background="@color/uxsdk_gray_45"
         app:layout_constraintBottom_toBottomOf="@id/textview_current_size"
         app:layout_constraintEnd_toEndOf="@+id/textview_current_size"
         app:layout_constraintStart_toStartOf="@+id/textview_aspect_ratio_label"
@@ -49,7 +49,7 @@
         android:paddingStart="24dp"
         android:paddingTop="24dp"
         android:text="@string/designed_aspect_ratio"
-        android:textColor="@color/light_gray_50"
+        android:textColor="@color/uxsdk_light_gray_50"
         android:textSize="16sp" />
 
     <TextView
@@ -60,7 +60,7 @@
         android:paddingEnd="8dp"
         android:paddingRight="8dp"
         android:text="@string/current_widget_size"
-        android:textColor="@color/light_gray_50"
+        android:textColor="@color/uxsdk_light_gray_50"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="@+id/textview_aspect_ratio_label"
         app:layout_constraintTop_toBottomOf="@+id/textview_aspect_ratio_label" />
@@ -77,7 +77,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="24dp"
-        android:textColor="@color/light_gray_50"
+        android:textColor="@color/uxsdk_light_gray_50"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/barrier"
         app:layout_constraintTop_toTopOf="@+id/textview_aspect_ratio_label"
@@ -90,7 +90,7 @@
         android:paddingBottom="24dp"
         android:paddingEnd="24dp"
         android:paddingRight="24dp"
-        android:textColor="@color/light_gray_50"
+        android:textColor="@color/uxsdk_light_gray_50"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/textview_aspect_ratio"
         app:layout_constraintTop_toBottomOf="@id/textview_aspect_ratio_label"
@@ -100,7 +100,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pinch_to_resize"
-        android:textColor="@color/light_gray_50"
+        android:textColor="@color/uxsdk_light_gray_50"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/textview_current_size"
         app:layout_constraintStart_toStartOf="@+id/textview_aspect_ratio_label"

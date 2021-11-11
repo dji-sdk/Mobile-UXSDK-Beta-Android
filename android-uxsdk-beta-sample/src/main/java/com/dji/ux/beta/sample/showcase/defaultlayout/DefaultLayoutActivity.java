@@ -41,6 +41,7 @@ import butterknife.OnClick;
 import dji.common.airlink.PhysicalSource;
 import dji.common.product.Model;
 import dji.ux.beta.accessory.widget.rtk.RTKWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget;
 import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
 import dji.ux.beta.core.extension.ViewExtensions;
 import dji.ux.beta.core.panel.systemstatus.SystemStatusListPanelWidget;
@@ -118,6 +119,9 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         });
         mapWidget.getUserAccountLoginWidget().setVisibility(View.GONE);
         mapWidget.onCreate(savedInstanceState);
+
+        CameraControlsWidget cameraControlsWidget = findViewById(R.id.widget_camera_controls);
+        cameraControlsWidget.getExposureSettingsIndicatorWidget().setStateChangeResourceId(R.id.panel_camera_controls_exposure_settings);
 
         // Setup top bar state callbacks
         TopBarPanelWidget topBarPanel = findViewById(R.id.panel_top_bar);

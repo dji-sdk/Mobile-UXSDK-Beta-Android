@@ -63,6 +63,7 @@ public abstract class WidgetModel {
     private CompositeDisposable compositeDisposable;
     private Disposable timerDisposable;
     private List<BaseModule> moduleList = new ArrayList<>();
+    private StatesChangeListener statesChangedListener;
     //endregion
 
     //region Default Constructor
@@ -127,6 +128,8 @@ public abstract class WidgetModel {
         for (BaseModule module : moduleList) {
             module.cleanup();
         }
+
+        statesChangedListener = null;
         inCleanup();
     }
 
@@ -153,7 +156,19 @@ public abstract class WidgetModel {
     /**
      * Method to update states for the required processors in the child classes as required
      */
-    protected abstract void updateStates();
+    protected void updateStates() {
+        StatesChangeListener listener = statesChangedListener;
+        if (listener != null) {
+            listener.onStatesChanged();
+        }
+    }
+
+    /**
+     * Method for view to add Listener for any key changed.
+     */
+    public void addStatesChangeListener(StatesChangeListener listener){
+        this.statesChangedListener = listener;
+    }
 
     private boolean isStarted() {
         return keyDisposables != null;
@@ -325,5 +340,9 @@ public abstract class WidgetModel {
             this.bindConsumer = bindConsumer;
             this.sideEffectConsumer = sideEffectConsumer;
         }
+    }
+
+    public interface StatesChangeListener {
+        void onStatesChanged();
     }
 }

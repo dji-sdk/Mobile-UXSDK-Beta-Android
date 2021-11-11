@@ -42,6 +42,8 @@ import dji.ux.beta.cameracore.widget.cameracapture.shootphoto.ShootPhotoWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator.CameraSettingsMenuIndicatorWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettings.ExposureModeSettingWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettings.ExposureSettingsPanel;
+import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettings.ISOAndEISettingWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettingsindicator.ExposureSettingsIndicatorWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch.PhotoVideoSwitchWidget;
 import dji.ux.beta.cameracore.widget.focusexposureswitch.FocusExposureSwitchWidget;
@@ -164,14 +166,15 @@ public class WidgetsActivity extends AppCompatActivity implements WidgetListFrag
         widgetListItems.add(new WidgetListItem(R.string.vision_widget_title, new WidgetViewHolder(VisionWidget.class)));
         widgetListItems.add(new WidgetListItem(R.string.video_signal_widget_title, new WidgetViewHolder(VideoSignalWidget.class, 86, 50)));
         widgetListItems.add(new WidgetListItem(R.string.vps_widget_title, new WidgetViewHolder(VPSWidget.class)));
+        widgetListItems.add(new WidgetListItem(R.string.exposure_setting_panel_title, new WidgetViewHolder(ExposureSettingsPanel.class, 211, 316)));
         widgetListItems.add(new WidgetListItem(R.string.exposure_mode_setting_widget_title, new WidgetViewHolder(ExposureModeSettingWidget.class, 160, 30)));
+        widgetListItems.add(new WidgetListItem(R.string.iso_and_ei_setting_widget_title, new WidgetViewHolder(ISOAndEISettingWidget.class, 211, 60)));
     }
 
     @Override
     public void onWidgetItemSelected(int position) {
         WidgetFragment widgetFragment = (WidgetFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.fragment_widget);
-
         if (widgetFragment != null) {
             // Two-pane layout - update the fragment
             widgetFragment.updateWidgetView(position);

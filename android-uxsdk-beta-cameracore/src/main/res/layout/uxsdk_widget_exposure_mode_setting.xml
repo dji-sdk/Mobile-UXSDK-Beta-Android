@@ -29,7 +29,7 @@
             app:layout_constraintHeight_percent = "0.3"
             android:duplicateParentState="true"
             android:gravity="center"
-            android:text="@string/camera_exposure_mode_p"
+            android:text="@string/uxsdk_camera_exposure_mode_p"
             android:textSize="@dimen/uxsdk_text_size_between_small_tiny"
             android:textColor="@drawable/uxsdk_selector_camera_exposure_mode_text_color" />
 
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:duplicateParentState="true"
-            android:text="@string/camera_exposure_mode_s"
+            android:text="@string/uxsdk_camera_exposure_mode_s"
             android:textSize="@dimen/uxsdk_text_size_normal_medium"
             android:textColor="@drawable/uxsdk_selector_camera_exposure_mode_text_color" />
     </FrameLayout>
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:duplicateParentState="true"
-            android:text="@string/camera_exposure_mode_a"
+            android:text="@string/uxsdk_camera_exposure_mode_a"
             android:textSize="@dimen/uxsdk_text_size_normal_medium"
             android:textColor="@drawable/uxsdk_selector_camera_exposure_mode_text_color" />
     </FrameLayout>
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:duplicateParentState="true"
             android:layout_gravity="center"
-            android:text="@string/camera_exposure_mode_m"
+            android:text="@string/uxsdk_camera_exposure_mode_m"
             android:textSize="@dimen/uxsdk_text_size_normal_medium"
             android:textColor="@drawable/uxsdk_selector_camera_exposure_mode_text_color" />
     </FrameLayout>

@@ -26,7 +26,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:windowBackground">@color/background_blue</item>
+        <item name="android:windowBackground">@color/uxsdk_background_blue</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -34,7 +34,7 @@
     </style>
 
     <style name="MapTheme" parent="AppTheme">
-        <item name="android:textColorSecondary">@color/colorAccent</item>
+        <item name="android:textColorSecondary">@color/uxsdk_colorAccent</item>
     </style>
 
 </resources>

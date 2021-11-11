@@ -35,21 +35,9 @@ open class ExposureModeSettingModel constructor(
     private var cameraIndex = CameraIndex.CAMERA_INDEX_0.index
     private var lensType = LensType.ZOOM
 
-    /**
-     *
-     */
-    val currentExposureMode: Flowable<SettingsDefinitions.ExposureMode> = exposureModeProcessor.toFlowable()
-
-    /**
-     *
-     */
-    val currentExposureModeRange: Flowable<Array<SettingsDefinitions.ExposureMode>> = exposureModeRangeProcessor.toFlowable()
-
     override fun inSetup() {
-        val exposureModeKey = djiSdkModel.createLensKey(CameraKey.EXPOSURE_MODE, cameraIndex, lensType.value())
-        val exposureModeRangeKey = djiSdkModel.createLensKey(CameraKey.EXPOSURE_MODE_RANGE, cameraIndex, lensType.value())
-        bindDataProcessor(exposureModeKey, exposureModeProcessor)
-        bindDataProcessor(exposureModeRangeKey, exposureModeRangeProcessor)
+        bindDataProcessor(djiSdkModel.createLensKey(CameraKey.EXPOSURE_MODE, cameraIndex, lensType.value()), exposureModeProcessor)
+        bindDataProcessor(djiSdkModel.createLensKey(CameraKey.EXPOSURE_MODE_RANGE, cameraIndex, lensType.value()), exposureModeRangeProcessor)
     }
 
     override fun inCleanup() {

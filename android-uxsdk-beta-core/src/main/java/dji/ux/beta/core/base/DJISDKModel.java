@@ -106,8 +106,7 @@ public class DJISDKModel {
 
             DJILog.d(TAG, "Registering key " + key.toString() + " for " + listener.getClass().getName());
             registerKey(emitter, key, listener);
-        }, BackpressureStrategy.LATEST)
-                .subscribeOn(SchedulerProvider.computation());
+        }, BackpressureStrategy.LATEST).subscribeOn(SchedulerProvider.computation());
     }
 
     /**

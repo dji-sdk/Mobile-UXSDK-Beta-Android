@@ -26,7 +26,7 @@
     android:shape="rectangle">
 
     <gradient
-        android:endColor="@color/transparent"
+        android:endColor="@color/uxsdk_transparent"
         android:startColor="@color/uxsdk_black_40_percent" />
 
 </shape>

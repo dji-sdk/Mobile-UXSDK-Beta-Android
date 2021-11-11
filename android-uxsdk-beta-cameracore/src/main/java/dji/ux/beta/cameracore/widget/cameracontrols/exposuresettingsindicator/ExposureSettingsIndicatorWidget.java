@@ -85,6 +85,8 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
             widgetModel = new ExposureSettingsIndicatorWidgetModel(DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance());
         }
 
+        setOnClickListener(this);
+
         if (attrs != null) {
             initAttributes(context, attrs);
         }
@@ -103,9 +105,7 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
 
     @Override
     public void onClick(View v) {
-        if (stateChangeCallback != null) {
-            stateChangeCallback.onStateChange(null);
-        }
+        updateViewState();
     }
 
     @Override
@@ -114,7 +114,6 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
         if (!isInEditMode()) {
             widgetModel.setup();
         }
-        initializeListener();
     }
 
     @Override
@@ -137,10 +136,14 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
         }
     }
 
-    private void initializeListener() {
+    private void updateViewState() {
         if (stateChangeResourceId != INVALID_RESOURCE && this.getRootView() != null) {
-            View widgetView = this.getRootView().findViewById(stateChangeResourceId);
-            // TODO when panel implemented
+            View view = this.getRootView().findViewById(stateChangeResourceId);
+            if (view.getVisibility() == View.VISIBLE){
+                view.setVisibility(View.GONE);
+            }else {
+                view.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -323,5 +326,10 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     public void setStateChangeCallback(@NonNull OnStateChangeCallback<Object> stateChangeCallback) {
         this.stateChangeCallback = stateChangeCallback;
     }
+
+    public void setStateChangeResourceId(int stateChangeResourceId) {
+        this.stateChangeResourceId = stateChangeResourceId;
+    }
+
     //endregion
 }

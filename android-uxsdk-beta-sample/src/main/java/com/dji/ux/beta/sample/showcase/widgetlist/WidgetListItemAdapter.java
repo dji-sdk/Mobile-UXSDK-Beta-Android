@@ -29,12 +29,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.dji.ux.beta.sample.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * An adapter for displaying {@link WidgetListItem} objects in a RecyclerView.
@@ -108,9 +108,9 @@ public class WidgetListItemAdapter extends RecyclerView.Adapter<WidgetListItemAd
          */
         public void setSelected(boolean selected, Resources resources) {
             if (selected) {
-                titleTextView.setBackgroundColor(resources.getColor(R.color.gray_4));
+                titleTextView.setBackgroundColor(resources.getColor(R.color.uxsdk_gray_4));
             } else {
-                titleTextView.setBackgroundColor(resources.getColor(R.color.dark_theme_background));
+                titleTextView.setBackgroundColor(resources.getColor(R.color.uxsdk_dark_theme_background));
             }
         }
     }

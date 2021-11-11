@@ -23,19 +23,15 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#242d34</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorLightBackground">#FFFFFF</color>
-    <color name="background_blue">#242d34</color>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
-    <color name="gray_4">#444444</color>
-    <color name="dark_theme_background">#303030</color>
-    <color name="light_gray">#B3FFFFFF</color>
-    <color name="dark_gray">#80000000</color>
-    <color name="transparent">#00000000</color>
-    <color name="gray_45">#727272</color>
-    <color name="light_gray_50">#F7F9FA</color>
-    <color name="light_gray_300">#BABDBF</color>
+    <integer-array name="uxsdk_iso_values">
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+    </integer-array>
 </resources>
