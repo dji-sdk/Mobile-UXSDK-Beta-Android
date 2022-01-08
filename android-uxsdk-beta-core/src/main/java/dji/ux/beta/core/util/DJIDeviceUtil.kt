@@ -35,7 +35,7 @@ object DJIDeviceUtil {
      */
     @JvmStatic
     fun isDJIDevice(): Boolean {
-        return getDJIDeviceType() == DJIDeviceType.NONE
+        return getDJIDeviceType() != DJIDeviceType.NONE
     }
 
     /**
