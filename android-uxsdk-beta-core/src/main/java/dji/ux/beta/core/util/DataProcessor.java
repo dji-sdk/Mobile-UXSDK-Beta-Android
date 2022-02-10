@@ -24,10 +24,9 @@
 package dji.ux.beta.core.util;
 
 import androidx.annotation.NonNull;
-
+import dji.ux.beta.core.base.SchedulerProvider;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.processors.BehaviorProcessor;
-import dji.ux.beta.core.base.SchedulerProvider;
 
 /**
  * Processor that emits the most recent item it has observed and all subsequent observed items
@@ -37,6 +36,8 @@ import dji.ux.beta.core.base.SchedulerProvider;
 public final class DataProcessor<T> {
 
     private final BehaviorProcessor<T> processor;
+
+    private T defaultValue;
 
     /**
      * Creates a DataProcessor with the given default value
@@ -52,6 +53,7 @@ public final class DataProcessor<T> {
 
     private DataProcessor(@NonNull T defaultValue) {
         processor = BehaviorProcessor.createDefault(defaultValue);
+        this.defaultValue = defaultValue;
     }
 
     /**
@@ -87,7 +89,11 @@ public final class DataProcessor<T> {
      */
     @NonNull
     public T getValue() {
-        return processor.getValue();
+        T t = processor.getValue();
+        if (t == null){
+            t = defaultValue;
+        }
+        return t;
     }
 
     /**

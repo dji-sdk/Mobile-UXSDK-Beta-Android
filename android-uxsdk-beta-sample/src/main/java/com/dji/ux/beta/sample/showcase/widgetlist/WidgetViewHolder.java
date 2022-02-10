@@ -27,12 +27,11 @@ import android.content.Context;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import dji.log.DJILog;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.base.widget.FrameLayoutWidget;
@@ -91,13 +90,7 @@ public class WidgetViewHolder {
                     layoutWidthPx,
                     layoutHeightPx);
             widget.setLayoutParams(simulatorIndicatorParams);
-        } catch (InstantiationException e) {
-            DJILog.e(TAG, e);
-        } catch (NoSuchMethodException e) {
-            DJILog.e(TAG, e);
-        } catch (IllegalAccessException e) {
-            DJILog.e(TAG, e);
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             DJILog.e(TAG, e + " " + e.getCause());
         }
         return widget;

@@ -37,7 +37,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/all"
-            android:textColor="@color/dark_gray"
+            android:textColor="@color/uxsdk_dark_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/auth"
-            android:textColor="@color/dark_gray"
+            android:textColor="@color/uxsdk_dark_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/all" />
 
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/warning"
-            android:textColor="@color/dark_gray"
+            android:textColor="@color/uxsdk_dark_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/auth" />
 
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/enhanced_warning"
-            android:textColor="@color/dark_gray"
+            android:textColor="@color/uxsdk_dark_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/warning" />
 
@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/restricted"
-            android:textColor="@color/dark_gray"
+            android:textColor="@color/uxsdk_dark_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/enhanced_warning" />
 
@@ -132,7 +132,7 @@
             android:id="@+id/max_height_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/black"
+            android:background="@color/uxsdk_black"
             android:text="@string/new_color"
             app:layout_constraintBottom_toBottomOf="@+id/max_height"
             app:layout_constraintRight_toRightOf="parent"
@@ -146,7 +146,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginBottom="8dp"
             android:text="@string/self_unlocked"
-            android:textColor="@color/dark_gray"
+            android:textColor="@color/uxsdk_dark_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/max_height" />
 
@@ -165,7 +165,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_margin="5dp"
-            android:background="@color/colorAccent"
+            android:background="@color/uxsdk_colorAccent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/self_unlocked" />
 
@@ -175,7 +175,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:text="@string/custom_unlocked"
-            android:textColor="@color/dark_gray"
+            android:textColor="@color/uxsdk_dark_gray"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/custom_unlock_separator" />
 
@@ -183,7 +183,7 @@
             android:id="@+id/custom_unlock_color"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/light_gray"
+            android:background="@color/uxsdk_light_gray"
             android:enabled="false"
             android:text="@string/new_color"
             app:layout_constraintRight_toRightOf="parent"
@@ -194,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:background="@color/light_gray"
+            android:background="@color/uxsdk_light_gray"
             android:enabled="false"
             android:text="@string/sync"
             app:layout_constraintRight_toLeftOf="@+id/custom_unlock_color"
@@ -204,7 +204,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_margin="5dp"
-            android:background="@color/colorAccent"
+            android:background="@color/uxsdk_colorAccent"
             app:layout_constraintTop_toBottomOf="@+id/custom_unlock_color" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

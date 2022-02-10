@@ -24,6 +24,8 @@
 
 <resources>
 
+    <attr name="uxsdk_unit_text_size" format="dimension"/>
+
     <declare-styleable name="SeekBarView">
         <attr name="uxsdk_minValueVisible" format="boolean" />
         <attr name="uxsdk_maxValueVisible" format="boolean" />
@@ -60,6 +62,7 @@
         <enum name="metersPerSecond" value="0" />
         <enum name="kmPerHour" value="1" />
     </attr>
+
     <attr name="uxsdk_iconBackground" format="reference" />
     <attr name="uxsdk_widgetTitleTextAppearance" format="reference" />
     <attr name="uxsdk_widgetTitleTextSize" format="dimension" />
@@ -726,7 +729,7 @@
             <flag name="top" value="48" />
         </attr>
         <attr name="uxsdk_unit_string" format="string|reference" />
-        <attr name="uxsdk_unit_text_size" format="dimension|reference" />
+        <attr name="uxsdk_unit_text_size"/>
         <attr name="uxsdk_unit_text_color" format="color|reference" />
         <attr name="uxsdk_unit_text_appearance" format="reference" />
         <attr name="uxsdk_unit_background" format="reference" />
@@ -753,4 +756,109 @@
         <attr name="uxsdk_vpsDisabledIcon" format="reference" />
     </declare-styleable>
 
+    <declare-styleable name="ScrollableAttributeDashBoard">
+        <attr name="uxsdk_name" format="string"/>
+        <attr name="uxsdk_unit" format="string"/>
+        <attr name="uxsdk_max_value" format="float"/>
+        <attr name="uxsdk_min_value" format="float"/>
+        <attr name="uxsdk_offset_per_unit" format="float"/>
+        <attr name="uxsdk_current_value" format="float"/>
+        <attr name="uxsdk_current_calibration_text_size" format="dimension"/>
+        <attr name="uxsdk_name_text_size" format="dimension"/>
+        <attr name="uxsdk_unit_text_size"/>
+        <attr name="uxsdk_calibration_text_size" format="dimension"/>
+        <attr name="uxsdk_framework_stroke_width" format="dimension"/>
+        <attr name="uxsdk_framework_width" format="dimension"/>
+        <attr name="uxsdk_framework_height" format="dimension"/>
+        <attr name="uxsdk_degree_line_short" format="dimension"/>
+        <attr name="uxsdk_degree_line_long" format="dimension"/>
+        <attr name="uxsdk_pointer_divider_top_width" format="dimension"/>
+        <attr name="uxsdk_pointer_divider_bottom_width" format="dimension"/>
+        <attr name="uxsdk_pointer_width" format="dimension"/>
+        <attr name="uxsdk_pointer_height" format="dimension"/>
+        <attr name="uxsdk_show_calibration_framework" format="boolean"/>
+        <attr name="uxsdk_calibration_framework_padding_start" format="dimension"/>
+        <attr name="uxsdk_pointer_line_inner_width" format="dimension"/>
+        <attr name="uxsdk_pointer_line_outer_width" format="dimension"/>
+        <attr name="uxsdk_pointer_triangle_width" format="dimension"/>
+        <attr name="uxsdk_dash_board_align">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+        </attr>
+        <attr name="attribute_visible_calibration_unit_count" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="AttitudeDashBoard">
+        <attr name="uxsdk_distance_predict_line_width" format="dimension"/>
+        <attr name="uxsdk_avoidance_max_height" format="dimension"/>
+        <attr name="uxsdk_barrier_distance" format="integer"/>
+        <attr name="uxsdk_barrier_indicator_color" format="color"/>
+        <attr name="uxsdk_avoidance_indicator_color" format="color"/>
+        <attr name="uxsdk_avoidance_indicator_stroke_color" format="color"/>
+        <attr name="uxsdk_barrier_distance_text_size" format="dimension"/>
+        <attr name="uxsdk_barrier_indicator_width" format="dimension"/>
+        <attr name="uxsdk_barrier_indicator_height" format="dimension"/>
+        <attr name="uxsdk_avoidance_indicator_width" format="dimension"/>
+        <attr name="uxsdk_avoidance_indicator_stroke_width" format="dimension"/>
+        <attr name="uxsdk_max_perception_distance_in_meter" format="integer"/>
+        <attr name="uxsdk_return_to_home_indicator_color" format="color"/>
+        <attr name="uxsdk_max_flight_height_indicator_color" format="color"/>
+        <attr name="uxsdk_return_to_home_indicator_width" format="dimension"/>
+        <attr name="uxsdk_max_flight_height_indicator_width" format="dimension"/>
+        <attr name="uxsdk_max_flight_height_indicator_height" format="dimension"/>
+        <attr name="uxsdk_barrier_distance_text_align">
+            <enum name="vertical" value="0"/>
+            <enum name="horizontal" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="HSIView">
+        <attr name="uxsdk_hsi_degree_indicator_width" format="dimension"/>
+        <attr name="uxsdk_hsi_degree_indicator_height" format="dimension"/>
+        <attr name="uxsdk_hsi_degree_indicator_text_size" format="dimension"/>
+        <attr name="uxsdk_hsi_degree_indicator_color" format="color"/>
+        <attr name="uxsdk_hsi_aircraft_indicator_size" format="dimension"/>
+        <attr name="uxsdk_hsi_gimbal_indicator_size" format="dimension"/>
+        <attr name="uxsdk_hsi_gimbal_indicator_max_scope" format="dimension"/>
+        <attr name="uxsdk_hsi_marker_indicator_text_size" format="dimension"/>
+        <attr name="uxsdk_hsi_home_point_marker_size" format="dimension"/>
+        <attr name="uxsdk_hsi_home_point_marker" format="reference"/>
+        <attr name="uxsdk_hsi_home_point_marker_text_color" format="color"/>
+        <attr name="uxsdk_hsi_waypoint_marker_size" format="dimension"/>
+        <attr name="uxsdk_hsi_waypoint_marker" format="reference"/>
+        <attr name="uxsdk_hsi_waypoint_marker_text_color" format="color"/>
+        <attr name="uxsdk_hsi_rng_point_marker_size" format="dimension"/>
+        <attr name="uxsdk_hsi_rng_point_marker" format="reference"/>
+        <attr name="uxsdk_hsi_rng_point_marker_text_color" format="color"/>
+        <attr name="uxsdk_hsi_smart_track_point_marker_size" format="dimension"/>
+        <attr name="uxsdk_hsi_smart_track_point_marker" format="reference"/>
+        <attr name="uxsdk_hsi_smart_track_point_marker_text_color" format="color"/>
+        <attr name="uxsdk_hsi_pin_point_marker_size" format="dimension"/>
+        <attr name="uxsdk_hsi_pin_point_marker" format="reference"/>
+        <attr name="uxsdk_hsi_pin_point_marker_text_color" format="color"/>
+        <attr name="uxsdk_hsi_marker_margin_vertical" format="dimension"/>
+        <attr name="uxsdk_hsi_marker_margin_horizontal" format="dimension"/>
+        <attr name="uxsdk_hsi_marker_indicator_height" format="dimension"/>
+        <attr name="uxsdk_hsi_marker_indicator_width" format="dimension"/>
+        <attr name="uxsdk_hsi_marker_indicator_stroke_color" format="color"/>
+        <attr name="uxsdk_hsi_marker_indicator_background_color" format="color"/>
+        <attr name="uxsdk_hsi_marker_indicator_margin_to_compass" format="dimension"/>
+        <attr name="uxsdk_hsi_aircraft_heading_offset_x" format="dimension"/>
+        <attr name="uxsdk_hsi_aircraft_heading_offset_y" format="dimension"/>
+        <attr name="uxsdk_hsi_heading_line_width" format="dimension"/>
+        <attr name="uxsdk_hsi_avoidance_setting_area_color" format="color"/>
+        <attr name="uxsdk_hsi_perception_setting_area_color" format="color"/>
+        <attr name="uxsdk_hsi_max_perception_area_color" format="color"/>
+        <attr name="uxsdk_hsi_max_perception_stroke_width" format="dimension"/>
+        <attr name="uxsdk_hsi_radar_avoidance_setting_area_color" format="color"/>
+        <attr name="uxsdk_hsi_radar_perception_setting_area_color" format="color"/>
+        <attr name="uxsdk_hsi_radar_max_perception_area_color" format="color"/>
+        <attr name="uxsdk_hsi_radar_max_perception_stroke_width" format="dimension"/>
+        <attr name="uxsdk_hsi_bitmap_offset" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="AircraftAttitudeView">
+        <attr name="uxsdk_actual_width" format="dimension"/>
+        <attr name="uxsdk_actual_height" format="dimension"/>
+    </declare-styleable>
 </resources>

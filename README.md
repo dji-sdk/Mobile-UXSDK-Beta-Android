@@ -11,7 +11,7 @@ Check out our sample app code in this repository with instructions on how to get
 
 ## Installation
 
-Read the [documentation for installation](https://github.com/dji-sdk/Mobile-UXSDK-Beta-Android/wiki/Installation) to learn more about including this library in your applications.
+Read the [documentation for installation](https://github.com/dji-sdk/Mobile-UXSDK-Beta-Android/wiki/Installation) to learn more about including this library in your applications. 
 
 ## Documentation
 
@@ -22,8 +22,8 @@ You can find the UX SDK documentation on the [wiki](https://github.com/dji-sdk/M
 
 ## How to Contribute
 
-As always, the DJI Dev Team is committed to improving your developer experience. Please follow our guidelines on the [CONTRIBUTING.md](https://github.com/dji-sdk/Mobile-UXSDK-Beta-Android/blob/master/CONTRIBUTING.md) file for filling out any bugs or feature requests, contributing to the code base, or how to get support.
-If you have any other questions, please send an email to dev@dji.com. We recommend frequently checking the Github repositories for changes and new releases.
+As always, the DJI Dev Team is committed to improving your developer experience. Please follow our guidelines on the [CONTRIBUTING.md](https://github.com/dji-sdk/Mobile-UXSDK-Beta-Android/blob/master/CONTRIBUTING.md) file for filling out any bugs or feature requests, contributing to the code base, or how to get support. 
+If you have any other questions, please send an email to dev@dji.com. We recommend frequently checking the Github repositories for changes and new releases. 
 You can also post questions, keep up to date on DJI developer news and contribute to the community by visiting [DJI's Developer Forum](https://forum.dji.com/forum-139-1.html?from=developer)
 
 ## Future Plans
@@ -34,4 +34,7 @@ Our long-term plan is for this framework to reach feature parity with the curren
 
 ## License
 
-Mobile-UXSDK-Beta-Android is available under the the MIT license. Please see the [LICENSE.txt](https://github.com/dji-sdk/Mobile-UXSDK-Beta-Android/blob/master/LICENSE.txt) file for more info.Mobile-UXSDK-Beta-Android uses several unmodified libraries which are listed along with their licenses in the `dependencyLicenses.txt` file.
+Mobile-UXSDK-Beta-Android is available under the the MIT license. Please see the [LICENSE.txt](https://github.com/dji-sdk/Mobile-UXSDK-Beta-Android/blob/master/LICENSE.txt) file for more info.
+
+Mobile-UXSDK-Beta-Android uses several unmodified libraries which are listed along
+with their licenses in the `dependencyLicenses.txt` file.

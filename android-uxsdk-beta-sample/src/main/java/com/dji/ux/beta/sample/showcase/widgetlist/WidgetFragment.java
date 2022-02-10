@@ -29,12 +29,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.dji.ux.beta.sample.R;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.dji.ux.beta.sample.R;
-
 import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget;
 import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget;
 
@@ -85,7 +84,6 @@ public class WidgetFragment extends Fragment {
         rootView.removeAllViews();
 
         WidgetListItem widgetListItem = ((WidgetsActivity) getActivity()).widgetListItems.get(position);
-
         if (widgetListItem.getWidgetViewHolders().length == 2) {
             // coupled widgets: set state callback of first widget to second widget
             WidgetView widgetView0 = new WidgetView(getContext());

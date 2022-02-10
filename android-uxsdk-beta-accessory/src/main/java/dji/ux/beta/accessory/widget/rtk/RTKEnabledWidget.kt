@@ -50,6 +50,7 @@ import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
+import dji.ux.beta.core.util.RxUtil
 
 private const val TAG = "RTKEnabledWidget"
 
@@ -204,7 +205,7 @@ open class RTKEnabledWidget @JvmOverloads constructor(
                     } else {
                         setRTKEnabled(isChecked)
                     }
-                }, logErrorConsumer(TAG, "canEnableRTK: ")))
+                }, RxUtil.logErrorConsumer(TAG, "canEnableRTK: ")))
         uiUpdateStateProcessor.onNext(SwitchChanged(isChecked))
     }
 
@@ -232,14 +233,13 @@ open class RTKEnabledWidget @JvmOverloads constructor(
                     if (rtkEnabled != enabled) {
                         addDisposable(toggleRTK(enabled))
                     }
-                }, logErrorConsumer(TAG, "rtkEnabled: ")))
+                }, RxUtil.logErrorConsumer(TAG, "rtkEnabled: ")))
     }
 
     private fun toggleRTK(enabled: Boolean): Disposable {
         return widgetModel.setRTKEnabled(enabled)
                 .observeOn(SchedulerProvider.ui())
-                .subscribe({}
-                ) { throwable: Throwable ->
+                .subscribe({}) { throwable: Throwable ->
                     setRTKSwitch(!enabled)
                     DJILog.e(TAG, "setRTKEnabled: " + throwable.localizedMessage)
                 }

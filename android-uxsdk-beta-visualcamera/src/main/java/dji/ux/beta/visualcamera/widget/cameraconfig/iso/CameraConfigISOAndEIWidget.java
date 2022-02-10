@@ -38,22 +38,23 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-
 import dji.common.camera.SettingsDefinitions;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DisplayUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.visualcamera.R;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * Shows the camera's current ISO or exposure index setting.
  */
-public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
+public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget implements ICameraIndex {
     //region Fields
     private static final String TAG = "ConfigISOAndEIWidget";
     private CameraConfigISOAndEIWidgetModel widgetModel;
@@ -122,7 +123,7 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
         return Flowable.combineLatest(widgetModel.isEIMode(), widgetModel.getISO(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateTitle(values.first, values.second),
-                        logErrorConsumer(TAG, "react to update title: "));
+                        RxUtil.logErrorConsumer(TAG, "react to update title: "));
     }
 
     private void updateTitle(boolean isEIMode, SettingsDefinitions.ISO iso) {
@@ -153,46 +154,19 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
         return getResources().getString(R.string.uxsdk_widget_base_camera_info_ratio);
     }
 
-    /**
-     * Get the index of the camera to which the widget is reacting
-     *
-     * @return {@link SettingDefinitions.CameraIndex}
-     */
     @NonNull
     public SettingDefinitions.CameraIndex getCameraIndex() {
         return widgetModel.getCameraIndex();
     }
 
-    /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        widgetModel.updateCameraSource(cameraIndex, lensType);
     }
 
-    /**
-     * Get the current type of the lens the widget is reacting to
-     *
-     * @return current lens type
-     */
     @NonNull
     public SettingsDefinitions.LensType getLensType() {
         return widgetModel.getLensType();
-    }
-
-    /**
-     * Set the type of the lens for which the widget should react
-     *
-     * @param lensType lens type
-     */
-    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
-        if (!isInEditMode()) {
-            widgetModel.setLensType(lensType);
-        }
     }
 
     /**
@@ -389,8 +363,8 @@ public class CameraConfigISOAndEIWidget extends ConstraintLayoutWidget {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigISOAndEIWidget);
 
         if (!isInEditMode()){
-            setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigISOAndEIWidget_uxsdk_cameraIndex, 0)));
-            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigISOAndEIWidget_uxsdk_lensType, 0)));
+            updateCameraSource(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigISOAndEIWidget_uxsdk_cameraIndex, 0)),
+                    SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.CameraConfigISOAndEIWidget_uxsdk_lensType, 0)));
         }
 
         int isoAndEITitleTextAppearanceId =

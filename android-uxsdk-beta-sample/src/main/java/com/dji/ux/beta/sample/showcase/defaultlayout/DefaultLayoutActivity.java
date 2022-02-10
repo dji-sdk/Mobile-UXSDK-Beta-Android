@@ -32,6 +32,8 @@ import android.view.animation.Transformation;
 
 import com.dji.ux.beta.sample.R;
 
+import java.util.concurrent.TimeUnit;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -39,12 +41,23 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dji.common.airlink.PhysicalSource;
+import dji.common.camera.CameraVideoStreamSource;
+import dji.common.camera.SettingsDefinitions;
 import dji.common.product.Model;
 import dji.ux.beta.accessory.widget.rtk.RTKWidget;
+import dji.ux.beta.cameracore.widget.autoexposurelock.AutoExposureLockWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettings.ExposureSettingsPanel;
+import dji.ux.beta.cameracore.widget.cameracontrols.lenscontrol.LensControlWidget;
+import dji.ux.beta.cameracore.widget.focusexposureswitch.FocusExposureSwitchWidget;
+import dji.ux.beta.cameracore.widget.focusmode.FocusModeWidget;
 import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
 import dji.ux.beta.core.extension.ViewExtensions;
 import dji.ux.beta.core.panel.systemstatus.SystemStatusListPanelWidget;
 import dji.ux.beta.core.panel.topbar.TopBarPanelWidget;
+import dji.ux.beta.core.util.CameraUtil;
+import dji.ux.beta.core.util.CommonUtils;
+import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.widget.fpv.FPVWidget;
@@ -55,6 +68,13 @@ import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget;
 import dji.ux.beta.core.widget.useraccount.UserAccountLoginWidget;
 import dji.ux.beta.map.widget.map.MapWidget;
 import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.aperture.CameraConfigApertureWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.ev.CameraConfigEVWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.iso.CameraConfigISOAndEIWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.shutter.CameraConfigShutterWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.ssd.CameraConfigSSDWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.storage.CameraConfigStorageWidget;
+import dji.ux.beta.visualcamera.widget.cameraconfig.wb.CameraConfigWBWidget;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
@@ -68,8 +88,8 @@ public class DefaultLayoutActivity extends AppCompatActivity {
 
     @BindView(R.id.widget_radar)
     protected RadarWidget radarWidget;
-    @BindView(R.id.widget_fpv)
-    protected FPVWidget fpvWidget;
+    @BindView(R.id.widget_primary_fpv)
+    protected FPVWidget primaryFpvWidget;
     @BindView(R.id.widget_fpv_interaction)
     protected FPVInteractionWidget fpvInteractionWidget;
     @BindView(R.id.widget_map)
@@ -85,6 +105,33 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     protected RTKWidget rtkWidget;
     @BindView(R.id.widget_simulator_control)
     protected SimulatorControlWidget simulatorControlWidget;
+    @BindView(R.id.widget_camera_config_iso_and_ei)
+    protected CameraConfigISOAndEIWidget cameraConfigISOAndEIWidget;
+    @BindView(R.id.widget_lens_control)
+    protected LensControlWidget lensControlWidget;
+
+    @BindView(R.id.widget_camera_config_shutter)
+    protected CameraConfigShutterWidget cameraConfigShutterWidget;
+    @BindView(R.id.widget_camera_config_aperture)
+    protected CameraConfigApertureWidget cameraConfigApertureWidget;
+    @BindView(R.id.widget_camera_config_ev)
+    protected CameraConfigEVWidget cameraConfigEVWidget;
+    @BindView(R.id.widget_camera_config_wb)
+    protected CameraConfigWBWidget cameraConfigWBWidget;
+    @BindView(R.id.widget_camera_config_storage)
+    protected CameraConfigStorageWidget cameraConfigStorageWidget;
+    @BindView(R.id.widget_camera_config_ssd)
+    protected CameraConfigSSDWidget cameraConfigSSDWidget;
+    @BindView(R.id.widget_auto_exposure_lock)
+    protected AutoExposureLockWidget autoExposureLockWidget;
+    @BindView(R.id.widget_focus_mode)
+    protected FocusModeWidget focusModeWidget;
+    @BindView(R.id.widget_focus_exposure_switch)
+    protected FocusExposureSwitchWidget focusExposureSwitchWidget;
+    @BindView(R.id.widget_camera_controls)
+    protected CameraControlsWidget cameraControlsWidget;
+    @BindView(R.id.panel_camera_controls_exposure_settings)
+    protected ExposureSettingsPanel exposureSettingsPanel;
 
     private boolean isMapMini = true;
     private int widgetHeight;
@@ -94,6 +141,9 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     private int deviceHeight;
     private CompositeDisposable compositeDisposable;
     private UserAccountLoginWidget userAccountLoginWidget;
+    private SettingDefinitions.CameraSide primaryFpvCameraSide;
+    private CameraVideoStreamSource primaryCameraVideoStreamSource;
+    private final DataProcessor<Boolean> cameraSourceProcessor = DataProcessor.create(false);
     //endregion
 
     //region Lifecycle
@@ -114,10 +164,13 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         setM200SeriesWarningLevelRanges();
         mapWidget.initAMap(map -> {
             map.setOnMapClickListener(latLng -> onViewClick(mapWidget));
-            map.getUiSettings().setZoomControlsEnabled(false);
+            //map.getUiSettings().setZoomControlsEnabled(false);
         });
         mapWidget.getUserAccountLoginWidget().setVisibility(View.GONE);
         mapWidget.onCreate(savedInstanceState);
+
+        CameraControlsWidget cameraControlsWidget = findViewById(R.id.widget_camera_controls);
+        cameraControlsWidget.getExposureSettingsIndicatorWidget().setStateChangeResourceId(R.id.panel_camera_controls_exposure_settings);
 
         // Setup top bar state callbacks
         TopBarPanelWidget topBarPanel = findViewById(R.id.panel_top_bar);
@@ -140,6 +193,30 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) userAccountLoginWidget.getLayoutParams();
         params.topMargin = (deviceHeight / 10) + (int) DisplayUtil.dipToPx(this, 10);
         userAccountLoginWidget.setLayoutParams(params);
+
+        primaryFpvWidget.setStateChangeCallback(new FPVWidget.FPVStateChangeCallback() {
+            @Override
+            public void onCameraNameChange(@Nullable String cameraName) {
+
+            }
+
+            @Override
+            public void onCameraSideChange(@Nullable SettingDefinitions.CameraSide cameraSide) {
+                primaryFpvCameraSide = cameraSide;
+                cameraSourceProcessor.onNext(true);
+            }
+
+            @Override
+            public void onStreamSourceChange(@Nullable CameraVideoStreamSource streamSource) {
+                primaryCameraVideoStreamSource = streamSource;
+                cameraSourceProcessor.onNext(true);
+            }
+
+            @Override
+            public void onFPVSizeChange(@Nullable FPVWidget.FPVSize size) {
+
+            }
+        });
     }
 
     @Override
@@ -158,7 +235,6 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     public void onLowMemory() {
         super.onLowMemory();
         mapWidget.onLowMemory();
-
     }
 
     @Override
@@ -169,7 +245,6 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         compositeDisposable.add(secondaryFPVWidget.getCameraName()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::updateSecondaryVideoVisibility));
-
         compositeDisposable.add(systemStatusListPanelWidget.closeButtonPressed()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(pressed -> {
@@ -177,7 +252,6 @@ public class DefaultLayoutActivity extends AppCompatActivity {
                         ViewExtensions.hide(systemStatusListPanelWidget);
                     }
                 }));
-
         compositeDisposable.add(rtkWidget.getUIStateUpdates()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(uiState -> {
@@ -196,6 +270,13 @@ public class DefaultLayoutActivity extends AppCompatActivity {
                         }
                     }
                 }));
+        compositeDisposable.add(cameraSourceProcessor.toFlowable()
+                .observeOn(AndroidSchedulers.mainThread())
+                .sample(300, TimeUnit.MILLISECONDS)
+                .subscribe(result -> {
+                    onCameraSourceUpdated(primaryFpvCameraSide, primaryCameraVideoStreamSource);
+                })
+        );
     }
 
     @Override
@@ -224,6 +305,25 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         }
     }
 
+    private void onCameraSourceUpdated(SettingDefinitions.CameraSide cameraSide, CameraVideoStreamSource streamSource) {
+        SettingDefinitions.CameraIndex cameraIndex = CameraUtil.getCameraIndex(cameraSide);
+        SettingsDefinitions.LensType lensType = CameraUtil.getLensIndex(streamSource);
+        cameraConfigISOAndEIWidget.updateCameraSource(cameraIndex, lensType);
+        fpvInteractionWidget.updateCameraSource(cameraIndex, lensType);
+        fpvInteractionWidget.updateGimbalIndex(CommonUtils.getGimbalIndex(cameraSide));
+        lensControlWidget.updateCameraSource(cameraIndex, lensType);
+        cameraConfigShutterWidget.updateCameraSource(cameraIndex, lensType);
+        cameraConfigEVWidget.updateCameraSource(cameraIndex, lensType);
+        cameraConfigWBWidget.updateCameraSource(cameraIndex, lensType);
+        cameraConfigStorageWidget.updateCameraSource(cameraIndex, lensType);
+        cameraConfigSSDWidget.updateCameraSource(cameraIndex, lensType);
+        autoExposureLockWidget.updateCameraSource(cameraIndex, lensType);
+        focusModeWidget.updateCameraSource(cameraIndex, lensType);
+        focusExposureSwitchWidget.updateCameraSource(cameraIndex, lensType);
+        cameraControlsWidget.updateCameraSource(cameraIndex, lensType);
+        exposureSettingsPanel.updateCameraSource(cameraIndex, lensType);
+    }
+
     private void setM200SeriesWarningLevelRanges() {
         Model[] m200SeriesModels = {
                 Model.MATRICE_200,
@@ -240,9 +340,9 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     /**
      * Handles a click event on the FPV widget
      */
-    @OnClick(R.id.widget_fpv)
+    @OnClick(R.id.widget_primary_fpv)
     public void onFPVClick() {
-        onViewClick(fpvWidget);
+        onViewClick(primaryFpvWidget);
     }
 
     /**
@@ -259,13 +359,13 @@ public class DefaultLayoutActivity extends AppCompatActivity {
      * @param view The thumbnail view that was clicked.
      */
     private void onViewClick(View view) {
-        if (view == fpvWidget && !isMapMini) {
+        if (view == primaryFpvWidget && !isMapMini) {
             //reorder widgets
-            parentView.removeView(fpvWidget);
-            parentView.addView(fpvWidget, 0);
+            parentView.removeView(primaryFpvWidget);
+            parentView.addView(primaryFpvWidget, 0);
 
             //resize widgets
-            resizeViews(fpvWidget, mapWidget);
+            resizeViews(primaryFpvWidget, mapWidget);
             //enable interaction on FPV
             fpvInteractionWidget.setInteractionEnabled(true);
             //disable user login widget on map
@@ -273,10 +373,10 @@ public class DefaultLayoutActivity extends AppCompatActivity {
             isMapMini = true;
         } else if (view == mapWidget && isMapMini) {
             //reorder widgets
-            parentView.removeView(fpvWidget);
-            parentView.addView(fpvWidget, parentView.indexOfChild(mapWidget) + 1);
+            parentView.removeView(primaryFpvWidget);
+            parentView.addView(primaryFpvWidget, parentView.indexOfChild(mapWidget) + 1);
             //resize widgets
-            resizeViews(mapWidget, fpvWidget);
+            resizeViews(mapWidget, primaryFpvWidget);
             //disable interaction on FPV
             fpvInteractionWidget.setInteractionEnabled(false);
             //enable user login widget on map
@@ -306,10 +406,10 @@ public class DefaultLayoutActivity extends AppCompatActivity {
      */
     private void swapVideoSource() {
         if (secondaryFPVWidget.getVideoSource() == SettingDefinitions.VideoSource.SECONDARY) {
-            fpvWidget.setVideoSource(SettingDefinitions.VideoSource.SECONDARY);
+            primaryFpvWidget.setVideoSource(SettingDefinitions.VideoSource.SECONDARY);
             secondaryFPVWidget.setVideoSource(SettingDefinitions.VideoSource.PRIMARY);
         } else {
-            fpvWidget.setVideoSource(SettingDefinitions.VideoSource.PRIMARY);
+            primaryFpvWidget.setVideoSource(SettingDefinitions.VideoSource.PRIMARY);
             secondaryFPVWidget.setVideoSource(SettingDefinitions.VideoSource.SECONDARY);
         }
     }

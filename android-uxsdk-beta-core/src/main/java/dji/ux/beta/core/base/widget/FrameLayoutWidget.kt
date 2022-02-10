@@ -144,19 +144,6 @@ abstract class FrameLayoutWidget<T> @JvmOverloads constructor(
     }
     //endregion
 
-    //region Helpers
-    /**
-     * Get a throwable error consumer for the given error.
-     *
-     * @param tag     Tag for the log
-     * @param message Message to be logged
-     * @return Throwable consumer
-     */
-    @CheckResult
-    protected fun logErrorConsumer(tag: String, message: String): Consumer<Throwable> {
-        return RxUtil.logErrorConsumer(tag, message)
-    }
-
     /**
      * Get the update for the widget state
      *

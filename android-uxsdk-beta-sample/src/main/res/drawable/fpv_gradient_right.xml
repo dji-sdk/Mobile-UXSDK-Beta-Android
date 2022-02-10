@@ -27,6 +27,6 @@
 
     <gradient
         android:endColor="@color/uxsdk_black_40_percent"
-        android:startColor="@color/transparent" />
+        android:startColor="@color/uxsdk_transparent" />
 
 </shape>

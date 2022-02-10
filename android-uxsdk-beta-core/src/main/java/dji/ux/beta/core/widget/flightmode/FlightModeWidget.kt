@@ -46,6 +46,7 @@ import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.widget.flightmode.FlightModeWidget.ModelState
 import dji.ux.beta.core.widget.flightmode.FlightModeWidget.ModelState.FlightModeUpdated
 import dji.ux.beta.core.widget.flightmode.FlightModeWidget.ModelState.ProductConnected
@@ -208,7 +209,7 @@ open class FlightModeWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.flightModeState
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateUI(it) }, logErrorConsumer(TAG, "Update UI ")))
+                    .subscribe(Consumer { this.updateUI(it) }, RxUtil.logErrorConsumer(TAG, "Update UI ")))
         }
     }
     //endregion

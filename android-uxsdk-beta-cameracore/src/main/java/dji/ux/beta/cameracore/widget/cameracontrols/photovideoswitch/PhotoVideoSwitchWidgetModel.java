@@ -24,10 +24,12 @@
 package dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch;
 
 import androidx.annotation.NonNull;
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.CameraMode;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.module.FlatCameraModule;
@@ -42,7 +44,7 @@ import io.reactivex.rxjava3.core.Flowable;
  * Widget Model for the {@link PhotoVideoSwitchWidget} used to define the
  * underlying logic and communication
  */
-public class PhotoVideoSwitchWidgetModel extends WidgetModel {
+public class PhotoVideoSwitchWidgetModel extends WidgetModel implements ICameraIndex {
 
     //region Fields
     private final DataProcessor<Boolean> isCameraConnectedDataProcessor;
@@ -54,6 +56,7 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
     private final DataProcessor<Boolean> isShootingPanoramaDataProcessor;
     private final DataProcessor<Boolean> isEnabledDataProcessor;
     private int cameraIndex = CameraIndex.CAMERA_INDEX_0.getIndex();
+    private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.UNKNOWN;
     private FlatCameraModule flatCameraModule;
     //endregion
 
@@ -132,9 +135,6 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
                 cameraMode == CameraMode.SHOOT_PHOTO
         );
     }
-    //endregion
-
-    //region Actions
 
     /**
      * Toggle between photo mode and video mode
@@ -149,25 +149,23 @@ public class PhotoVideoSwitchWidgetModel extends WidgetModel {
         }
     }
 
-    /**
-     * Get the camera index for which the model is reacting.
-     *
-     * @return current camera index.
-     */
     @NonNull
     public CameraIndex getCameraIndex() {
         return CameraIndex.find(cameraIndex);
     }
 
-    /**
-     * Set camera index to which the model should react.
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
+
+    @NonNull
+    @Override
+    public SettingsDefinitions.LensType getLensType() {
+        return lensType;
+    }
+
+    @Override
+    public void updateCameraSource(@NonNull CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
         this.cameraIndex = cameraIndex.getIndex();
-        flatCameraModule.setCameraIndex(cameraIndex);
+        this.lensType = lensType;
+        flatCameraModule.updateCameraSource(cameraIndex,lensType);
         restart();
     }
-    //endregion
 }

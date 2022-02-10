@@ -54,6 +54,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.communication.OnStateChangeCallback
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.util.UnitConversionUtil
 import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget.ModelState
 import dji.ux.beta.core.widget.systemstatus.SystemStatusWidget.ModelState.ProductConnected
@@ -242,7 +243,7 @@ open class SystemStatusWidget @JvmOverloads constructor(
                 BiFunction<WarningStatusItem, Boolean, Pair<WarningStatusItem, Boolean>> { first: WarningStatusItem, second: Boolean -> Pair(first, second) })
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(Consumer { values: Pair<WarningStatusItem, Boolean> -> updateVoiceNotification(values.first, values.second) },
-                        logErrorConsumer(TAG, "react to Compass Error: "))
+                        RxUtil.logErrorConsumer(TAG, "react to Compass Error: "))
     }
 
     private fun updateVoiceNotification(statusItem: WarningStatusItem, isMotorOn: Boolean) {
@@ -255,7 +256,7 @@ open class SystemStatusWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.systemStatus.firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateUI(it) }, logErrorConsumer(TAG, "Update UI ")))
+                    .subscribe(Consumer { this.updateUI(it) }, RxUtil.logErrorConsumer(TAG, "Update UI ")))
         }
     }
 

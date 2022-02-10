@@ -249,4 +249,22 @@ public final class ProductUtil {
         }
         return false;
     }
+
+    public static boolean isMavicAir() {
+        return DJISDKManager.getInstance() != null && DJISDKManager.getInstance().getProduct() != null
+                && Model.MAVIC_AIR.equals(DJISDKManager.getInstance().getProduct().getModel());
+    }
+
+    public static boolean isMavicPro() {
+        return DJISDKManager.getInstance() != null && DJISDKManager.getInstance().getProduct() != null
+                && Model.MAVIC_PRO.equals(DJISDKManager.getInstance().getProduct().getModel());
+    }
+
+    public static boolean isMavicMini() {
+        if (DJISDKManager.getInstance() != null && DJISDKManager.getInstance().getProduct() != null) {
+            Model model = DJISDKManager.getInstance().getProduct().getModel();
+            return Model.MAVIC_MINI.equals(model);
+        }
+        return false;
+    }
 }

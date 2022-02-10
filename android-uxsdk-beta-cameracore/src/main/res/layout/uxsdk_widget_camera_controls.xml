@@ -38,7 +38,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_weight="2" />
+        app:layout_constraintVertical_weight="2"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
     <dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch.PhotoVideoSwitchWidget
         android:id="@+id/widget_camera_control_photo_video_switch"

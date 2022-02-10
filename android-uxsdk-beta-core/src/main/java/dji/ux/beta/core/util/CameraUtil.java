@@ -25,12 +25,12 @@ package dji.ux.beta.core.util;
 
 import android.content.res.Resources;
 
-import androidx.annotation.NonNull;
-
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import dji.common.camera.CameraVideoStreamSource;
 import dji.common.camera.SettingsDefinitions;
 import dji.sdk.camera.Camera;
@@ -284,9 +284,18 @@ public final class CameraUtil {
      * Get the lens index based on the given stream source and camera name.
      *
      * @param streamSource The streamSource
-     * @param cameraName   The name of the camera
      * @return The lens index
      */
+    public static SettingsDefinitions.LensType getLensIndex(CameraVideoStreamSource streamSource) {
+        if (streamSource == CameraVideoStreamSource.WIDE) {
+            return SettingsDefinitions.LensType.WIDE;
+        } else if (streamSource == CameraVideoStreamSource.INFRARED_THERMAL) {
+            return SettingsDefinitions.LensType.INFRARED_THERMAL;
+        } else {
+            return SettingsDefinitions.LensType.ZOOM;
+        }
+    }
+
     public static int getLensIndex(CameraVideoStreamSource streamSource, String cameraName) {
         if (streamSource == CameraVideoStreamSource.WIDE) {
             return SettingsDefinitions.LensType.WIDE.value();
@@ -300,5 +309,38 @@ public final class CameraUtil {
         } else {
             return SettingsDefinitions.LensType.ZOOM.value();
         }
+    }
+
+    public static SettingDefinitions.CameraIndex getCameraIndex(@Nullable SettingDefinitions.CameraSide cameraSide) {
+        if (cameraSide == null){
+            return SettingDefinitions.CameraIndex.CAMERA_INDEX_UNKNOWN;
+        }
+        switch (cameraSide) {
+            case PORT:
+                return SettingDefinitions.CameraIndex.CAMERA_INDEX_0;
+            case STARBOARD:
+                return SettingDefinitions.CameraIndex.CAMERA_INDEX_1;
+            case TOP:
+                return SettingDefinitions.CameraIndex.CAMERA_INDEX_4;
+            case UNKNOWN:
+            default:
+                return SettingDefinitions.CameraIndex.CAMERA_INDEX_UNKNOWN;
+        }
+    }
+
+    public static boolean isPictureMode(SettingsDefinitions.FlatCameraMode flatCameraMode) {
+        return flatCameraMode == SettingsDefinitions.FlatCameraMode.PHOTO_TIME_LAPSE
+                || flatCameraMode == SettingsDefinitions.FlatCameraMode.PHOTO_AEB
+                || flatCameraMode == SettingsDefinitions.FlatCameraMode.PHOTO_SINGLE
+                || flatCameraMode == SettingsDefinitions.FlatCameraMode.PHOTO_BURST
+                || flatCameraMode == SettingsDefinitions.FlatCameraMode.PHOTO_HDR
+                || flatCameraMode == SettingsDefinitions.FlatCameraMode.PHOTO_INTERVAL
+                || flatCameraMode == SettingsDefinitions.FlatCameraMode.PHOTO_HYPER_LIGHT
+                || flatCameraMode == SettingsDefinitions.FlatCameraMode.PHOTO_PANORAMA
+                || flatCameraMode == SettingsDefinitions.FlatCameraMode.PHOTO_EHDR;
+    }
+
+    public static boolean isAutoISOSupportedByProduct() {
+        return (!ProductUtil.isMavicAir()) && (!ProductUtil.isMavicPro() && (!ProductUtil.isMavicMini()));
     }
 }

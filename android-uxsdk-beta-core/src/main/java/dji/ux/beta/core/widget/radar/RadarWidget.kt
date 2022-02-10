@@ -51,6 +51,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.AudioUtil
 import dji.ux.beta.core.util.DisplayUtil
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.util.UnitConversionUtil
 import dji.ux.beta.core.widget.radar.RadarWidget.ModelState
 import dji.ux.beta.core.widget.radar.RadarWidget.ModelState.*
@@ -314,7 +315,7 @@ open class RadarWidget @JvmOverloads constructor(
                 BiFunction { first: VisionDetectionState, second: UnitConversionUtil.UnitType -> Pair(first, second) })
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(Consumer { values: Pair<VisionDetectionState, UnitConversionUtil.UnitType> -> updateRadarSections(values.first, values.second) },
-                        logErrorConsumer(TAG, "reactToUpdateRadarSections: "))
+                        RxUtil.logErrorConsumer(TAG, "reactToUpdateRadarSections: "))
     }
 
     private fun updateRadarSections(state: VisionDetectionState, unitType: UnitConversionUtil.UnitType) {

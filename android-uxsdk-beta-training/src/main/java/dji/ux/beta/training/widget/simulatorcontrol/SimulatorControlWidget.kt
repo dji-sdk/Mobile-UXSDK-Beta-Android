@@ -55,6 +55,7 @@ import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.ui.SeekBarView
 import dji.ux.beta.core.util.DisplayUtil
 import dji.ux.beta.core.util.EditTextNumberInputFilter
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.training.R
 import dji.ux.beta.training.util.SimulatorPresetUtils
 import dji.ux.beta.training.widget.simulatorcontrol.SimulatorControlWidget.ModelState
@@ -845,7 +846,7 @@ open class SimulatorControlWidget @JvmOverloads constructor(
                     .lastOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { simulatorWindData -> updateWindValues(simulatorWindData) },
-                            logErrorConsumer(TAG, "Update wind")))
+                            RxUtil.logErrorConsumer(TAG, "Update wind")))
         }
     }
 
@@ -869,7 +870,7 @@ open class SimulatorControlWidget @JvmOverloads constructor(
             addDisposable(widgetModel.isSimulatorActive.firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateUI(it) },
-                            logErrorConsumer(TAG, "Update Icon ")))
+                            RxUtil.logErrorConsumer(TAG, "Update Icon ")))
         }
     }
 

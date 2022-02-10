@@ -136,6 +136,10 @@ public final class SettingDefinitions {
         public int getIndex() {
             return index;
         }
+
+        public static CameraIndex[] getCameraIndexes() {
+            return new CameraIndex[]{CameraIndex.CAMERA_INDEX_0, CameraIndex.CAMERA_INDEX_1, CameraIndex.CAMERA_INDEX_2};
+        }
     }
 
     /**

@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.CheckResult;
 import androidx.annotation.NonNull;
 import dji.keysdk.DJIKey;
 import dji.keysdk.ProductKey;
@@ -35,7 +34,6 @@ import dji.log.DJILog;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.UXKey;
 import dji.ux.beta.core.util.DataProcessor;
-import dji.ux.beta.core.util.RxUtil;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -65,6 +63,7 @@ public abstract class WidgetModel {
     private CompositeDisposable compositeDisposable;
     private Disposable timerDisposable;
     private List<BaseModule> moduleList = new ArrayList<>();
+    private StatesChangeListener statesChangedListener;
     //endregion
 
     //region Default Constructor
@@ -129,6 +128,8 @@ public abstract class WidgetModel {
         for (BaseModule module : moduleList) {
             module.cleanup();
         }
+
+        statesChangedListener = null;
         inCleanup();
     }
 
@@ -155,7 +156,19 @@ public abstract class WidgetModel {
     /**
      * Method to update states for the required processors in the child classes as required
      */
-    protected abstract void updateStates();
+    protected void updateStates() {
+        StatesChangeListener listener = statesChangedListener;
+        if (listener != null) {
+            listener.onStatesChanged();
+        }
+    }
+
+    /**
+     * Method for view to add Listener for any key changed.
+     */
+    public void addStatesChangeListener(StatesChangeListener listener){
+        this.statesChangedListener = listener;
+    }
 
     private boolean isStarted() {
         return keyDisposables != null;
@@ -169,6 +182,12 @@ public abstract class WidgetModel {
     protected void addDisposable(@NonNull Disposable disposable) {
         if (compositeDisposable != null) {
             compositeDisposable.add(disposable);
+        }
+    }
+
+    protected void removeDisposable(@NonNull Disposable disposable) {
+        if (compositeDisposable != null) {
+            compositeDisposable.remove(disposable);
         }
     }
 
@@ -233,18 +252,6 @@ public abstract class WidgetModel {
                                      @NonNull DataProcessor<?> dataProcessor,
                                      @NonNull Consumer<Object> sideEffectConsumer) {
         registerKey(key, dataProcessor::onNext, sideEffectConsumer);
-    }
-
-    /**
-     * Get a throwable error consumer for the given error.
-     *
-     * @param tag     Tag for the log
-     * @param message Message to be logged
-     * @return Throwable consumer
-     */
-    @CheckResult
-    protected Consumer<Throwable> logErrorConsumer(@NonNull String tag, @NonNull String message) {
-        return RxUtil.logErrorConsumer(tag, message);
     }
 
     private void registerKey(@NonNull DJIKey djiKey,
@@ -339,5 +346,9 @@ public abstract class WidgetModel {
             this.bindConsumer = bindConsumer;
             this.sideEffectConsumer = sideEffectConsumer;
         }
+    }
+
+    public interface StatesChangeListener {
+        void onStatesChanged();
     }
 }

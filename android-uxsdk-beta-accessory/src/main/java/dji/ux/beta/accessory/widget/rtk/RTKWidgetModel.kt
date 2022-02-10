@@ -32,6 +32,7 @@ import dji.ux.beta.core.base.SchedulerProvider
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
+import dji.ux.beta.core.util.RxUtil
 
 private const val TAG = "RTKWidgetModel"
 
@@ -75,7 +76,7 @@ class RTKWidgetModel(djiSdkModel: DJISDKModel,
         bindDataProcessor(isRTKConnectedKey, isRTKConnectedProcessor) {
             addDisposable(djiSdkModel.getValue(rtkEnabledKey)
                     .observeOn(SchedulerProvider.io())
-                    .subscribe(Consumer { }, logErrorConsumer(TAG, "isRTKEnabled: ")))
+                    .subscribe(Consumer { }, RxUtil.logErrorConsumer(TAG, "isRTKEnabled: ")))
         }
     }
 

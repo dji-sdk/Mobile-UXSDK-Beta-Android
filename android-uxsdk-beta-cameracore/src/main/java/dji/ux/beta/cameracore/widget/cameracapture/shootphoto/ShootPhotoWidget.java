@@ -40,6 +40,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import dji.common.camera.SSDOperationState;
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.SDCardOperationState;
 import dji.common.camera.SettingsDefinitions.ShootPhotoMode;
 import dji.common.camera.SettingsDefinitions.StorageLocation;
@@ -49,10 +50,13 @@ import dji.ux.beta.cameracore.ui.ProgressRingView;
 import dji.ux.beta.cameracore.util.CameraActionSound;
 import dji.ux.beta.cameracore.util.CameraResource;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.ProductUtil;
+import dji.ux.beta.core.util.RxUtil;
+import dji.ux.beta.core.util.SettingDefinitions;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Single;
@@ -66,7 +70,7 @@ import static dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
  * Widget can be used for shooting photo. The widget displays the current photo mode. It also
  * displays the storage state and errors associated with it.
  */
-public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnClickListener {
+public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnClickListener, ICameraIndex {
     //region Fields
     private static final String TAG = "ShootPhotoWidget";
     private ShootPhotoWidgetModel widgetModel;
@@ -141,7 +145,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     @Override
     protected void reactToModelChanges() {
         addReaction(widgetModel.isShootingPhoto().observeOn(SchedulerProvider.ui())
-                .subscribe(this::onIsShootingPhotoChange, logErrorConsumer(TAG, "isShootingPhoto: ")));
+                .subscribe(this::onIsShootingPhotoChange, RxUtil.logErrorConsumer(TAG, "isShootingPhoto: ")));
         addReaction(reactToCanStartOrStopShootingPhoto());
         addReaction(reactToPhotoStateAndPhotoStorageState());
     }
@@ -150,6 +154,24 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     @Override
     public String getIdealDimensionRatioString() {
         return getContext().getResources().getString(R.string.uxsdk_widget_default_ratio);
+    }
+
+    @NonNull
+    public SettingDefinitions.CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
+    }
+
+    @NonNull
+    @Override
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+       if (!isInEditMode()){
+           widgetModel.updateCameraSource(cameraIndex, lensType);
+       }
     }
 
     @Override
@@ -167,8 +189,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
                 }
                 return Completable.complete();
             }).observeOn(SchedulerProvider.ui())
-                    .subscribe(() -> {
-                    }, logErrorConsumer(TAG, "Start Stop Shoot Photo")));
+                    .subscribe(() -> { }, RxUtil.logErrorConsumer(TAG, "Start Stop Shoot Photo")));
         }
     }
     //endregion
@@ -250,14 +271,14 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
         return Flowable.combineLatest(widgetModel.getCameraPhotoState(), widgetModel.getCameraStorageState(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateCameraForegroundResource(values.first, values.second),
-                        logErrorConsumer(TAG, "reactToPhotoStateAndPhotoStorageState "));
+                        RxUtil.logErrorConsumer(TAG, "reactToPhotoStateAndPhotoStorageState "));
     }
 
     private Disposable reactToCanStartOrStopShootingPhoto() {
         return Flowable.combineLatest(widgetModel.canStartShootingPhoto(), widgetModel.canStopShootingPhoto(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateImages(values.first, values.second),
-                        logErrorConsumer(TAG, "reactToCanStartOrStopShootingPhoto: "));
+                        RxUtil.logErrorConsumer(TAG, "reactToCanStartOrStopShootingPhoto: "));
     }
 
     private void checkAndUpdatePhotoStateAndPhotoStorageState() {
@@ -268,7 +289,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateCameraForegroundResource(values.first, values.second),
-                            logErrorConsumer(TAG, "checkAndUpdatePhotoStateAndPhotoStorageState ")));
+                            RxUtil.logErrorConsumer(TAG, "checkAndUpdatePhotoStateAndPhotoStorageState ")));
         }
     }
 
@@ -281,7 +302,7 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateImages(values.first, values.second),
-                            logErrorConsumer(TAG, "checkAndUpdateCanStartOrStopShootingPhoto: ")));
+                            RxUtil.logErrorConsumer(TAG, "checkAndUpdateCanStartOrStopShootingPhoto: ")));
         }
     }
 
@@ -330,12 +351,11 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
         setSDCardStorageIcon(StorageIconState.FULL, R.drawable.uxsdk_ic_sdcard_full);
         setSSDStorageIcon(StorageIconState.NOT_INSERTED, R.drawable.uxsdk_ic_ssd_not_inserted);
         setSSDStorageIcon(StorageIconState.FULL, R.drawable.uxsdk_ic_ssd_full);
-        setCameraIndex(CameraIndex.CAMERA_INDEX_0);
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ShootPhotoWidget);
-        setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.ShootPhotoWidget_uxsdk_cameraIndex, 0)));
+        updateCameraSource(CameraIndex.find(typedArray.getInt(R.styleable.ShootPhotoWidget_uxsdk_cameraIndex, 0)), SettingsDefinitions.LensType.UNKNOWN);
 
         setForegroundIconBackground(typedArray.getDrawable(R.styleable.ShootPhotoWidget_uxsdk_foregroundIconBackground));
         if (typedArray.getDrawable(R.styleable.ShootPhotoWidget_uxsdk_shootPhotoStartIcon) != null) {
@@ -386,27 +406,6 @@ public class ShootPhotoWidget extends ConstraintLayoutWidget implements View.OnC
     //endregion
 
     //region customizations
-
-    /**
-     * Get the index of the camera to which the widget is reacting
-     *
-     * @return {@link CameraIndex}
-     */
-    @NonNull
-    public CameraIndex getCameraIndex() {
-        return widgetModel.getCameraIndex();
-    }
-
-    /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link CameraIndex}
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
-    }
 
     /**
      * Get the current start shooting photo icon

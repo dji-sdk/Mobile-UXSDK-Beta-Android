@@ -41,6 +41,7 @@ import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.widget.remotecontrollersignal.RemoteControllerSignalWidget.ModelState
 import dji.ux.beta.core.widget.remotecontrollersignal.RemoteControllerSignalWidget.ModelState.ProductConnected
 import dji.ux.beta.core.widget.remotecontrollersignal.RemoteControllerSignalWidget.ModelState.SignalQualityUpdated
@@ -184,7 +185,7 @@ open class RemoteControllerSignalWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateIconColor(it) }, logErrorConsumer(TAG, "Update Icon Color ")))
+                    .subscribe(Consumer { this.updateIconColor(it) }, RxUtil.logErrorConsumer(TAG, "Update Icon Color ")))
         }
     }
     //endregion

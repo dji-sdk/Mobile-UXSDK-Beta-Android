@@ -40,17 +40,19 @@ import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.ExposureMode;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.FrameLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.OnStateChangeCallback;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
 /**
  * Widget indicates the current exposure mode.
  * Tapping on the widget can be linked to open exposure settings
  */
-public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implements View.OnClickListener {
+public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implements View.OnClickListener, ICameraIndex {
 
     //region Fields
     private static final String TAG = "ExposureSetIndicWidget";
@@ -81,9 +83,10 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
 
         if (!isInEditMode()) {
             initDefaults();
-            widgetModel = new ExposureSettingsIndicatorWidgetModel(DJISDKModel.getInstance(),
-                    ObservableInMemoryKeyedStore.getInstance());
+            widgetModel = new ExposureSettingsIndicatorWidgetModel(DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance());
         }
+
+        setOnClickListener(this);
 
         if (attrs != null) {
             initAttributes(context, attrs);
@@ -92,9 +95,7 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
 
     @Override
     protected void reactToModelChanges() {
-        addReaction(widgetModel.getExposureMode()
-                .observeOn(SchedulerProvider.ui())
-                .subscribe(this::updateUI));
+        addReaction(widgetModel.getExposureMode().observeOn(SchedulerProvider.ui()).subscribe(this::updateUI));
     }
 
     @NonNull
@@ -105,9 +106,7 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
 
     @Override
     public void onClick(View v) {
-        if (stateChangeCallback != null) {
-            stateChangeCallback.onStateChange(null);
-        }
+        updateViewState();
     }
 
     @Override
@@ -116,7 +115,6 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
         if (!isInEditMode()) {
             widgetModel.setup();
         }
-        initializeListener();
     }
 
     @Override
@@ -135,14 +133,18 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
             addDisposable(widgetModel.getExposureMode()
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(this::updateUI, logErrorConsumer(TAG, "get exposure mode")));
+                    .subscribe(this::updateUI, RxUtil.logErrorConsumer(TAG, "get exposure mode")));
         }
     }
 
-    private void initializeListener() {
+    private void updateViewState() {
         if (stateChangeResourceId != INVALID_RESOURCE && this.getRootView() != null) {
-            View widgetView = this.getRootView().findViewById(stateChangeResourceId);
-            // TODO when panel implemented
+            View view = this.getRootView().findViewById(stateChangeResourceId);
+            if (view.isShown()) {
+                view.setVisibility(View.GONE);
+            } else {
+                view.setVisibility(View.VISIBLE);
+            }
         }
     }
 
@@ -162,9 +164,9 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
 
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.ExposureSettingsIndicatorWidget);
-        setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_cameraIndex, 0)));
-        if (!isInEditMode()){
-            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_lensType, 0)));
+        if (!isInEditMode()) {
+            updateCameraSource(CameraIndex.find(typedArray.getInt(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_cameraIndex, 0))
+                    , SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_lensType, 0)));
         }
         stateChangeResourceId =
                 typedArray.getResourceId(R.styleable.ExposureSettingsIndicatorWidget_uxsdk_onStateChange, INVALID_RESOURCE);
@@ -215,6 +217,11 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
 
     //region customizations
 
+    @Override
+    public void updateCameraSource(@NonNull CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        widgetModel.updateCameraSource(cameraIndex, lensType);
+    }
+
     /**
      * Get the index of the camera to which the widget is reacting
      *
@@ -226,17 +233,6 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     }
 
     /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
-    }
-
-    /**
      * Get the current type of the lens the widget is reacting to
      *
      * @return current lens type
@@ -244,17 +240,6 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     @NonNull
     public SettingsDefinitions.LensType getLensType() {
         return widgetModel.getLensType();
-    }
-
-    /**
-     * Set the type of the lens for which the widget should react
-     *
-     * @param lensType lens type
-     */
-    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
-        if (!isInEditMode()) {
-            widgetModel.setLensType(lensType);
-        }
     }
 
     /**
@@ -325,5 +310,10 @@ public class ExposureSettingsIndicatorWidget extends FrameLayoutWidget implement
     public void setStateChangeCallback(@NonNull OnStateChangeCallback<Object> stateChangeCallback) {
         this.stateChangeCallback = stateChangeCallback;
     }
+
+    public void setStateChangeResourceId(int stateChangeResourceId) {
+        this.stateChangeResourceId = stateChangeResourceId;
+    }
+
     //endregion
 }
