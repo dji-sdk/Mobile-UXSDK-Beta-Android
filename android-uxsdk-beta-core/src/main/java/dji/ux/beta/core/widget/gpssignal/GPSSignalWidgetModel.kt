@@ -35,13 +35,15 @@ import dji.ux.beta.core.base.SchedulerProvider
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.DataProcessor
+import dji.ux.beta.core.util.RxUtil
 
 /**
  * Widget Model for the [GPSSignalWidget] used to define
  * the underlying logic and communication
  */
-class GPSSignalWidgetModel(djiSdkModel: DJISDKModel,
-                           keyedStore: ObservableInMemoryKeyedStore
+class GPSSignalWidgetModel(
+    djiSdkModel: DJISDKModel,
+    keyedStore: ObservableInMemoryKeyedStore
 ) : WidgetModel(djiSdkModel, keyedStore) {
 
     //region Fields
@@ -80,14 +82,14 @@ class GPSSignalWidgetModel(djiSdkModel: DJISDKModel,
      */
     val isExternalGPSUsed: Flowable<Boolean>
         get() = redundancySensorUsedStateProcessor.toFlowable()
-                .concatMap { state: RedundancySensorUsedState -> Flowable.just(state.gpsIndex == 2) }
+            .concatMap { state: RedundancySensorUsedState -> Flowable.just(state.gpsIndex == 2) }
 
     /**
      * Get whether RTK is using the most accurate positioning solution.
      */
     val isRTKAccurate: Flowable<Boolean>
         get() = rtkStateProcessor.toFlowable()
-                .concatMap { state: RTKState -> Flowable.just(state.positioningSolution == PositioningSolution.FIXED_POINT) }
+            .concatMap { state: RTKState -> Flowable.just(state.positioningSolution == PositioningSolution.FIXED_POINT) }
     //endregion
 
     //region Lifecycle
@@ -103,9 +105,11 @@ class GPSSignalWidgetModel(djiSdkModel: DJISDKModel,
         bindDataProcessor(rtkEnabledKey, rtkEnabledProcessor)
         //Use the supported key to begin getting the RTK Enabled values
         bindDataProcessor(rtkSupportedKey, rtkSupportedProcessor) {
-            addDisposable(djiSdkModel.getValue(rtkEnabledKey)
+            addDisposable(
+                djiSdkModel.getValue(rtkEnabledKey)
                     .observeOn(SchedulerProvider.io())
-                    .subscribe(Consumer { }, logErrorConsumer("GPSSignalWidget", "isRTKSupported: ")))
+                    .subscribe(Consumer { }, RxUtil.logErrorConsumer("GPSSignalWidget", "isRTKSupported: "))
+            )
         }
         bindDataProcessor(rtkStateKey, rtkStateProcessor)
         bindDataProcessor(redundancySensorUsedState, redundancySensorUsedStateProcessor)
@@ -116,9 +120,13 @@ class GPSSignalWidgetModel(djiSdkModel: DJISDKModel,
     }
 
     override fun updateStates() {
-        satelliteNumberProcessor.onNext(
-                if (rtkEnabledProcessor.value) rtkStateProcessor.value.mobileStation1SatelliteCount
-                else satelliteCountProcessor.value)
+        rtkEnabledProcessor.value?.let {
+            if (it) {
+                satelliteNumberProcessor.onNext(rtkStateProcessor.value?.mobileStation1SatelliteCount ?: 0)
+            } else {
+                satelliteNumberProcessor.onNext(satelliteCountProcessor.value ?: 0)
+            }
+        }
     }
 
     override fun onProductConnectionChanged(isConnected: Boolean) {

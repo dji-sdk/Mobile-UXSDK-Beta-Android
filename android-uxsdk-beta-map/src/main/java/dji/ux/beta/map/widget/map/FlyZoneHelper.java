@@ -618,6 +618,9 @@ public class FlyZoneHelper {
     }
 
     private void addCircleToMap(FlyZoneInformation zone, DJICircle circle, String zoneId) {
+        if (zone == null || circle == null || zoneId == null) {
+            return;
+        }
         switch (zone.getCategory()) {
             case RESTRICTED:
                 restrictedDJICircleMap.put(zoneId, circle);

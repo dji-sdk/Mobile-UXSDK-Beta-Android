@@ -28,10 +28,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
 
-import androidx.multidex.MultiDex;
-
+import com.dji.frame.util.V_JsonUtil;
 import com.secneo.sdk.Helper;
 
+import androidx.multidex.MultiDex;
 import dji.ux.beta.core.communication.DefaultGlobalPreferences;
 import dji.ux.beta.core.communication.GlobalPreferencesManager;
 
@@ -53,6 +53,7 @@ public class SampleApplication extends Application {
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACCESSORY_ATTACHED);
         registerReceiver(br, filter);
+        V_JsonUtil.DjiLog();
     }
 
     @Override

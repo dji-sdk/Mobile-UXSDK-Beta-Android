@@ -44,6 +44,7 @@ import dji.ux.beta.core.extension.getString
 import dji.ux.beta.core.extension.imageDrawable
 import dji.ux.beta.core.widget.connection.ConnectionWidget.ModelState
 import dji.ux.beta.core.widget.connection.ConnectionWidget.ModelState.ProductConnected
+import dji.ux.beta.core.util.RxUtil
 
 private const val TAG = "ConnectionWidget"
 
@@ -141,7 +142,7 @@ open class ConnectionWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.lastOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { updateUI(it) }, logErrorConsumer(TAG, "product connection")))
+                    .subscribe(Consumer { updateUI(it) }, RxUtil.logErrorConsumer(TAG, "product connection")))
         }
     }
     //endregion

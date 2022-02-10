@@ -48,10 +48,12 @@ import dji.common.camera.ResolutionAndFrameRate;
 import dji.common.camera.SSDOperationState;
 import dji.common.camera.SettingsDefinitions;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DisplayUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.visualcamera.R;
 import io.reactivex.rxjava3.core.Flowable;
@@ -60,7 +62,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 /**
  * Shows the camera's current capacity and other information for the SSD storage.
  */
-public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
+public class CameraConfigSSDWidget extends ConstraintLayoutWidget implements ICameraIndex {
     //region Constants
     private static final String TAG = "ConfigSSDWidget";
     private static final int CAPACITY_UNIT_SWITCH_LIMIT = 1024;
@@ -166,7 +168,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
         return Flowable.combineLatest(widgetModel.getSSDClipName(), widgetModel.getSSDColor(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateClipInfo(values.first, values.second),
-                        logErrorConsumer(TAG, "reactToUpdateClipInfo: "));
+                        RxUtil.logErrorConsumer(TAG, "reactToUpdateClipInfo: "));
     }
 
     private Flowable<Pair<SSDOperationState, Boolean>> getSSDState() {
@@ -185,7 +187,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
         return getSSDState()
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateSSDState(values.first, values.second),
-                        logErrorConsumer(TAG, "reactToUpdateSSDState: "));
+                        RxUtil.logErrorConsumer(TAG, "reactToUpdateSSDState: "));
     }
 
     private void checkAndUpdateSSDState() {
@@ -194,7 +196,7 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateSSDState(values.first, values.second),
-                            logErrorConsumer(TAG, "checkAndUpdateSSDState: ")));
+                            RxUtil.logErrorConsumer(TAG, "checkAndUpdateSSDState: ")));
         }
     }
     //endregion
@@ -383,25 +385,19 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
         return getResources().getString(R.string.uxsdk_widget_camera_config_ssd_ratio);
     }
 
-    /**
-     * Get the index of the camera to which the widget is reacting
-     *
-     * @return {@link SettingDefinitions.CameraIndex}
-     */
     @NonNull
     public SettingDefinitions.CameraIndex getCameraIndex() {
         return widgetModel.getCameraIndex();
     }
 
-    /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link SettingDefinitions.CameraIndex}
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        widgetModel.updateCameraSource(cameraIndex, lensType);
+    }
+
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
     }
 
     /**
@@ -994,7 +990,9 @@ public class CameraConfigSSDWidget extends ConstraintLayoutWidget {
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraConfigSSDWidget);
 
-        setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigSSDWidget_uxsdk_cameraIndex, 0)));
+        if (!isInEditMode()){
+            updateCameraSource(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.CameraConfigSSDWidget_uxsdk_cameraIndex, 0)), SettingsDefinitions.LensType.UNKNOWN);
+        }
 
         int ssdClipInfoTextAppearanceId =
                 typedArray.getResourceId(R.styleable.CameraConfigSSDWidget_uxsdk_ssdClipInfoTextAppearance, INVALID_RESOURCE);

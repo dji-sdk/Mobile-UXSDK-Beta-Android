@@ -49,6 +49,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.ui.SlidingDialog
 import dji.ux.beta.core.util.DisplayUtil
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.util.UnitConversionUtil
 import dji.ux.beta.flight.R
 import dji.ux.beta.flight.widget.takeoff.TakeOffWidget.ModelState
@@ -422,7 +423,7 @@ open class TakeOffWidget @JvmOverloads constructor(
                                     performCancelLandAction()
                                 }
                                 uiUpdateStateProcessor.onNext(DialogActionCancelled(dialogType))
-                            }, logErrorConsumer(TAG, "Update takeoff Landing State")))
+                            }, RxUtil.logErrorConsumer(TAG, "Update takeoff Landing State")))
                 }
 
                 override fun onSlideChecked(dialog: DialogInterface?, checked: Boolean) {
@@ -552,7 +553,7 @@ open class TakeOffWidget @JvmOverloads constructor(
                     if (!it) {
                         slidingDialog?.setCheckBoxChecked(false)
                     }
-                }, logErrorConsumer(TAG, "Update Precision Takeoff Check Box ")))
+                }, RxUtil.logErrorConsumer(TAG, "Update Precision Takeoff Check Box ")))
     }
 
     private fun updateTakeOffDialogMessage() {
@@ -573,7 +574,7 @@ open class TakeOffWidget @JvmOverloads constructor(
                                             resources.getString(R.string.uxsdk_take_off_message, takeOffHeightString)
                                         })
                                 ?.setDialogMessageTextSize(dialogMessageTextSize)
-                    }, logErrorConsumer(TAG, "Update Takeoff Message ")))
+                    }, RxUtil.logErrorConsumer(TAG, "Update Takeoff Message ")))
         }
     }
 
@@ -623,7 +624,7 @@ open class TakeOffWidget @JvmOverloads constructor(
                             } else {
                                 resources.getString(R.string.uxsdk_land_confirmation_message, landHeightString)
                             })
-                }, logErrorConsumer(TAG, "Update Landing Confirmation Message ")))
+                }, RxUtil.logErrorConsumer(TAG, "Update Landing Confirmation Message ")))
     }
 
     private fun showUnsafeToLandDialog() {
@@ -697,7 +698,7 @@ open class TakeOffWidget @JvmOverloads constructor(
             addDisposable(widgetModel.takeOffLandingState.firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(Consumer { this.updateTakeOffStatus(it) },
-                            logErrorConsumer(TAG, "Update Take Off Landing State ")))
+                            RxUtil.logErrorConsumer(TAG, "Update Take Off Landing State ")))
         }
     }
 

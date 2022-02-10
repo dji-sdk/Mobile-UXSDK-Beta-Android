@@ -30,4 +30,9 @@
     <dimen name="uxsdk_wheel_view_center_text_size">22dp</dimen>
     <dimen name="uxsdk_wheel_view_mark_width">1dp</dimen>
     <dimen name="uxsdk_wheel_view_bottom_space">6dp</dimen>
+
+    <dimen name="uxsdk_camera_exposure_mode_selector_radius">100dp</dimen>
+
+    <dimen name="uxsdk_rounded_corner_small">4dp</dimen>
+
 </resources>

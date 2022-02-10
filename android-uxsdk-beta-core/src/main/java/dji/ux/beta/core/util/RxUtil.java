@@ -24,6 +24,7 @@
 package dji.ux.beta.core.util;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import dji.log.DJILog;
 import io.reactivex.rxjava3.functions.Consumer;
 
@@ -44,6 +45,19 @@ public final class RxUtil {
      * @return Throwable consumer
      */
     public static Consumer<Throwable> logErrorConsumer(@NonNull String tag, @NonNull String message) {
-        return throwable -> DJILog.e(tag, message + throwable.getLocalizedMessage());
+        return errorConsumer(null, tag, message);
+    }
+
+    public static Consumer<Throwable> errorConsumer(@Nullable errorHandler handler, @NonNull String tag, @NonNull String message) {
+        return throwable -> {
+            if (handler != null) {
+                handler.onErrorHandler();
+            }
+            DJILog.e(tag, message + throwable.getLocalizedMessage());
+        };
+    }
+
+    public interface errorHandler {
+        void onErrorHandler();
     }
 }

@@ -30,6 +30,7 @@ import dji.common.camera.SettingsDefinitions.FocusMode;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.GlobalPreferenceKeys;
 import dji.ux.beta.core.communication.GlobalPreferencesInterface;
@@ -37,6 +38,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.UXKey;
 import dji.ux.beta.core.communication.UXKeys;
 import dji.ux.beta.core.util.DataProcessor;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import io.reactivex.rxjava3.core.Completable;
@@ -48,7 +50,7 @@ import io.reactivex.rxjava3.core.Flowable;
  * Widget Model for the {@link FocusModeWidget} used to define the
  * underlying logic and communication
  */
-public class FocusModeWidgetModel extends WidgetModel {
+public class FocusModeWidgetModel extends WidgetModel implements ICameraIndex {
 
     //region Fields
     private static final String TAG = "FocusModeWidgetModel";
@@ -133,42 +135,19 @@ public class FocusModeWidgetModel extends WidgetModel {
 
     //region Actions
 
-    /**
-     * Get the camera index for which the model is reacting.
-     *
-     * @return current camera index.
-     */
     @NonNull
     public CameraIndex getCameraIndex() {
         return CameraIndex.find(cameraIndex);
     }
 
-    /**
-     * Set the camera index for which the widget model should react to.
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        this.cameraIndex = cameraIndex.getIndex();
-        restart();
-    }
-
-    /**
-     * Get the current type of the lens the widget model is reacting to
-     *
-     * @return current lens type
-     */
     @NonNull
     public SettingsDefinitions.LensType getLensType() {
         return lensType;
     }
 
-    /**
-     * Set the type of the lens for which the widget model should react
-     *
-     * @param lensType lens type
-     */
-    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+    @Override
+    public void updateCameraSource(@NonNull CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        this.cameraIndex = cameraIndex.getIndex();
         this.lensType = lensType;
         restart();
     }
@@ -245,21 +224,21 @@ public class FocusModeWidgetModel extends WidgetModel {
                 addDisposable(keyedStore.setValue(controlModeKey, SettingDefinitions.ControlMode.AUTO_FOCUS)
                         .subscribe(() -> {
                             //do nothing
-                        }, logErrorConsumer(TAG, "setControlModeAutoFocus: ")));
+                        }, RxUtil.logErrorConsumer(TAG, "setControlModeAutoFocus: ")));
                 break;
             case AFC:
                 preferencesManager.setControlMode(SettingDefinitions.ControlMode.AUTO_FOCUS_CONTINUE);
                 addDisposable(keyedStore.setValue(controlModeKey, SettingDefinitions.ControlMode.AUTO_FOCUS_CONTINUE)
                         .subscribe(() -> {
                             //do nothing
-                        }, logErrorConsumer(TAG, "setControlModeAutoFocusContinuous: ")));
+                        }, RxUtil.logErrorConsumer(TAG, "setControlModeAutoFocusContinuous: ")));
                 break;
             case MANUAL:
                 preferencesManager.setControlMode(SettingDefinitions.ControlMode.MANUAL_FOCUS);
                 addDisposable(keyedStore.setValue(controlModeKey, SettingDefinitions.ControlMode.MANUAL_FOCUS)
                         .subscribe(() -> {
                             //do nothing
-                        }, logErrorConsumer(TAG, "setControlModeManualFocus: ")));
+                        }, RxUtil.logErrorConsumer(TAG, "setControlModeManualFocus: ")));
                 break;
             default:
                 break;

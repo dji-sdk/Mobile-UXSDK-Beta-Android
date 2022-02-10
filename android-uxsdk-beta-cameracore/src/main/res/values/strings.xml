@@ -32,4 +32,13 @@
     <string name="uxsdk_widget_focus_mode_auto">AF</string>
     <string name="uxsdk_widget_focus_mode_afc">AFC</string>
     <string name="uxsdk_widget_focus_mode_separator">/</string>
+
+    <string name="uxsdk_camera_exposure_mode_p">AUTO</string>
+    <string name="uxsdk_camera_exposure_mode_s">S</string>
+    <string name="uxsdk_camera_exposure_mode_a">A</string>
+    <string name="uxsdk_camera_exposure_mode_m">M</string>
+
+    <string name="uxsdk_camera_exposure_iso_title">ISO</string>
+
+    <string name="uxsdk_camera_ei">EI</string>
 </resources>

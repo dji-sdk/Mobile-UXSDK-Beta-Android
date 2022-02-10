@@ -45,6 +45,7 @@ import dji.ux.beta.core.extension.getColor
 import dji.ux.beta.core.extension.getDrawable
 import dji.ux.beta.core.extension.getDrawableAndUse
 import dji.ux.beta.core.extension.getString
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.widget.vision.VisionWidget.ModelState
 import dji.ux.beta.core.widget.vision.VisionWidget.ModelState.*
 import dji.ux.beta.core.widget.vision.VisionWidget.UIState.VisibilityUpdated
@@ -182,7 +183,7 @@ open class VisionWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.visionSystemState.firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateIcon(it) }, logErrorConsumer(TAG, "Update Icon ")))
+                    .subscribe(Consumer { this.updateIcon(it) }, RxUtil.logErrorConsumer(TAG, "Update Icon ")))
         }
     }
 
@@ -190,7 +191,7 @@ open class VisionWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateIconColor(it) }, logErrorConsumer(TAG, "Update Icon Color ")))
+                    .subscribe(Consumer { this.updateIconColor(it) }, RxUtil.logErrorConsumer(TAG, "Update Icon Color ")))
         }
     }
     //endregion

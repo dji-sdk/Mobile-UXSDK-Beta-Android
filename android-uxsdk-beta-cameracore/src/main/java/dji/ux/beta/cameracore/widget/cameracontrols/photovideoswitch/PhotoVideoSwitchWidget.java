@@ -33,18 +33,20 @@ import android.widget.ImageView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
+import dji.common.camera.SettingsDefinitions;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.FrameLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 
 /**
  * Widget can be used to switch between shoot photo mode and record video mode
  */
-public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.OnClickListener {
+public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.OnClickListener, ICameraIndex {
 
     //region Fields
     private static final String TAG = "PhotoVideoSwitchWidget";
@@ -125,7 +127,7 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(
                         () -> {
-                        }, logErrorConsumer(TAG, "Switch camera Mode")
+                        }, RxUtil.logErrorConsumer(TAG, "Switch camera Mode")
                 ));
     }
     //endregion
@@ -133,7 +135,9 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
     //region private helpers
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PhotoVideoSwitchWidget);
-        setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.PhotoVideoSwitchWidget_uxsdk_cameraIndex, 0)));
+        if (!isInEditMode()){
+            updateCameraSource(CameraIndex.find(typedArray.getInt(R.styleable.PhotoVideoSwitchWidget_uxsdk_cameraIndex, 0)), SettingsDefinitions.LensType.UNKNOWN);
+        }
 
         if (typedArray.getDrawable(R.styleable.PhotoVideoSwitchWidget_uxsdk_photoModeIcon) != null) {
             photoModeDrawable = typedArray.getDrawable(R.styleable.PhotoVideoSwitchWidget_uxsdk_photoModeIcon);
@@ -163,32 +167,27 @@ public class PhotoVideoSwitchWidget extends FrameLayoutWidget implements View.On
         if (!isInEditMode()) {
             addDisposable(widgetModel.isPictureMode().firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(this::updateUI, logErrorConsumer(TAG, "Update UI ")));
+                    .subscribe(this::updateUI, RxUtil.logErrorConsumer(TAG, "Update UI ")));
         }
     }
     //endregion
 
     //region customization
 
-    /**
-     * Get the index of the camera to which the widget is reacting
-     *
-     * @return instance of {@link CameraIndex}
-     */
     @NonNull
     public CameraIndex getCameraIndex() {
         return widgetModel.getCameraIndex();
     }
 
-    /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
+    @NonNull
+    @Override
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    @Override
+    public void updateCameraSource(@NonNull CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        widgetModel.updateCameraSource(cameraIndex, lensType);
     }
 
     /**

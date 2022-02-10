@@ -24,13 +24,15 @@
 package dji.ux.beta.cameracore.widget.cameracapture;
 
 import androidx.annotation.NonNull;
-
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.CameraMode;
-import io.reactivex.rxjava3.core.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.module.FlatCameraModule;
+import dji.ux.beta.core.util.SettingDefinitions;
+import io.reactivex.rxjava3.core.Flowable;
 
 /**
  * Camera Capture Widget Model
@@ -38,11 +40,12 @@ import dji.ux.beta.core.module.FlatCameraModule;
  * Widget Model for {@link CameraCaptureWidget} used to define underlying logic
  * and communication
  */
-public class CameraCaptureWidgetModel extends WidgetModel {
+public class CameraCaptureWidgetModel extends WidgetModel implements ICameraIndex {
 
     //region Fields
     private FlatCameraModule flatCameraModule;
-    //endregion
+    private int cameraIndex = SettingDefinitions.CameraIndex.CAMERA_INDEX_0.getIndex();
+    private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.ZOOM;
 
     //region Lifecycle
     public CameraCaptureWidgetModel(@NonNull DJISDKModel djiSdkModel,
@@ -60,6 +63,24 @@ public class CameraCaptureWidgetModel extends WidgetModel {
     @Override
     protected void inCleanup() {
         // do nothing
+    }
+
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        this.cameraIndex = cameraIndex.getIndex();
+        this.lensType = lensType;
+        flatCameraModule.updateCameraSource(cameraIndex,lensType);
+        restart();
+    }
+
+    @NonNull
+    public SettingDefinitions.CameraIndex getCameraIndex() {
+        return SettingDefinitions.CameraIndex.find(cameraIndex);
+    }
+
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return lensType;
     }
 
     @Override

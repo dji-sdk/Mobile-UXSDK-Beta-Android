@@ -38,13 +38,15 @@ import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-
 import dji.common.camera.SettingsDefinitions;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.util.RxUtil;
+import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.ViewUtil;
 
@@ -54,7 +56,7 @@ import dji.ux.beta.core.util.ViewUtil;
  * When locked the exposure of the camera will remain constant.
  * Changing the exposure parameters manually will release the lock.
  */
-public class AutoExposureLockWidget extends ConstraintLayoutWidget implements View.OnClickListener {
+public class AutoExposureLockWidget extends ConstraintLayoutWidget implements View.OnClickListener, ICameraIndex {
 
     //region Fields
     private static final String TAG = "AutoExposureLockWidget";
@@ -149,14 +151,14 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(() -> {
                     // Do nothing
-                }, logErrorConsumer(TAG, "set auto exposure lock: ")));
+                }, RxUtil.logErrorConsumer(TAG, "set auto exposure lock: ")));
     }
 
     private void checkAndUpdateAELock() {
         if (!isInEditMode()) {
             addDisposable(widgetModel.isAutoExposureLockOn().firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(this::onAELockChange, logErrorConsumer(TAG, "Update AE Lock ")));
+                    .subscribe(this::onAELockChange, RxUtil.logErrorConsumer(TAG, "Update AE Lock ")));
         }
     }
 
@@ -164,14 +166,12 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
         autoExposureLockDrawable = getResources().getDrawable(R.drawable.uxsdk_ic_auto_exposure_lock);
         autoExposureUnlockDrawable = getResources().getDrawable(R.drawable.uxsdk_ic_auto_exposure_unlock);
         setTitleTextColor(getResources().getColorStateList(R.color.uxsdk_color_selector_auto_exposure_lock));
-        setCameraIndex(CameraIndex.CAMERA_INDEX_0);
     }
 
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.AutoExposureLockWidget);
-        setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.AutoExposureLockWidget_uxsdk_cameraIndex, 0)));
-        if (!isInEditMode()){
-            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.AutoExposureLockWidget_uxsdk_lensType, 0)));
+        if (!isInEditMode()) {
+            updateCameraSource(CameraIndex.find(typedArray.getInt(R.styleable.AutoExposureLockWidget_uxsdk_cameraIndex, 0)), SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.AutoExposureLockWidget_uxsdk_lensType, 0)));
         }
         ColorStateList colorStateList = typedArray.getColorStateList(R.styleable.AutoExposureLockWidget_uxsdk_widgetTitleTextColor);
         if (colorStateList != null) {
@@ -223,46 +223,20 @@ public class AutoExposureLockWidget extends ConstraintLayoutWidget implements Vi
         return getResources().getString(R.string.uxsdk_widget_auto_exposure_lock_ratio);
     }
 
-    /**
-     * Get the index of the camera to which the widget is reacting
-     *
-     * @return instance of {@link CameraIndex}.
-     */
     @NonNull
-    public CameraIndex getCameraIndex() {
+    public SettingDefinitions.CameraIndex getCameraIndex() {
         return widgetModel.getCameraIndex();
     }
 
-    /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
-    }
-
-    /**
-     * Get the current type of the lens the widget is reacting to
-     *
-     * @return current lens type
-     */
     @NonNull
+    @Override
     public SettingsDefinitions.LensType getLensType() {
         return widgetModel.getLensType();
     }
 
-    /**
-     * Set the type of the lens for which the widget should react
-     *
-     * @param lensType lens type
-     */
-    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
-        if (!isInEditMode()) {
-            widgetModel.setLensType(lensType);
-        }
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        widgetModel.updateCameraSource(cameraIndex, lensType);
     }
 
     /**

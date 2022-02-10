@@ -53,6 +53,7 @@ import dji.ux.beta.core.base.UXSDKError;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.OnStateChangeCallback;
+import dji.ux.beta.core.util.RxUtil;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -152,7 +153,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
                     } else {
                         loginUser();
                     }
-                }, logErrorConsumer(TAG, "TAP LOGIN ")));
+                }, RxUtil.logErrorConsumer(TAG, "TAP LOGIN ")));
     }
 
     @NonNull
@@ -178,7 +179,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
         return getAccountState()
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateUI(values.first, values.second),
-                        logErrorConsumer(TAG, "react to User Account "));
+                        RxUtil.logErrorConsumer(TAG, "react to User Account "));
     }
 
     private void checkAndUpdateUI() {
@@ -186,7 +187,7 @@ public class UserAccountLoginWidget extends ConstraintLayoutWidget implements On
             addDisposable(getAccountState().firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateUI(values.first, values.second),
-                            logErrorConsumer(TAG, "react to User Account ")));
+                            RxUtil.logErrorConsumer(TAG, "react to User Account ")));
         }
     }
 

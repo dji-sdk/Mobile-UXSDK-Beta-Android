@@ -42,19 +42,20 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import dji.common.airlink.PhysicalSource;
-import dji.common.camera.CameraVideoStreamSource;
+import dji.common.camera.SettingsDefinitions;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
+import dji.ux.beta.core.base.IGimbalIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.GlobalPreferencesManager;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
-import dji.ux.beta.core.util.CameraUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
 import dji.ux.beta.core.util.SettingDefinitions.GimbalIndex;
-import dji.ux.beta.core.widget.fpv.FPVWidget;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.disposables.Disposable;
 
@@ -67,8 +68,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
  * When the widget is long pressed then dragged, the gimbal controls will appear and the aircraft's
  * gimbal will move. The speed at which the gimbal moves is based on the drag distance.
  */
-public class FPVInteractionWidget extends ConstraintLayoutWidget implements View.OnTouchListener,
-        FPVWidget.FPVStateChangeCallback {
+public class FPVInteractionWidget extends ConstraintLayoutWidget implements View.OnTouchListener, ICameraIndex , IGimbalIndex {
 
     private static final String TAG = "FPVInteractionWidget";
     private static final int LONG_PRESS_TIME = 500; // Time in milliseconds
@@ -163,51 +163,12 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
         addReaction(reactToUpdateVisibility());
     }
 
-    @Override
-    public void onCameraNameChange(@Nullable String cameraName) {
-        this.cameraName = cameraName;
-        updateVisibility();
-    }
-
-    @Override
-    public void onCameraSideChange(@Nullable SettingDefinitions.CameraSide cameraSide) {
-        if (cameraSide != null) {
-            // set both gimbal and camera index using the camera side
-            if (cameraSide == SettingDefinitions.CameraSide.PORT) {
-                setGimbalIndex(SettingDefinitions.GimbalIndex.PORT);
-                setCameraIndex(SettingDefinitions.CameraIndex.CAMERA_INDEX_0);
-            } else if (cameraSide == SettingDefinitions.CameraSide.STARBOARD) {
-                setGimbalIndex(SettingDefinitions.GimbalIndex.STARBOARD);
-                setCameraIndex(SettingDefinitions.CameraIndex.CAMERA_INDEX_2);
-            } else {
-                setGimbalIndex(SettingDefinitions.GimbalIndex.TOP);
-                setCameraIndex(SettingDefinitions.CameraIndex.CAMERA_INDEX_4);
-            }
-        }
-    }
-
-    @Override
-    public void onStreamSourceChange(@Nullable CameraVideoStreamSource streamSource) {
-        if (streamSource != null) {
-            setLensIndex(CameraUtil.getLensIndex(streamSource, cameraName));
-        }
-    }
-
-    @Override
-    public void onFPVSizeChange(@Nullable FPVWidget.FPVSize fpvSize) {
-        if (fpvSize != null) {
-            adjustAspectRatio(fpvSize.getWidth(), fpvSize.getHeight());
-        }
-    }
-
-    //endregion
-
     //region Reaction helpers
     private Disposable reactToUpdateVisibility() {
         return Flowable.combineLatest(widgetModel.getControlMode(), widgetModel.isAeLocked(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateViewVisibility(values.first, values.second),
-                        logErrorConsumer(TAG, "reactToUpdateVisibility: "));
+                        RxUtil.logErrorConsumer(TAG, "reactToUpdateVisibility: "));
     }
 
     private void updateViewVisibility(ControlMode controlMode, boolean isAeLocked) {
@@ -274,7 +235,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
                             .firstOrError()
                             .observeOn(SchedulerProvider.ui())
                             .subscribe((Pair values) -> updateTarget((ControlMode) (values.first), (Boolean) (values.second), targetX, targetY),
-                                    logErrorConsumer(TAG, "Update Target: ")));
+                                    RxUtil.logErrorConsumer(TAG, "Update Target: ")));
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -303,27 +264,6 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
     }
 
     /**
-     * Get the index of the camera to which the widget is reacting
-     *
-     * @return {@link CameraIndex}
-     */
-    @NonNull
-    public CameraIndex getCameraIndex() {
-        return widgetModel.getCameraIndex();
-    }
-
-    /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
-    }
-
-    /**
      * Get the index of the gimbal to which the widget is reacting
      *
      * @return {@link GimbalIndex}
@@ -338,30 +278,25 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
      *
      * @param gimbalIndex index of the gimbal.
      */
-    public void setGimbalIndex(@Nullable GimbalIndex gimbalIndex) {
+    public void updateGimbalIndex(@Nullable GimbalIndex gimbalIndex) {
         if (!isInEditMode()) {
             widgetModel.setGimbalIndex(gimbalIndex);
         }
     }
 
-    /**
-     * Get the index of the lens to which the widget is reacting
-     *
-     * @return current lens index
-     */
-    public int getLensIndex() {
-        return widgetModel.getLensIndex();
+    @NonNull
+    public SettingDefinitions.CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
     }
 
-    /**
-     * Set the index of lens to which the widget should react
-     *
-     * @param lensIndex index of the lens.
-     */
-    public void setLensIndex(int lensIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setLensIndex(lensIndex);
-        }
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        widgetModel.updateCameraSource(cameraIndex, lensType);
+    }
+
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
     }
 
     /**
@@ -389,7 +324,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
                         .observeOn(SchedulerProvider.ui())
                         .subscribe(() -> {
                             //do nothing
-                        }, logErrorConsumer(TAG, "updateTarget: ")));
+                        }, RxUtil.logErrorConsumer(TAG, "updateTarget: ")));
                 addDisposable(widgetModel.updateMetering(targetX, targetY)
                         .observeOn(SchedulerProvider.ui())
                         .subscribe(() -> {
@@ -424,7 +359,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(() -> {
                         //do nothing
-                    }, logErrorConsumer(TAG, "onExposureMeterSetFail: ")));
+                    }, RxUtil.logErrorConsumer(TAG, "onExposureMeterSetFail: ")));
         }
     }
 
@@ -488,13 +423,13 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
                                 .observeOn(SchedulerProvider.ui())
                                 .subscribe(() -> {
                                     //do nothing
-                                }, logErrorConsumer(TAG, "rotate gimbal: ")));
+                                }, RxUtil.logErrorConsumer(TAG, "rotate gimbal: ")));
                     }
                 });
     }
 
     private void updateVisibility() {
-        if (isInEditMode()){
+        if (isInEditMode()) {
             return;
         }
         if (PhysicalSource.FPV_CAM.toString().equals(cameraName) || !isInteractionEnabledAtomic.get()) {
@@ -509,9 +444,11 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FPVInteractionWidget);
 
-        setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.FPVInteractionWidget_uxsdk_cameraIndex, 0)));
-        setGimbalIndex(GimbalIndex.find(typedArray.getInt(R.styleable.FPVInteractionWidget_uxsdk_gimbalIndex, 0)));
-        setLensIndex(typedArray.getInt(R.styleable.FPVInteractionWidget_uxsdk_lensType, 0));
+        if (!isInEditMode()){
+            widgetModel.updateCameraSource(CameraIndex.find(typedArray.getInt(R.styleable.FPVInteractionWidget_uxsdk_cameraIndex, 0)),
+                    SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FPVInteractionWidget_uxsdk_lensType, 0)));
+            updateGimbalIndex(GimbalIndex.find(typedArray.getInt(R.styleable.FPVInteractionWidget_uxsdk_gimbalIndex, 0)));
+        }
 
         Drawable manualFocusIcon = typedArray.getDrawable(R.styleable.FPVInteractionWidget_uxsdk_manualFocusIcon);
         if (manualFocusIcon != null) {

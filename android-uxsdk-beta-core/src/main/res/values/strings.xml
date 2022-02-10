@@ -34,6 +34,7 @@
     <string name="uxsdk_success">Success</string>
     <string name="uxsdk_enable">Enable</string>
     <string name="uxsdk_disable">Disable</string>
+    <string name="uxsdk_not_a_num">N/A</string>
 
     <string name="uxsdk_user_login_widget_logout">Logout</string>
     <string name="uxsdk_user_login_widget_login">Login</string>

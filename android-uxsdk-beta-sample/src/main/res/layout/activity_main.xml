@@ -47,7 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:background="@color/gray_4"
+                android:background="@color/uxsdk_gray_4"
                 android:orientation="vertical"
                 android:padding="16dp">
 
@@ -57,7 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="4dp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/uxsdk_white"
                     android:textSize="14sp"
                     tools:text="Version" />
 
@@ -68,7 +68,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="4dp"
                     android:text="@string/unregistered"
-                    android:textColor="@color/white"
+                    android:textColor="@color/uxsdk_white"
                     android:textSize="14sp" />
 
                 <TextView
@@ -79,7 +79,7 @@
                     android:layout_margin="4dp"
                     android:gravity="center"
                     android:text="@string/no_product"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/uxsdk_white" />
 
                 <EditText
                     android:id="@+id/edit_text_bridge_ip"
@@ -91,8 +91,8 @@
                     android:imeOptions="actionDone"
                     android:maxLength="15"
                     android:maxLines="1"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/uxsdk_white"
+                    android:textColorHint="@color/uxsdk_white"
                     android:textSize="15sp" />
 
             </LinearLayout>
@@ -103,7 +103,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
-                android:background="@color/gray_4"
+                android:background="@color/uxsdk_gray_4"
                 android:orientation="vertical"
                 android:paddingBottom="8dp">
 
@@ -114,7 +114,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/showcase"
-                    android:textColor="@color/white"
+                    android:textColor="@color/uxsdk_white"
                     android:textSize="18sp" />
 
                 <TextView
@@ -124,11 +124,11 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@color/white"
+                    android:background="@color/uxsdk_white"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/default_layout"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/uxsdk_black" />
 
                 <TextView
                     android:id="@+id/widget_list"
@@ -137,11 +137,11 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@color/white"
+                    android:background="@color/uxsdk_white"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/widget_list"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/uxsdk_black" />
 
                 <TextView
                     android:id="@+id/map_button"
@@ -150,11 +150,11 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@color/white"
+                    android:background="@color/uxsdk_white"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="@string/map"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/uxsdk_black" />
 
             </LinearLayout>
 
@@ -169,7 +169,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@color/gray_4"
+        android:background="@color/uxsdk_gray_4"
         app:layout_constraintBottom_toBottomOf="@+id/view_scroll"
         app:layout_constraintHorizontal_weight=".7"
         app:layout_constraintLeft_toRightOf="@+id/view_scroll"
@@ -183,7 +183,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/logs"
-        android:textColor="@color/white"
+        android:textColor="@color/uxsdk_white"
         android:textSize="18sp"
         app:layout_constraintLeft_toLeftOf="@+id/log_panel"
         app:layout_constraintTop_toTopOf="@+id/log_panel" />
@@ -201,7 +201,7 @@
             android:id="@+id/text_view_logs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
+            android:textColor="@color/uxsdk_white"
             tools:text="Registering product" />
 
     </ScrollView>

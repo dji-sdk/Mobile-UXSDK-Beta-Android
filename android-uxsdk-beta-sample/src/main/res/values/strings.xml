@@ -141,5 +141,11 @@
     <string name="rtk_enabled_widget_title">RTK Enabled Widget</string>
     <string name="rtk_satellite_status_widget_title">RTK Satellite Status Widget</string>
     <string name="remaining_flight_time_widget_title">Remaining Flight Time Widget</string>
-
+    <string name="exposure_setting_panel_title">Exposure Setting Panel</string>
+    <string name="exposure_mode_setting_widget_title">Exposure Mode Setting Widget</string>
+    <string name="iso_and_ei_setting_widget_title">ISO And EI Setting Widget</string>
+    <string name="horizontal_situation_indicator_widget_title">Horizontal Situation Indicator Widget</string>
+    <string name="speed_display_widget_title">Speed Display Widget</string>
+    <string name="attitude_display_widget_title">Attitude Display Widget</string>
+    <string name="primary_flight_display_widget_title">Primary Flight Display Widget</string>
 </resources>

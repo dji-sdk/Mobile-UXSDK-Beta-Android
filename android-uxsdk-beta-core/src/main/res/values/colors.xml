@@ -29,9 +29,12 @@
     <color name="uxsdk_black">#000000</color>
     <color name="uxsdk_black_80_percent">#CC000000</color>
     <color name="uxsdk_black_70_percent">#b2000000</color>
+    <color name="uxsdk_black_60_percent">#99000000</color>
+    <color name="uxsdk_black_50_percent">#7F000000</color>
     <color name="uxsdk_black_47_percent">#77000000</color>
     <color name="uxsdk_black_40_percent">#66000000</color>
     <color name="uxsdk_black_30_percent">#4C000000</color>
+    <color name="uxsdk_black_20_percent">#32000000</color>
     <color name="uxsdk_black_10_percent">#1A000000</color>
 
     <color name="uxsdk_white">#FFFFFF</color>
@@ -44,7 +47,7 @@
     <color name="uxsdk_white_47_percent">#77FFFFFF</color>
     <color name="uxsdk_white_40_percent">#66ffffff</color>
     <color name="uxsdk_white_33_percent">#55FFFFFF</color>
-    <color name="uxsdk_white_30_percent">#4CFFFFFF</color>
+    <color name="uxsdk_white_30_percent">#4DFFFFFF</color>
     <color name="uxsdk_white_20_percent">#33FFFFFF</color>
     <color name="uxsdk_white_10_percent">#1AFFFFFF</color>
     <color name="uxsdk_white_0_percent">#00FFFFFF</color>
@@ -102,6 +105,7 @@
 
     <color name="uxsdk_user_account_login_widget_background">#1FA3F6</color>
     <color name="uxsdk_user_account_login_widget_pressed_background">#801FA3F6</color>
+    <color name="uxsdk_background_blue">#242d34</color>
 
     <!--BatteryWidget-->
     <color name="uxsdk_battery_healthy">@color/uxsdk_green</color>
@@ -133,4 +137,32 @@
 
     <!--FPV-->
     <color name="uxsdk_fpv_text_background">#991c2831</color>
+
+    <color name="uxsdk_black_transparent">#b2000000</color>
+    <color name="uxsdk_gray">#ff5e5e5e</color>
+
+    <color name="uxsdk_colorPrimary">#242d34</color>
+    <color name="uxsdk_colorPrimaryDark">#000000</color>
+    <color name="uxsdk_colorAccent">#FF4081</color>
+    <color name="uxsdk_colorLightBackground">#FFFFFF</color>
+
+    <color name="uxsdk_gray_4">#444444</color>
+    <color name="uxsdk_dark_theme_background">#303030</color>
+    <color name="uxsdk_light_gray">#B3FFFFFF</color>
+    <color name="uxsdk_dark_gray">#80000000</color>
+
+    <color name="uxsdk_pfd_main_color">#99FFAA</color>
+    <color name="uxsdk_pfd_hsi_main_color">#CC99FFAA</color>
+    <color name="uxsdk_pfd_hsi_radar_main_color">#99009919</color>
+    <color name="uxsdk_pfd_barrier_color">#EE2B2A</color>
+    <color name="uxsdk_pfd_hsi_barrier_color">#CCEE7877</color>
+    <color name="uxsdk_pfd_hsi_radar_barrier_color">#99991C1B</color>
+    <color name="uxsdk_pfd_avoidance_color">#FFC003</color>
+    <color name="uxsdk_pfd_hsi_avoidance_color">#CCFFDF80</color>
+    <color name="uxsdk_pfd_hsi_radar_avoidance_color">#99997302</color>
+    <color name="uxsdk_pfd_hsi_perception_disabled_stroke_color">#4CFF0000</color>
+
+    <color name="uxsdk_gimbal_mark_1">#00CFFF</color>
+    <color name="uxsdk_gimbal_mark_2">#FFDB05</color>
+    <color name="uxsdk_gimbal_mark_3">#8274FF</color>
 </resources>
