@@ -33,6 +33,7 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.MeteringMode;
 import dji.common.gimbal.CapabilityKey;
 import dji.common.gimbal.Rotation;
@@ -42,6 +43,7 @@ import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.keysdk.GimbalKey;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.GlobalPreferenceKeys;
 import dji.ux.beta.core.communication.GlobalPreferencesInterface;
@@ -50,6 +52,7 @@ import dji.ux.beta.core.communication.UXKey;
 import dji.ux.beta.core.communication.UXKeys;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.ProductUtil;
+import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
 import dji.ux.beta.core.util.SettingDefinitions.GimbalIndex;
@@ -60,7 +63,7 @@ import io.reactivex.rxjava3.core.Flowable;
  * Widget Model for the {@link FPVInteractionWidget} used to define
  * the underlying logic and communication
  */
-public class FPVInteractionWidgetModel extends WidgetModel {
+public class FPVInteractionWidgetModel extends WidgetModel implements ICameraIndex {
 
     //region Constants
     private static final int NUM_ROWS = 8;
@@ -146,24 +149,20 @@ public class FPVInteractionWidgetModel extends WidgetModel {
     //endregion
 
     //region Data
-
-    /**
-     * Get the camera index for which the model is reacting.
-     *
-     * @return current camera index.
-     */
     @NonNull
-    public CameraIndex getCameraIndex() {
-        return CameraIndex.find(cameraIndex);
+    public SettingDefinitions.CameraIndex getCameraIndex() {
+        return SettingDefinitions.CameraIndex.find(cameraIndex);
     }
 
-    /**
-     * Set camera index to which the model should react.
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
+    @NonNull
+    public SettingsDefinitions.LensType getLensType() {
+        return SettingsDefinitions.LensType.find(lensIndex);
+    }
+
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
         this.cameraIndex = cameraIndex.getIndex();
+        this.lensIndex = lensType.value();
         restart();
     }
 
@@ -186,25 +185,6 @@ public class FPVInteractionWidgetModel extends WidgetModel {
         if (gimbalIndex != null) {
             this.gimbalIndex = gimbalIndex.getIndex();
         }
-        restart();
-    }
-
-    /**
-     * Get the current index of the lens the widget model is reacting to
-     *
-     * @return current lens index
-     */
-    public int getLensIndex() {
-        return lensIndex;
-    }
-
-    /**
-     * Set the index of the lens for which the widget model should react
-     *
-     * @param lensIndex lens index
-     */
-    public void setLensIndex(int lensIndex) {
-        this.lensIndex = lensIndex;
         restart();
     }
 

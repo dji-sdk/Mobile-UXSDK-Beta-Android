@@ -49,11 +49,14 @@ import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.util.CameraActionSound;
 import dji.ux.beta.cameracore.widget.cameracapture.recordvideo.RecordVideoWidgetModel.RecordingState;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.CameraUtil;
 import dji.ux.beta.core.util.ProductUtil;
+import dji.ux.beta.core.util.RxUtil;
+import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import io.reactivex.rxjava3.core.Completable;
 
@@ -63,7 +66,7 @@ import io.reactivex.rxjava3.core.Completable;
  * Widget can be used for recording video. The widget displays the current video mode. It also
  * displays the storage state and errors associated with it.
  */
-public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClickListener {
+public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClickListener, ICameraIndex {
 
     //region Fields
     private static final String TAG = "RecordVideoWidget";
@@ -106,9 +109,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
         centerImageView.setOnClickListener(this);
         cameraActionSound = new CameraActionSound(context);
         if (!isInEditMode()) {
-            widgetModel =
-                    new RecordVideoWidgetModel(DJISDKModel.getInstance(),
-                            ObservableInMemoryKeyedStore.getInstance());
+            widgetModel = new RecordVideoWidgetModel(DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance());
         }
         initDefaults();
         if (attrs != null) {
@@ -134,30 +135,39 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
 
     @Override
     protected void reactToModelChanges() {
-        addReaction(
-                widgetModel.getRecordingTimeInSeconds()
-                        .observeOn(SchedulerProvider.ui())
-                        .subscribe(
-                                this::updateRecordingTime,
-                                logErrorConsumer(TAG, "record time: ")));
-        addReaction(
-                widgetModel.getRecordingState()
-                        .observeOn(SchedulerProvider.ui())
-                        .subscribe(
-                                recordingState -> onIsRecordingVideoChange(recordingState, true),
-                                logErrorConsumer(TAG, "is recording: ")));
-        addReaction(
-                widgetModel.getCameraVideoStorageState()
-                        .observeOn(SchedulerProvider.ui())
-                        .subscribe(
-                                this::updateCameraForegroundResource,
-                                logErrorConsumer(TAG, "camera storage update: ")));
+        addReaction(widgetModel.getRecordingTimeInSeconds()
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(this::updateRecordingTime, RxUtil.logErrorConsumer(TAG, "record time: ")));
+        addReaction(widgetModel.getRecordingState()
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(recordingState -> onIsRecordingVideoChange(recordingState, true), RxUtil.logErrorConsumer(TAG, "is recording: ")));
+        addReaction(widgetModel.getCameraVideoStorageState()
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(this::updateCameraForegroundResource, RxUtil.logErrorConsumer(TAG, "camera storage update: ")));
     }
 
     @NonNull
     @Override
     public String getIdealDimensionRatioString() {
         return getResources().getString(R.string.uxsdk_widget_default_ratio);
+    }
+
+    @NonNull
+    public SettingDefinitions.CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
+    }
+
+    @NonNull
+    @Override
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        if (!isInEditMode()){
+            widgetModel.updateCameraSource(cameraIndex, lensType);
+        }
     }
 
     @Override
@@ -172,7 +182,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
                     return Completable.complete();
                 }
             }).observeOn(SchedulerProvider.ui()).subscribe(() -> {
-            }, logErrorConsumer(TAG, "START STOP VIDEO")));
+            }, RxUtil.logErrorConsumer(TAG, "START STOP VIDEO")));
         }
     }
     //endregion
@@ -192,13 +202,12 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
         setSSDStorageIcon(StorageIconState.NOT_INSERTED, R.drawable.uxsdk_ic_ssd_not_inserted);
         setSSDStorageIcon(StorageIconState.FULL, R.drawable.uxsdk_ic_ssd_full);
         setVideoTimerTextColor(Color.WHITE);
-        setCameraIndex(CameraIndex.CAMERA_INDEX_0);
     }
 
     private void initAttributes(@NonNull Context context, @NonNull AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.RecordVideoWidget);
-        setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.RecordVideoWidget_uxsdk_cameraIndex, 0)));
-        setLensType(typedArray.getInt(R.styleable.RecordVideoWidget_uxsdk_lensType, 0));
+        updateCameraSource(CameraIndex.find(typedArray.getInt(R.styleable.RecordVideoWidget_uxsdk_cameraIndex, 0)),
+                SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.RecordVideoWidget_uxsdk_lensType, 0)));
 
         int textAppearance = typedArray.getResourceId(R.styleable.RecordVideoWidget_uxsdk_timerTextAppearance, INVALID_RESOURCE);
         if (textAppearance != INVALID_RESOURCE) {
@@ -321,7 +330,7 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
             addDisposable(widgetModel.getCameraVideoStorageState().firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(this::updateCameraForegroundResource,
-                            logErrorConsumer(TAG, "check and update camera foreground resource: ")));
+                            RxUtil.logErrorConsumer(TAG, "check and update camera foreground resource: ")));
         }
     }
 
@@ -330,55 +339,12 @@ public class RecordVideoWidget extends ConstraintLayoutWidget implements OnClick
             addDisposable(widgetModel.getRecordingState().firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(recordingState -> onIsRecordingVideoChange(recordingState, false),
-                            logErrorConsumer(TAG, "check and update camera foreground resource: ")));
+                            RxUtil.logErrorConsumer(TAG, "check and update camera foreground resource: ")));
         }
     }
     //endregion
 
     //region customizations
-
-    /**
-     * Get the index of the camera to which the widget is reacting
-     *
-     * @return {@link CameraIndex}
-     */
-    @NonNull
-    public CameraIndex getCameraIndex() {
-        return widgetModel.getCameraIndex();
-    }
-
-    /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex {@link CameraIndex}
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
-    }
-
-    /**
-     * Get the current type of the lens the widget is reacting to
-     *
-     * @return current lens type
-     */
-    @NonNull
-    public SettingsDefinitions.LensType getLensType() {
-        return widgetModel.getLensType();
-    }
-
-    /**
-     * Set the type of the lens for which the widget should react
-     *
-     * @param lensType lens type
-     */
-    public void setLensType(@NonNull int lensType) {
-        if (!isInEditMode()) {
-            widgetModel.setLensType(SettingsDefinitions.LensType.find(lensType));
-        }
-    }
-
     /**
      * Get the current start recording video icon
      *

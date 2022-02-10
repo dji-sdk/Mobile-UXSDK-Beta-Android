@@ -34,15 +34,16 @@ import android.widget.ImageView;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import dji.common.camera.SettingsDefinitions;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.FrameLayoutWidget;
 import dji.ux.beta.core.communication.GlobalPreferencesManager;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
 
@@ -53,7 +54,7 @@ import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
  * When in focus mode the {@link FPVInteractionWidget} will help change the focus point
  * When in exposure mode the {@link FPVInteractionWidget} will help change exposure/metering
  */
-public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnClickListener {
+public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnClickListener, ICameraIndex {
 
     //region Fields
     private static final String TAG = "FocusExpoSwitchWidget";
@@ -121,7 +122,7 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(() -> {
                         //do nothing
-                    }, logErrorConsumer(TAG, "switchControlMode: ")));
+                    }, RxUtil.logErrorConsumer(TAG, "switchControlMode: ")));
         }
     }
 
@@ -165,15 +166,15 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
         if (!isInEditMode()) {
             addDisposable(widgetModel.getControlMode().firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(this::updateUI, logErrorConsumer(TAG, "Update UI ")));
+                    .subscribe(this::updateUI, RxUtil.logErrorConsumer(TAG, "Update UI ")));
         }
     }
 
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FocusExposureSwitchWidget);
-        setCameraIndex(CameraIndex.find(typedArray.getInt(R.styleable.FocusExposureSwitchWidget_uxsdk_cameraIndex, 0)));
         if (!isInEditMode()) {
-            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FocusExposureSwitchWidget_uxsdk_lensType, 0)));
+            updateCameraSource(CameraIndex.find(typedArray.getInt(R.styleable.FocusExposureSwitchWidget_uxsdk_cameraIndex, 0)),
+                    SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FocusExposureSwitchWidget_uxsdk_lensType, 0)));
         }
         if (typedArray.getDrawable(R.styleable.FocusExposureSwitchWidget_uxsdk_meteringDrawable) != null) {
             spotMeterDrawable = typedArray.getDrawable(R.styleable.FocusExposureSwitchWidget_uxsdk_meteringDrawable);
@@ -197,46 +198,19 @@ public class FocusExposureSwitchWidget extends FrameLayoutWidget implements OnCl
         return getResources().getString(R.string.uxsdk_widget_default_ratio);
     }
 
-    /**
-     * Gets the camera index used by the widget
-     *
-     * @return Camera index
-     */
     @NonNull
     public CameraIndex getCameraIndex() {
         return widgetModel.getCameraIndex();
     }
 
-    /**
-     * Set the camera key index for which this model should subscribe to.
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
+    @Override
+    public void updateCameraSource(@NonNull CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        widgetModel.updateCameraSource(cameraIndex, lensType);
     }
 
-    /**
-     * Get the current type of the lens the widget is reacting to
-     *
-     * @return current lens type
-     */
     @NonNull
     public SettingsDefinitions.LensType getLensType() {
         return widgetModel.getLensType();
-    }
-
-    /**
-     * Set the type of the lens for which the widget should react
-     *
-     * @param lensType lens type
-     */
-    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
-        if (!isInEditMode()) {
-            widgetModel.setLensType(lensType);
-        }
     }
 
     /**

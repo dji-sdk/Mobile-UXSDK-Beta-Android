@@ -27,6 +27,8 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.CheckResult
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.dji.frame.util.V_JsonUtil
+import dji.log.DJILog
 import dji.ux.beta.core.base.WidgetSizeDescription
 import dji.ux.beta.core.util.RxUtil
 import io.reactivex.rxjava3.core.Flowable
@@ -140,20 +142,7 @@ abstract class ConstraintLayoutWidget<T> @JvmOverloads constructor(
         compositeDisposable = null
     }
     //endregion
-    //region Helpers
-    /**
-     * Get a throwable error consumer for the given error.
-     *
-     * @param tag     Tag for the log
-     * @param message Message to be logged
-     * @return Throwable consumer
-     */
-    @CheckResult
-    protected fun logErrorConsumer(tag: String, message: String): Consumer<Throwable> {
-        return RxUtil.logErrorConsumer(tag, message)
-    }
 
-    //endregion
     /**
      * Get the update for the widget state
      *

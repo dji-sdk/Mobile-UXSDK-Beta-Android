@@ -40,19 +40,20 @@ import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.FocusMode;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.disposables.Disposable;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.FrameLayoutWidget;
 import dji.ux.beta.core.communication.GlobalPreferencesManager;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DisplayUtil;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * Widget will display the current focus mode of aircraft camera.
@@ -63,7 +64,7 @@ import dji.ux.beta.core.util.SettingDefinitions;
  * Interaction:
  * Tapping will toggle between AF and MF mode.
  */
-public class FocusModeWidget extends FrameLayoutWidget implements OnClickListener {
+public class FocusModeWidget extends FrameLayoutWidget implements OnClickListener, ICameraIndex {
 
     //region constants
     private static final String TAG = "FocusModeWidget";
@@ -146,7 +147,7 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(() -> {
                     // Do nothing
-                }, logErrorConsumer(TAG, "switch focus mode: ")));
+                }, RxUtil.logErrorConsumer(TAG, "switch focus mode: ")));
     }
 
     //endregion
@@ -159,7 +160,7 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
                     .subscribe(values -> updateUI(values.first, values.second),
-                            logErrorConsumer(TAG, "check and update focus mode: ")));
+                            RxUtil.logErrorConsumer(TAG, "check and update focus mode: ")));
         }
     }
 
@@ -167,7 +168,7 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
         return Flowable.combineLatest(widgetModel.isAFCEnabled(), widgetModel.getFocusMode(), Pair::new)
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(values -> updateUI(values.first, values.second),
-                        logErrorConsumer(TAG, "react to Focus Mode Change: "));
+                        RxUtil.logErrorConsumer(TAG, "react to Focus Mode Change: "));
     }
 
     private void updateVisibility(boolean isFocusModeChangeSupported) {
@@ -219,9 +220,9 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
 
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.FocusModeWidget);
-        setCameraIndex(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.FocusModeWidget_uxsdk_cameraIndex, 0)));
-        if (!isInEditMode()){
-            setLensType(SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FocusModeWidget_uxsdk_lensType, 0)));
+        if (!isInEditMode()) {
+            updateCameraSource(SettingDefinitions.CameraIndex.find(typedArray.getInt(R.styleable.FocusModeWidget_uxsdk_cameraIndex, 0)),
+                    SettingsDefinitions.LensType.find(typedArray.getInt(R.styleable.FocusModeWidget_uxsdk_lensType, 0)));
         }
         activeColor = typedArray.getColor(R.styleable.FocusModeWidget_uxsdk_activeModeTextColor, getResources().getColor(R.color.uxsdk_green));
         inactiveColor = typedArray.getColor(R.styleable.FocusModeWidget_uxsdk_inactiveModeTextColor, getResources().getColor(R.color.uxsdk_white));
@@ -249,17 +250,6 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
     }
 
     /**
-     * Set the index of camera to which the widget should react
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        if (!isInEditMode()) {
-            widgetModel.setCameraIndex(cameraIndex);
-        }
-    }
-
-    /**
      * Get the current type of the lens the widget is reacting to
      *
      * @return current lens type
@@ -269,15 +259,9 @@ public class FocusModeWidget extends FrameLayoutWidget implements OnClickListene
         return widgetModel.getLensType();
     }
 
-    /**
-     * Set the type of the lens for which the widget should react
-     *
-     * @param lensType lens type
-     */
-    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
-        if (!isInEditMode()) {
-            widgetModel.setLensType(lensType);
-        }
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        widgetModel.updateCameraSource(cameraIndex, lensType);
     }
 
     /**

@@ -30,14 +30,6 @@
     android:layout_height="match_parent"
     tools:context=".showcase.defaultlayout.DefaultLayoutActivity">
 
-    <dji.ux.beta.core.widget.fpv.FPVWidget
-        android:id="@+id/widget_fpv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:uxsdk_onStateChange="@+id/widget_fpv_interaction" />
-
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -70,7 +62,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" >
+
+        <dji.ux.beta.core.widget.fpv.FPVWidget
+            android:id="@+id/widget_primary_fpv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="-29dp"
+            tools:layout_editor_absoluteY="0dp" />
+    </dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget>
 
     <dji.ux.beta.core.widget.radar.RadarWidget
         android:id="@+id/widget_radar"
@@ -100,7 +100,7 @@
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/dark_gray"
+        android:background="@color/uxsdk_dark_gray"
         android:padding="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/widget_camera_config_iso_and_ei"
         app:layout_constraintEnd_toEndOf="@+id/widget_camera_config_wb"
@@ -165,7 +165,7 @@
         android:layout_height="@dimen/camera_config_height"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@color/dark_gray"
+        android:background="@color/uxsdk_dark_gray"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/widget_camera_config_iso_and_ei"
@@ -178,7 +178,7 @@
         android:layout_height="@dimen/camera_config_height"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@color/dark_gray"
+        android:background="@color/uxsdk_dark_gray"
         android:paddingLeft="2dp"
         android:paddingRight="2dp"
         app:layout_constraintBottom_toBottomOf="@+id/widget_camera_config_iso_and_ei"
@@ -220,6 +220,7 @@
     <!-- end camera bar -->
 
     <dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget
+        android:id="@+id/widget_camera_controls"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -228,6 +229,17 @@
         app:layout_constraintHeight_percent="0.45"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45" />
+
+    <dji.ux.beta.cameracore.widget.cameracontrols.exposuresettings.ExposureSettingsPanel
+        android:id="@+id/panel_camera_controls_exposure_settings"
+        android:layout_width="180dp"
+        android:layout_height="263dp"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="@string/uxsdk_widget_camera_controls_ratio"
+        app:layout_constraintEnd_toStartOf="@id/widget_camera_controls"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <dji.ux.beta.map.widget.map.MapWidget
         android:id="@+id/widget_map"
@@ -246,7 +258,7 @@
         android:id="@+id/panel_top_bar"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@color/black"
+        android:background="@color/uxsdk_black"
         android:paddingTop="@dimen/topbar_padding"
         android:paddingBottom="@dimen/topbar_padding"
         app:layout_constraintEnd_toEndOf="parent"
@@ -254,7 +266,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:uxsdk_itemsMarginRight="@dimen/uxsdk_spacing_normal"
-        app:uxsdk_itemsSpacing="@dimen/uxsdk_spacing_normal" />
+        app:uxsdk_itemsSpacing="14dp" />
 
     <dji.ux.beta.core.widget.remainingflighttime.RemainingFlightTimeWidget
         android:id="@+id/widget_remaining_flight_time"
@@ -301,6 +313,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/widget_remaining_flight_time"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <dji.ux.beta.cameracore.widget.cameracontrols.lenscontrol.LensControlWidget
+        android:id="@+id/widget_lens_control"
+        android:layout_width="@dimen/uxsdk_76_dp"
+        android:layout_height="@dimen/uxsdk_95_dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="125dp"
+        android:padding="3dp"
+        app:layout_constraintStart_toEndOf="@id/widget_take_off"
+        app:layout_constraintTop_toBottomOf="@id/widget_remaining_flight_time" />
 
     <dji.ux.beta.flight.widget.returnhome.ReturnHomeWidget
         android:id="@+id/widget_return_to_home"

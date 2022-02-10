@@ -33,6 +33,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
@@ -41,10 +44,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
-import java.util.LinkedList;
-import java.util.List;
-
 import dji.ux.beta.core.R;
 
 /**
@@ -173,9 +172,9 @@ public class SeekBarView extends ConstraintLayout implements View.OnTouchListene
      */
     public void enable(boolean status) {
         seekBarValueText.setEnabled(status);
-        seekBarValueText.requestLayout();
+        //seekBarValueText.requestLayout();
         seekBarThumbImage.setEnabled(status);
-        seekBarThumbImage.requestLayout();
+        //seekBarThumbImage.requestLayout();
 
         if (status) {
             setOnTouchListener(this);

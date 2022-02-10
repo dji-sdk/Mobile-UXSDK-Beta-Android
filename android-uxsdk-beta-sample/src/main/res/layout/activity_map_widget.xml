@@ -49,7 +49,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dark_gray"
+            android:background="@color/uxsdk_dark_gray"
             android:padding="8dp">
 
             <TextView
@@ -57,11 +57,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
-                android:background="@color/transparent"
+                android:background="@color/uxsdk_transparent"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/map_settings"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -72,7 +72,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_margin="@dimen/map_settings_item_separator"
-                android:background="@color/colorAccent"
+                android:background="@color/uxsdk_colorAccent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/settings_text" />
@@ -81,10 +81,10 @@
                 android:id="@+id/center_selector_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/transparent"
+                android:background="@color/uxsdk_transparent"
                 android:padding="5dp"
                 android:text="@string/center_map"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintBottom_toBottomOf="@+id/map_center_selector"
                 app:layout_constraintHorizontal_chainStyle="spread_inside"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -96,7 +96,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/map_settings_item_separator"
-                android:background="@color/transparent"
+                android:background="@color/uxsdk_transparent"
                 android:orientation="horizontal"
                 app:layout_constraintLeft_toRightOf="@+id/center_selector_label"
                 app:layout_constraintRight_toRightOf="parent"
@@ -145,7 +145,7 @@
                 android:layout_marginTop="@dimen/map_settings_item_separator"
                 android:checked="true"
                 android:text="@string/show_home_point"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/map_center_selector" />
 
@@ -156,7 +156,7 @@
                 android:layout_marginTop="@dimen/map_settings_item_separator"
                 android:checked="true"
                 android:text="@string/dji_account_indicator"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_point" />
 
@@ -188,11 +188,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/map_settings_separator"
-                android:background="@color/transparent"
+                android:background="@color/uxsdk_transparent"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/fly_zone_settings"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -203,7 +203,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_margin="@dimen/map_settings_item_separator"
-                android:background="@color/colorAccent"
+                android:background="@color/uxsdk_colorAccent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fly_zone_settings_text" />
@@ -214,7 +214,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/map_settings_item_separator"
                 android:text="@string/fly_zone_legend"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/fly_zone_settings_separator" />
 
@@ -225,7 +225,7 @@
                 android:layout_marginTop="@dimen/map_settings_item_separator"
                 android:checked="true"
                 android:text="@string/unlock_flyzones"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flyzone_legend" />
 
@@ -246,11 +246,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/map_settings_separator"
-                android:background="@color/transparent"
+                android:background="@color/uxsdk_transparent"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/flight_settings"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -261,7 +261,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_margin="@dimen/map_settings_item_separator"
-                android:background="@color/colorAccent"
+                android:background="@color/uxsdk_colorAccent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flight_settings_text" />
@@ -273,7 +273,7 @@
                 android:layout_marginTop="@dimen/map_settings_item_separator"
                 android:checked="true"
                 android:text="@string/home_direction"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flight_settings_separator" />
 
@@ -284,7 +284,7 @@
                 android:layout_marginTop="@dimen/map_settings_item_separator"
                 android:checked="true"
                 android:text="@string/auto_frame"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/home_direction" />
 
@@ -295,7 +295,7 @@
                 android:layout_marginTop="@dimen/map_settings_item_separator"
                 android:checked="true"
                 android:text="@string/show_flight_path"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lock_bounds" />
 
@@ -306,7 +306,7 @@
                 android:layout_marginTop="@dimen/map_settings_item_separator"
                 android:checked="true"
                 android:text="@string/show_gimbal_yaw"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/flight_path" />
 
@@ -320,7 +320,7 @@
                 android:padding="8dp"
                 android:text="@string/clear_flight_path"
                 android:textAllCaps="true"
-                android:textColor="@color/black"
+                android:textColor="@color/uxsdk_black"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/gimbal_yaw" />
@@ -330,11 +330,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/map_settings_separator"
-                android:background="@color/transparent"
+                android:background="@color/uxsdk_transparent"
                 android:gravity="center"
                 android:padding="5dp"
                 android:text="@string/other_settings"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 android:textStyle="bold"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -345,7 +345,7 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_margin="@dimen/map_settings_item_separator"
-                android:background="@color/colorAccent"
+                android:background="@color/uxsdk_colorAccent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/other_settings_text" />
@@ -354,10 +354,10 @@
                 android:id="@+id/icon_change_settings_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/transparent"
+                android:background="@color/uxsdk_transparent"
                 android:padding="5dp"
                 android:text="@string/icon_change_settings"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/other_settings_separator" />
 
@@ -384,7 +384,7 @@
                 android:padding="8dp"
                 android:text="@string/replace_icon"
                 android:textAllCaps="true"
-                android:textColor="@color/black"
+                android:textColor="@color/uxsdk_black"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon_spinner" />
 
@@ -461,10 +461,10 @@
                 android:id="@+id/line_color_settings_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/transparent"
+                android:background="@color/uxsdk_transparent"
                 android:padding="5dp"
                 android:text="@string/line_color_settings"
-                android:textColor="@color/white"
+                android:textColor="@color/uxsdk_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/icon_1" />
 
@@ -516,7 +516,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_margin="5dp"
-        android:background="@color/light_gray_300"
+        android:background="@color/uxsdk_light_gray_300"
         android:padding="5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"

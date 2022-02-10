@@ -34,6 +34,7 @@ import dji.common.camera.SettingsDefinitions.ExposureSensitivityMode;
 import dji.common.camera.SettingsDefinitions.ShutterSpeed;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
+import dji.ux.beta.core.base.ICameraIndex;
 import io.reactivex.rxjava3.core.Flowable;
 import dji.ux.beta.core.base.DJISDKModel;
 import dji.ux.beta.core.base.WidgetModel;
@@ -45,7 +46,7 @@ import dji.ux.beta.core.util.SettingDefinitions;
  * Widget Model for the {@link CameraConfigEVWidget} used to define
  * the underlying logic and communication
  */
-public class CameraConfigEVWidgetModel extends WidgetModel {
+public class CameraConfigEVWidgetModel extends WidgetModel implements ICameraIndex {
     //region Fields
     private DataProcessor<ExposureSettings> exposureSettingsProcessor;
     private DataProcessor<ExposureMode> exposureModeProcessor;
@@ -74,42 +75,19 @@ public class CameraConfigEVWidgetModel extends WidgetModel {
 
     //region Data
 
-    /**
-     * Get the current index of the camera the widget model is reacting to
-     *
-     * @return current camera index
-     */
     @NonNull
     public SettingDefinitions.CameraIndex getCameraIndex() {
         return SettingDefinitions.CameraIndex.find(cameraIndex);
     }
 
-    /**
-     * Set the index of the camera for which the widget model should react
-     *
-     * @param cameraIndex camera index
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
-        this.cameraIndex = cameraIndex.getIndex();
-        restart();
-    }
-
-    /**
-     * Get the current type of the lens the widget model is reacting to
-     *
-     * @return current lens type
-     */
     @NonNull
     public SettingsDefinitions.LensType getLensType() {
         return lensType;
     }
 
-    /**
-     * Set the type of the lens for which the widget model should react
-     *
-     * @param lensType lens type
-     */
-    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        this.cameraIndex = cameraIndex.getIndex();
         this.lensType = lensType;
         restart();
     }

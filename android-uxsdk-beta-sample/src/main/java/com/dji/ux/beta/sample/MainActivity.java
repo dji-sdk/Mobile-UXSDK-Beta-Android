@@ -42,11 +42,6 @@ import android.widget.EditText;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import com.dji.ux.beta.sample.showcase.defaultlayout.DefaultLayoutActivity;
 import com.dji.ux.beta.sample.showcase.map.MapWidgetActivity;
 import com.dji.ux.beta.sample.showcase.widgetlist.WidgetsActivity;
@@ -59,6 +54,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -70,6 +69,8 @@ import dji.sdk.products.Aircraft;
 import dji.sdk.sdkmanager.DJISDKInitEvent;
 import dji.sdk.sdkmanager.DJISDKManager;
 import dji.ux.beta.core.util.SettingDefinitions;
+import dji.ux.beta.core.util.UxSharedPreferencesUtil;
+import dji.ux.beta.core.widget.hsi.AttitudeDisplayWidget;
 
 /**
  * Handles the connection to the product and provides links to the different test activities. Also
@@ -220,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         setBridgeModeEditText();
         versionTextView.setText(getResources().getString(R.string.sdk_version,
                 DJISDKManager.getInstance().getSDKVersion()));
+        UxSharedPreferencesUtil.initialize(this,"");
     }
     //endregion
 
@@ -282,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
      * Start the SDK registration
      */
     private void startSDKRegistration() {
+        new AttitudeDisplayWidget(this,null,0);
         if (isRegistrationInProgress.compareAndSet(false, true)) {
             addLog("Registering product");
             AsyncTask.execute(() -> DJISDKManager.getInstance().registerApp(MainActivity.this, registrationCallback));

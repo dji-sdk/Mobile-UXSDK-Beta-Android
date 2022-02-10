@@ -32,6 +32,7 @@ import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.log.DJILog;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.GlobalPreferenceKeys;
 import dji.ux.beta.core.communication.GlobalPreferencesInterface;
@@ -39,6 +40,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.UXKey;
 import dji.ux.beta.core.communication.UXKeys;
 import dji.ux.beta.core.util.DataProcessor;
+import dji.ux.beta.core.util.RxUtil;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import dji.ux.beta.core.util.SettingDefinitions.ControlMode;
 import io.reactivex.rxjava3.core.Completable;
@@ -50,7 +52,7 @@ import io.reactivex.rxjava3.core.Flowable;
  * Widget Model for the {@link FocusExposureSwitchWidget} used to define the
  * underlying logic and communication
  */
-public class FocusExposureSwitchWidgetModel extends WidgetModel {
+public class FocusExposureSwitchWidgetModel extends WidgetModel implements ICameraIndex {
 
     //region Fields
     private static final String TAG = "FocusExpoSwitchWidMod";
@@ -147,47 +149,19 @@ public class FocusExposureSwitchWidgetModel extends WidgetModel {
         return controlModeDataProcessor.toFlowable();
     }
 
-
-    /**
-     * Get the camera index for which the model is reacting.
-     *
-     * @return current camera index.
-     */
     @NonNull
     public CameraIndex getCameraIndex() {
         return CameraIndex.find(cameraIndex);
     }
 
-    //endregion
-
-    //region Actions
-
-    /**
-     * Set camera index to which the model should react.
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        this.cameraIndex = cameraIndex.getIndex();
-        restart();
-    }
-
-    /**
-     * Get the current type of the lens the widget model is reacting to
-     *
-     * @return current lens type
-     */
     @NonNull
     public SettingsDefinitions.LensType getLensType() {
         return lensType;
     }
 
-    /**
-     * Set the type of the lens for which the widget model should react
-     *
-     * @param lensType lens type
-     */
-    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+    @Override
+    public void updateCameraSource(@NonNull CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        this.cameraIndex = cameraIndex.getIndex();
         this.lensType = lensType;
         restart();
     }
@@ -226,7 +200,7 @@ public class FocusExposureSwitchWidgetModel extends WidgetModel {
                             addDisposable(keyedStore.setValue(controlModeKey, ControlMode.SPOT_METER)
                                     .subscribe(() -> {
                                         //do nothing
-                                    }, logErrorConsumer(TAG, "setMeteringMode: ")));
+                                    }, RxUtil.logErrorConsumer(TAG, "setMeteringMode: ")));
                             DJILog.d(TAG, "Success");
                         }).doOnError(
                         error -> {

@@ -41,6 +41,7 @@ import dji.keysdk.callback.KeyListener;
 import dji.keysdk.callback.SetCallback;
 import dji.log.DJILog;
 import dji.sdk.camera.Camera;
+import dji.ux.beta.core.util.LogUtil;
 import io.reactivex.rxjava3.core.BackpressureStrategy;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
@@ -106,8 +107,7 @@ public class DJISDKModel {
 
             DJILog.d(TAG, "Registering key " + key.toString() + " for " + listener.getClass().getName());
             registerKey(emitter, key, listener);
-        }, BackpressureStrategy.LATEST)
-                .subscribeOn(SchedulerProvider.computation());
+        }, BackpressureStrategy.LATEST).subscribeOn(SchedulerProvider.computation());
     }
 
     /**
@@ -180,7 +180,8 @@ public class DJISDKModel {
 
                         @Override
                         public void onFailure(@NonNull DJIError djiError) {
-                            emitter.onError(new UXSDKError(djiError));
+                            LogUtil.DjiLog("setValue", key, value, djiError);
+                            //emitter.onError(new UXSDKError(djiError));
                         }
                     });
                 }).subscribeOn(SchedulerProvider.computation());
@@ -282,18 +283,18 @@ public class DJISDKModel {
         getKeyManager().getValue(key, new GetCallback() {
             @Override
             public void onSuccess(@NonNull Object value) {
-                DJILog.d(TAG, "Got current value for  key " + key.toString());
+                //LogUtil.DjiLog( "Got current value for  key " + key.toString());
                 emitter.onNext(value);
             }
 
             @Override
             public void onFailure(@NonNull DJIError djiError) {
-                DJILog.d(TAG, "Failure getting key " + key.toString() + ". " + djiError.getDescription());
+                //LogUtil.DjiLog("Failure getting key " + key.toString() + ". " + djiError.getDescription());
+                //emitter.onError(new Throwable(key + " " + djiError.toString()));
             }
         });
         // Start listening to changes
         KeyListener keyListener = (oldValue, newValue) -> {
-            DJILog.d(TAG, "Update on key " + key.toString());
             if (newValue != null && !emitter.isCancelled()) {
                 emitter.onNext(newValue);
             }

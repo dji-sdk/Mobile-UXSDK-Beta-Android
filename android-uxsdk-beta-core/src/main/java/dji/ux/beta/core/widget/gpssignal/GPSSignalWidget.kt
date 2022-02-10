@@ -49,6 +49,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.communication.OnStateChangeCallback
 import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.util.DisplayUtil
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget.ModelState
 import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget.ModelState.*
 import java.util.*
@@ -339,7 +340,7 @@ open class GPSSignalWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.productConnection.firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateIconColor(it) }, logErrorConsumer(TAG, "Update Icon Color ")))
+                    .subscribe(Consumer { this.updateIconColor(it) }, RxUtil.logErrorConsumer(TAG, "Update Icon Color ")))
         }
     }
 
@@ -347,7 +348,7 @@ open class GPSSignalWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.isRTKAccurate.firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateRTKColor(it) }, logErrorConsumer(TAG, "Update RTK Color ")))
+                    .subscribe(Consumer { this.updateRTKColor(it) }, RxUtil.logErrorConsumer(TAG, "Update RTK Color ")))
         }
     }
 
@@ -355,7 +356,7 @@ open class GPSSignalWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             addDisposable(widgetModel.isExternalGPSUsed.firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { this.updateIcon(it) }, logErrorConsumer(TAG, "Update Icon ")))
+                    .subscribe(Consumer { this.updateIcon(it) }, RxUtil.logErrorConsumer(TAG, "Update Icon ")))
         }
     }
     //endregion

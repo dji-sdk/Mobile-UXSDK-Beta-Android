@@ -28,9 +28,11 @@ import dji.common.camera.SettingsDefinitions;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.DataProcessor;
+import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
@@ -41,7 +43,7 @@ import io.reactivex.rxjava3.core.Flowable;
  * Widget Model for the {@link AutoExposureLockWidget} used to define the
  * underlying logic and communication
  */
-public class AutoExposureLockWidgetModel extends WidgetModel {
+public class AutoExposureLockWidgetModel extends WidgetModel implements ICameraIndex {
     //region Fields
     private final DataProcessor<Boolean> autoExposureLockBooleanProcessor;
     private DJIKey autoExposureLockKey;
@@ -70,42 +72,20 @@ public class AutoExposureLockWidgetModel extends WidgetModel {
 
     //region Actions
 
-    /**
-     * Get the camera index for which the model is reacting.
-     *
-     * @return int representing {@link CameraIndex}.
-     */
     @NonNull
-    public CameraIndex getCameraIndex() {
-        return CameraIndex.find(cameraIndex);
+    public SettingDefinitions.CameraIndex getCameraIndex() {
+        return SettingDefinitions.CameraIndex.find(cameraIndex);
     }
 
-    /**
-     * Set camera index to which the model should react.
-     *
-     * @param cameraIndex index of the camera.
-     */
-    public void setCameraIndex(@NonNull CameraIndex cameraIndex) {
-        this.cameraIndex = cameraIndex.getIndex();
-        restart();
-    }
-
-    /**
-     * Get the current type of the lens the widget model is reacting to
-     *
-     * @return current lens type
-     */
     @NonNull
+    @Override
     public SettingsDefinitions.LensType getLensType() {
         return lensType;
     }
 
-    /**
-     * Set the type of the lens for which the widget model should react
-     *
-     * @param lensType lens type
-     */
-    public void setLensType(@NonNull SettingsDefinitions.LensType lensType) {
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        this.cameraIndex = cameraIndex.getIndex();
         this.lensType = lensType;
         restart();
     }

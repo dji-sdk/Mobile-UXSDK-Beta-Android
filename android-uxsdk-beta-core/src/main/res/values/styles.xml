@@ -203,4 +203,11 @@
         <item name="uxsdk_value_gravity">center_vertical|left</item>
     </style>
 
+    <style name="uxsdk_camera_exposure_settings_title">
+        <item name="android:textColor">@color/uxsdk_white</item>
+        <item name="android:gravity">bottom</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
 </resources>

@@ -35,14 +35,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Constraints;
+import dji.common.camera.SettingsDefinitions;
 import dji.common.camera.SettingsDefinitions.CameraMode;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.widget.cameracapture.recordvideo.RecordVideoWidget;
 import dji.ux.beta.cameracore.widget.cameracapture.shootphoto.ShootPhotoWidget;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.SchedulerProvider;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
+import dji.ux.beta.core.util.RxUtil;
+import dji.ux.beta.core.util.SettingDefinitions;
 
 /**
  * Camera Capture Widget
@@ -50,7 +54,7 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
  * Widget can be used to shoot photo and record video. It reacts to change in {@link CameraMode}
  * It encloses {@link ShootPhotoWidget} and {@link RecordVideoWidget} for respective modes
  */
-public class CameraCaptureWidget extends ConstraintLayoutWidget {
+public class CameraCaptureWidget extends ConstraintLayoutWidget implements ICameraIndex {
 
     //region Fields
     private static final String TAG = "CameraCaptureWidget";
@@ -78,8 +82,7 @@ public class CameraCaptureWidget extends ConstraintLayoutWidget {
         if (!isInEditMode()) {
             addViewByMode(CameraMode.SHOOT_PHOTO, new ShootPhotoWidget(context));
             addViewByMode(CameraMode.RECORD_VIDEO, new RecordVideoWidget(context));
-            widgetModel =
-                    new CameraCaptureWidgetModel(DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance());
+            widgetModel = new CameraCaptureWidgetModel(DJISDKModel.getInstance(), ObservableInMemoryKeyedStore.getInstance());
         }
     }
 
@@ -106,7 +109,7 @@ public class CameraCaptureWidget extends ConstraintLayoutWidget {
                         .observeOn(SchedulerProvider.ui())
                         .subscribe(
                                 this::onCameraModeChange,
-                                logErrorConsumer(TAG, "Camera Mode Change: ")));
+                                RxUtil.logErrorConsumer(TAG, "Camera Mode Change: ")));
     }
 
     @NonNull
@@ -115,6 +118,30 @@ public class CameraCaptureWidget extends ConstraintLayoutWidget {
         return getResources().getString(R.string.uxsdk_widget_default_ratio);
     }
     //endregion
+
+    @NonNull
+    public SettingDefinitions.CameraIndex getCameraIndex() {
+        return widgetModel.getCameraIndex();
+    }
+
+    @NonNull
+    @Override
+    public SettingsDefinitions.LensType getLensType() {
+        return widgetModel.getLensType();
+    }
+
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        widgetModel.updateCameraSource(cameraIndex, lensType);
+        ShootPhotoWidget shootPhotoWidget = getShootPhotoWidget();
+        if (shootPhotoWidget != null){
+            shootPhotoWidget.updateCameraSource(cameraIndex,lensType);
+        }
+        RecordVideoWidget recordVideoWidget = getRecordVideoWidget();
+        if (recordVideoWidget != null){
+            recordVideoWidget.updateCameraSource(cameraIndex,lensType);
+        }
+    }
 
     //region private helpers
     private void onCameraModeChange(CameraMode cameraMode) {

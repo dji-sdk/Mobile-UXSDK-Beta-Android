@@ -29,12 +29,15 @@ import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import dji.common.camera.SettingsDefinitions;
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.widget.cameracapture.CameraCaptureWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.camerasettingsindicator.CameraSettingsMenuIndicatorWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettingsindicator.ExposureSettingsIndicatorWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.photovideoswitch.PhotoVideoSwitchWidget;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
+import dji.ux.beta.core.util.SettingDefinitions;
 
 /**
  * Compound widget which combines the state and interaction related to camera.
@@ -43,7 +46,7 @@ import dji.ux.beta.core.base.widget.ConstraintLayoutWidget;
  * <p>
  * The widget gives access to all the child widgets.
  */
-public class CameraControlsWidget extends ConstraintLayoutWidget {
+public class CameraControlsWidget extends ConstraintLayoutWidget implements ICameraIndex {
 
     //region Fields
     private CameraSettingsMenuIndicatorWidget cameraSettingsMenuIndicatorWidget;
@@ -85,9 +88,25 @@ public class CameraControlsWidget extends ConstraintLayoutWidget {
     public String getIdealDimensionRatioString() {
         return getResources().getString(R.string.uxsdk_widget_camera_controls_ratio);
     }
-    //endregion
 
-    //region customizations
+    @NonNull
+    @Override
+    public SettingDefinitions.CameraIndex getCameraIndex() {
+        return cameraCaptureWidget.getShootPhotoWidget().getCameraIndex();
+    }
+
+    @NonNull
+    @Override
+    public SettingsDefinitions.LensType getLensType() {
+        return null;
+    }
+
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        cameraCaptureWidget.updateCameraSource(cameraIndex,lensType);
+        photoVideoSwitchWidget.updateCameraSource(cameraIndex,lensType);
+        exposureSettingsIndicatorWidget.updateCameraSource(cameraIndex,lensType);
+    }
 
     /**
      * Get the camera capture widget

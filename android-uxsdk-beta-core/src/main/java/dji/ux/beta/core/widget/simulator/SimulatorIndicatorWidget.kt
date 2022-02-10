@@ -43,6 +43,7 @@ import dji.ux.beta.core.base.widget.IconButtonWidget
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.communication.OnStateChangeCallback
 import dji.ux.beta.core.extension.*
+import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget.ModelState
 import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget.ModelState.ProductConnected
 import dji.ux.beta.core.widget.simulator.SimulatorIndicatorWidget.ModelState.SimulatorStateUpdated
@@ -155,7 +156,7 @@ open class SimulatorIndicatorWidget @JvmOverloads constructor(
                 BiFunction<Boolean, Boolean, Pair<Boolean, Boolean>> { first: Boolean, second: Boolean -> Pair(first, second) })
                 .observeOn(SchedulerProvider.ui())
                 .subscribe(Consumer { values: Pair<Boolean, Boolean> -> updateUI(values.first, values.second) },
-                        logErrorConsumer(TAG, "react to Focus Mode Change: "))
+                        RxUtil.logErrorConsumer(TAG, "react to Focus Mode Change: "))
     }
 
     private fun updateUI(isConnected: Boolean, isActive: Boolean) {

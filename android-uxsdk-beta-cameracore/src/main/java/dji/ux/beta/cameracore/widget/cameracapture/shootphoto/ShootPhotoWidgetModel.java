@@ -29,6 +29,7 @@ import dji.common.camera.SettingsDefinitions;
 import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.ux.beta.core.base.DJISDKModel;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.base.WidgetModel;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.module.FlatCameraModule;
@@ -43,7 +44,7 @@ import io.reactivex.rxjava3.core.Flowable;
  * Widget Model for {@link ShootPhotoWidget} used to define underlying
  * logic and communication
  */
-public class ShootPhotoWidgetModel extends WidgetModel {
+public class ShootPhotoWidgetModel extends WidgetModel implements ICameraIndex {
 
     //region Constants
     private static final int INVALID_AVAILABLE_CAPTURE_COUNT = -1;
@@ -82,6 +83,7 @@ public class ShootPhotoWidgetModel extends WidgetModel {
     //region Other fields
     private final SettingsDefinitions.PhotoTimeIntervalSettings defaultIntervalSettings;
     private int cameraIndex;
+    private SettingsDefinitions.LensType lensType = SettingsDefinitions.LensType.UNKNOWN;
     private DJIKey stopShootPhotoKey;
     private DJIKey startShootPhotoKey;
     private FlatCameraModule flatCameraModule;
@@ -187,23 +189,21 @@ public class ShootPhotoWidgetModel extends WidgetModel {
         return canStopShootingPhoto.toFlowable();
     }
 
-    /**
-     * Get the current index of the camera the widget model is reacting to
-     *
-     * @return current camera index
-     */
+    @NonNull
     public SettingDefinitions.CameraIndex getCameraIndex() {
         return SettingDefinitions.CameraIndex.find(cameraIndex);
     }
 
-    /**
-     * Set the index of the camera for which the widget model should react
-     *
-     * @param cameraIndex camera index
-     */
-    public void setCameraIndex(@NonNull SettingDefinitions.CameraIndex cameraIndex) {
+    @NonNull
+    @Override
+    public SettingsDefinitions.LensType getLensType() {
+        return lensType;
+    }
+
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
         this.cameraIndex = cameraIndex.getIndex();
-        flatCameraModule.setCameraIndex(cameraIndex);
+        this.lensType = lensType;
         restart();
     }
 
