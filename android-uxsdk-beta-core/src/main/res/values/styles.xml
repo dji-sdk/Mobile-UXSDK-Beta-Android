@@ -210,4 +210,39 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
+    <style name="uxsdk_dialogWindowAnim"  mce_bogus="1">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+
+    <style name="uxsdk_GenTxt">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/uxsdk_gray_light</item>
+        <item name="android:ellipsize">middle</item>
+    </style>
+
+    <style name="uxsdk_GenCenterTxt" parent="@style/uxsdk_GenTxt">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="uxsdk_GenCenterWrapTxt" parent="@style/uxsdk_GenCenterTxt">
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="uxsdk_FpvGenSettingEtview">
+        <item name="android:layout_width">@dimen/uxsdk_fpv_et_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/uxsdk_white</item>
+        <item name="android:textSize">@dimen/uxsdk_text_size_normal</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:typeface">serif</item>
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:background">@drawable/uxsdk_selector_edittext_bg</item>
+        <item name="android:padding">@dimen/uxsdk_view_top_min_margin</item>
+        <item name="android:layout_marginLeft">@dimen/uxsdk_view_top_mid_margin</item>
+    </style>
 </resources>

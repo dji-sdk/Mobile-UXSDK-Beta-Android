@@ -118,16 +118,11 @@ open class AttitudeDisplayWidget @JvmOverloads constructor(
     }
 
     private fun updateAltitude() {
-        addDisposable(Flowable.create({ emitter: FlowableEmitter<Float> ->
-            val lat: Double = mDroneLocation?.latitude ?: NaN
-            val lon: Double = mDroneLocation?.longitude ?: NaN
-            val aslValue: Double = GpsUtils.egm96Altitude((mHomePointAltitude + mAltitude).toDouble(), lat, lon)
-            val value: Float = UnitUtils.getValueFromMetricByLength(aslValue.toFloat(), if (UnitUtils.isMetricUnits()) UnitUtils.UnitType.METRIC else UnitUtils.UnitType.IMPERIAL)
-            emitter.onNext(value)
-        }, BackpressureStrategy.LATEST).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe { aValue ->
-                pfd_asl_value.text = String.format(Locale.US, "%06.1f", aValue as Float)
-            })
+        val lat: Double = mDroneLocation?.latitude ?: NaN
+        val lon: Double = mDroneLocation?.longitude ?: NaN
+        val aslValue: Double = GpsUtils.egm96Altitude((mHomePointAltitude + mAltitude).toDouble(), lat, lon)
+        val value: Float = UnitUtils.getValueFromMetricByLength(aslValue.toFloat(), if (UnitUtils.isMetricUnits()) UnitUtils.UnitType.METRIC else UnitUtils.UnitType.IMPERIAL)
+        pfd_asl_value.text = String.format(Locale.US, "%06.1f", value)
     }
 
     private fun updateSpeed() {

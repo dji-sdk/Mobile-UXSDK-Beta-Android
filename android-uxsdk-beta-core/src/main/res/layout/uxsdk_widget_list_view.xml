@@ -1,0 +1,17 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout android:id="@+id/root_view"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+
+        <dji.ux.beta.core.v4.RecyclerListView
+            android:id="@+id/recycle_list_view_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"/>
+
+    </FrameLayout>
+
+</merge>

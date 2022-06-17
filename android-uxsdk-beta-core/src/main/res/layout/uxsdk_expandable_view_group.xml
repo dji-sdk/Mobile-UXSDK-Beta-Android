@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/expendable_group_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/uxsdk_selector_list_item">
+
+
+    <ImageView
+        android:id="@+id/expandable_group_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/expandable_group_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:textColor="@color/uxsdk_camera_settings_text_color" />
+
+    <View
+        android:id="@+id/expandable_group_value_bg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/uxsdk_shape_camera_value_normal" />
+
+    <TextView
+        android:id="@+id/expandable_group_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/uxsdk_camera_settings_text_color" />
+
+    <dji.ux.beta.core.v4.SwitchButton
+        android:id="@+id/expandable_group_switch_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+</FrameLayout>
+

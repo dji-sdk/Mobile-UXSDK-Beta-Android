@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:id="@+id/list_item_layout"
+       android:layout_width="match_parent"
+       android:layout_height="44dp"
+       android:background="@drawable/uxsdk_selector_list_item">
+
+    <ImageView
+        android:id="@+id/list_item_title_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/list_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/uxsdk_white"/>
+
+    <FrameLayout
+        android:id="@+id/warning_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/warning_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/warning_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textAlignment="gravity"
+            android:textColor="@color/uxsdk_white"/>
+    </FrameLayout>
+
+    <Button
+        android:id="@+id/action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="@dimen/uxsdk_text_size_small"
+        android:background="@drawable/uxsdk_button_transparent"
+        android:visibility="gone"/>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/list_item_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|right"
+        android:textAlignment="gravity"
+        android:textColor="@color/uxsdk_green"/>
+
+    <EditText
+        android:id="@+id/list_item_value_editable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/uxsdk_edit_text_transparent"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:gravity="center_vertical|right"
+        android:imeOptions="actionDone"
+        android:cursorVisible="false"
+        android:inputType="number"
+        android:textAlignment="gravity"
+        android:textColor="@color/uxsdk_green"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/list_item_full_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="@dimen/uxsdk_text_size_normal"
+        android:background="@drawable/uxsdk_button_blue"
+        android:visibility="gone"/>
+
+    <View
+        android:id="@+id/list_item_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/uxsdk_gray_light_divider_line" />
+</merge>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <TextView
+            android:id="@+id/list_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@drawable/uxsdk_selector_text" />
+
+        <ImageView
+            android:id="@+id/list_item_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uxsdk_centerpoint_color_white" />
+
+        <ImageView
+            android:id="@+id/list_item_yellow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uxsdk_centerpoint_color_yellow" />
+
+        <ImageView
+            android:id="@+id/list_item_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uxsdk_centerpoint_color_red" />
+
+        <ImageView
+            android:id="@+id/list_item_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uxsdk_centerpoint_color_blue" />
+
+        <ImageView
+            android:id="@+id/list_item_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uxsdk_centerpoint_color_green" />
+
+        <ImageView
+            android:id="@+id/list_item_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uxsdk_centerpoint_color_black" />
+
+        <View
+            android:id="@+id/list_item_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/uxsdk_gray_divider_line" />
+</merge>

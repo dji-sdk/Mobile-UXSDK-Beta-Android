@@ -29,13 +29,13 @@ android {
     lintOptions {
         abortOnError = false
     }
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 31
+    buildToolsVersion "31.0.0"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.dji.ux.beta.sample"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
         ndk {
@@ -94,7 +94,7 @@ android {
 }
 
 dependencies {
-    compileOnly ('com.dji:dji-sdk-provided:4.16')
+    compileOnly ('com.dji:dji-sdk-provided:4.16.1')
 
     // UXSDK dependencies
     implementation 'androidx.annotation:annotation:1.0.0'

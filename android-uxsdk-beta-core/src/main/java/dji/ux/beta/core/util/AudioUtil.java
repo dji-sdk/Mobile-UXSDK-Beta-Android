@@ -28,9 +28,10 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import dji.log.DJILog;
+import dji.ux.beta.core.R;
+import dji.ux.beta.core.base.SchedulerProvider;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
-import dji.ux.beta.core.base.SchedulerProvider;
 
 /**
  * Utility class for playing sounds.
@@ -106,5 +107,11 @@ public final class AudioUtil {
                 .subscribeOn(SchedulerProvider.computation())
                 .subscribe(aBoolean -> playSound(context, resID),
                         e -> DJILog.d("PlaySound", e.getMessage()));
+    }
+
+    public static void playSimpleSound(Context context) {
+        // Enabled this method because the bug (UILIB-157 key value change notified several times at same time in
+        // the framework) has been fixed.
+        AudioUtil.playSoundInBackground(context, R.raw.uxsdk_camera_simple_click);
     }
 }

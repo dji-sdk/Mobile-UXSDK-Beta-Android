@@ -165,4 +165,20 @@
     <color name="uxsdk_gimbal_mark_1">#00CFFF</color>
     <color name="uxsdk_gimbal_mark_2">#FFDB05</color>
     <color name="uxsdk_gimbal_mark_3">#8274FF</color>
+
+    <color name="uxsdk_yellow_medium">#ffcf9e0a</color>
+    <color name="uxsdk_red_dark">#4cff0000</color>
+    <color name="uxsdk_red_light">#ffe72b2b</color>
+
+    <color name="uxsdk_black_light">#4C000000</color>
+    <color name="uxsdk_white_60">#99ffffff</color>
+
+    <color name="uxsdk_gray_highlight">#ffdbdddc</color>
+    <color name="uxsdk_gray_light">#ffbfbfbf</color>
+    <color name="uxsdk_gray_divider_line">#0affffff</color>
+    <color name="uxsdk_gray_light_divider_line">#1affffff</color>
+    <color name="uxsdk_white_medium_transparent">#4cffffff</color>
+    <color name="uxsdk_blue_sea">#3f00aeff</color>
+    <color name="uxsdk_left_menu_txt">#ff8e6b00</color>
+
 </resources>

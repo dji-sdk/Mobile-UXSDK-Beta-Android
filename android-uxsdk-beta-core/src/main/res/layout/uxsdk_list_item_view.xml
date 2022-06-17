@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+
+        <CheckBox
+            android:id="@+id/list_item_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/uxsdk_btn_strem_checkbox"/>
+        <ImageView
+            android:id="@+id/list_item_title_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/list_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textColor="@color/uxsdk_camera_settings_text_color" />
+
+        <dji.ux.beta.core.v4.SwitchButton
+            android:id="@+id/list_item_value_switch_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/list_item_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textAlignment="gravity"
+            android:textColor="@color/uxsdk_camera_settings_text_color" />
+
+        <ImageView
+            android:id="@+id/list_item_value_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/list_item_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uxsdk_selector_right_arrow_button"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/list_item_range"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            tools:text="(-40-1000)"
+            android:textAlignment="gravity"
+            android:textColor="@color/uxsdk_white_50_percent" />
+
+        <TextView
+            android:id="@+id/list_item_range_big"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            tools:text="(-40-1000)"
+            android:textAlignment="gravity"
+            android:textColor="@color/uxsdk_white_50_percent" />
+
+        <EditText
+            android:id="@+id/list_item_edittext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:inputType="numberSigned|numberDecimal"
+            android:imeOptions="actionDone"
+            android:background="@drawable/uxsdk_shape_camera_value_normal"/>
+
+        <TextView
+            android:id="@+id/list_item_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:textAlignment="gravity"
+            android:textColor="@color/uxsdk_camera_settings_text_color"
+            tools:text="%"/>
+
+        <dji.ux.beta.core.v4.SegmentedView
+            android:id="@+id/list_item_segmented"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:uxsdk_segmentedEnableDivider="true"/>
+
+        <dji.ux.beta.core.v4.SeekBar
+            android:id="@+id/list_item_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+
+        <View
+            android:id="@+id/list_item_divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/uxsdk_gray_divider_line" />
+</merge>

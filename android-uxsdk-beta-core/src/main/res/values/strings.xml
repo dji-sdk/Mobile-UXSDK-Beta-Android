@@ -211,4 +211,5 @@
 
     <string name="uxsdk_location_default">N/A, N/A</string>
     <string name="uxsdk_location_coordinates">%1$s, %2$s</string>
+
 </resources>

@@ -241,6 +241,18 @@
         app:layout_constraintEnd_toStartOf="@id/widget_camera_controls"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <dji.ux.beta.core.v4.CameraSettingAdvancedPanel
+        android:id="@+id/panel_camera_setting_advanced"
+        android:layout_width="180dp"
+        android:layout_height="263dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="@string/uxsdk_widget_camera_controls_ratio"
+        app:layout_constraintEnd_toStartOf="@id/widget_camera_controls"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:ignore="RtlHardcoded"/>
+
     <dji.ux.beta.map.widget.map.MapWidget
         android:id="@+id/widget_map"
         android:layout_width="@dimen/mini_map_width"

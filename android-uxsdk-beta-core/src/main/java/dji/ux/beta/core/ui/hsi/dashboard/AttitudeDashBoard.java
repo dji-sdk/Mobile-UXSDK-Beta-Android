@@ -569,7 +569,7 @@ public class AttitudeDashBoard extends ScrollableAttributeDashBoard {
             return mUVisionDistance;
         }
     }
-    
+
     private float getBarrierValue(float barrierDistance) {
         if (barrierDistance <= 0) {
             return 0;

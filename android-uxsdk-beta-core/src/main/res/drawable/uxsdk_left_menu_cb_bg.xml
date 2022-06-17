@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle" >
+
+    <size android:height="@dimen/uxsdk_seekbar_radius" />
+
+    <corners android:radius="@dimen/uxsdk_seekbar_half_radius" />
+
+    <solid android:color="@color/uxsdk_yellow" />
+
+</shape>

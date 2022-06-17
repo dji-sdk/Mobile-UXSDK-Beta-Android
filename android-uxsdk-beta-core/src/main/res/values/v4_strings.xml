@@ -1,0 +1,858 @@
+<resources>
+    <string name="uxsdk_app_tip">Tips</string>
+
+    <string name="uxsdk_value_unknown">Unknown</string>
+    <string name="uxsdk_vertical_speed_title">V.S:</string>
+    <string name="uxsdk_horizontal_speed_title">H.S:</string>
+
+    <string name="uxsdk_distance_to_home_title">D:</string>
+    <string name="uxsdk_distance_to_rc_title">DRC:</string>
+    <string name="uxsdk_vision_positioning_system_title">VPS:</string>
+
+    <string name="uxsdk_speed_unit">m/s</string>
+    <string name="uxsdk__15_00">-15.00</string>
+    <string name="uxsdk_miles_h">miles/h</string>
+    <string name="uxsdk_vertical">Vertical</string>
+    <string name="uxsdk_icon">icon</string>
+
+    <string name="uxsdk_gps_rtk_enable">R</string>
+
+    <string name="uxsdk_aperture_title">F</string>
+
+    <string name="uxsdk_setting_metric">M</string>
+    <string name="uxsdk_setting_foot">FT</string>
+
+    <string name="uxsdk_metric">%.1f M</string>
+    <string name="uxsdk_imperial">%.1f FT</string>
+
+
+    <string name="uxsdk_app_disable">Disable</string>
+    <string name="uxsdk_app_enable">Enable</string>
+    <string name="uxsdk_app_set_value_successful">Set value successful.</string>
+    <string name="uxsdk_app_set_value_failed">Set value failed.</string>
+    <string name="uxsdk_app_warning">Warning</string>
+    <string name="uxsdk_app_agree">Agree</string>
+    <string name="uxsdk_app_refuse">Refuse</string>
+    <string name="uxsdk_preflight_range">(%1$d~%2$dm)</string>
+    <string name="uxsdk_exceed_max_message">Value exceeds range. Setting to maximum.</string>
+    <string name="uxsdk_exceed_min_message">Value exceeds range. Setting to minimum.</string>
+
+    <!-- takeoff, go home & landing -->
+    <string name="uxsdk_left_menu_takeoff">Take Off</string>
+    <string name="uxsdk_left_menu_takeoff_desc">Ensure it is safe to take off. Aircraft will climb to %s and
+        hover.
+    </string>
+    <string name="uxsdk_left_menu_takeoff_switch">Slide to Take-off </string>
+    <string name="uxsdk_left_menu_gohome">Return Home and Land</string>
+    <string name="uxsdk_left_menu_homefollow">Dynamic Home Point Range</string>
+    <string name="uxsdk_left_menu_homefollow_desc">Home Point will be set to follow the remote controller,
+        updating automatically as you move.
+    </string>
+    <string name="uxsdk_left_menu_cancel_gohome">Cancel Return-to-Home</string>
+    <string name="uxsdk_left_menu_cancel_gohome_desc">Cancel Return-to-Home</string>
+    <string name="uxsdk_left_menu_land">Land Aircraft Now?</string>
+    <string name="uxsdk_left_menu_land_desc">Aircraft will land at its current location. Check landing area
+        is clear.
+    </string>
+    <string name="uxsdk_left_menu_tip_gohome">Return-to-Home</string>
+    <string name="uxsdk_confirm_land_title">Confirm to Land</string>
+    <string name="uxsdk_confirm_land_desc">Aircraft has landed to 0.3m (1.0ft). Continue landing?</string>
+
+    <string name="uxsdk_left_menu_gohome_switch">Slide to Return Home</string>
+    <string name="uxsdk_left_menu_homepoint_norecord">(Current height will not be recorded)</string>
+    <string name="uxsdk_left_menu_gohome_below_desc">Aircraft will adjust it\'s nose direction to face the home point,
+        and it\'s altitude to %1$d meters. Current aircraft altitude is %2$.1f meters. Press Return to Home button directly on
+        your remote to cancel this procedure, or take over control sticks.
+    </string>
+    <string name="uxsdk_left_menu_gohome_inner_desc">Aircraft will land at its current location because its distance to Home Point is less that 20m (65.5 ft).
+    </string>
+    <string name="uxsdk_left_menu_land_success">Landed</string>
+    <string name="uxsdk_left_menu_land_failed">Landing Failed</string>
+    <string name="uxsdk_left_menu_takeoff_success">Take-off Completed</string>
+    <string name="uxsdk_left_menu_takeoff_failed">Take-off Failed</string>
+    <string name="uxsdk_left_menu_gohome_success">Return-to-Home Completed</string>
+    <string name="uxsdk_left_menu_gohome_failed">Return-to-Home Failed</string>
+    <string name="uxsdk_left_menu_cancel_gohome_success">Return-to-Home Cancelled</string>
+    <string name="uxsdk_left_menu_cancel_gohome_failed">Cancel Return-to-Home Failed</string>
+    <string name="uxsdk_left_menu_drop_land_success">Landing Cancelled</string>
+    <string name="uxsdk_left_menu_drop_land_failed">Cancel Landing Failed</string>
+    <string name="uxsdk_gohome_user_farfromhome">Your current position is far away from the Home Point.
+        Are you sure to return?
+    </string>
+    <string name="uxsdk_left_menu_cgh_tip">Tap to Cancel Return-to-Home</string>
+    <string name="uxsdk_left_menu_cl_tip">Tap to Cancel Landing</string>
+    <string name="uxsdk_land_desc">Aircraft will land at its current location. Check landing area is clear.</string>
+
+    <!--go home alert-->
+    <string name="uxsdk_alert_select_home_point">Select Return Position</string>
+    <string name="uxsdk_alert_return_to_current_position">Current Position</string>
+    <string name="uxsdk_alert_return_to_original_home_point">Original Home Point</string>
+    <string name="uxsdk_alert_select_home_point_msg">Your current position is far away from the original
+        Home Point. Select a position the aircraft will return to, or click Cancel to exit.
+    </string>
+    <string name="uxsdk_takeoff_inatti">Cannot locate aircraft\'s position in the current environment. Ensure
+        that it is safe to takeoff. The aircraft will fly to an elevation of %s and hover.
+    </string>
+
+    <string name="uxsdk_app_retry">Retry</string>
+    <string name="uxsdk_app_alert">Alert</string>
+    <string name="uxsdk_off">OFF</string>
+    <string name="uxsdk_ctrl_mode_manual">Manual</string>
+    <string name="uxsdk_ctrl_mode_atti">ATTI</string>
+    <string name="uxsdk_ctrl_mode_landing">Landing</string>
+    <string name="uxsdk_ctrl_mode_takeoff">Takeoff</string>
+    <string name="uxsdk_ctrl_mode_gohome">Go Home</string>
+    <string name="uxsdk_ctrl_mode_joystick">Joystick</string>
+    <string name="uxsdk_ctrl_mode_navi">Navi</string>
+    <string name="uxsdk_ctrl_mode_clickgo">ClickGo</string>
+    <string name="uxsdk_ctrl_mode_patti">P-Atti</string>
+    <string name="uxsdk_ctrl_mode_popti">P-OPTI</string>
+    <string name="uxsdk_ctrl_mode_pgps">P-GPS</string>
+
+    <string name="uxsdk_ctrl_mode_gps">GPS</string>
+    <string name="uxsdk_ctrl_mode_ftracking">F-Tracking</string>
+    <string name="uxsdk_ctrl_mode_fpointing">F-Pointing</string>
+    <string name="uxsdk_ctrl_mode_sport">Sport</string>
+    <string name="uxsdk_ctrl_mode_novice">Novice</string>
+    <string name="uxsdk_ctrl_mode_opti">OPTI</string>
+
+    <!-- directlock -->
+    <string name="uxsdk_direct_lock_cl">CL</string>
+    <string name="uxsdk_direct_lock_hl">HL</string>
+    <string name="uxsdk_direct_lock_pl">PL</string>
+
+    <string name="uxsdk_time_hours_mins_secs">%1$02d:%2$02d:%3$02d</string>
+    <string name="uxsdk_time_mins_secs">%1$02d:%2$02d</string>
+
+
+    <string name="uxsdk_camera_control_ae">AE</string>
+    <string name="uxsdk_camera_control_af">AF</string>
+    <string name="uxsdk_camera_control_afc">AFC</string>
+    <string name="uxsdk_camera_control_mf">MF</string>
+
+
+    <string-array name="uxsdk_fonts">
+        <item>fonts/Roboto-Black.ttf</item>
+        <item>fonts/Roboto-BlackItalic.ttf</item>
+        <item>fonts/Roboto-Bold.ttf</item>
+        <item>fonts/Roboto-BoldItalic.ttf</item>
+        <item>fonts/Roboto-Italic.ttf</item>
+        <item>fonts/Roboto-LightItalic.ttf</item>
+        <item>fonts/Roboto-Medium.ttf</item>
+        <item>fonts/Roboto-MediumItalic.ttf</item>
+        <item>fonts/Roboto-Regular.ttf</item>
+        <item>fonts/Roboto-Thin.ttf</item>
+        <item>fonts/Roboto-ThinItalic.ttf</item>
+        <item>fonts/RobotoCondensed-Bold.ttf</item>
+        <item>fonts/RobotoCondensed-BoldItalic.ttf</item>
+        <item>fonts/RobotoCondensed-Italic.ttf</item>
+        <item>fonts/RobotoCondensed-Light.ttf</item>
+        <item>fonts/RobotoCondensed-LightItalic.ttf</item>
+        <item>fonts/RobotoCondensed-Regular.ttf</item>
+    </string-array>
+
+    <string name="uxsdk_camera_exposure_mode_p">AUTO</string>
+    <string name="uxsdk_camera_exposure_mode_s">S</string>
+    <string name="uxsdk_camera_exposure_mode_a">A</string>
+    <string name="uxsdk_camera_exposure_mode_m">M</string>
+
+    <string name="uxsdk_camera_exposure_locked_iso_title">LOCKED ISO</string>
+    <string name="uxsdk_camera_exposure_iso_title">ISO</string>
+    <string name="uxsdk_camera_exposure_shutter_title">Shutter</string>
+    <string name="uxsdk_camera_exposure_shutter_underexposed_title">Shutter (Underexposed)</string>
+    <string name="uxsdk_camera_exposure_shutter_overexposed_title">Shutter (Overexposed)</string>
+    <string name="uxsdk_camera_exposure_aperture_title">Aperture</string>
+    <string name="uxsdk_camera_exposure_ev_title">EV</string>
+    <string name="uxsdk_camera_exposure_mm_title">M.M</string>
+    <string name="uxsdk_camera_menu">MENU</string>
+
+    <string name="uxsdk_camera_style_name">Style</string>
+    <string name="uxsdk_camera_white_balance_name">White Balance</string>
+    <string name="uxsdk_camera_image_format_name">Image Format</string>
+    <string name="uxsdk_camera_image_ratio_name">Image Ratio</string>
+    <string name="uxsdk_camera_photo_name">Photo</string>
+    <string name="uxsdk_camera_filter_name">Color</string>
+    <string name="uxsdk_camera_ssd_color_title">SSD Looks</string>
+
+    <string name="uxsdk_camera_video_size_name">Video Size</string>
+    <string name="uxsdk_camera_video_format_name">Video Format</string>
+    <string name="uxsdk_camera_video_standard_name">NTSC/PAL</string>
+    <string name="uxsdk_camera_video_compression_standard">Video Compression Format</string>
+    <string name="uxsdk_camera_grid_name">Grid</string>
+    <string name="uxsdk_grid_none">None</string>
+    <string name="uxsdk_parallel">Grid Lines</string>
+    <string name="uxsdk_parallel_diagonal">Grid + Diagonals</string>
+    <string name="uxsdk_center_point_standard">Standard</string>
+    <string name="uxsdk_center_point_cross">Cross</string>
+    <string name="uxsdk_center_point_narrow_cross">Narrow Cross</string>
+    <string name="uxsdk_center_point_frame">Frame</string>
+    <string name="uxsdk_center_point_frame_and_cross">Frame and Cross</string>
+    <string name="uxsdk_center_point_square">Square</string>
+    <string name="uxsdk_center_point_square_and_cross">Square and Cross</string>
+    <string name="uxsdk_center_point_color">Center Point Color</string>
+    <string name="uxsdk_camera_file_index_name">File Index Mode</string>
+
+    <string name="uxsdk_camera_ssd_raw_mode_draw">DRAW</string>
+    <string name="uxsdk_camera_ssd_video_license_cdng">CinemaDNG</string>
+    <string name="uxsdk_camera_ssd_video_license_422hq">ProRes 422HQ</string>
+    <string name="uxsdk_camera_ssd_video_license_4444xq">ProRes 4444XQ</string>
+
+    <string name="uxsdk_camera_filter_none">None</string>
+    <string name="uxsdk_camera_filter_art">Art</string>
+    <string name="uxsdk_camera_filter_reminiscence">Reminiscence</string>
+    <string name="uxsdk_camera_filter_inverse">Inverse</string>
+    <string name="uxsdk_camera_filter_blackandwhite">BlackAndWhite</string>
+    <string name="uxsdk_camera_filter_bright">Bright</string>
+    <string name="uxsdk_camera_filter_dcinelike">DCineLike</string>
+    <string name="uxsdk_camera_filter_Portrait">Portrait</string>
+    <string name="uxsdk_camera_filter_M31">M31</string>
+    <string name="uxsdk_camera_filter_delta">Delta</string>
+    <string name="uxsdk_camera_filter_kdx">Kdx</string>
+    <string name="uxsdk_camera_filter_dk79">DK79</string>
+    <string name="uxsdk_camera_filter_prismo">Prismo</string>
+    <string name="uxsdk_camera_filter_jugo">Jugo</string>
+    <string name="uxsdk_camera_filter_vision4">Vision4</string>
+    <string name="uxsdk_camera_filter_vision6">Vision6</string>
+    <string name="uxsdk_camera_filter_solarize">Solarize</string>
+    <string name="uxsdk_camera_filter_posterize">Posterize</string>
+    <string name="uxsdk_camera_filter_whiteboard">Whiteboard</string>
+    <string name="uxsdk_camera_filter_blackboard">Blackboard</string>>
+    <string name="uxsdk_camera_filter_aqua">Aqua</string>
+    <string name="uxsdk_camera_filter_truecolor">TrueColor</string>
+    <string name="uxsdk_camera_filter_dlog">DLog</string>
+    <string name="uxsdk_camera_filter_hlg">HLG</string>
+    <string name="uxsdk_camera_filter_truecolor_ext">TrueColorExt</string>
+    <string name="uxsdk_camera_filter_film_a">Film A</string>
+    <string name="uxsdk_camera_filter_film_b">Film B</string>
+    <string name="uxsdk_camera_filter_film_c">Film C</string>
+    <string name="uxsdk_camera_filter_film_d">Film D</string>
+    <string name="uxsdk_camera_filter_film_e">Film E</string>
+    <string name="uxsdk_camera_filter_film_f">Film F</string>
+    <string name="uxsdk_camera_filter_film_g">Film G</string>
+    <string name="uxsdk_camera_filter_film_h">Film H</string>
+    <string name="uxsdk_camera_filter_film_i">Film I</string>
+    <string name="uxsdk_camera_filter_rec_709">Rec.709</string>
+
+    <string name="uxsdk_camera_photo_mode">Photo Mode</string>
+    <string name="uxsdk_camera_photo_format">Image Format</string>
+    <string name="uxsdk_camera_white_balance">White Balance</string>
+    <string name="uxsdk_camera_anti_flick_name">Anti Flicker</string>
+    <string name="uxsdk_camera_picture_size">Image Ratio</string>
+    <string name="uxsdk_camera_picture_style">Style</string>
+    <string name="uxsdk_camera_filter">Color</string>
+    <string name="uxsdk_camera_photo_storage">Photo Storage</string>
+    <string name="uxsdk_camera_anti_flick_trigger_title">Cannot change anti-flicker mode</string>
+    <string name="uxsdk_camera_anti_flick_trigger_tip">The exposure mode is manual now.</string>
+
+    <string name="uxsdk_camera_looks">SD/Liveview Looks</string>
+    
+    <string name="uxsdk_camera_video_ssd">SSD</string>
+    <string name="uxsdk_camera_ssd_video_license">SSD License</string>
+    <string name="uxsdk_camera_ssd_video_size">SSD Video Size</string>
+    <string name="uxsdk_camera_ssd_looks">SSD Looks</string>
+    <string name="uxsdk_camera_video_resolution">Video Size</string>
+    <string name="uxsdk_camera_video_format">Video Format</string>
+    <string name="uxsdk_camera_encode_type">Encoder</string>
+    <string name="uxsdk_camera_gamma">Gamma</string>
+
+    <string name="uxsdk_camera_ei">EI</string>
+    <string name="uxsdk_camera_video_ei">EI Mode</string>
+    <string name="uxsdk_camera_dewarp">Dewarping</string>
+    <string name="uxsdk_camera_color_waveform">Color Waveform</string>
+
+    <string name="uxsdk_camera_overexposure">Overexposure Warning</string>
+    <string name="uxsdk_camera_file_index">File Index Mode</string>
+    <string name="uxsdk_camera_file_index_reset">Reset</string>
+    <string name="uxsdk_camera_file_index_sequence">Continuous</string>
+
+    <string name="uxsdk_camera_setting_reset">Reset Camera Settings</string>
+    <string name="uxsdk_camera_setting_reset_busy_title">Cannot reset camera settings</string>
+    <string name="uxsdk_camera_setting_reset_busy_tip">Camera is busy</string>
+    <string name="uxsdk_camera_setting_reset_timeout_title">A timeout occurred while attempting to reset the camera settings. If the camera does not restart, please try again.</string>
+    <string name="uxsdk_camera_setting_reset_camera_setting_confirm">Restart required to reset camera settings. Reset?</string>
+    <string name="uxsdk_camera_setting_reset_success">Reset Success</string>
+
+    <string name="uxsdk_camera_ir_cut">IR-CUT</string>
+    <string name="uxsdk_camera_histogram">Histogram</string>
+    <string name="uxsdk_camera_portrait_mode">Portrait Mode</string>
+    <string name="uxsdk_camera_video_caption">Video Caption</string>
+    <string name="uxsdk_camera_center_point">Center Point</string>
+    <string name="uxsdk_camera_format_sd_card">Format SD Card</string>
+    <string name="uxsdk_camera_format_sd_card1">Format SD Card 1</string>
+    <string name="uxsdk_camera_format_sd_card2">Format SD Card 2</string>
+    <string name="uxsdk_camera_format_sd_card_busy_title">Cannot format camera SD card</string>
+    <string name="uxsdk_camera_formatting_sd_card">Formatting SD Card</string>
+
+    <string name="uxsdk_camera_trigger_ffc_busy_title">Cannot trigger flat-field correction</string>
+    <string name="uxsdk_camera_setting_trigger_ffc_confirm">Are you sure you want to trigger flat-field correction?</string>
+    <string name="uxsdk_camera_format_sd_usb_connect">Disconnect the aircraft\'s USB cable and try again.</string>
+    <string name="uxsdk_camera_setting_format_sdcard_confirm">Are you sure you want to format the SD Card?</string>
+    <string name="uxsdk_thermal_camera_profile">Profile:&#160;&#160;</string>
+    <string name="uxsdk_camera_format_sd_card_success">SD Card Formatting Completed</string>
+    <string name="uxsdk_camera_format_sd_card_success_format">SD Card %d Formatting Completed</string>
+    <string name="uxsdk_camera_sd_card_not_inserted">SD Card not inserted. Please insert SD Card to perform this action.</string>
+
+    <string name="uxsdk_camera_format_internal_storage">Format Internal Storage</string>
+    <string name="uxsdk_camera_setting_format_internal_storage_confirm">Are you sure you want to format the internal storage?</string>
+    <string name="uxsdk_camera_format_internal_storage_success">Internal Storage Formatting Completed</string>
+    <string name="uxsdk_camera_internal_storage_not_inserted">Internal storage not inserted. Please insert internal storage to perform this action.</string>
+    <string name="uxsdk_camera_format_internal_storage_busy_title">Cannot format internal storage</string>
+
+    <string name="uxsdk_camera_storage_location">Storage Location</string>
+    <string name="uxsdk_camera_storage_location_sd_card">SD Card</string>
+    <string name="uxsdk_camera_storage_location_internal_storage">Internal Storage</string>
+
+    <string name="uxsdk_camera_peak_focus_threshold">Peak Threshold</string>
+    <string name="uxsdk_camera_peak_focus_threshold_close">Close</string>
+    <string name="uxsdk_camera_peak_focus_threshold_high">High</string>
+    <string name="uxsdk_camera_peak_focus_threshold_standard">Standard</string>
+    <string name="uxsdk_camera_peak_focus_threshold_low">Low</string>
+
+
+    <string name="uxsdk_camera_save_original">Save Original</string>
+    <string name="uxsdk_camera_save_original_pano">Save Unstitched Pano</string>
+
+    <string name="uxsdk_port_side">Port-side</string>
+    <string name="uxsdk_starboard_side">Starboard-side</string>
+    <string name="uxsdk_head_led_auto_turn_off">Head LEDs Auto Turn Off</string>
+    <string name="uxsdk_afc_enabled">AFC</string>
+    <string name="uxsdk_auto_gimbal_lock">Lock Gimbal While Shooting</string>
+    <string name="uxsdk_long_exposure_auto_preview">Long Exposure Auto Preview</string>
+    <string name="uxsdk_set_panorama_mode_failed">Aircraft not in flight. Unable to use panorama mode.</string>
+    <!--photo mode -->
+    <string name="uxsdk_camera_photomode_single">Single Shot</string>
+    <string name="uxsdk_camera_photomode_hdr">HDR</string>
+    <string name="uxsdk_camera_photomode_burst">Burst Mode</string>
+    <string name="uxsdk_camera_photomode_aeb">AEB</string>
+    <string name="uxsdk_camera_photomode_time">Interval</string>
+    <string name="uxsdk_camera_photomode_timelapse">Time Lapse</string>
+    <string name="uxsdk_camera_photomode_hyper_light">Hyper Light</string>
+    <string name="uxsdk_camera_photomode_e_hdr">eHDR</string>
+    <string name="uxsdk_camera_photomode_panorama">Panorama</string>
+    <string name="uxsdk_camera_photomode_raw_burst">Raw Burst</string>
+    <string name="uxsdk_camera_photomode_shallow_focus">Shallow Focus</string>
+    <string name="uxsdk_camera_photomode_raw_burst_infinity">&#8734;</string>
+    <string name="uxsdk_camera_photomode_panorama_3x1">3x1</string>
+    <string name="uxsdk_camera_photomode_panorama_3x3">3x3</string>
+    <string name="uxsdk_camera_photomode_panorama_1x3">1x3</string>
+    <string name="uxsdk_camera_photomode_panorama_180">180</string>
+    <string name="uxsdk_camera_photomode_panorama_sphere">Sphere</string>
+    <string name="uxsdk_camera_photomode_panorama_super_resolution">Super Res</string>
+
+    <!-- video format -->
+    <string name="uxsdk_camera_video_format_mov">MOV</string>
+    <string name="uxsdk_camera_video_format_mp4">MP4</string>
+    <string name="uxsdk_camera_video_format_tiff_seq">TIFF SEQ</string>
+    <string name="uxsdk_camera_video_format_seq">SEQ</string>
+
+    <!-- save original -->
+    <string name="uxsdk_camera_save_original_list_pano">Save original panorama</string>
+    <string name="uxsdk_camera_save_original_list_hyperlapse">Save original hyperlapse</string>
+    <string name="uxsdk_save_original_warning_title">Save Original Pano Photos</string>
+    <string name="uxsdk_save_original_warning_message">All unstitched pano photos will be saved. Ensure you have sufficient storage space before shooting.</string>
+
+    <!-- white balance -->
+    <string name="uxsdk_camera_wb_auto">Auto</string>
+    <string name="uxsdk_camera_wb_outdoor">Sunny</string>
+    <string name="uxsdk_camera_wb_indoor">Cloudy</string>
+    <string name="uxsdk_camera_wb_water">Water</string>
+    <string name="uxsdk_camera_wb_tungsten">Incandescent</string>
+    <string name="uxsdk_camera_wb_neon">Neon</string>
+    <string name="uxsdk_camera_wb_custom">Custom</string>
+    <string name="uxsdk_camera_wb_neutral">Neutral</string>
+    <!-- non -->
+    <string name="uxsdk_camera_wb_warmneon">Warm Neon</string>
+    <string name="uxsdk_camera_wb_dusk">Dusk</string>
+    <string name="uxsdk_camera_wb_shadow">Shadow</string>
+
+    <!-- anti blink -->
+    <string name="uxsdk_camera_antiblink_auto">Auto</string>
+    <string name="uxsdk_camera_antiblink_60">60Hz</string>
+    <string name="uxsdk_camera_antiblink_50">50Hz</string>
+    <string name="uxsdk_camera_anti_flicker_reset">Switching Anti-Flicker mode will restart the camera.</string>
+    <string name="uxsdk_camera_anti_flicker_reset_desc">Set to %1$s mode?</string>
+
+    <!-- image size -->
+    <string name="uxsdk_camera_picturesize_169">16:9</string>
+    <string name="uxsdk_camera_picturesize_43">4:3</string>
+    <string name="uxsdk_camera_picturesize_32">3:2</string>
+
+    <!-- video standard -->
+    <string name="uxsdk_camera_video_standard_ntsc">NTSC</string>
+    <string name="uxsdk_camera_video_standard_pal">PAL</string>
+    <string name="uxsdk_camera_video_standard_setting_tip">Switching between NTSC/PAL will restart the camera.</string>
+    <string name="uxsdk_camera_video_standard_setting_tip_desc">Set %1$s Mode?</string>
+
+    <!-- video compression standard -->
+    <string name="uxsdk_camera_video_compression_standard_label">Encoding Format</string>
+    <string name="uxsdk_camera_video_compression_standard_h264">H.264</string>
+    <string name="uxsdk_camera_video_compression_standard_h265">H.265</string>
+
+
+    <!-- picture style -->
+    <string name="uxsdk_camera_picture_style_standard">Standard</string>
+    <string name="uxsdk_camera_picture_style_scenery">Landscape</string>
+    <string name="uxsdk_camera_picture_style_soft">Soft</string>
+    <string name="uxsdk_camera_picture_style_custom">Custom</string>
+    <string name="uxsdk_camera_sharpness">Sharpness</string>
+    <string name="uxsdk_camera_contrast">Contrast</string>
+    <string name="uxsdk_camera_saturation">Saturation</string>
+    <string name="uxsdk_camera_wb_format">%dK</string>
+
+    <!-- video resolution -->
+    <string name="uxsdk_camera_video_resolution_640_480p">640x480</string>
+    <string name="uxsdk_camera_video_resolution_640_512p">640x512</string>
+    <string name="uxsdk_camera_video_resolution_1280_720p">1280x720</string>
+    <string name="uxsdk_camera_video_resolution_1920_1080p">1920x1080</string>
+    <string name="uxsdk_camera_video_resolution_2704_1520p">2704x1520</string>
+    <string name="uxsdk_camera_video_resolution_2720_1530p">2720x1530</string>
+    <string name="uxsdk_camera_video_resolution_3840x1572p">3840x1572</string>
+    <string name="uxsdk_camera_video_resolution_3840_2160p">3840x2160</string>
+    <string name="uxsdk_camera_video_resolution_4096_2160p">4096x2160</string>
+    <string name="uxsdk_camera_video_resolution_4608x2160p">4608x2160</string>
+    <string name="uxsdk_camera_video_resolution_4608x2592p">4608x2592</string>
+    <string name="uxsdk_camera_video_resolution_5280x2160p">5280x2160</string>
+    <string name="uxsdk_camera_video_resolution_MaxResolution">Max</string>
+    <string name="uxsdk_camera_video_resolution_None">Not Recorded</string>
+    <string name="uxsdk_camera_video_resolution_5760x3240p">5760x3240</string>
+    <string name="uxsdk_camera_video_resolution_6016x3200p">6016x3200</string>
+    <string name="uxsdk_camera_video_resolution_2048x1080p">2048x1080</string>
+    <string name="uxsdk_camera_video_resolution_5280x2972p">5280x2972</string>
+    <string name="uxsdk_camera_video_resolution_336x256p">336x256</string>
+    <string name="uxsdk_camera_video_resolution_3712x2088p">3712x2088</string>
+    <string name="uxsdk_camera_video_resolution_3944x2088p">3944x2088</string>
+    <string name="uxsdk_camera_video_resolution_2688x1512p">2688x1512</string>
+
+    <string name="uxsdk_camera_video_resolution_hq">HQ</string>
+    <string name="uxsdk_camera_video_resolution_full_fov">Full FOV</string>
+
+    <string name="uxsdk_slow_tag">SLOW</string>
+
+    <!-- video frame rate value-->
+    <string name="uxsdk_camera_video_frame_rate_value_24">23.976</string>
+    <string name="uxsdk_camera_video_frame_rate_value_true_24">24.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_25">25.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_30">29.970</string>
+    <string name="uxsdk_camera_video_frame_rate_value_true_30">30.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_48">47.950</string>
+    <string name="uxsdk_camera_video_frame_rate_value_true_48">48.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_50">50.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_60">59.940</string>
+    <string name="uxsdk_camera_video_frame_rate_value_true_60">60.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_96">96.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_100">100.000</string>
+    <string name="uxsdk_camera_video_frame_rate_value_120">119.880</string>
+    <string name="uxsdk_camera_video_frame_rate_value_240">240.000</string>
+
+    <!-- preFlight checklist -->
+    <string name="uxsdk_aircraft_status">Aircraft Status</string>
+    <string name="uxsdk_overall_status">Overall Status</string>
+    <string name="uxsdk_flight_mode">Flight Mode</string>
+    <string name="uxsdk_compass">Compass</string>
+    <string name="uxsdk_compass_calibrate">Calibrate</string>
+    <string name="uxsdk_imu">IMU Status</string>
+    <string name="uxsdk_esc_status">ESC Status</string>
+    <string name="uxsdk_vision_status">Vision Sensors</string>
+    <string name="uxsdk_remote_controller_mode">Remote Controller Mode</string>
+    <string name="uxsdk_remote_controller_battery">Remote Controller Battery</string>
+    <string name="uxsdk_radio_quality">Radio Channel Quality</string>
+    <string name="uxsdk_aircraft_battery">Aircraft Battery</string>
+    <string name="uxsdk_aircraft_battery_temperature">Aircraft Battery Temperature</string>
+    <string name="uxsdk_preflight_checklist_gimbal_status">Gimbal Status</string>
+    <string name="uxsdk_sd_card_capacity">SD Card Storage</string>
+    <string name="uxsdk_format">Format</string>
+    <string name="uxsdk_internal_storage_capacity">Internal Storage</string>
+    <string name="uxsdk_max_altitude">Max Altitude</string>
+    <string name="uxsdk_max_altitude_faa_message">You are altering the maximum altitude setting, which could violate local laws and regulations (a 400 feet flight limit is set by the FAA). You are solely responsible and liable for the operation of the aircraft after altering these settings. DJI and its affiliates shall not be liable for any damages, whether in contract, tort (including negligence), or any other legal or equitable theory.</string>
+    <string name="uxsdk_enter_travel_mode">Enter Travel Mode</string>
+    <string name="uxsdk_exit_travel_mode">Exit Travel Mode</string>
+    <string name="uxsdk_enter_travel_mode_message">The aircraft will enter travel mode for easy transport. Place the aircraft
+        on a flat, hard surface and remove the gimbal. If the aircraft does not enter travel mode, adjust the landing
+        gears manually. Enter travel mode?
+    </string>
+
+    <string name="uxsdk_max_altitude_warning_zone_message">Aircraft is in Warning Zone. Max flight altitude is 120m. Fly with caution.</string>
+    <string name="uxsdk_max_flight_distance">Max Flight Distance</string>
+
+    <string name="uxsdk_normal">Normal</string>
+    <string name="uxsdk_disabled">Disabled</string>
+    <string name="uxsdk_gps_permission">Device GPS Location service is not enabled</string>
+
+    <!-- Thermal setting -->
+    <string name="uxsdk_thermal_camera_msx_offset">MSX Offset</string>
+    <string name="uxsdk_thermal_camera_roi">ROI</string>
+    <string name="uxsdk_thermal_camera_palette">Palette</string>
+    <string name="uxsdk_thermal_camera_scene">Scene</string>
+    <string name="uxsdk_thermal_camera_isotherm">Isotherm</string>
+    <string name="uxsdk_thermal_camera_isotherm_search_people">Search People</string>
+    <string name="uxsdk_thermal_camera_isotherm_search_fire">Search Fire</string>
+    <string name="uxsdk_thermal_camera_isotherm_search_custom">Custom</string>
+    <string name="uxsdk_thermal_camera_isotherm_unit">Units</string>
+    <string name="uxsdk_thermal_camera_isotherm_upper">Upper</string>
+    <string name="uxsdk_thermal_camera_isotherm_middle">Middle</string>
+    <string name="uxsdk_thermal_camera_isotherm_lower">Lower</string>
+    <string name="uxsdk_thermal_camera_isotherm_unit_percentage">Percentage</string>
+    <string name="uxsdk_thermal_camera_isotherm_unit_temperature">Temperature</string>
+    <string name="uxsdk_thermal_camera_isotherm_open">Open</string>
+    <string name="uxsdk_thermal_camera_isotherm_close">Close</string>
+    <string name="uxsdk_thermal_camera_gain_mode">Gain Mode</string>
+    <string name="uxsdk_thermal_camera_ffc_mode">FFC Settings</string>
+    <string name="uxsdk_thermal_camera_trigger_ffc">Enable FFC</string>
+    <string name="uxsdk_thermal_camera_external_parameter">External Parameter</string>
+    <string name="uxsdk_thermal_camera_temp_alert">Temp. Alert</string>
+    <string name="uxsdk_thermal_camera_temp_threshold">Alert Threshold</string>
+    <string name="uxsdk_thermal_camera_temp_alert_open">Open</string>
+    <string name="uxsdk_thermal_camera_temp_alert_close">Close</string>
+    <string name="uxsdk_thermal_Camera_temp_alert_tips">Tips: Working on area temperature measurement</string>
+
+    <string name="uxsdk_thermal_camera_roi_full">Full</string>
+    <string name="uxsdk_thermal_camera_roi_sky_excluded_33">Sky Excluded(33%)</string>
+    <string name="uxsdk_thermal_camera_roi_sky_excluded_50">Sky Excluded(50%)</string>
+
+    <string name="uxsdk_thermal_camera_palette_white_hot">WhiteHot</string>
+    <string name="uxsdk_thermal_camera_palette_black_hot">BlackHot</string>
+    <string name="uxsdk_thermal_camera_palette_fusion">Fusion</string>
+    <string name="uxsdk_thermal_camera_palette_rainbow">Rainbow</string>
+    <string name="uxsdk_thermal_camera_palette_rainbow1">Rainbow1</string>
+    <string name="uxsdk_thermal_camera_palette_rainbow2">Rainbow2</string>
+    <string name="uxsdk_thermal_camera_palette_iron_bow_1">Ironbow1</string>
+    <string name="uxsdk_thermal_camera_palette_ice_fire">IceFire</string>
+    <string name="uxsdk_thermal_camera_palette_sepia">Sepia</string>
+    <string name="uxsdk_thermal_camera_palette_glow_bow">Globow</string>
+    <string name="uxsdk_thermal_camera_palette_iron_bow_2">GreyRed</string>
+    <string name="uxsdk_thermal_camera_palette_color_1">Fulgurite</string>
+    <string name="uxsdk_thermal_camera_palette_color_2">Ironbow2</string>
+    <string name="uxsdk_thermal_camera_palette_rain">RainbowHC</string>
+    <string name="uxsdk_thermal_camera_palette_red_hot">Tint</string>
+    <string name="uxsdk_thermal_camera_palette_green_hot">Medical</string>
+    <string name="uxsdk_thermal_camera_palette_arctic">Arctic</string>
+
+    <string name="uxsdk_thermal_camera_palette_whitehot_iso">WhiteHotIso</string>
+    <string name="uxsdk_thermal_camera_palette_blackhot_iso">BlackHotIso</string>
+    <string name="uxsdk_thermal_camera_palette_fusion_iso">FusionIso</string>
+    <string name="uxsdk_thermal_camera_palette_rainbow_iso">RainbowIso</string>
+    <string name="uxsdk_thermal_camera_palette_ironbow_iso">IronbowWhiteHotIso</string>
+    <string name="uxsdk_thermal_camera_palette_icefire_iso">IceFireIso</string>
+    <string name="uxsdk_thermal_camera_palette_sepia_iso">SepiaIso</string>
+    <string name="uxsdk_thermal_camera_palette_globow_iso">GlowbowIso</string>
+    <string name="uxsdk_thermal_camera_palette_ironbow2_iso">IronbowBlackHotIso</string>
+    <string name="uxsdk_thermal_camera_palette_color1_iso">MidRangeWhiteHotIso</string>
+    <string name="uxsdk_thermal_camera_palette_color2_iso">MidRangeBlackHotIso</string>
+    <string name="uxsdk_thermal_camera_palette_rain_iso">RainbowHCIso</string>
+    <string name="uxsdk_thermal_camera_palette_redhot_iso">RedHotIso</string>
+    <string name="uxsdk_thermal_camera_palette_greenhot_iso">GreenHotIso</string>
+    <string name="uxsdk_thermal_camera_palette_arcticblackhot_iso">ArcticBlackHotIso</string>
+
+    <string name="uxsdk_thermal_camera_scene_default">Default</string>
+    <string name="uxsdk_thermal_camera_scene_linear">Linear</string>
+    <string name="uxsdk_thermal_camera_scene_sea_sky">Sea/Sky</string>
+    <string name="uxsdk_thermal_camera_scene_outdoor">Outdoor</string>
+    <string name="uxsdk_thermal_camera_scene_indoor">Indoor</string>
+    <string name="uxsdk_thermal_camera_scene_manual">Manual</string>
+    <string name="uxsdk_thermal_camera_scene_profile_1">User 1</string>
+    <string name="uxsdk_thermal_camera_scene_profile_2">User 2</string>
+    <string name="uxsdk_thermal_camera_scene_profile_3">User 3</string>
+
+    <string name="uxsdk_thermal_camera_gain_mode_auto">AUTO</string>
+    <string name="uxsdk_thermal_camera_gain_mode_low">LOW</string>
+    <string name="uxsdk_thermal_camera_gain_mode_high">HIGH</string>
+
+    <string name="uxsdk_thermal_camera_ffc_mode_manual">Manual</string>
+    <string name="uxsdk_thermal_camera_ffc_mode_auto">Auto</string>
+
+    <string name="uxsdk_thermal_camera_scene_emissivity">Scene Emissivity</string>
+    <string name="uxsdk_thermal_camera_atmosphere_transmission_coefficient">Atmosphere Transmission Coefficient</string>
+    <string name="uxsdk_thermal_camera_atmosphere_temperature">Atmosphere Temperature</string>
+    <string name="uxsdk_thermal_camera_background_temperature">Background Temperature</string>
+    <string name="uxsdk_thermal_camera_window_transmission_coefficient">Window Transmission Coefficient</string>
+    <string name="uxsdk_thermal_camera_window_temperature">Window Temperature</string>
+    <string name="uxsdk_thermal_camera_window_reflection">Window Reflection</string>
+    <string name="uxsdk_thermal_camera_window_reflected_temperature">Window Reflection Temperature</string>
+
+    <string name="uxsdk_thermal_camera_x_offset_title">Horizontal Offset</string>
+    <string name="uxsdk_thermal_camera_y_offset_title">Vertical Offset</string>
+    <string name="uxsdk_thermal_camera_msx_offset_reset">Reset</string>
+
+    <string name="uxsdk_storage_title_time">TIME</string>
+    <string name="uxsdk_storage_title_capacity">CAPACITY</string>
+    <string name="uxsdk_storage_value_full">Full</string>
+    <string name="uxsdk_sd_card_usb_connected">USB Connected</string>
+    <string name="uxsdk_sd_card_missing">No SD Card</string>
+    <string name="uxsdk_sd_card_full">SD Card Full</string>
+    <string name="uxsdk_sd_card_slow">Slow SD Card</string>
+    <string name="uxsdk_sd_card_write_protect">SD Card Write Protected</string>
+    <string name="uxsdk_sd_card_not_formatted">SD Card Not Formatted</string>
+    <string name="uxsdk_sd_card_formatting">SD Card is formatting&#8230;</string>
+    <string name="uxsdk_sd_card_invalid">SD Card Invalid</string>
+    <string name="uxsdk_sd_card_busy">SD Card Busy</string>
+    <string name="uxsdk_sd_card_unknown_error">SD Card Unknown Error</string>
+    <string name="uxsdk_sd_card_initial">SD Card Initializing</string>
+    <string name="uxsdk_sd_card_recover_file">Repairing Video Files</string>
+    <string name="uxsdk_sd_card_write_slow">Slow Write Speed</string>
+    <string name="uxsdk_sd_card_needs_formatting">SD Card Formatting is Recommended</string>
+    <string name="uxsdk_sd_card_remaining_space">%1$d MB</string>
+
+    <string name="uxsdk_thermal_camera_version_standard">Standard</string>
+    <string name="uxsdk_thermal_camera_version_advanced">Advanced</string>
+
+    <string name="uxsdk_internal_storage_title_time">Internal Storage TIME</string>
+    <string name="uxsdk_internal_storage_title_capacity">CAPACITY</string>
+    <string name="uxsdk_internal_storage_missing">No Internal Storage</string>
+    <string name="uxsdk_internal_storage_full">Internal Storage Full</string>
+    <string name="uxsdk_internal_storage_slow">Slow Internal Storage</string>
+    <string name="uxsdk_internal_storage_write_protect">Internal Storage Write Protected</string>
+    <string name="uxsdk_internal_storage_not_formatted">Internal Storage Not Formatted</string>
+    <string name="uxsdk_internal_storage_formatting">Internal Storage is Formatting&#8230;</string>
+    <string name="uxsdk_internal_storage_invalid">Internal Storage Invalid</string>
+    <string name="uxsdk_internal_storage_busy">Internal Storage Busy</string>
+    <string name="uxsdk_internal_storage_unknown_error">Internal Storage Unknown Error</string>
+    <string name="uxsdk_internal_storage_initial">Internal Storage Initializing</string>
+    <string name="uxsdk_internal_storage_remaining_space">%1$d MB</string>
+
+    <!-- Compass Calibration work flow -->
+    <string name="uxsdk_compass_calibration_confirm">Calibrate the compass now. Ensure no magnets or metal objects are near the compass.</string>
+    <string name="uxsdk_compass_calibration_success">Compass Calibration Complete</string>
+    <string name="uxsdk_compass_calibration_fail">Compass Calibration Failed</string>
+    <string name="uxsdk_compass_calibration_cancel">Cancel Calibration</string>
+    <string name="uxsdk_compass_calibration_tip_1">Step 1: Ensure no magnets or metal objects are near the compass, from the ground 1.5m(4.9ft).</string>
+    <string name="uxsdk_fpv_checklist_compass_tip_show_arm">Unfold aircraft arms as indicated</string>
+
+    <string name="uxsdk_compass_calibration_tip_2">Step 2: Ensure no magnets or metal objects are near the compass, from the ground 1.5m(4.9ft).</string>
+    <string name="uxsdk_compass_calibration_tip_1_desc">Rotate aircraft 360 degrees horizontally</string>
+    <string name="uxsdk_compass_calibration_tip_2_desc">Face the nose down, then rotate aircraft 360 degrees again</string>
+    <string name="uxsdk_compass_calibration_fail_desc">Intensive electromagnetic interference nearby. Ensure no magnets or metal objects are near the compass and keep the aircraft 1 meter off the ground to do recalibration.</string>
+
+    <string name="uxsdk_alert_can_not_start_record">Cannot start recording</string>
+    <string name="uxsdk_solution_insert_second_sdcard">To record RAW format, insert the second SD card</string>
+
+    <string name="uxsdk_thermal_camera_title">Thermal Camera</string>
+    <string name="uxsdk_visible_camera_title">Visible Camera</string>
+
+    <string name="uxsdk_pip_mode">PIP Setting</string>
+    <string name="uxsdk_pip_mode_center">Center</string>
+    <string name="uxsdk_pip_mode_right_bottom">Right Bottom</string>
+    <string name="uxsdk_pip_mode_right_center">Right Center</string>
+    <string name="uxsdk_pip_mode_right_top">Right Top</string>
+    <string name="uxsdk_pip_mode_center_bottom">Center Bottom</string>
+    <string name="uxsdk_pip_mode_center_top">Center Top</string>
+    <string name="uxsdk_pip_mode_left_bottom">Left Bottom</string>
+    <string name="uxsdk_pip_mode_left_center">Left Center</string>
+    <string name="uxsdk_pip_mode_left_top">Left Top</string>
+    <string name="uxsdk_pip_mode_side_by_side">Side By Side</string>
+    <string name="uxsdk_pip_mode_link_up">Link Up</string>
+
+    <string name="uxsdk_ssd_status_error_nossd">No SSD Available</string>
+    <string name="uxsdk_camera_ssd_saving">Saving to SSD</string>
+    <string name="uxsdk_ssd_status_formatting">Formatting…</string>
+    <string name="uxsdk_ssd_status_init">SSD initializing…</string>
+    <string name="uxsdk_ssd_status_recognize_failed">SSD recognition failed.</string>
+    <string name="uxsdk_ssd_status_verify_failed">SSD Verification Failed</string>
+    <string name="uxsdk_ssd_status_full">SSD Full</string>
+    <string name="uxsdk_ssd_status_poor_connection">Connection Error</string>
+    <string name="uxsdk_ssd_status_switching_mode">Switching mode…</string>
+    <string name="uxsdk_ssd_status_need_format">Formatting is required.</string>
+
+    <!-- EI Color -->
+    <string name="uxsdk_camera_ei_color_dlog">DLog</string>
+    <string name="uxsdk_camera_ei_color_rec709">Rec.709</string>
+
+    <!-- SSD Color -->
+    <string name="uxsdk_camera_ssd_color_standard">Standard</string>
+    <string name="uxsdk_camera_ssd_color_dlog">DLog</string>
+    <string name="uxsdk_camera_ssd_color_rec709">Rec.709</string>
+    <string name="uxsdk_camera_ssd_color_cine_like">CineLike</string>
+    <string name="uxsdk_camera_ssd_color_raw_color">RAW</string>
+    <string name="uxsdk_camera_ssd_color_unknown">Unknown</string>
+
+    <!-- RTK Panel -->
+    <string name="uxsdk_null_string">N/A</string>
+    <string name="uxsdk_rtk_panel_title">RTK Satellite Status</string>
+    <string name="uxsdk_rtk_panel_antenna_1">ANT1</string>
+    <string name="uxsdk_rtk_panel_antenna_2">ANT2</string>
+    <string name="uxsdk_rtk_panel_base_station">Base Station</string>
+    <string name="uxsdk_rtk_panel_satellite_num">Satellites#</string>
+    <string name="uxsdk_rtk_panel_gps_num">GPS</string>
+    <string name="uxsdk_rtk_panel_north_num">BeiDou</string>
+    <string name="uxsdk_rtk_panel_glonass_num">GLONASS</string>
+
+    <string name="uxsdk_rtk_panel_aircraft_location">Aircraft Coordinates</string>
+    <string name="uxsdk_rtk_panel_base_station_location">Base Station Coordinates</string>
+    <string name="uxsdk_rtk_panel_lat">Latitude</string>
+    <string name="uxsdk_rtk_panel_lng">Longitude</string>
+    <string name="uxsdk_rtk_panel_height">Altitude</string>
+    <string name="uxsdk_rtk_panel_antenna_angle">Course Angle</string>
+    <string name="uxsdk_rtk_panel_aircraft_altitude_wrt">Aircraft Altitude w.r.t Home point</string>
+    <string name="uxsdk_rtk_panel_orientation_status_text">Orientation</string>
+    <string name="uxsdk_rtk_panel_positioning_status_text">Positioning</string>
+    <string name="uxsdk_rtk_introduction_txt">Real-Time Kinematic positioning is based on the phase of the signal\'s carrier phase and outputs centimeter-level 3D positioning on particular coordinates. Heading is determined by the two antennas of the rover.</string>
+
+    <string name="uxsdk_camera_dust_reduction_title">Camera Sensor Cleaning</string>
+    <string name="uxsdk_camera_dust_reduction_cancel">Cancel</string>
+    <string name="uxsdk_camera_dust_reduction_start">Start</string>
+    <string name="uxsdk_camera_dust_reduction_done">Complete</string>
+    <string name="uxsdk_camera_dust_reduction_tutorial_1">Initiating camera sensor cleaning.</string>
+    <string name="uxsdk_camera_dust_reduction_tutorial_2">Please remove the lens before starting sensor cleaning.</string>
+    <string name="uxsdk_camera_dust_reduction_tutorial_3">Lens removed. Tap Start to begin sensor cleaning.</string>
+    <string name="uxsdk_camera_dust_reduction_tutorial_4">Camera sensor is being cleaned...</string>
+    <string name="uxsdk_camera_dust_reduction_tutorial_5">Camera sensor cleaning is finished. Please remount the lens.</string>
+
+    <string name="uxsdk_user_log_in_button">Log in</string>
+    <string name="uxsdk_user_log_in_successful">You have been logged in successfully.</string>
+    <string name="uxsdk_user_log_out_button">Log out</string>
+    <string name="uxsdk_user_log_out_confirmation">Are you sure you want to log out?</string>
+    <string name="uxsdk_user_log_out_successful">You have been logged out successfully.</string>
+    <string name="uxsdk_user_log_action_failed">Something went wrong. Please try again.</string>
+
+    <string name="uxsdk_fly_zone_error_unidentified">FlyZone ID not identified.</string>
+    <string name="uxsdk_fly_zone_unlock">Unlock</string>
+    <string name="uxsdk_fly_zone_unlock_zone">Unlock %1$s</string>
+    <string name="uxsdk_fly_zone_unlock_confirmation">By tapping Unlock, you agree that you have the authorization to operate in this fly zone. A record of this request will be linked to your DJI account. Tap Cancel to abort the operation.</string>
+    <string name="uxsdk_fly_zone_unlock_end_time">Currently unlocked and expires at %1$s</string>
+    <string name="uxsdk_fly_zone_unlock_failed_unauthorized">Failed to unlock. You are not authorized to unlock this zone.</string>
+    <string name="uxsdk_fly_zone_login_failed">Failed to login. You are not authorized to perform this action.</string>
+    <string name="uxsdk_fly_zone_login_failed_error">Something went wrong. Failed to login. Please try again later.</string>
+    <string name="uxsdk_fly_zone_warning">Warning</string>
+    <string name="uxsdk_fly_zone_enhanced_warning">Enhanced warning</string>
+    <string name="uxsdk_fly_zone_authorized">Authorized</string>
+    <string name="uxsdk_fly_zone_restricted">Restricted</string>
+    <string name="uxsdk_fly_zone_self_unlock">Self Unlock</string>
+    <string name="uxsdk_fly_zone_custom_unlock">Custom Unlock</string>
+    <string name="uxsdk_self_fly_zone_login_requirement">In order to unlock fly zones you must login with your DJI account. Tap Log in to continue logging in</string>
+    <string name="uxsdk_fly_zone_custom_unlock_aircraft">Custom Unlock on Aircraft</string>
+    <string name="uxsdk_fly_zone_custom_unlock_enabled">Custom Unlock Enabled</string>
+    <string name="uxsdk_custom_fly_zone_unauthorized_msg">Failed to perform this action. You are not authorized.</string>
+    <string name="uxsdk_custom_fly_zone_enabled_confirmation">Are you sure you want to enable this FlyZone?</string>
+    <string name="uxsdk_custom_fly_zone_duplicate">%1$s is currently enabled. Do you wish you disable it and enable %2$s</string>
+    <string name="uxsdk_custom_fly_zone_enable_failed">Enabling custom unlock zone failed.</string>
+    <string name="uxsdk_custom_fly_zone_disable_failed">Disabling custom unlock zone failed.</string>
+    <string name="uxsdk_custom_fly_zone_login_requirement">In order to retrieve custom unlock fly zones you must login with your DJI account. Please make sure the serial number of the aircraft you are connected to matches your custom unlock records. Tap Log in to continue logging in</string>
+
+    <!-- Simulator Widget -->
+    <string name="uxsdk_simulator_zero_string">0</string>
+    <string name="uxsdk_simulator_null_string">N/A</string>
+    <string name="uxsdk_simulator_widget_title">Simulator Status</string>
+    <string name="uxsdk_simulator_widget_lat">Latitude</string>
+    <string name="uxsdk_simulator_widget_lng">Longitude</string>
+    <string name="uxsdk_simulator_widget_world_x">World-X</string>
+    <string name="uxsdk_simulator_widget_world_y">World-Y</string>
+    <string name="uxsdk_simulator_widget_world_z">World-Z</string>
+    <string name="uxsdk_simulator_widget_pitch">Pitch</string>
+    <string name="uxsdk_simulator_widget_yaw">Yaw</string>
+    <string name="uxsdk_simulator_widget_roll">Roll</string>
+    <string name="uxsdk_simulator_widget_flying_state">Flying State</string>
+    <string name="uxsdk_simulator_widget_motor_started">Motor Started</string>
+    <string name="uxsdk_simulator_widget_satellite">Satellite Count</string>
+    <string name="uxsdk_simulator_widget_frequency">Frequency</string>
+    <string name="uxsdk_simulator_position_title">Position</string>
+    <string name="uxsdk_simulator_attitude_title">Attitude</string>
+    <string name="uxsdk_simulator_aircraft_status_title">Aircraft</string>
+    <string name="uxsdk_simulator_aircraft_wind_title">Wind Simulation</string>
+    <string name="uxsdk_simulator_input_val_error">Enter the values to simulate</string>
+    <string name="uxsdk_simulator_save_preset">Save Preset</string>
+    <string name="uxsdk_simulator_save_preset_message">What would you like the preset to be called?</string>
+    <string name="uxsdk_simulator_save_preset_list">Preset List</string>
+    <string name="uxsdk_simulator_save_preset_delete">Are you sure you want to delete %1$s?</string>
+    <string name="uxsdk_simulator_save_preset_list_empty">No saved presets</string>
+    <string name="uxsdk_simulator_preset">Preset</string>
+
+
+    <!-- Speaker Panel -->
+    <string name="uxsdk_speaker_panel_header">Speaker Settings</string>
+    <string name="uxsdk_speaker_panel_volume">Speaker Volume</string>
+    <string name="uxsdk_speaker_panel_broadcast">Record Audio</string>
+    <string name="uxsdk_speaker_panel_local_audio">Play Audio</string>
+    <string name="uxsdk_speaker_panel_temporary_switch">Persist file</string>
+    <string name="uxsdk_speaker_panel_play_instant_switch">Instant Play</string>
+    <string name="uxsdk_speaker_panel_play_repeat_mode">Play in Loop</string>
+    <string name="uxsdk_speaker_panel_tap_to_record">Tap to record</string>
+    <string name="uxsdk_speaker_panel_list_prefix">"AUD "</string>
+    <string name="uxsdk_speaker_record_permission_required">"Please enable microphone permissions in the app settings to record audio."</string>
+
+    <!-- Spotlight Widget and Panel -->
+    <string name="uxsdk_spotlight">Spotlight</string>
+    <string name="uxsdk_enabled">Enabled</string>
+    <string name="uxsdk_spotlight_settings">Spotlight Settings</string>
+    <string name="uxsdk_spotlight_brightness">Brightness</string>
+    <string name="uxsdk_spotlight_brightness_warning">To ease eye strain, max brightness is reduced to 50% when aircraft is not flying.</string>
+    <string name="uxsdk_spotlight_temperature">Temperature</string>
+    <string name="uxsdk_spotlight_brightness_value">%1$d%%</string>
+    <string name="uxsdk_spotlight_temperature_value">%1$.1f°C</string>
+
+    <!-- APAS Widget -->
+    <string name="uxsdk_apas_widget_enabled">APAS has been enabled.</string>
+    <string name="uxsdk_apas_widget_temp_disabled">Required conditions not met. APAS is temporarily disabled.</string>
+    <string name="uxsdk_apas_widget_disabled">APAS has been disabled.</string>
+
+    <!-- Access Locker -->
+    <string name="uxsdk_access_locker">Access Locker</string>
+    <string name="uxsdk_set_password">Set Password</string>
+    <string name="uxsdk_enter_password">Enter Password</string>
+    <string name="uxsdk_confirm_password">Confirm Password</string>
+    <string name="uxsdk_change_password">Change Password</string>
+    <string name="uxsdk_enter_current_password">Enter Current Password</string>
+    <string name="uxsdk_enter_new_password">Enter New Password</string>
+    <string name="uxsdk_confirm_new_password">Confirm New Password</string>
+    <string name="uxsdk_change_password_message">Passwords can contain uppercase and lowercase letters and numbers.
+    </string>
+    <string name="uxsdk_enter_security_password">Enter Password</string>
+    <string name="uxsdk_security_password_warning">The password is stored locally on the aircraft. Password retrieval is not
+        available for this reason. DJI is not able to reset your password. If you forget your password, you will need to
+        format the aircraft to remove the password. Formatting the aircraft will delete all data in its storage.
+    </string>
+    <string name="uxsdk_format_aircraft">Format Aircraft</string>
+    <string name="uxsdk_format_button">Format</string>
+    <string name="uxsdk_unlock">Unlock</string>
+    <string name="uxsdk_remove_password">Remove Password</string>
+    <string name="uxsdk_enter_password_to_remove">Enter Password To Remove</string>
+    <string name="uxsdk_remove">Remove</string>
+    <string name="uxsdk_select_action_header">Change or Remove Password</string>
+    <string name="uxsdk_select_action_message">The current password is required in order to change or remove the password
+    </string>
+    <string name="uxsdk_remove_password_warning">This will remove the password and leave the aircraft unsecured.</string>
+    <string name="uxsdk_empty_field_error">Field cannot be empty</string>
+    <string name="uxsdk_passwords_do_not_match_error">Passwords do not match</string>
+    <string name="uxsdk_password_set_successfully">Password set successfully</string>
+    <string name="uxsdk_password_set_failed">Setting password failed: %1$s. Please try again.</string>
+    <string name="uxsdk_set_password_warning">Your password is used to ensure the secure use of your aircraft. After setting a
+        password, it will be required to control the aircraft and for reading aircraft memory when the aircraft is
+        connected to a computer as an external device. Passwords can contain uppercase and lowercase letters and numbers.
+    </string>
+    <string name="uxsdk_aircraft_unlocked_successfully">Aircraft unlocked successfully</string>
+    <string name="uxsdk_aircraft_formatted_successfully">Aircraft formatted successfully</string>
+    <string name="uxsdk_aircraft_format_failed">Format aircraft failed: %1$s.</string>
+    <string name="uxsdk_format_aircraft_confirmation">Formatting the aircraft will delete all data in its storage. Are you
+        sure you want to format the aircraft?
+    </string>
+    <string name="uxsdk_password_removed_successfully">Password removed successfully</string>
+    <string name="uxsdk_remove_password_failed">Remove password failed: %1$s. Please try again.</string>
+    <string name="uxsdk_password_changed_successfully">Password changed successfully</string>
+    <string name="uxsdk_change_password_failed">Change password failed: %1$s. Please try again.</string>
+    <string name="uxsdk_tips_adsb_warning_title">Another aircraft is nearby. Fly with caution.</string>
+    <string name="uxsdk_tips_adsb_warning_content">Another aircraft is too close, please descend to a safer altitude.</string>
+    <string name="uxsdk_tips_adsb_dangerous_content">Another aircraft is dangerously close, please descend to a safer altitude.</string>
+    <string name="uxsdk_adsb_terms_content">Please make sure you have read and understood the DJI AirSense Warnings.</string>
+    <string name="uxsdk_never_show">Never show again</string>
+
+    <!-- Panel Live Stream -->
+    <string name="uxsdk_live_stream_panel_header">Live Stream Panel</string>
+
+    <!--FFC-->
+    <string name="uxsdk_ffc_calibrate_success_toast">FFC calibrated</string>
+    <string name="uxsdk_ffc_calibrate_failed_toast">FFC calibration failed. Please re-calibrate</string>
+
+    <string name="uxsdk_expose_metering_center_click_tips">Tap anyware onscreen for spot metering</string>
+
+    <string name="uxsdk_camera_stream_current_storage">Current View</string>
+    <string name="uxsdk_camera_stream_video_storage">Video Storage</string>
+    <string name="uxsdk_camera_stream_current_livevideo">Current View</string>
+    <string name="uxsdk_camera_stream_wide_storage">Wide-angle</string>
+    <string name="uxsdk_camera_stream_zoom_storage">Zoom</string>
+    <string name="uxsdk_camera_stream_ir_storage">Infrared</string>
+    <string name="uxsdk_camera_stream_wide_video_storage">Wide Video</string>
+    <string name="uxsdk_camera_stream_zoom_video_storage">Zoom Video</string>
+    <string name="uxsdk_camera_stream_ir_video_storage">Infrared Video</string>
+    <string name="uxsdk_camera_stream_photo_remark">Current view: Saves photos taken with current cameras. </string>
+    <string name="uxsdk_camera_stream_photo_at_least">Select whether to save photos from one or more cameras</string>
+    <string name="uxsdk_camera_stream_video_at_least">Select whether to save videos from one or more cameras</string>
+    <string name="uxsdk_camera_stream_video_remark">Current view: Saves a recording of the current app camera view</string>
+</resources>

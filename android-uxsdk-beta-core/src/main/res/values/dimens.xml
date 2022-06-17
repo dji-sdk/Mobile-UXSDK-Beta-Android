@@ -530,4 +530,15 @@
     <dimen name="uxsdk_9_dp">9dp</dimen>
     <dimen name="uxsdk_n5_dp">-5dp</dimen>
     <dimen name="uxsdk_n8_dp">-8dp</dimen>
+
+    <!-- left menu -->
+    <dimen name="uxsdk_buttonsize_margin">20dp</dimen>
+    <dimen name="uxsdk_buttonsize_half_margin">10dp</dimen>
+    <dimen name="uxsdk_view_top_min_margin">3dp</dimen>
+    <dimen name="uxsdk_view_top_mid_margin">6dp</dimen>
+    <dimen name="uxsdk_view_top_max_margin">14dp</dimen>
+    <dimen name="uxsdk_fpv_scroll_tv_height">100dp</dimen>
+    <dimen name="uxsdk_buttonsize_height">35dp</dimen>
+    <dimen name="uxsdk_fpv_et_width">55dp</dimen>
+
 </resources>

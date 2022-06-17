@@ -1,0 +1,21 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ExpandableListView
+        android:id="@+id/expandable_list_view_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@android:color/transparent"
+        android:choiceMode="singleChoice"
+        android:divider="@color/uxsdk_gray_divider_line"
+        android:dividerHeight="1dp"
+        android:childDivider="@color/uxsdk_gray_divider_line"
+        android:drawSelectorOnTop="false"
+        android:fadingEdge="none"
+        android:listSelector="@null"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="vertical">
+    </ExpandableListView>
+
+</merge>

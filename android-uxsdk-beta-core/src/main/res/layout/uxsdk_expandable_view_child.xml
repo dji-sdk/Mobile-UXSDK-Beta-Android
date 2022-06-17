@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/expandable_child_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/child_value1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@drawable/uxsdk_selector_text"
+        android:textSize="@dimen/uxsdk_text_size_normal" />
+
+    <TextView
+        android:id="@+id/child_tag1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/uxsdk_black_47_percent"
+        android:background="@drawable/uxsdk_selector_tag"
+        android:includeFontPadding="false"
+        android:textStyle="italic"
+        android:textSize="@dimen/uxsdk_text_size_small"/>
+
+    <TextView
+        android:id="@+id/child_value2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@drawable/uxsdk_selector_text"
+        android:textSize="@dimen/uxsdk_text_size_normal" />
+
+    <TextView
+        android:id="@+id/child_tag2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/uxsdk_black_47_percent"
+        android:background="@drawable/uxsdk_selector_tag"
+        android:includeFontPadding="false"
+        android:textStyle="italic"
+        android:textSize="@dimen/uxsdk_text_size_small"/>
+
+    <TextView
+        android:id="@+id/child_value3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@drawable/uxsdk_selector_text"
+        android:textSize="@dimen/uxsdk_text_size_normal" />
+
+    <TextView
+        android:id="@+id/child_tag3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/uxsdk_black_47_percent"
+        android:background="@drawable/uxsdk_selector_tag"
+        android:includeFontPadding="false"
+        android:textStyle="italic"
+        android:textSize="@dimen/uxsdk_text_size_small"/>
+
+</merge>

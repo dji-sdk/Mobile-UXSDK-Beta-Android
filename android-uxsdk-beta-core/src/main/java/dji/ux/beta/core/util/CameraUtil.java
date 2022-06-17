@@ -23,6 +23,7 @@
 
 package dji.ux.beta.core.util;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 import java.util.Locale;
@@ -33,8 +34,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import dji.common.camera.CameraVideoStreamSource;
 import dji.common.camera.SettingsDefinitions;
+import dji.common.error.DJIError;
+import dji.keysdk.CameraKey;
+import dji.keysdk.DJIKey;
+import dji.keysdk.KeyManager;
+import dji.keysdk.callback.ActionCallback;
 import dji.sdk.camera.Camera;
 import dji.ux.beta.core.R;
+import dji.ux.beta.core.v4.SlidingDialogV4;
+import dji.ux.beta.core.v4.ViewUtils;
 
 /**
  * Utility class for displaying camera information.
@@ -342,5 +350,102 @@ public final class CameraUtil {
 
     public static boolean isAutoISOSupportedByProduct() {
         return (!ProductUtil.isMavicAir()) && (!ProductUtil.isMavicPro() && (!ProductUtil.isMavicMini()));
+    }
+
+    public static SettingsDefinitions.ShootPhotoMode toShootPhotoMode(SettingsDefinitions.FlatCameraMode sdkFlatMode) {
+        SettingsDefinitions.ShootPhotoMode mode = SettingsDefinitions.ShootPhotoMode.UNKNOWN;
+        if (sdkFlatMode == SettingsDefinitions.FlatCameraMode.PHOTO_SINGLE) {
+            mode = SettingsDefinitions.ShootPhotoMode.SINGLE;
+        } else if (sdkFlatMode == SettingsDefinitions.FlatCameraMode.PHOTO_HDR) {
+            mode = SettingsDefinitions.ShootPhotoMode.HDR;
+        } else if (sdkFlatMode == SettingsDefinitions.FlatCameraMode.PHOTO_BURST) {
+            mode = SettingsDefinitions.ShootPhotoMode.BURST;
+        } else if (sdkFlatMode == SettingsDefinitions.FlatCameraMode.PHOTO_AEB) {
+            mode = SettingsDefinitions.ShootPhotoMode.AEB;
+        } else if (sdkFlatMode == SettingsDefinitions.FlatCameraMode.PHOTO_INTERVAL) {
+            mode = SettingsDefinitions.ShootPhotoMode.INTERVAL;
+        } else if (sdkFlatMode == SettingsDefinitions.FlatCameraMode.PHOTO_PANORAMA) {
+            mode = SettingsDefinitions.ShootPhotoMode.PANORAMA;
+        } else if (sdkFlatMode == SettingsDefinitions.FlatCameraMode.PHOTO_EHDR) {
+            mode = SettingsDefinitions.ShootPhotoMode.EHDR;
+        } else if (sdkFlatMode == SettingsDefinitions.FlatCameraMode.PHOTO_HYPER_LIGHT) {
+            mode = SettingsDefinitions.ShootPhotoMode.HYPER_LIGHT;
+        }
+        return mode;
+    }
+
+    public static DJIKey createCameraKeys(String cameraKey, int cameraIndex, int lenIndex) {
+        KeyManager keyManager = KeyManager.getInstance();
+        if (keyManager != null){
+            Object isMultiLensCameraSupported = keyManager.getValue(CameraKey.create(CameraKey.IS_MULTI_LENS_CAMERA_SUPPORTED, cameraIndex));
+            if (isMultiLensCameraSupported != null && (boolean) isMultiLensCameraSupported) {
+                return CameraKey.createLensKey(cameraKey,cameraIndex,lenIndex);
+            }
+        }
+        return CameraKey.create(cameraKey,cameraIndex);
+    }
+
+
+    public static boolean isSupportCameraStyle(SettingsDefinitions.CameraType cameraType){
+        return cameraType != SettingsDefinitions.CameraType.DJICameraTypeCV600 &&
+                cameraType != SettingsDefinitions.CameraType.DJICameraTypeGD610DualLight &&
+                cameraType != SettingsDefinitions.CameraType.DJICameraTypeGD610TripleLight;
+    }
+
+    public static boolean isThermalCamera(SettingsDefinitions.CameraType cameraType) {
+        return cameraType == SettingsDefinitions.CameraType.DJICameraTypeWM247;
+
+    }
+
+    public static Integer getSSDColorIndex(SettingsDefinitions.SSDColor value) {
+        SettingsDefinitions.SSDColor[] ssdColorValueArray = SettingsDefinitions.SSDColor.getValues();
+        if (ssdColorValueArray != null) {
+            for (int i=0; i < ssdColorValueArray.length; i++) {
+                if (ssdColorValueArray[i] == value) {
+                    return i;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Action to execute the command to format internal storage
+     */
+    public static void formatInternalStorage(final Context context) {
+        if (KeyManager.getInstance() == null) {
+            return;
+        }
+
+        DJIKey formatInternalStorageKey = CameraKey.create(CameraKey.FORMAT_INTERNAL_STORAGE);
+        KeyManager.getInstance().performAction(formatInternalStorageKey, new ActionCallback() {
+            @Override
+            public void onSuccess() {
+                //DJILog.d("LWF", "Camera reset setting successfully");
+                ViewUtils.showMessageDialog(context, SlidingDialogV4.TYPE_TIP2, R.string.uxsdk_camera_format_internal_storage_success, "");
+            }
+
+            @Override
+            public void onFailure(@NonNull DJIError error) {
+                String errorInfo = error.getDescription();
+
+                ViewUtils.showAlertDialog(context, R.string.uxsdk_camera_format_internal_storage_busy_title, errorInfo);
+                //DJILog.d("LWF", "Failed to set reset Camera Setting");
+            }
+        }, SettingsDefinitions.StorageLocation.INTERNAL_STORAGE);
+    }
+
+    public static Integer getVideoCompressionStandardIndex(@NonNull SettingsDefinitions.VideoFileCompressionStandard value) {
+        SettingsDefinitions.VideoFileCompressionStandard[] videoFileCompressionStandards = SettingsDefinitions.VideoFileCompressionStandard.getValues();
+        if (videoFileCompressionStandards != null) {
+            for (int i=0; i < videoFileCompressionStandards.length; i++) {
+                if (videoFileCompressionStandards[i] == value) {
+                    return i;
+                }
+            }
+        }
+
+        return null;
     }
 }

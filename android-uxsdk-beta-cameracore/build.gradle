@@ -70,7 +70,7 @@ android {
 
 dependencies {
     api project(path: ':android-uxsdk-beta-core')
-    compileOnly ('com.dji:dji-sdk-provided:4.16')
+    compileOnly ('com.dji:dji-sdk-provided:4.16.1')
 
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'

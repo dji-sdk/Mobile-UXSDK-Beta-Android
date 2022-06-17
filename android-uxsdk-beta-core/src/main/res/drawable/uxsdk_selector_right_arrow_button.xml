@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_pressed="true">
+        <rotate android:fromDegrees="180"
+            android:toDegrees="0"
+            android:drawable="@drawable/uxsdk_camera_setting_back_arrow_highlight"/>
+    </item>
+
+    <item>
+        <rotate android:fromDegrees="180"
+        android:toDegrees="0"
+        android:drawable="@drawable/uxsdk_camera_setting_back_arrow"/>
+    </item>
+</selector>
+

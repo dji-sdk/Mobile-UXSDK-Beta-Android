@@ -861,4 +861,23 @@
         <attr name="uxsdk_actual_width" format="dimension"/>
         <attr name="uxsdk_actual_height" format="dimension"/>
     </declare-styleable>
+
+    <attr name="uxsdk_segmentedBackground" format="reference"/>
+    <attr name="uxsdk_segmentedForeground" format="reference"/>
+    <attr name="uxsdk_segmentedDivider" format="reference"/>
+    <attr name="uxsdk_segmentedTextSize" format="dimension"/>
+    <attr name="uxsdk_textColor" format="color"/>
+    <attr name="uxsdk_segmentedTexts" format="reference"/>
+    <attr name="uxsdk_segmentedIcons" format="reference"/>
+    <attr name="uxsdk_segmentedEnableDivider" format="boolean"/>
+    <declare-styleable name="SegmentedView">
+        <attr name="uxsdk_segmentedTextSize"/>
+        <attr name="uxsdk_segmentedBackground"/>
+        <attr name="uxsdk_segmentedForeground"/>
+        <attr name="uxsdk_segmentedDivider"/>
+        <attr name="uxsdk_textColor"/>
+        <attr name="uxsdk_segmentedTexts"/>
+        <attr name="uxsdk_segmentedIcons"/>
+        <attr name="uxsdk_segmentedEnableDivider"/>
+    </declare-styleable>
 </resources>

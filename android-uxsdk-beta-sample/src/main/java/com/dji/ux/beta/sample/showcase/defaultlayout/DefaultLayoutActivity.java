@@ -60,6 +60,7 @@ import dji.ux.beta.core.util.CommonUtils;
 import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
+import dji.ux.beta.core.v4.CameraSettingAdvancedPanel;
 import dji.ux.beta.core.widget.fpv.FPVWidget;
 import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget;
 import dji.ux.beta.core.widget.radar.RadarWidget;
@@ -132,6 +133,8 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     protected CameraControlsWidget cameraControlsWidget;
     @BindView(R.id.panel_camera_controls_exposure_settings)
     protected ExposureSettingsPanel exposureSettingsPanel;
+    @BindView(R.id.panel_camera_setting_advanced)
+    protected CameraSettingAdvancedPanel cameraSettingAdvancedPanel;
 
     private boolean isMapMini = true;
     private int widgetHeight;
@@ -171,6 +174,7 @@ public class DefaultLayoutActivity extends AppCompatActivity {
 
         CameraControlsWidget cameraControlsWidget = findViewById(R.id.widget_camera_controls);
         cameraControlsWidget.getExposureSettingsIndicatorWidget().setStateChangeResourceId(R.id.panel_camera_controls_exposure_settings);
+        cameraControlsWidget.getCameraSettingsMenuIndicatorWidget().setStateChangeResourceId(R.id.panel_camera_setting_advanced);
 
         // Setup top bar state callbacks
         TopBarPanelWidget topBarPanel = findViewById(R.id.panel_top_bar);
@@ -322,6 +326,7 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         focusExposureSwitchWidget.updateCameraSource(cameraIndex, lensType);
         cameraControlsWidget.updateCameraSource(cameraIndex, lensType);
         exposureSettingsPanel.updateCameraSource(cameraIndex, lensType);
+        cameraSettingAdvancedPanel.updateKeyOnIndex(cameraIndex.getIndex(),lensType.value());
     }
 
     private void setM200SeriesWarningLevelRanges() {

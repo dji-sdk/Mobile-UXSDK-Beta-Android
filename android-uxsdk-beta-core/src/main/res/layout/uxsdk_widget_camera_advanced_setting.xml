@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <dji.ux.beta.core.v4.TabBarView
+        android:id="@+id/camera_advsetting_tab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/uxsdk_v4_setting_menu_top_bar">
+
+        <ImageView
+            android:id="@+id/camera_tab_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/uxsdk_selector_picture_tab"/>
+
+        <ImageView
+            android:id="@+id/camera_tab_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/uxsdk_selector_video_tab"/>
+
+        <ImageView
+            android:id="@+id/camera_tab_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="center"
+            android:src="@drawable/uxsdk_selector_other_tab"/>
+
+        <ImageView
+            android:id="@+id/camera_tab_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uxsdk_camera_settings_tab_indicator"/>
+    </dji.ux.beta.core.v4.TabBarView>
+
+    <FrameLayout
+        android:id="@+id/camera_setting_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/uxsdk_v4_setting_menu_top_bar"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/imageview_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uxsdk_selector_arrow_button"
+            android:padding="10dp"/>
+
+        <TextView
+            android:id="@+id/textview_title"
+            android:textColor="@color/uxsdk_light_gray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+    </FrameLayout>
+
+    <dji.ux.beta.core.v4.ParentChildrenViewAnimator
+        android:id="@+id/camera_setting_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/uxsdk_setting_menu_content"
+        android:animateFirstView="true">
+
+        <dji.ux.beta.core.v4.CameraPhotoSettingListView
+            android:id="@+id/camera_setting_content_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <dji.ux.beta.core.v4.CameraVideoSettingListView
+            android:id="@+id/camera_setting_content_video"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <dji.ux.beta.core.v4.CameraOtherSettingListView
+            android:id="@+id/camera_setting_content_other"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </dji.ux.beta.core.v4.ParentChildrenViewAnimator>
+
+</merge>

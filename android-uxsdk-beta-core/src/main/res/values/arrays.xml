@@ -34,4 +34,685 @@
         <item>10</item>
         <item>11</item>
     </integer-array>
+
+    <string-array name="uxsdk_camera_aperture_array">
+        <item>2.8</item>
+    </string-array>
+
+    <string-array name="uxsdk_camera_shutter_names">
+        <item>8000</item>
+        <item>6400</item>
+        <item>5000</item>
+        <item>4000</item>
+        <item>3200</item>
+        <item>2500</item>
+        <item>2000</item>
+        <item>1600</item>
+        <item>1250</item>
+        <item>1000</item>
+        <item>800</item>
+        <item>640</item>
+        <item>500</item>
+        <item>400</item>
+        <item>320</item>
+        <item>240</item>
+        <item>200</item>
+        <item>160</item>
+        <item>120</item>
+        <item>100</item>
+        <item>80</item>
+        <item>60</item>
+        <item>50</item>
+        <item>40</item>
+        <item>30</item>
+        <item>25</item>
+        <item>20</item>
+        <item>15</item>
+        <item>12.5</item>
+        <item>10</item>
+        <item>8</item>
+        <item>6.25</item>
+        <item>5</item>
+        <item>4</item>
+        <item>3</item>
+        <item>2.5</item>
+        <item>2</item>
+        <item>1.67</item>
+        <item>1.25</item>
+        <item>1\"</item>
+        <item>1.3\"</item>
+        <item>1.6\"</item>
+        <item>2\"</item>
+        <item>2.5\"</item>
+        <item>3\"</item>
+        <item>3.2\"</item>
+        <item>4\"</item>
+        <item>5\"</item>
+        <item>6\"</item>
+        <item>7\"</item>
+        <item>8\"</item>
+    </string-array>
+
+    <integer-array name="uxsdk_camera_ev_value_array">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+        <item>24</item>
+        <item>25</item>
+        <item>26</item>
+        <item>27</item>
+        <item>28</item>
+        <item>29</item>
+        <item>30</item>
+        <item>31</item>
+    </integer-array>
+
+    <string-array name="uxsdk_camera_ssd_license_type">
+        <item>@string/uxsdk_camera_ssd_video_license_cdng</item>
+        <item>@string/uxsdk_camera_ssd_video_license_422hq</item>
+        <item>@string/uxsdk_camera_ssd_video_license_4444xq</item>
+    </string-array>
+
+    <string-array name="uxsdk_camera_filter_type">
+        <item>@string/uxsdk_camera_filter_none</item>
+        <item>@string/uxsdk_camera_filter_art</item>
+        <item>@string/uxsdk_camera_filter_reminiscence</item>
+        <item>@string/uxsdk_camera_filter_inverse</item>
+        <item>@string/uxsdk_camera_filter_blackandwhite</item>
+        <item>@string/uxsdk_camera_filter_bright</item>
+        <item>@string/uxsdk_camera_filter_dcinelike</item>
+        <item>@string/uxsdk_camera_filter_Portrait</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>@string/uxsdk_camera_filter_M31</item>
+        <item>@string/uxsdk_camera_filter_delta</item>
+        <item>@string/uxsdk_camera_filter_kdx</item>
+        <item>@string/uxsdk_camera_filter_dk79</item>
+        <item>@string/uxsdk_camera_filter_prismo</item>
+        <item>@string/uxsdk_camera_filter_jugo</item>
+        <item>@string/uxsdk_camera_filter_vision4</item>
+        <item>@string/uxsdk_camera_filter_vision6</item>
+        <item>@string/uxsdk_camera_filter_truecolor</item>
+        <item>@string/uxsdk_camera_filter_dlog</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>null</item>
+        <item>@string/uxsdk_camera_filter_solarize</item>
+        <item>@string/uxsdk_camera_filter_posterize</item>
+        <item>@string/uxsdk_camera_filter_whiteboard</item>
+        <item>@string/uxsdk_camera_filter_blackboard</item>>
+        <item>@string/uxsdk_camera_filter_aqua</item>
+        <item>@string/uxsdk_camera_filter_truecolor_ext</item>
+        <item>null</item>
+        <item>@string/uxsdk_camera_filter_film_a</item>
+        <item>@string/uxsdk_camera_filter_film_b</item>
+        <item>@string/uxsdk_camera_filter_film_c</item>
+        <item>@string/uxsdk_camera_filter_film_d</item>
+        <item>@string/uxsdk_camera_filter_film_e</item>
+        <item>@string/uxsdk_camera_filter_film_f</item>
+        <item>@string/uxsdk_camera_filter_film_g</item>
+        <item>@string/uxsdk_camera_filter_film_h</item>
+        <item>@string/uxsdk_camera_filter_film_i</item>
+        <item>@string/uxsdk_camera_filter_hlg</item>
+    </string-array>
+    <integer-array name="uxsdk_camera_filter_default">
+        <item>23</item>
+        <item>6</item>
+        <item>0</item>
+        <item>1</item>
+        <item>4</item>
+        <item>5</item>
+        <item>14</item>
+        <item>16</item>
+        <item>18</item>
+        <item>19</item>
+        <item>54</item>
+    </integer-array>
+
+    <string-array name="uxsdk_camera_ei_color_type">
+        <item>@string/uxsdk_camera_ei_color_dlog</item>
+        <item>@string/uxsdk_camera_ei_color_rec709</item>
+    </string-array>
+
+    <string-array name="uxsdk_camera_ssd_color_array">
+        <item>@string/uxsdk_camera_ssd_color_standard</item>
+        <item>@string/uxsdk_camera_ssd_color_dlog</item>
+        <item>@string/uxsdk_camera_ssd_color_rec709</item>
+        <item>@string/uxsdk_camera_ssd_color_cine_like</item>
+        <item>@string/uxsdk_camera_ssd_color_raw_color</item>
+    </string-array>
+
+    <string-array name="uxsdk_camera_picture_format_array">
+        <item>@string/uxsdk_camera_picture_format_raw</item>
+        <item>@string/uxsdk_camera_picture_format_jpeg</item>
+        <item>@string/uxsdk_camera_picture_format_jpegraw</item>
+        <item>null</item>
+        <item>@string/uxsdk_camera_picture_format_tiff</item>
+        <item>@string/uxsdk_camera_picture_format_low_tiff</item>
+        <item>@string/uxsdk_camera_picture_format_high_tiff</item>
+        <item>@string/uxsdk_camera_picture_format_radiometic_jpeg</item>
+    </string-array>
+
+    <integer-array name="uxsdk_camera_picture_format_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+    </integer-array>
+
+    <array name="uxsdk_camera_picture_format_img_res_array">
+        <item>@drawable/uxsdk_ic_camera_setting_raw</item>
+        <item>@drawable/uxsdk_ic_camera_setting_jpg</item>
+        <item>@drawable/uxsdk_ic_camera_setting_jr</item>
+        <item>0</item>
+        <item>@drawable/uxsdk_ic_camera_setting_tiff</item>
+        <item>@drawable/uxsdk_ic_camera_setting_tiff</item>
+        <item>@drawable/uxsdk_ic_camera_setting_tiff</item>
+        <item>@drawable/uxsdk_ic_camera_setting_rjpg</item>
+    </array>
+
+    <integer-array name="uxsdk_camera_photo_aspect_ratio_default_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </integer-array>
+
+    <string-array name="uxsdk_camera_photo_aspect_ratio_name_array">
+        <item>4:3</item>
+        <item>16:9</item>
+        <item>3:2</item>
+    </string-array>
+
+    <array name="uxsdk_camera_photo_aspect_ratio_img_array">
+        <item>@drawable/uxsdk_ic_photo_size_4x3</item>
+        <item>@drawable/uxsdk_ic_photo_size_16x9</item>
+        <item>@drawable/uxsdk_ic_photo_size_3x2</item>
+    </array>
+
+    <integer-array name="uxsdk_camera_white_balance_default_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </integer-array>
+
+    <string-array name="uxsdk_camera_white_balance_name_array">
+        <item>@string/uxsdk_camera_wb_auto</item>
+        <item>@string/uxsdk_camera_wb_outdoor</item>
+        <item>@string/uxsdk_camera_wb_indoor</item>
+        <item>@string/uxsdk_camera_wb_water</item>
+        <item>@string/uxsdk_camera_wb_tungsten</item>
+        <item>@string/uxsdk_camera_wb_neon</item>
+        <item>@string/uxsdk_camera_wb_custom</item>
+        <item>@string/uxsdk_camera_wb_neutral</item>
+    </string-array>
+
+    <array name="uxsdk_camera_white_balance_img_array">
+        <item>@drawable/uxsdk_ic_advanced_more_wb_auto</item>
+        <item>@drawable/uxsdk_ic_advanced_more_wb_outdoor</item>
+        <item>@drawable/uxsdk_ic_advanced_more_wb_inhouse</item>
+        <item>0</item>
+        <item>@drawable/uxsdk_ic_advanced_more_wb_tungsten</item>
+        <item>@drawable/uxsdk_ic_advanced_more_wb_neon</item>
+        <item>@drawable/uxsdk_ic_photo_mode_custom</item>
+        <item>@drawable/uxsdk_ic_advanced_more_wb_neutral</item>
+    </array>
+
+    <!-- By default the sdk returns this range in 20 to 100 -->
+    <integer-array name="uxsdk_camera_white_balance_Interval_value_boundary">
+        <item>20</item>
+        <item>100</item>
+    </integer-array>
+
+    <integer-array name="uxsdk_camera_video_format_default_value_array">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="uxsdk_camera_video_format_name_array">
+        <item>@string/uxsdk_camera_video_format_mov</item>
+        <item>@string/uxsdk_camera_video_format_mp4</item>
+        <item>@string/uxsdk_camera_video_format_tiff_seq</item>
+        <item>@string/uxsdk_camera_video_format_seq</item>
+    </string-array>
+
+    <array name="uxsdk_camera_video_format_img_array">
+        <item>@drawable/uxsdk_ic_advanced_more_vsf_mov</item>
+        <item>@drawable/uxsdk_ic_advanced_more_vsf_mp4</item>
+        <item>@drawable/uxsdk_ic_camera_setting_tiffs</item>
+        <item>@drawable/uxsdk_ic_camera_setting_seq</item>
+    </array>
+
+    <integer-array name="uxsdk_camera_video_standard_default_value_array">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="uxsdk_camera_video_standard_name_array">
+        <item>@string/uxsdk_camera_video_standard_pal</item>
+        <item>@string/uxsdk_camera_video_standard_ntsc</item>
+    </string-array>
+
+    <string-array name="uxsdk_camera_video_compression_standard_name_array">
+        <item>@string/uxsdk_camera_video_compression_standard_h264</item>
+        <item>@string/uxsdk_camera_video_compression_standard_h265</item>
+    </string-array>
+
+    <array name="uxsdk_camera_video_standard_img_array">
+        <item>@drawable/uxsdk_ic_advanced_more_vt_pal</item>
+        <item>@drawable/uxsdk_ic_advanced_more_videotype_ntsc</item>
+    </array>
+
+    <integer-array name="uxsdk_camera_anti_flicker_default_value_array">
+        <item>3</item>
+        <item>0</item>
+        <item>2</item>
+        <item>1</item>
+    </integer-array>
+    <string-array name="uxsdk_camera_anti_flicker_name_array">
+        <item>@string/uxsdk_camera_antiblink_auto</item>
+        <item>@string/uxsdk_camera_antiblink_60</item>
+        <item>@string/uxsdk_camera_antiblink_50</item>
+        <item>@string/uxsdk_off</item>
+    </string-array>
+    <array name="uxsdk_camera_anti_flicker_img_array">
+        <item>@drawable/uxsdk_ic_cam_setting_scenemode_auto</item>
+        <item>@drawable/uxsdk_ic_advanced_more_antifliker_60hz</item>
+        <item>@drawable/uxsdk_ic_advanced_more_antifliker_50hz</item>
+        <item>@drawable/uxsdk_ic_advanced_off</item>
+    </array>
+
+    <array name="uxsdk_camera_grid_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </array>
+    <array name="uxsdk_camera_grid_img_array">
+        <item>@drawable/uxsdk_ic_advanced_more_none</item>
+        <item>@drawable/uxsdk_grid_parallel</item>
+        <item>@drawable/uxsdk_grid_parallel_diagonal</item>
+    </array>
+    <string-array name="uxsdk_camera_grid_name_array">
+        <item>@string/uxsdk_off</item>
+        <item>@string/uxsdk_parallel</item>
+        <item>@string/uxsdk_parallel_diagonal</item>
+    </string-array>
+
+    <integer-array name="uxsdk_camera_save_original_value_array">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="uxsdk_camera_save_original_name_array">
+        <item>@string/uxsdk_camera_save_original_list_pano</item>
+        <item>@string/uxsdk_camera_save_original_list_hyperlapse</item>
+    </string-array>
+
+    <array name="uxsdk_camera_center_point_img_array">
+        <item>@drawable/uxsdk_ic_advanced_more_none</item>
+        <item>@drawable/uxsdk_ic_centerpoint_standard</item>
+        <item>@drawable/uxsdk_ic_centerpoint_cross</item>
+        <item>@drawable/uxsdk_ic_centerpoint_narrow_cross</item>
+        <item>@drawable/uxsdk_ic_centerpoint_frame</item>
+        <item>@drawable/uxsdk_ic_centerpoint_frame_and_cross</item>
+        <item>@drawable/uxsdk_ic_centerpoint_square</item>
+        <item>@drawable/uxsdk_ic_centerpoint_square_and_cross</item>
+    </array>
+    <string-array name="uxsdk_camera_center_point_name_array">
+        <item>@string/uxsdk_off</item>
+        <item>@string/uxsdk_center_point_standard</item>
+        <item>@string/uxsdk_center_point_cross</item>
+        <item>@string/uxsdk_center_point_narrow_cross</item>
+        <item>@string/uxsdk_center_point_frame</item>
+        <item>@string/uxsdk_center_point_frame_and_cross</item>
+        <item>@string/uxsdk_center_point_square</item>
+        <item>@string/uxsdk_center_point_square_and_cross</item>
+    </string-array>
+    <array name="uxsdk_camera_center_point_color_array">
+        <item>@color/uxsdk_white</item>
+        <item>@color/uxsdk_centerpoint_yellow</item>
+        <item>@color/uxsdk_centerpoint_red</item>
+        <item>@color/uxsdk_centerpoint_blue</item>
+        <item>@color/uxsdk_centerpoint_green</item>
+        <item>@color/uxsdk_black</item>
+    </array>
+
+    <integer-array name="uxsdk_camera_file_index_default_value_array">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="uxsdk_camera_file_index_name_array">
+        <item>@string/uxsdk_camera_file_index_reset</item>
+        <item>@string/uxsdk_camera_file_index_sequence</item>
+    </string-array>
+
+    <string-array name="uxsdk_camera_peak_focus_threshold_array">
+        <item>@string/uxsdk_camera_peak_focus_threshold_close</item>
+        <item>@string/uxsdk_camera_peak_focus_threshold_low</item>
+        <item>@string/uxsdk_camera_peak_focus_threshold_standard</item>
+        <item>@string/uxsdk_camera_peak_focus_threshold_high</item>
+    </string-array>
+    <integer-array name="uxsdk_camera_peak_focus_threshold_default_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </integer-array>
+    <integer-array name="uxsdk_camera_storage_location_default_value_array">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+    <string-array name="uxsdk_camera_storage_location_array">
+        <item>@string/uxsdk_camera_storage_location_sd_card</item>
+        <item>@string/uxsdk_camera_storage_location_internal_storage</item>
+    </string-array>
+
+    <string-array name="uxsdk_camera_video_resolution_name_array">
+        <item>@string/uxsdk_camera_video_resolution_640_480p</item>
+        <item>@string/uxsdk_camera_video_resolution_640_512p</item>
+        <item>@string/uxsdk_camera_video_resolution_1280_720p</item>
+        <item>@string/uxsdk_camera_video_resolution_1920_1080p</item>
+        <item>@string/uxsdk_camera_video_resolution_2704_1520p</item>
+        <item>@string/uxsdk_camera_video_resolution_2720_1530p</item>
+        <item>@string/uxsdk_camera_video_resolution_3840x1572p</item>
+        <item>@string/uxsdk_camera_video_resolution_3840_2160p</item>
+        <item>@string/uxsdk_camera_video_resolution_4096_2160p</item>
+        <item>@string/uxsdk_camera_video_resolution_4608x2160p</item>
+        <item>@string/uxsdk_camera_video_resolution_4608x2592p</item>
+        <item>@string/uxsdk_camera_video_resolution_5280x2160p</item>
+        <item>@string/uxsdk_camera_video_resolution_MaxResolution</item>
+        <item>@string/uxsdk_camera_video_resolution_None</item>
+        <item>@string/uxsdk_camera_video_resolution_5760x3240p</item>
+        <item>@string/uxsdk_camera_video_resolution_6016x3200p</item>
+        <item>@string/uxsdk_camera_video_resolution_2048x1080p</item>
+        <item>@string/uxsdk_camera_video_resolution_5280x2972p</item>
+        <item>@string/uxsdk_camera_video_resolution_336x256p</item>
+        <item>@string/uxsdk_camera_video_resolution_3712x2088p</item>
+        <item>@string/uxsdk_camera_video_resolution_3944x2088p</item>
+        <item>@string/uxsdk_camera_video_resolution_2688x1512p</item>
+    </string-array>
+    <string-array name="uxsdk_camera_video_fov_name_array">
+        <item> </item>
+        <item> </item>
+        <item>@string/uxsdk_camera_video_resolution_hq</item>
+        <item>@string/uxsdk_camera_video_resolution_full_fov</item>
+    </string-array>
+    <integer-array name="uxsdk_camera_video_resolution_default_value_array">
+        <item>800</item>
+        <item>702</item>
+        <item>703</item>
+        <item>500</item>
+        <item>300</item>
+        <item>200</item>
+    </integer-array>
+
+    <string-array name="uxsdk_camera_video_frame_rate_real_value_array">
+        <item>@string/uxsdk_camera_video_frame_rate_value_24</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_true_24</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_25</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_30</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_true_30</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_48</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_true_48</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_50</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_60</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_true_60</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_96</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_100</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_120</item>
+        <item>@string/uxsdk_camera_video_frame_rate_value_240</item>
+    </string-array>
+
+    <integer-array name="uxsdk_camera_video_frame_rate_value_array">
+        <item>8</item>
+        <item>5</item>
+        <item>3</item>
+        <item>2</item>
+        <item>0</item>
+    </integer-array>
+
+    <string-array name="uxsdk_thermal_camera_roi_name_array">
+        <item>@string/uxsdk_thermal_camera_roi_full</item>
+        <item>@string/uxsdk_thermal_camera_roi_sky_excluded_33</item>
+        <item>@string/uxsdk_thermal_camera_roi_sky_excluded_50</item>
+    </string-array>
+
+    <integer-array name="uxsdk_thermal_camera_roi_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </integer-array>
+
+
+    <string-array name="uxsdk_thermal_camera_palette_iso_name_array">
+        <item>@string/uxsdk_thermal_camera_palette_whitehot_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_blackhot_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_fusion_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_rainbow_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_ironbow_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_icefire_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_sepia_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_globow_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_ironbow2_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_color1_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_color2_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_rain_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_redhot_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_greenhot_iso</item>
+        <item>@string/uxsdk_thermal_camera_palette_arcticblackhot_iso</item>
+    </string-array>
+
+
+
+    <string-array name="uxsdk_thermal_camera_scene_name_array">
+        <item>@string/uxsdk_thermal_camera_scene_linear</item>
+        <item>@string/uxsdk_thermal_camera_scene_default</item>
+        <item>@string/uxsdk_thermal_camera_scene_sea_sky</item>
+        <item>@string/uxsdk_thermal_camera_scene_outdoor</item>
+        <item>@string/uxsdk_thermal_camera_scene_indoor</item>
+        <item>@string/uxsdk_thermal_camera_scene_manual</item>
+        <item>@string/uxsdk_thermal_camera_scene_profile_1</item>
+        <item>@string/uxsdk_thermal_camera_scene_profile_2</item>
+        <item>@string/uxsdk_thermal_camera_scene_profile_3</item>
+    </string-array>
+
+    <integer-array name="uxsdk_thermal_camera_scene_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </integer-array>
+
+    <string-array name="uxsdk_thermal_camera_gain_mode_name_array">
+        <item>@string/uxsdk_thermal_camera_gain_mode_auto</item>
+        <item>@string/uxsdk_thermal_camera_gain_mode_low</item>
+        <item>@string/uxsdk_thermal_camera_gain_mode_high</item>
+    </string-array>
+
+    <integer-array name="uxsdk_thermal_camera_gain_mode_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+    </integer-array>
+
+    <string-array name="uxsdk_thermal_camera_ffc_mode_name_array">
+        <item>@string/uxsdk_thermal_camera_ffc_mode_manual</item>
+        <item>@string/uxsdk_thermal_camera_ffc_mode_auto</item>
+    </string-array>
+
+    <integer-array name="uxsdk_thermal_camera_ffc_mode_value_array">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="uxsdk_thermal_camera_version_array">
+        <item>@string/uxsdk_thermal_camera_version_standard</item>
+        <item>@string/uxsdk_thermal_camera_version_advanced</item>
+    </string-array>
+
+    <string-array name="uxsdk_thermal_camera_resolution_array">
+        <item>336</item>
+        <item>640</item>
+    </string-array>
+
+    <string-array name="uxsdk_thermal_camera_focus_lens_array">
+        <item>6.8mm</item>
+        <item>7.5mm</item>
+        <item>9mm</item>
+        <item>13mm</item>
+        <item>19mm</item>
+        <item>25mm</item>
+    </string-array>
+
+    <string-array name="uxsdk_thermal_camera_external_parameter_name_array">
+        <item>@string/uxsdk_thermal_camera_scene_emissivity</item>
+        <item>@string/uxsdk_thermal_camera_atmosphere_transmission_coefficient</item>
+        <item>@string/uxsdk_thermal_camera_atmosphere_temperature</item>
+        <item>@string/uxsdk_thermal_camera_background_temperature</item>
+        <item>@string/uxsdk_thermal_camera_window_transmission_coefficient</item>
+        <item>@string/uxsdk_thermal_camera_window_temperature</item>
+        <item>@string/uxsdk_thermal_camera_window_reflection</item>
+        <item>@string/uxsdk_thermal_camera_window_reflected_temperature</item>
+    </string-array>
+
+    <string-array name="uxsdk_thermal_camera_external_profile_name_array">
+        <item>C1</item>
+        <item>C2</item>
+        <item>C3</item>
+    </string-array>
+
+    <string-array name="uxsdk_thermal_camera_isotherm_units_name_array">
+        <item>@string/uxsdk_thermal_camera_isotherm_unit_percentage</item>
+        <item>@string/uxsdk_thermal_camera_isotherm_unit_temperature</item>
+    </string-array>
+
+    <integer-array name="uxsdk_thermal_camera_isotherm_units_value_array">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="uxsdk_thermal_camera_isotherm_enable_value_array">
+        <item>@string/uxsdk_thermal_camera_isotherm_open</item>
+        <item>@string/uxsdk_thermal_camera_isotherm_close</item>
+    </string-array>
+
+    <string-array name="uxsdk_thermal_camera_temp_alert_enable_value_array">
+        <item>@string/uxsdk_thermal_camera_temp_alert_open</item>
+        <item>@string/uxsdk_thermal_camera_temp_alert_close</item>
+    </string-array>
+
+    <string-array name="uxsdk_thermal_camera_msx_offset_title_array">
+        <item>@string/uxsdk_thermal_camera_x_offset_title</item>
+        <item>@string/uxsdk_thermal_camera_y_offset_title</item>
+    </string-array>
+
+    <string-array name="uxsdk_pip_setting_name_array">
+        <item>@string/uxsdk_pip_mode_center</item>
+        <item>@string/uxsdk_pip_mode_right_bottom</item>
+        <item>@string/uxsdk_pip_mode_right_center</item>
+        <item>@string/uxsdk_pip_mode_right_top</item>
+        <item>@string/uxsdk_pip_mode_center_bottom</item>
+        <item>@string/uxsdk_pip_mode_center_top</item>
+        <item>@string/uxsdk_pip_mode_left_bottom</item>
+        <item>@string/uxsdk_pip_mode_left_center</item>
+        <item>@string/uxsdk_pip_mode_left_top</item>
+    </string-array>
+
+    <integer-array name="uxsdk_pip_setting_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </integer-array>
+
+    <array name="uxsdk_thermal_camera_palette_img_array">
+        <item>@drawable/uxsdk_thermal_palette_wh</item>
+        <item>@drawable/uxsdk_thermal_palette_black_hot</item>
+        <item>@drawable/uxsdk_thermal_palette_rainbow1</item>
+        <item>@drawable/uxsdk_thermal_palette_iron_red</item>
+        <item>@drawable/uxsdk_thermal_palette_arctic_ice_fire</item>
+        <item>@drawable/uxsdk_thermal_palette_bh_color1</item>
+        <item>@drawable/uxsdk_thermal_palette_hot_iron_color2</item>
+        <item>@drawable/uxsdk_thermal_palette_rainbow2</item>
+        <item>@drawable/uxsdk_thermal_palette_tint_red_hot</item>
+        <item>@drawable/uxsdk_thermal_palette_medical_green_hot</item>
+    </array>
+
+
+    <string-array name="uxsdk_thermal_camera_palette_name_array">
+        <item>@string/uxsdk_thermal_camera_palette_white_hot</item>
+        <item>@string/uxsdk_thermal_camera_palette_black_hot</item>
+        <item>@string/uxsdk_thermal_camera_palette_rainbow1</item>
+        <item>@string/uxsdk_thermal_camera_palette_iron_bow_1</item>
+        <item>@string/uxsdk_thermal_camera_palette_arctic</item>
+        <item>@string/uxsdk_thermal_camera_palette_color_1</item>
+        <item>@string/uxsdk_thermal_camera_palette_color_2</item>
+        <item>@string/uxsdk_thermal_camera_palette_rainbow2</item>
+        <item>@string/uxsdk_thermal_camera_palette_red_hot</item>
+        <item>@string/uxsdk_thermal_camera_palette_green_hot</item>
+    </string-array>
+
+    <integer-array name="uxsdk_thermal_camera_palette_value_array">
+        <item>0</item>
+        <item>1</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+    </integer-array>
 </resources>

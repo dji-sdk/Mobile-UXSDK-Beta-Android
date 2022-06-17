@@ -36,11 +36,9 @@ import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import dji.ux.beta.cameracore.R;
 import dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget;
 import dji.ux.beta.core.base.widget.FrameLayoutWidget;
-import dji.ux.beta.core.communication.OnStateChangeCallback;
 
 /**
  * Camera Settings Menu Indicator Widget
@@ -52,7 +50,6 @@ public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget impleme
 
     //region Fields
     private TextView foregroundTextView;
-    private OnStateChangeCallback<Object> stateChangeCallback = null;
     private int stateChangeResourceId;
     //endregion
 
@@ -93,9 +90,7 @@ public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget impleme
 
     @Override
     public void onClick(View v) {
-        if (stateChangeCallback != null) {
-            stateChangeCallback.onStateChange(null);
-        }
+        updateViewState();
     }
 
     @Override
@@ -106,7 +101,6 @@ public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget impleme
 
     @Override
     protected void onDetachedFromWindow() {
-        destroyListener();
         super.onDetachedFromWindow();
     }
 
@@ -124,10 +118,6 @@ public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget impleme
         }
     }
 
-    private void destroyListener() {
-        stateChangeCallback = null;
-    }
-
     private void initAttributes(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CameraSettingsMenuIndicatorWidget);
         stateChangeResourceId =
@@ -139,18 +129,15 @@ public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget impleme
         typedArray.recycle();
     }
 
-    //endregion
-
-    //region customizations
-
-    /**
-     * Set callback for when the widget is tapped.
-     * This can be used to link the widget to //TODO camera settings menu panel
-     *
-     * @param stateChangeCallback listener to handle callback
-     */
-    public void setStateChangeCallback(@NonNull OnStateChangeCallback<Object> stateChangeCallback) {
-        this.stateChangeCallback = stateChangeCallback;
+    private void updateViewState() {
+        if (stateChangeResourceId != INVALID_RESOURCE && this.getRootView() != null) {
+            View view = this.getRootView().findViewById(stateChangeResourceId);
+            if (view.isShown()) {
+                view.setVisibility(View.GONE);
+            } else {
+                view.setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     /**
@@ -217,6 +204,10 @@ public class CameraSettingsMenuIndicatorWidget extends FrameLayoutWidget impleme
      */
     public void setLabelTextSize(@Dimension float textSize) {
         foregroundTextView.setTextSize(textSize);
+    }
+
+    public void setStateChangeResourceId(int stateChangeResourceId) {
+        this.stateChangeResourceId = stateChangeResourceId;
     }
     //endregion
 }

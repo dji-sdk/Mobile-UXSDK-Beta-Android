@@ -1,0 +1,260 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/camera_sharpness_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        android:src="@drawable/uxsdk_ic_cam_setting_sharpe"/>
+
+    <ImageView
+        android:id="@+id/camera_contrast_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        android:src="@drawable/uxsdk_ic_cam_setting_digitalfilter_blackandwhite"/>
+
+    <ImageView
+        android:id="@+id/camera_saturation_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="center"
+        android:src="@drawable/uxsdk_ic_cam_setting_digitalfilter_saturation"/>
+
+
+    <FrameLayout
+        android:id="@+id/camera_style_standard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/uxsdk_selector_list_item"
+        android:baselineAligned="false" >
+
+        <View android:id="@+id/standard_row_separator"
+            android:background="@color/uxsdk_gray_divider_line"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:id="@+id/camera_style_standard_item_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="@string/uxsdk_camera_picture_style_standard">
+
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_standard_item_sharpness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="0">
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_standard_item_contrast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="0">
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_standard_item_saturation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="0">
+        </TextView>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/camera_style_landscape"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/uxsdk_selector_list_item"
+        android:baselineAligned="false" >
+
+        <View android:id="@+id/landscape_row_separator"
+            android:background="@color/uxsdk_gray_divider_line"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:id="@+id/camera_style_landscape_item_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="@string/uxsdk_camera_picture_style_scenery">
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_landscape_item_sharpness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="1">
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_landscape_item_contrast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="1">
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_landscape_item_saturation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="0">
+        </TextView>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/camera_style_soft"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/uxsdk_selector_list_item"
+        android:baselineAligned="false" >
+
+        <View android:id="@+id/soft_row_separator"
+            android:background="@color/uxsdk_gray_divider_line"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:id="@+id/camera_style_soft_item_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="@string/uxsdk_camera_picture_style_soft">
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_soft_item_sharpness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="-1">
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_soft_item_contrast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="0">
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_soft_item_saturation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="0">
+        </TextView>
+
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/camera_style_custom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/uxsdk_selector_list_item"
+        android:baselineAligned="false" >
+
+        <View android:id="@+id/custom_row_separator"
+            android:background="@color/uxsdk_gray_divider_line"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dp"/>
+
+        <TextView
+            android:id="@+id/camera_style_custom_item_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:text="@string/uxsdk_camera_picture_style_custom">
+        </TextView>
+
+        <View
+            android:id="@+id/camera_style_custom_sharpness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/uxsdk_selector_camera_style_value">
+        </View>
+
+        <View
+            android:id="@+id/camera_style_custom_contrast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/uxsdk_selector_camera_style_value">
+        </View>
+
+        <View
+            android:id="@+id/camera_style_custom_saturation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/uxsdk_selector_camera_style_value">
+        </View>
+
+        <TextView
+            android:id="@+id/camera_style_custom_item_sharpness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/uxsdk_white"
+            android:textAlignment="center"
+            android:text="0">
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_custom_item_contrast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/uxsdk_white"
+            android:text="1">
+        </TextView>
+
+        <TextView
+            android:id="@+id/camera_style_custom_item_saturation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/uxsdk_white"
+            android:text="0">
+        </TextView>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/camera_style_custom_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/custom_min_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/uxsdk_selector_cycle_button_background"
+            android:src="@drawable/uxsdk_button_minus" />
+
+        <ImageView
+            android:id="@+id/custom_max_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/uxsdk_selector_cycle_button_background"
+            android:src="@drawable/uxsdk_button_plus" />
+    </FrameLayout>
+</merge>
