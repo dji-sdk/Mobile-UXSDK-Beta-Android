@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:id="@+id/background_exposure_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/uxsdk_exposure_setting_menu_content"/>
+
+    <dji.ux.beta.core.v4.CameraExposureModeSettingWidget
+        android:id="@+id/widget_camera_exposure_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <dji.ux.beta.core.v4.CameraISOAndEISettingWidget
+        android:id="@+id/widget_camera_iso_ei_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <dji.ux.beta.core.v4.CameraApertureSettingWidget
+        android:id="@+id/widget_camera_aperture_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <dji.ux.beta.core.v4.CameraShutterSettingWidget
+        android:id="@+id/widget_camera_shutter_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <dji.ux.beta.core.v4.CameraEVSettingWidget
+        android:id="@+id/widget_camera_ev_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</merge>

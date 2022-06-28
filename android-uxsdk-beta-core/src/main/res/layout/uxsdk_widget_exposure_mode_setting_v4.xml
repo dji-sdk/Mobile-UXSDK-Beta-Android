@@ -1,0 +1,74 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+
+    <FrameLayout
+        android:id="@+id/layout_camera_mode_p"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/uxsdk_selector_camera_exposure_mode_setting">
+
+        <TextView
+            android:id="@+id/textview_camera_mode_p"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center|top"
+            android:text="@string/uxsdk_camera_exposure_mode_p"
+            android:textAlignment="gravity"
+            android:duplicateParentState="true"
+            android:textColor="@drawable/uxsdk_selector_camera_exposure_mode_text_color"/>
+        <ImageView
+            android:id="@+id/imageview_exposure_automode_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/uxsdk_selector_camera_auto_exposure_mode"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_camera_mode_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/uxsdk_selector_camera_exposure_mode_setting">
+
+        <TextView
+            android:id="@+id/textview_camera_mode_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:duplicateParentState="true"
+            android:text="@string/uxsdk_camera_exposure_mode_s"
+            android:textColor="@drawable/uxsdk_selector_camera_exposure_mode_text_color"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_camera_mode_a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/uxsdk_selector_camera_exposure_mode_setting">
+
+        <TextView
+            android:id="@+id/textview_camera_mode_a"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/uxsdk_camera_exposure_mode_a"
+            android:duplicateParentState="true"
+            android:textColor="@drawable/uxsdk_selector_camera_exposure_mode_text_color"/>
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_camera_mode_m"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/uxsdk_selector_camera_exposure_mode_setting">
+
+        <TextView
+            android:id="@+id/textview_camera_mode_m"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/uxsdk_camera_exposure_mode_m"
+            android:duplicateParentState="true"
+            android:textColor="@drawable/uxsdk_selector_camera_exposure_mode_text_color"/>
+    </FrameLayout>
+
+</merge>

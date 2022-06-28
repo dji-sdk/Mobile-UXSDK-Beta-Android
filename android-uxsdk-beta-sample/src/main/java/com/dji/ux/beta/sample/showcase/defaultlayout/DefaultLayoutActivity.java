@@ -47,7 +47,6 @@ import dji.common.product.Model;
 import dji.ux.beta.accessory.widget.rtk.RTKWidget;
 import dji.ux.beta.cameracore.widget.autoexposurelock.AutoExposureLockWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget;
-import dji.ux.beta.cameracore.widget.cameracontrols.exposuresettings.ExposureSettingsPanel;
 import dji.ux.beta.cameracore.widget.cameracontrols.lenscontrol.LensControlWidget;
 import dji.ux.beta.cameracore.widget.focusexposureswitch.FocusExposureSwitchWidget;
 import dji.ux.beta.cameracore.widget.focusmode.FocusModeWidget;
@@ -61,6 +60,7 @@ import dji.ux.beta.core.util.DataProcessor;
 import dji.ux.beta.core.util.DisplayUtil;
 import dji.ux.beta.core.util.SettingDefinitions;
 import dji.ux.beta.core.v4.CameraSettingAdvancedPanel;
+import dji.ux.beta.core.v4.CameraSettingExposurePanelV4;
 import dji.ux.beta.core.widget.fpv.FPVWidget;
 import dji.ux.beta.core.widget.gpssignal.GPSSignalWidget;
 import dji.ux.beta.core.widget.radar.RadarWidget;
@@ -132,7 +132,7 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     @BindView(R.id.widget_camera_controls)
     protected CameraControlsWidget cameraControlsWidget;
     @BindView(R.id.panel_camera_controls_exposure_settings)
-    protected ExposureSettingsPanel exposureSettingsPanel;
+    protected CameraSettingExposurePanelV4 exposureSettingsPanel;
     @BindView(R.id.panel_camera_setting_advanced)
     protected CameraSettingAdvancedPanel cameraSettingAdvancedPanel;
 
@@ -325,7 +325,7 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         focusModeWidget.updateCameraSource(cameraIndex, lensType);
         focusExposureSwitchWidget.updateCameraSource(cameraIndex, lensType);
         cameraControlsWidget.updateCameraSource(cameraIndex, lensType);
-        exposureSettingsPanel.updateCameraSource(cameraIndex, lensType);
+        exposureSettingsPanel.updateKeyOnIndex(cameraIndex.getIndex(),lensType.value());
         cameraSettingAdvancedPanel.updateKeyOnIndex(cameraIndex.getIndex(),lensType.value());
     }
 
