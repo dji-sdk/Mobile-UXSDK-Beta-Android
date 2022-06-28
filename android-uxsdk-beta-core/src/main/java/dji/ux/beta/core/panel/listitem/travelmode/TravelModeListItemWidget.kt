@@ -30,7 +30,7 @@ import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.annotation.StyleRes
 import androidx.core.content.res.use
-import io.reactivex.rxjava3.core.Flowable
+import dji.log.DJILog
 import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider
@@ -45,6 +45,7 @@ import dji.ux.beta.core.panel.listitem.travelmode.TravelModeListItemWidget.Model
 import dji.ux.beta.core.panel.listitem.travelmode.TravelModeListItemWidget.ModelState.ProductConnected
 import dji.ux.beta.core.panel.listitem.travelmode.TravelModeListItemWidget.ModelState.TravelModeStateUpdated
 import dji.ux.beta.core.panel.listitem.travelmode.TravelModeListItemWidgetModel.TravelModeState
+import io.reactivex.rxjava3.core.Flowable
 
 /**
  * Travel Mode List Item
@@ -61,6 +62,8 @@ open class TravelModeListItemWidget @JvmOverloads constructor(
         WidgetType.BUTTON,
         R.style.UXSDKTravelModeListItem
 ) {
+
+    private val TAG = TravelModeListItemWidget::class.java.simpleName
 
     //region Fields
     /**
@@ -185,6 +188,9 @@ open class TravelModeListItemWidget @JvmOverloads constructor(
                         }
                         TravelModeState.Active -> {
                             exitTravelMode()
+                        }
+                        else -> {
+                            DJILog.d(TAG, "checkAndToggleTravelMode: unexpected TravelMode, ignored")
                         }
                     }
                 }, { }))
