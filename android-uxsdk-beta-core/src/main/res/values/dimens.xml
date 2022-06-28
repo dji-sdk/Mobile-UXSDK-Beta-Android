@@ -541,4 +541,6 @@
     <dimen name="uxsdk_buttonsize_height">35dp</dimen>
     <dimen name="uxsdk_fpv_et_width">55dp</dimen>
 
+
+    <dimen name="uxsdk_rounded_corner_small">4dp</dimen>
 </resources>
