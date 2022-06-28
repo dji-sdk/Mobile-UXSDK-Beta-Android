@@ -181,9 +181,9 @@ abstract class ListPanelWidget<T> @JvmOverloads constructor(
     /**
      * Add a [View] at [index] to the current list of widgets.
      */
-    override fun addWidget(index: Int, view: View) {
+    override fun addWidget(index: Int, item: View) {
         if (smartListModel == null) {
-            listPanelWidgetBaseModel.addWidget(index, view)
+            listPanelWidgetBaseModel.addWidget(index, item)
         }
     }
 
