@@ -1,0 +1,52 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textview_iso_title"
+        style="@style/uxsdk_camera_exposure_settings_title"
+        android:text="@string/uxsdk_camera_exposure_iso_title" />
+
+    <View
+        android:id="@+id/seekbar_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/uxsdk_black_light" />
+
+    <dji.ux.beta.core.v4.SeekBar
+        android:id="@+id/seekbar_ei"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1" />
+
+
+    <LinearLayout
+        android:id="@+id/seekbar_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ImageView
+            android:id="@+id/button_iso_auto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/uxsdk_selector_cycle_button_background"
+            android:src="@drawable/uxsdk_auto_iso"
+            android:adjustViewBounds="true"
+            android:layout_weight="0"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:visibility="visible"/>
+
+        <dji.ux.beta.core.v4.SeekBar
+            android:id="@+id/seekbar_iso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+</merge>
