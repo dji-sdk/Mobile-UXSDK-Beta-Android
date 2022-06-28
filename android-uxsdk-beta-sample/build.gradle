@@ -30,7 +30,6 @@ android {
         abortOnError = false
     }
     compileSdkVersion 31
-    buildToolsVersion "31.0.0"
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.dji.ux.beta.sample"
