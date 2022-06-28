@@ -31,7 +31,6 @@ android {
         abortOnError = false
     }
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
     publishNonDefault true
     resourcePrefix "uxsdk_"
     defaultConfig {
@@ -72,12 +71,12 @@ dependencies {
     api project(path: ':android-uxsdk-beta-core')
     compileOnly ('com.dji:dji-sdk-provided:4.16.1')
 
-    implementation 'androidx.multidex:multidex:2.0.0'
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation 'androidx.annotation:annotation:1.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    implementation 'androidx.media:media:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.media:media:1.6.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
