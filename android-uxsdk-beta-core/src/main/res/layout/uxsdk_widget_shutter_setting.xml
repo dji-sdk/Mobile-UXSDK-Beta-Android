@@ -1,0 +1,31 @@
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:dul="http://schemas.android.com/apk/res-auto"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textview_shutter_title"
+        style="@style/uxsdk_camera_exposure_settings_title"
+        android:text="@string/uxsdk_camera_exposure_shutter_title"/>
+
+    <View
+        android:id="@+id/imageview_camera_settings_shutter_background"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/uxsdk_black_light"/>
+
+    <dji.ux.beta.core.v4.WheelHorizontalView
+        android:id="@+id/wheelview_camera_settings_shutter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        dul:isCyclic="false"
+        dul:itemsDimmedAlpha="60"
+        dul:visibleItems="7"/>
+
+    <ImageView
+        android:id="@+id/imageview_shutter_wheel_position"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/uxsdk_triangle_16_copy_2"/>
+
+</merge>

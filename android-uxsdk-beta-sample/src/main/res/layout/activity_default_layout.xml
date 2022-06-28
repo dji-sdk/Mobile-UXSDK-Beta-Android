@@ -219,6 +219,16 @@
 
     <!-- end camera bar -->
 
+    <dji.ux.beta.map.widget.map.MapWidget
+        android:id="@+id/widget_map"
+        android:layout_width="@dimen/mini_map_width"
+        android:layout_height="@dimen/mini_map_height"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:uxsdk_djiMap_mapType="normal" />
+
     <dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget
         android:id="@+id/widget_camera_controls"
         android:layout_width="0dp"
@@ -230,7 +240,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45" />
 
-    <dji.ux.beta.cameracore.widget.cameracontrols.exposuresettings.ExposureSettingsPanel
+    <dji.ux.beta.core.v4.CameraSettingExposurePanelV4
         android:id="@+id/panel_camera_controls_exposure_settings"
         android:layout_width="180dp"
         android:layout_height="263dp"
@@ -252,16 +262,6 @@
         android:gravity="center"
         android:visibility="gone"
         tools:ignore="RtlHardcoded"/>
-
-    <dji.ux.beta.map.widget.map.MapWidget
-        android:id="@+id/widget_map"
-        android:layout_width="@dimen/mini_map_width"
-        android:layout_height="@dimen/mini_map_height"
-        android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:uxsdk_djiMap_mapType="normal" />
 
     <!-- Everything below this line will appear on top of the full-screen map view -->
 
