@@ -28,13 +28,12 @@ android {
     lintOptions {
         abortOnError = false
     }
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    compileSdkVersion 31
     publishNonDefault true
     resourcePrefix "uxsdk_"
     defaultConfig {
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "5.0"
         vectorDrawables.useSupportLibrary = true
