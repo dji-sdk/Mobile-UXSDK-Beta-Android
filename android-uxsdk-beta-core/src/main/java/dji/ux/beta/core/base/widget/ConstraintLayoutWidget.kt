@@ -25,16 +25,11 @@ package dji.ux.beta.core.base.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.annotation.CheckResult
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.dji.frame.util.V_JsonUtil
-import dji.log.DJILog
 import dji.ux.beta.core.base.WidgetSizeDescription
-import dji.ux.beta.core.util.RxUtil
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.functions.Consumer
 import io.reactivex.rxjava3.processors.PublishProcessor
 
 /**
@@ -59,6 +54,7 @@ abstract class ConstraintLayoutWidget<T> @JvmOverloads constructor(
 
     //region Constructor
     init {
+        // TODO: BAD DESIGN: Non-final method invocation in constructor, causes random/hard crashes
         initView(context, attrs, defStyleAttr)
     }
     //endregion
