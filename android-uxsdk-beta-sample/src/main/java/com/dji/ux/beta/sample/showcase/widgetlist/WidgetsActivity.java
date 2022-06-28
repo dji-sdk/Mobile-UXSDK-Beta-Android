@@ -103,7 +103,7 @@ public class WidgetsActivity extends AppCompatActivity implements WidgetListFrag
         populateList();
         setContentView(R.layout.activity_widgets);
 
-        if (findViewById(R.id.fragment_container) != null) {
+        if (findViewById(R.id.fragment_widget) == null) {
             if (savedInstanceState != null) {
                 return;
             }
