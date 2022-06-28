@@ -3,7 +3,6 @@ package dji.ux.beta.cameracore.widget.cameracontrols.exposuresettings
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import com.dji.frame.util.V_JsonUtil
 import dji.common.camera.CameraUtils
 import dji.common.camera.ExposureSettings
 import dji.common.camera.SettingsDefinitions
@@ -19,7 +18,6 @@ import dji.ux.beta.core.util.CameraUtil
 import dji.ux.beta.core.util.RxUtil
 import dji.ux.beta.core.util.SettingDefinitions
 import io.reactivex.rxjava3.functions.Action
-import kotlinx.android.synthetic.main.uxsdk_widget_exposure_mode_setting.view.*
 import kotlinx.android.synthetic.main.uxsdk_widget_iso_ei_setting.view.*
 
 /**

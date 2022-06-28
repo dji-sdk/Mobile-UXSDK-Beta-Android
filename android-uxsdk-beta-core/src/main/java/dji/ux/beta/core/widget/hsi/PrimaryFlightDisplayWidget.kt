@@ -2,14 +2,12 @@ package dji.ux.beta.core.widget.hsi
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.uxsdk_liveview_pfd_attitude_display_widget.view.*
 import kotlinx.android.synthetic.main.uxsdk_primary_flight_display_widget.view.*
 
 /**
