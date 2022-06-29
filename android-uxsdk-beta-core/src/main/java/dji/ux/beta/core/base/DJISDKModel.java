@@ -47,6 +47,7 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.FlowableEmitter;
 import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.plugins.RxJavaPlugins;
 
 /**
  * Encapsulates communication with SDK KeyManager for SDKKeys.
@@ -58,6 +59,13 @@ public class DJISDKModel {
     private static final int MAX_COMPONENT_INDEX = 10;
     private Map<Object, List<KeyListener>> keyListeners;
     //endregion
+
+    static {
+        //设置所有RX的全局Error代理，为了避免某些Widget不设置errorConsumer而导致crash。或者类似Completable.mergeArray只能处理其中一个error，
+        // 其他error都是需要全局错误处理器处理。
+        // 如果某个Widget有添加特定的error，则调用特定的error；否则调用全局的error
+        RxJavaPlugins.setErrorHandler(throwable -> DJILog.e(TAG, throwable.getMessage()));
+    }
 
     private DJISDKModel() {
         keyListeners = new ConcurrentHashMap<>();

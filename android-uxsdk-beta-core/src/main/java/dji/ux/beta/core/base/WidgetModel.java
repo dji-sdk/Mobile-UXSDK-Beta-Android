@@ -91,7 +91,7 @@ public abstract class WidgetModel {
     /**
      * Set up the widget model by initializing all the required resources
      */
-    public void setup() {
+    public synchronized void setup() {
         if (isStarted()) {
             throw new IllegalStateException("WidgetModel is already setup. Call cleanup first.");
         }
@@ -110,7 +110,7 @@ public abstract class WidgetModel {
     /**
      * Clean up the widget model by destroying all the resources used
      */
-    public void cleanup() {
+    public synchronized void cleanup() {
         if (keyDisposables != null) {
             keyDisposables.dispose();
             keyDisposables = null;

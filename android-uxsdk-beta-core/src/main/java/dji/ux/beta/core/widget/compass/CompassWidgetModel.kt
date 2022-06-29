@@ -244,12 +244,12 @@ class CompassWidgetModel(djiSdkModel: DJISDKModel,
         // Do nothing
     }
 
-    override fun onLocationChanged(p0: Location) {
+    override fun onLocationChanged(location: Location) {
         // Update the center type to be the RC/Mobile device type
         centerTypeProcessor.onNext(CenterType.RC_MOBILE_GPS)
         // Update location using received location of the mobile device
-        rcOrMobileLatitude = p0.latitude
-        rcOrMobileLongitude = p0.longitude
+        rcOrMobileLatitude = location.latitude
+        rcOrMobileLongitude = location.longitude
         updateCalculations()
         updateStates()
     }

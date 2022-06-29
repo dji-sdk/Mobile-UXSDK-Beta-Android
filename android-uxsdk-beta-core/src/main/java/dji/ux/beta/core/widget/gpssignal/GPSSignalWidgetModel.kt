@@ -120,11 +120,11 @@ class GPSSignalWidgetModel(
     }
 
     override fun updateStates() {
-        rtkEnabledProcessor.value?.let {
+        rtkEnabledProcessor.value.let {
             if (it) {
-                satelliteNumberProcessor.onNext(rtkStateProcessor.value?.mobileStation1SatelliteCount ?: 0)
+                satelliteNumberProcessor.onNext(rtkStateProcessor.value.mobileStation1SatelliteCount)
             } else {
-                satelliteNumberProcessor.onNext(satelliteCountProcessor.value ?: 0)
+                satelliteNumberProcessor.onNext(satelliteCountProcessor.value)
             }
         }
     }
