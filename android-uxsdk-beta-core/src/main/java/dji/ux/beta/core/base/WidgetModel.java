@@ -265,6 +265,7 @@ public abstract class WidgetModel {
             keyDisposables.add(djiSdkModel.addListener(djiKey, this)
                     .doOnNext(sideEffectConsumer)
                     .doOnNext(bindConsumer)
+                    .onBackpressureLatest()
                     .subscribe(o -> updateStates(), logError(djiKey)));
         } else {
             queuePendingKey(new PendingKey(djiKey, bindConsumer, sideEffectConsumer));
@@ -283,6 +284,7 @@ public abstract class WidgetModel {
                         .map(broadcastValues -> broadcastValues.getCurrentValue().getData())
                         .doOnNext(sideEffectConsumer)
                         .doOnNext(bindConsumer)
+                        .onBackpressureLatest()
                         .subscribe(o -> updateStates(), logError(uxKey)));
     }
 

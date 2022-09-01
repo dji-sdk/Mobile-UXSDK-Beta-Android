@@ -93,7 +93,7 @@ android {
 }
 
 dependencies {
-    compileOnly ('com.dji:dji-sdk-provided:4.16.1')
+    compileOnly ('com.dji:dji-sdk-provided:4.16.2')
 
     // UXSDK dependencies
     implementation 'androidx.annotation:annotation:1.0.0'
