@@ -376,6 +376,8 @@
         <attr name="uxsdk_onStateChange" />
     </declare-styleable>
 
+    <attr name="uxsdk_rootView" />
+
     <declare-styleable name="RadarWidget">
         <attr name="uxsdk_forwardImages" format="reference" />
         <attr name="uxsdk_backwardImages" format="reference" />

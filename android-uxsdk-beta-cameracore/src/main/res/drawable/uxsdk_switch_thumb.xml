@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:shape="oval"
+    tools:ignore="ResourceName">
+    <solid android:color="@color/uxsdk_white" />
+    <!--  stroke 用来控制中间实心按钮的外边距  -->
+    <stroke
+        android:width="@dimen/uxsdk_2_dp"
+        android:color="#00000000" />
+    <!--  size 设置整体大小  -->
+    <size
+        android:width="@dimen/uxsdk_28_dp"
+        android:height="@dimen/uxsdk_28_dp" />
+</shape>

@@ -96,7 +96,7 @@ public class FPVInteractionWidget extends ConstraintLayoutWidget implements View
     private AtomicBoolean isInteractionEnabledAtomic;
     private String cameraName;
 
-    private Runnable longPressed = new Runnable() {
+    private final Runnable longPressed = new Runnable() {
         public void run() {
             gimbalControlView.show(absTargetX, absTargetY);
             firstX = absTargetX;

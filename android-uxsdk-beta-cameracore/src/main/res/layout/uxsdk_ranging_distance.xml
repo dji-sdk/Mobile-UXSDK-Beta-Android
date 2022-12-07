@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/uxsdk_black_80_percent">
+
+
+    <TextView
+        android:id="@+id/rng"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/uxsdk_10_dp"
+        android:layout_marginTop="@dimen/uxsdk_10_dp"
+        android:text="@string/uxsdk_rng"
+        android:textColor="@color/uxsdk_white_60"
+        android:textSize="@dimen/uxsdk_text_size_small"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvRngDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/uxsdk_5_dp"
+        android:text="50"
+        android:textColor="@color/uxsdk_white_60"
+        android:textSize="@dimen/uxsdk_text_size_small"
+        app:layout_constraintBottom_toBottomOf="@+id/rng"
+        app:layout_constraintLeft_toRightOf="@+id/rng"
+        app:layout_constraintTop_toTopOf="@+id/rng" />
+
+
+    <TextView
+        android:id="@+id/tvFlyAltitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/uxsdk_25_dp"
+        android:text="@string/uxsdk_asl"
+        android:textColor="@color/uxsdk_white_60"
+        android:textSize="@dimen/uxsdk_text_size_small"
+        app:layout_constraintBottom_toBottomOf="@+id/rng"
+        app:layout_constraintLeft_toRightOf="@+id/tvRngDistance"
+        app:layout_constraintTop_toTopOf="@+id/rng" />
+
+    <TextView
+        android:id="@+id/tvFlyAltitudeValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/uxsdk_5_dp"
+        android:text="@string/uxsdk_ave"
+        android:textColor="@color/uxsdk_white"
+        android:textSize="@dimen/uxsdk_text_size_normal"
+        app:layout_constraintBottom_toBottomOf="@+id/rng"
+        app:layout_constraintLeft_toRightOf="@+id/tvFlyAltitude"
+        app:layout_constraintTop_toTopOf="@+id/rng" />
+
+
+    <ImageView
+        android:id="@+id/imgDroneLocation"
+        android:layout_width="@dimen/uxsdk_7_dp"
+        android:layout_height="@dimen/uxsdk_7_dp"
+        android:layout_marginTop="@dimen/uxsdk_10_dp"
+        android:src="@drawable/access_location"
+        android:tint="@color/uxsdk_white_60"
+        app:layout_constraintLeft_toLeftOf="@+id/rng"
+        app:layout_constraintTop_toBottomOf="@+id/rng"
+        tools:ignore="UseAppTint" />
+
+    <TextView
+        android:id="@+id/tvDroneLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/uxsdk_7_dp"
+        android:text="@string/uxsdk_max"
+        android:textColor="@color/uxsdk_white_60"
+        android:textSize="@dimen/uxsdk_text_size_small"
+        app:layout_constraintBottom_toBottomOf="@+id/imgDroneLocation"
+        app:layout_constraintLeft_toRightOf="@+id/imgDroneLocation"
+        app:layout_constraintTop_toTopOf="@+id/imgDroneLocation" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

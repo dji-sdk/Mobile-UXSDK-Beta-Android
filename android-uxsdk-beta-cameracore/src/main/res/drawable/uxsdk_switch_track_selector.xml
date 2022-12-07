@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android" tools:ignore="ResourceName">
+    <item android:drawable="@drawable/uxsdk_switch_track_on" android:state_checked="true" />
+    <item android:drawable="@drawable/uxsdk_switch_track_off" android:state_checked="false" />
+</selector>

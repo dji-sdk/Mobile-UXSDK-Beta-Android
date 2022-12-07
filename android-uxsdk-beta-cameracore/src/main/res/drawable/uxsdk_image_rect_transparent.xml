@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ResourceName">
+    <!-- 设置一个边框 -->
+    <stroke android:width="0px" android:color="@color/uxsdk_blue" />
+
+    <padding
+        android:left="2dp"
+        android:top="2dp"
+        android:right="2dp"
+        android:bottom="2dp"/>
+</shape>

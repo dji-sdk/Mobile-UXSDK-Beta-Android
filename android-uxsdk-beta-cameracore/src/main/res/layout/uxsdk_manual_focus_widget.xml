@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="ResourceName">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/uxsdk_bg_focus_wheel"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/vertical_wheel_min"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/macro" />
+
+        <dji.ux.beta.cameracore.base.DJIRulerView
+            android:id="@+id/ring_wheel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/vertical_wheel_max"
+            android:layout_below="@id/vertical_wheel_min" />
+
+        <ImageView
+            android:id="@+id/vertical_wheel_max"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerInside"
+            android:src="@drawable/infinity" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/uxsdk_white_round_bg" />
+
+</merge>

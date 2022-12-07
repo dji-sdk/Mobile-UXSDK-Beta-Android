@@ -97,6 +97,10 @@ public final class ViewUtil {
         return bitmap;
     }
 
+    public static int getScreenHeight(Context context) {
+        return context.getResources().getDisplayMetrics().heightPixels;
+    }
+
     /**
      * Shows a toast, or logs an error if a BadTokenException is thrown.
      *

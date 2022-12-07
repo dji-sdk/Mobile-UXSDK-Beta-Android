@@ -48,6 +48,7 @@ class GridLineView @JvmOverloads constructor(
     private val paint: Paint = Paint()
     private var gridWidth = DISABLED
     private var gridHeight = DISABLED
+    private var isSplit = false
 
     /**
      * The color of the grid lines
@@ -124,7 +125,8 @@ class GridLineView @JvmOverloads constructor(
      * @param width  The new width of the grid lines.
      * @param height The new height of the grid lines.
      */
-    fun adjustDimensions(width: Int, height: Int) {
+    fun adjustDimensions(width: Int, height: Int, isSplit: Boolean) {
+        this.isSplit = isSplit
         if (width > 0 && height > 0) {
             gridWidth = width
             gridHeight = height
@@ -144,6 +146,7 @@ class GridLineView @JvmOverloads constructor(
         var measureWidth = measuredWidth.toFloat()
         var measureHeight = measuredHeight.toFloat()
 
+        val scale = getScale()
         // Offset by 1 because canvas origin is at 0
         measureHeight -= 1f
         measureWidth -= 1f
@@ -176,8 +179,15 @@ class GridLineView @JvmOverloads constructor(
 
             // Draw diagonal lines
             if (type == GridLineType.PARALLEL_DIAGONAL) {
-                canvas.drawLine(widthOffset.toFloat(), heightOffset.toFloat(), measureWidth - widthOffset, measureHeight - heightOffset, paint)
-                canvas.drawLine(widthOffset.toFloat(), measureHeight - heightOffset, measureWidth - widthOffset, heightOffset.toFloat(), paint)
+                if (!isSplit) {
+                    canvas.drawLine(widthOffset.toFloat(), heightOffset.toFloat(), measureWidth - widthOffset, measureHeight - heightOffset, paint)
+                    canvas.drawLine(widthOffset.toFloat(), measureHeight - heightOffset, measureWidth - widthOffset, heightOffset.toFloat(), paint)
+                } else {
+                    canvas.drawLine(widthOffset.toFloat(), heightOffset.toFloat(), (measureWidth / scale), measureHeight - heightOffset, paint)
+                    canvas.drawLine(widthOffset.toFloat(), measureHeight - heightOffset, measureWidth / scale, heightOffset.toFloat(), paint)
+                    canvas.drawLine(measureWidth / scale, heightOffset.toFloat(), measureWidth - widthOffset, measureHeight - heightOffset, paint)
+                    canvas.drawLine(measureWidth / scale, measureHeight - heightOffset, measureWidth - widthOffset, heightOffset.toFloat(), paint)
+                }
             }
         }
     }
@@ -221,5 +231,7 @@ class GridLineView @JvmOverloads constructor(
         }
 
     }
+
+    private fun getScale() = if (isSplit) 2 else 1
     //endregion
 }

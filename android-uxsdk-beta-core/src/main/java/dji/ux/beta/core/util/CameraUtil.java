@@ -25,7 +25,9 @@ package dji.ux.beta.core.util;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.text.TextUtils;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -39,7 +41,9 @@ import dji.keysdk.CameraKey;
 import dji.keysdk.DJIKey;
 import dji.keysdk.KeyManager;
 import dji.keysdk.callback.ActionCallback;
+import dji.sdk.base.BaseProduct;
 import dji.sdk.camera.Camera;
+import dji.sdk.sdkmanager.DJISDKManager;
 import dji.ux.beta.core.R;
 import dji.ux.beta.core.v4.SlidingDialogV4;
 import dji.ux.beta.core.v4.ViewUtils;
@@ -410,6 +414,15 @@ public final class CameraUtil {
         return null;
     }
 
+    public static boolean isIRVideoCameraSource(SettingsDefinitions.LensType lensType) {
+        if (lensType == null) return false;
+        SettingsDefinitions.CameraType cameraType = getCameraType();
+        if (cameraType == SettingsDefinitions.CameraType.DJICameraTypeWM247) {
+            return lensType.value() != 0;
+        }
+        return cameraType == SettingsDefinitions.CameraType.DJICameraTypeGD610TripleLight;
+    }
+
     /**
      * Action to execute the command to format internal storage
      */
@@ -448,4 +461,42 @@ public final class CameraUtil {
 
         return null;
     }
+
+    public static SettingsDefinitions.CameraType getCameraType() {
+        int cameraIndex = getCameraIndex();
+        KeyManager keyManager = KeyManager.getInstance();
+        if (keyManager == null) return null;
+        Object value = keyManager.getValue(CameraKey.create(CameraKey.CAMERA_TYPE, cameraIndex));
+        if (value == null) return null;
+        return (SettingsDefinitions.CameraType) value;
+    }
+
+    public static int getCameraIndex() {
+        Camera camera = getCamera();
+        if (camera == null) return 0;
+        return camera.getIndex();
+    }
+
+    public static Camera getCamera() {
+        BaseProduct product = DJISDKManager.getInstance().getProduct();
+        if (product == null || product.getCameras() == null || product.getCameras().size() == 0) {
+            return null;
+        }
+        List<Camera> cameras = getCameras();
+        Camera cameraCurrent = cameras.get(0);
+        for (Camera camera : cameras) {
+            String displayName = camera.getDisplayName();
+            if (TextUtils.isEmpty(displayName)) continue;
+            cameraCurrent = camera;
+        }
+        return cameraCurrent;
+    }
+
+    @org.jetbrains.annotations.Nullable
+    public static List<Camera> getCameras() {
+        BaseProduct product = DJISDKManager.getInstance().getProduct();
+        if (product == null || product.getCameras() == null) return null;
+        return product.getCameras();
+    }
+
 }
