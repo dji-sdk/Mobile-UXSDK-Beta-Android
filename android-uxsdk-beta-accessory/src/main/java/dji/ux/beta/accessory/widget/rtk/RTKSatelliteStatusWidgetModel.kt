@@ -228,7 +228,7 @@ class RTKSatelliteStatusWidgetModel(djiSdkModel: DJISDKModel,
             if (rtkStateProcessor.value.isRTKBeingUsed) {
                 rtkBaseStationStateProcessor.onNext(RTKBaseStationState.CONNECTED_IN_USE)
             } else {
-                rtkBaseStationStateProcessor.onNext(RTKBaseStationState.CONNECTED_NOT_IN_USE)
+                rtkBaseStationStateProcessor.onNext(RTKBaseStationState.DISCONNECTED)
             }
         } else {
             rtkBaseStationStateProcessor.onNext(RTKBaseStationState.DISCONNECTED)
