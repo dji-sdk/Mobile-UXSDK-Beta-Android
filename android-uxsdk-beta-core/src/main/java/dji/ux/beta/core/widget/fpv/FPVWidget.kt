@@ -22,11 +22,11 @@
  */
 package dji.ux.beta.core.widget.fpv
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.SurfaceTexture
 import android.graphics.drawable.Drawable
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.TextureView
 import android.view.View
@@ -44,9 +44,6 @@ import dji.log.DJILog
 import dji.sdk.camera.VideoFeeder.VideoDataListener
 import dji.sdk.codec.DJICodecManager
 import dji.sdk.util.VideoSizeCalculatorUtil
-import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.functions.Action
-import io.reactivex.rxjava3.functions.Consumer
 import dji.ux.beta.core.R
 import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.SchedulerProvider
@@ -56,19 +53,24 @@ import dji.ux.beta.core.extension.*
 import dji.ux.beta.core.module.FlatCameraModule
 import dji.ux.beta.core.ui.CenterPointView
 import dji.ux.beta.core.ui.GridLineView
-import dji.ux.beta.core.util.DisplayUtil
-import dji.ux.beta.core.util.RxUtil
-import dji.ux.beta.core.util.SettingDefinitions
+import dji.ux.beta.core.util.*
+import dji.ux.beta.core.util.RxUtil.logErrorConsumer
 import dji.ux.beta.core.util.SettingDefinitions.CameraSide
 import dji.ux.beta.core.widget.fpv.FPVWidget.ModelState
 import dji.ux.beta.core.widget.fpv.FPVWidget.ModelState.*
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.functions.Action
 import java.util.*
+import kotlin.math.roundToInt
 
 private const val TAG = "FPVWidget"
 private const val ADJUST_ASPECT_RATIO_DELAY = 300
 private const val ORIGINAL_SCALE = 1f
 private const val PORTRAIT_ROTATION_ANGLE = 270
 private const val LANDSCAPE_ROTATION_ANGLE = 0
+private const val FPV_RATIO: Float = 4 / 3f
+private const val PIP_RATIO = 1.3f
+private const val GRID_PIP_RATIO = 1.45f
 
 /**
  * This widget shows the video feed from the camera.
@@ -77,7 +79,7 @@ open class FPVWidget @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
-) : ConstraintLayoutWidget<ModelState>(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener {
+) : ConstraintLayoutWidget<ModelState>(context, attrs, defStyleAttr), TextureView.SurfaceTextureListener, CameraIndexListener {
     //region Fields
     private var codecManager: DJICodecManager? = null
     private var videoSizeCalculator: VideoSizeCalculatorUtil? = null
@@ -87,7 +89,7 @@ open class FPVWidget @JvmOverloads constructor(
     private var viewWidth = 0
     private var viewHeight = 0
     private var rotationAngle = 0
-    private var videoFeed : DJICodecManager.VideoSource? = null
+    private var videoFeed = DJICodecManager.VideoSource.UNKNOWN
     private val fpvTextureView: TextureView = findViewById(R.id.textureview_fpv)
     private val cameraNameTextView: TextView = findViewById(R.id.textview_camera_name)
     private val cameraSideTextView: TextView = findViewById(R.id.textview_camera_side)
@@ -95,6 +97,11 @@ open class FPVWidget @JvmOverloads constructor(
     private val horizontalOffset: Guideline = findViewById(R.id.horizontal_offset)
     private var codecManagerCallback: CodecManagerCallback? = null
     private var fpvStateChangeResourceId: Int = INVALID_RESOURCE
+    private var relativeWidth: Int = 0
+    private var relativeHeight: Int = 0
+
+    private val marginTopLength = DisplayUtil.dipToPx(context, 40f)
+    var unBindStateChangeCallback: Boolean = false
 
     private val widgetModel by lazy {
         val videoDataListener = VideoDataListener { videoBuffer: ByteArray?, size: Int ->
@@ -121,11 +128,7 @@ open class FPVWidget @JvmOverloads constructor(
      * Whether the video feed source's camera side is visible on the video feed.
      * Only shown on aircraft that support multiple gimbals.
      */
-    var isCameraSourceSideVisible = true
-        set(value) {
-            field = value
-            checkAndUpdateCameraSide()
-        }
+    var isCameraSourceSideVisible = false
 
     /**
      * Whether the grid lines are enabled.
@@ -232,6 +235,7 @@ open class FPVWidget @JvmOverloads constructor(
             cameraSideTextView.textSize = textSize
         }
 
+
     /**
      * The background for the camera side text view
      */
@@ -274,12 +278,12 @@ open class FPVWidget @JvmOverloads constructor(
     /**
      * The [GridLineView] shown in this widget
      */
-    val gridLineView: GridLineView = findViewById(R.id.view_grid_line)
+    private val gridLineView: GridLineView = findViewById(R.id.view_grid_line)
 
     /**
      * The [CenterPointView] shown in this widget
      */
-    val centerPointView: CenterPointView = findViewById(R.id.view_center_point)
+    private val centerPointView: CenterPointView = findViewById(R.id.view_center_point)
 
     /**
      * Call back for when the camera state is updated.
@@ -298,13 +302,26 @@ open class FPVWidget @JvmOverloads constructor(
         if (!isInEditMode) {
             fpvTextureView.surfaceTextureListener = this
             rotationAngle = LANDSCAPE_ROTATION_ANGLE
-
-            videoSizeCalculator = VideoSizeCalculatorUtil()
-            videoFeed = DJICodecManager.VideoSource.UNKNOWN
-            videoSizeCalculator?.setListener { width: Int, height: Int, relativeWidth: Int, relativeHeight: Int -> changeView(width, height, relativeWidth, relativeHeight) }
+            videoSizeCalculator?.setListener { _: Int, _: Int, relativeWidth: Int, relativeHeight: Int ->
+                if (DJIDeviceUtil.isM300Controller() && videoFeed == DJICodecManager.VideoSource.FPV) {
+                    this.relativeWidth =
+                        if (relativeHeight > ViewUtil.getScreenHeight(context) / 2) (ViewUtil.getScreenHeight(
+                            context
+                        ) * FPV_RATIO).toInt() else (relativeHeight * FPV_RATIO).toInt()
+                } else {
+                    this.relativeWidth = relativeWidth
+                }
+                this.relativeHeight = relativeHeight
+                updateCustomVideoSourceRatio()
+            }
         }
         attrs?.let { initAttributes(context, it) }
     }
+
+    fun setGridType(type: GridLineView.GridLineType) {
+        gridLineView.type = type
+    }
+
     //endregion
 
     //region LifeCycle
@@ -324,7 +341,7 @@ open class FPVWidget @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
-    override fun reactToModelChanges() {
+    private fun reactModelChanges() {
         addReaction(widgetModel.model
                 .observeOn(SchedulerProvider.ui())
                 .subscribe {
@@ -352,17 +369,76 @@ open class FPVWidget @JvmOverloads constructor(
         addReaction(widgetModel.cameraSide
                 .observeOn(SchedulerProvider.ui())
                 .subscribe { cameraSide: CameraSide -> updateCameraSide(cameraSide) })
-        addReaction(widgetModel.cameraVideoStreamSourceProcessor.toFlowable()
-            .observeOn(SchedulerProvider.ui())
-            .subscribe {
-                stateChangeCallback?.onStreamSourceChange(it)
-            })
+        addReaction(widgetModel.displayMode.observeOn(SchedulerProvider.ui()).subscribe {
+                updateCustomVideoSourceRatio() })
+        addReaction(widgetModel.videoStreamSource.observeOn(SchedulerProvider.ui())
+                .subscribe { updateCustomVideoSourceRatio() })
         addReaction(widgetModel.hasVideoViewChanged
                 .observeOn(SchedulerProvider.ui())
-                .subscribe { delayCalculator() })
+                .subscribe {
+                updateCustomVideoSourceRatio()
+                delayCalculator() })
         addReaction(widgetModel.productConnection
                 .observeOn(SchedulerProvider.ui())
                 .subscribe { updateConnectionState(it) })
+    }
+
+    private fun updateCustomVideoSourceRatio() {
+        val isPIP = widgetModel.cameraDisPlayModeProcessor.value == SettingsDefinitions.DisplayMode.PIP
+        var isIRVideoStreamSource = widgetModel.cameraVideoStreamSourceProcessor.value == CameraVideoStreamSource.INFRARED_THERMAL
+        stateChangeCallback?.onStreamSourceChange(widgetModel.cameraVideoStreamSourceProcessor.value)
+
+        if (DJIDeviceUtil.isRM500Controller()) {
+            isIRVideoStreamSource = when (widgetModel.cameraDisPlayModeProcessor.value) {
+                SettingsDefinitions.DisplayMode.THERMAL_ONLY -> {
+                    true
+                }
+                SettingsDefinitions.DisplayMode.VISUAL_ONLY -> {
+                    false
+                }
+                SettingsDefinitions.DisplayMode.PIP -> {
+                    true
+                }
+                else -> false
+            }
+        }
+
+        if (isIRVideoStreamSource) {
+            if (isPIP) {
+                val realWidth = (width - marginTopLength).toInt()
+                changeView(
+                    width, height,
+                    realWidth,
+                    height,
+                    PIP_RATIO,
+                    true
+                )
+            } else {
+                val resolution = widgetModel.resolutionAndFrameRateProcessor.value.resolution
+                if (resolution == SettingsDefinitions.VideoResolution.RESOLUTION_640x512) {
+                    changeView(
+                        width, height,
+                        relativeWidth,
+                        relativeHeight,
+                        1.25f,
+                        false
+                    )
+                }
+            }
+        } else {
+            changeView(
+                width, height,
+                relativeWidth,
+                relativeHeight,
+                ORIGINAL_SCALE,
+                false
+            )
+        }
+
+    }
+
+    override fun reactToModelChanges() {
+        reactModelChanges()
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
@@ -416,7 +492,7 @@ open class FPVWidget @JvmOverloads constructor(
     }
 
     private fun initializeListeners() {
-        if (fpvStateChangeResourceId != INVALID_RESOURCE && this.rootView != null) {
+        if (fpvStateChangeResourceId != INVALID_RESOURCE && this.rootView != null && !unBindStateChangeCallback) {
             val widgetView = this.rootView.findViewById<View>(fpvStateChangeResourceId)
             if (widgetView is FPVStateChangeCallback?) {
                 stateChangeCallback = widgetView
@@ -433,6 +509,29 @@ open class FPVWidget @JvmOverloads constructor(
     override fun getIdealDimensionRatioString(): String {
         return getString(R.string.uxsdk_widget_fpv_ratio)
     }
+
+    /**
+     * Set the [cameraVideoStreamSource] for multi-lens cameras.
+     *
+     * @return Disposable
+     */
+    fun setCameraVideoStreamSource(cameraVideoStreamSource: CameraVideoStreamSource) {
+        addDisposable(
+            widgetModel.setCameraVideoStreamSource(cameraVideoStreamSource)
+                .observeOn(SchedulerProvider.ui())
+                .subscribe(Action {
+                    /* do nothing */
+                }, logErrorConsumer(TAG, "set camera video stream source "))
+        )
+        stateChangeCallback?.onStreamSourceChange(cameraVideoStreamSource)
+    }
+
+
+    fun resetStateChangeCallBacK() {
+        unBindStateChangeCallback = true
+        stateChangeCallback = null
+    }
+
 
     /**
      * Sets a callback to retrieve the [DJICodecManager] object.
@@ -454,24 +553,73 @@ open class FPVWidget @JvmOverloads constructor(
     /**
      * This method should not to be called until the size of `TextureView` is fixed.
      */
-    private fun changeView(width: Int, height: Int, relativeWidth: Int, relativeHeight: Int) {
+    private fun changeView(width: Int, height: Int, relativeWidth: Int, relativeHeight: Int, scale: Float, isSplit: Boolean) {
+        val ratio = relativeWidth * ORIGINAL_SCALE / relativeHeight
+        val isBaseWidth: Boolean = isScaleByWidth(height, ratio, width)
         val lp = fpvTextureView.layoutParams
-        lp.width = width
-        lp.height = height
-        fpvTextureView.layoutParams = lp
-        if (width > viewWidth) {
-            fpvTextureView.scaleX = width.toFloat() / viewWidth
+        val oldWidth = lp.width
+        val oldHeight = lp.height
+        val newWidth: Int
+        val newHeight: Int
+        val realVideoScale = if (scale == PIP_RATIO) {
+            PIP_RATIO
         } else {
-            fpvTextureView.scaleX = ORIGINAL_SCALE
+            1f
         }
-        if (height > viewHeight) {
-            fpvTextureView.scaleY = height.toFloat() / viewHeight
+        if (isBaseWidth) {
+            newWidth = width
+            newHeight = (width * ORIGINAL_SCALE / ratio * realVideoScale).toInt()
         } else {
-            fpvTextureView.scaleY = ORIGINAL_SCALE
+            newWidth = (height * ratio).toInt()
+            newHeight = (height * realVideoScale).roundToInt()
         }
-        gridLineView.adjustDimensions(relativeWidth, relativeHeight)
+        if (oldHeight != newHeight || newWidth != oldWidth) {
+            lp.height = newHeight
+            lp.width = newWidth
+            fpvTextureView.layoutParams = lp
+        }
+
+        when {
+            isSplit -> {
+                gridLineView.adjustDimensions(
+                    relativeWidth,
+                    (relativeHeight / GRID_PIP_RATIO).roundToInt(),
+                    true
+                )
+                notifyFpvInteractionWidget(relativeWidth, relativeHeight)
+            }
+            scale == ORIGINAL_SCALE -> {
+                gridLineView.adjustDimensions(relativeWidth, relativeHeight, false)
+                notifyFpvInteractionWidget(relativeWidth, relativeHeight)
+            }
+            else -> {
+                val gridLineWidth = if (isBaseWidth) {
+                    relativeWidth
+                } else {
+                    (relativeHeight * scale).roundToInt()
+                }
+                val gridLineHeight = if (isBaseWidth) {
+                    (relativeWidth / scale).roundToInt()
+                } else {
+                    relativeHeight
+                }
+                stateChangeCallback?.let {
+
+                }
+                gridLineView.adjustDimensions(gridLineWidth, gridLineHeight, false)
+                notifyFpvInteractionWidget(gridLineWidth, gridLineHeight)
+            }
+        }
+    }
+
+    private fun notifyFpvInteractionWidget(relativeWidth: Int, relativeHeight: Int) {
         stateChangeCallback?.onFPVSizeChange(FPVSize(relativeWidth, relativeHeight))
         widgetStateDataProcessor.onNext(FPVSizeUpdated(relativeWidth, relativeHeight))
+    }
+
+    private fun isScaleByWidth(height: Int, ratio: Float, width: Int): Boolean {
+        val realWidth: Float = height * ratio
+        return realWidth > width
     }
 
     private fun delayCalculator() {
@@ -494,6 +642,9 @@ open class FPVWidget @JvmOverloads constructor(
         }
     }
 
+    /**
+     * 更新对应orientation
+     */
     private fun updateOrientation(orientation: SettingsDefinitions.Orientation) {
         widgetStateDataProcessor.onNext(OrientationUpdated(orientation))
         videoSizeCalculator?.setVideoIsRotated(orientation == SettingsDefinitions.Orientation.PORTRAIT)
@@ -505,7 +656,11 @@ open class FPVWidget @JvmOverloads constructor(
         delayCalculator()
     }
 
+    /**
+     * 更新相机显示名称
+     */
     private fun updateCameraName(cameraName: String) {
+        if (TextUtils.isEmpty(cameraName)) return
         widgetStateDataProcessor.onNext(CameraNameUpdated(cameraName))
         cameraNameTextView.text = cameraName
         if (cameraName.isNotEmpty() && isCameraSourceNameVisible) {
@@ -532,11 +687,14 @@ open class FPVWidget @JvmOverloads constructor(
         }
     }
 
+    fun getCameraShowName(): String {
+        return cameraNameTextView.text.toString()
+    }
+
     private fun updateConnectionState(isConnected: Boolean) {
         widgetStateDataProcessor.onNext(ProductConnected(isConnected))
-        if (!isConnected) {
-            codecManager?.setSurfaceToGray()
-        }
+        if (isConnected) return
+        codecManager?.setSurfaceToGray()
     }
 
     private fun checkAndUpdateCameraName() {
@@ -544,24 +702,13 @@ open class FPVWidget @JvmOverloads constructor(
             addDisposable(widgetModel.cameraName
                     .firstOrError()
                     .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { cameraName: String -> updateCameraName(cameraName) },
-                            RxUtil.logErrorConsumer(TAG, "updateCameraName")))
+                    .subscribe { cameraName: String -> updateCameraName(cameraName) })
         }
     }
 
-    private fun checkAndUpdateCameraSide() {
-        if (!isInEditMode) {
-            addDisposable(widgetModel.cameraSide
-                    .firstOrError()
-                    .observeOn(SchedulerProvider.ui())
-                    .subscribe(Consumer { cameraSide: CameraSide -> updateCameraSide(cameraSide) },
-                            RxUtil.logErrorConsumer(TAG, "updateCameraSide")))
-        }
-    }
 
     private fun updateGridLineVisibility() {
-        gridLineView.visibility = if (isGridLinesEnabled
-                && videoFeed != DJICodecManager.VideoSource.FPV) View.VISIBLE else View.GONE
+        gridLineView.visibility = if (isGridLinesEnabled) View.VISIBLE else View.GONE
     }
     //endregion
 
@@ -571,7 +718,7 @@ open class FPVWidget @JvmOverloads constructor(
      *
      * @param textAppearance Style resource for text appearance
      */
-    fun setCameraNameTextAppearance(@StyleRes textAppearance: Int) {
+    private fun setCameraNameTextAppearance(@StyleRes textAppearance: Int) {
         cameraNameTextView.setTextAppearance(context, textAppearance)
     }
 
@@ -580,80 +727,80 @@ open class FPVWidget @JvmOverloads constructor(
      *
      * @param textAppearance Style resource for text appearance
      */
-    fun setCameraSideTextAppearance(@StyleRes textAppearance: Int) {
+    private fun setCameraSideTextAppearance(@StyleRes textAppearance: Int) {
         cameraSideTextView.setTextAppearance(context, textAppearance)
     }
 
-    @SuppressLint("Recycle")
+
     private fun initAttributes(context: Context, attrs: AttributeSet) {
         context.obtainStyledAttributes(attrs, R.styleable.FPVWidget).use { typedArray ->
             if (!isInEditMode) {
                 typedArray.getIntegerAndUse(R.styleable.FPVWidget_uxsdk_videoSource) {
                     videoSource = (SettingDefinitions.VideoSource.find(it))
                 }
-                typedArray.getBooleanAndUse(R.styleable.FPVWidget_uxsdk_gridLinesEnabled, true) {
+                typedArray.getBooleanAndUse(R.styleable.FPVWidget_uxsdk_gridLinesEnabled, false) {
                     isGridLinesEnabled = it
                 }
                 typedArray.getBooleanAndUse(R.styleable.FPVWidget_uxsdk_centerPointEnabled, true) {
                     isCenterPointEnabled = it
                 }
-            }
-            typedArray.getBooleanAndUse(R.styleable.FPVWidget_uxsdk_sourceCameraNameVisibility, true) {
-                isCameraSourceNameVisible = it
-            }
-            typedArray.getBooleanAndUse(R.styleable.FPVWidget_uxsdk_sourceCameraSideVisibility, true) {
-                isCameraSourceSideVisible = it
-            }
-            typedArray.getResourceIdAndUse(R.styleable.FPVWidget_uxsdk_cameraNameTextAppearance) {
-                setCameraNameTextAppearance(it)
-            }
-            typedArray.getDimensionAndUse(R.styleable.FPVWidget_uxsdk_cameraNameTextSize) {
-                cameraNameTextSize = DisplayUtil.pxToSp(context, it)
-            }
-            typedArray.getColorAndUse(R.styleable.FPVWidget_uxsdk_cameraNameTextColor) {
-                cameraNameTextColor = it
-            }
-            typedArray.getDrawableAndUse(R.styleable.FPVWidget_uxsdk_cameraNameBackgroundDrawable) {
-                cameraNameTextBackground = it
-            }
-            typedArray.getResourceIdAndUse(R.styleable.FPVWidget_uxsdk_cameraSideTextAppearance) {
-                setCameraSideTextAppearance(it)
-            }
-            typedArray.getDimensionAndUse(R.styleable.FPVWidget_uxsdk_cameraSideTextSize) {
-                cameraSideTextSize = DisplayUtil.pxToSp(context, it)
-            }
-            typedArray.getColorAndUse(R.styleable.FPVWidget_uxsdk_cameraSideTextColor) {
-                cameraSideTextColor = it
-            }
-            typedArray.getDrawableAndUse(R.styleable.FPVWidget_uxsdk_cameraSideBackgroundDrawable) {
-                cameraSideTextBackground = it
-            }
-            typedArray.getFloatAndUse(R.styleable.FPVWidget_uxsdk_cameraDetailsVerticalAlignment) {
-                cameraDetailsVerticalAlignment = it
-            }
-            typedArray.getFloatAndUse(R.styleable.FPVWidget_uxsdk_cameraDetailsHorizontalAlignment) {
-                cameraDetailsHorizontalAlignment = it
-            }
-            typedArray.getIntegerAndUse(R.styleable.FPVWidget_uxsdk_gridLineType) {
-                gridLineView.type = GridLineView.GridLineType.find(it)
-            }
-            typedArray.getColorAndUse(R.styleable.FPVWidget_uxsdk_gridLineColor) {
-                gridLineView.lineColor = it
-            }
-            typedArray.getFloatAndUse(R.styleable.FPVWidget_uxsdk_gridLineWidth) {
-                gridLineView.lineWidth = it
-            }
-            typedArray.getIntegerAndUse(R.styleable.FPVWidget_uxsdk_gridLineNumber) {
-                gridLineView.numberOfLines = it
-            }
-            typedArray.getIntegerAndUse(R.styleable.FPVWidget_uxsdk_centerPointType) {
-                centerPointView.type = CenterPointView.CenterPointType.find(it)
-            }
-            typedArray.getColorAndUse(R.styleable.FPVWidget_uxsdk_centerPointColor) {
-                centerPointView.color = it
-            }
-            typedArray.getResourceIdAndUse(R.styleable.FPVWidget_uxsdk_onStateChange) {
-                fpvStateChangeResourceId = it
+                typedArray.getBooleanAndUse(R.styleable.FPVWidget_uxsdk_sourceCameraNameVisibility, true) {
+                    isCameraSourceNameVisible = it
+                }
+                typedArray.getBooleanAndUse(R.styleable.FPVWidget_uxsdk_sourceCameraSideVisibility, true) {
+                    isCameraSourceSideVisible = it
+                }
+                typedArray.getResourceIdAndUse(R.styleable.FPVWidget_uxsdk_cameraNameTextAppearance) {
+                    setCameraNameTextAppearance(it)
+                }
+                typedArray.getDimensionAndUse(R.styleable.FPVWidget_uxsdk_cameraNameTextSize) {
+                    cameraNameTextSize = DisplayUtil.pxToSp(context, it)
+                }
+                typedArray.getColorAndUse(R.styleable.FPVWidget_uxsdk_cameraNameTextColor) {
+                    cameraNameTextColor = it
+                }
+                typedArray.getDrawableAndUse(R.styleable.FPVWidget_uxsdk_cameraNameBackgroundDrawable) {
+                    cameraNameTextBackground = it
+                }
+                typedArray.getResourceIdAndUse(R.styleable.FPVWidget_uxsdk_cameraSideTextAppearance) {
+                    setCameraSideTextAppearance(it)
+                }
+                typedArray.getDimensionAndUse(R.styleable.FPVWidget_uxsdk_cameraSideTextSize) {
+                    cameraSideTextSize = DisplayUtil.pxToSp(context, it)
+                }
+                typedArray.getColorAndUse(R.styleable.FPVWidget_uxsdk_cameraSideTextColor) {
+                    cameraSideTextColor = it
+                }
+                typedArray.getDrawableAndUse(R.styleable.FPVWidget_uxsdk_cameraSideBackgroundDrawable) {
+                    cameraSideTextBackground = it
+                }
+                typedArray.getFloatAndUse(R.styleable.FPVWidget_uxsdk_cameraDetailsVerticalAlignment) {
+                    cameraDetailsVerticalAlignment = it
+                }
+                typedArray.getFloatAndUse(R.styleable.FPVWidget_uxsdk_cameraDetailsHorizontalAlignment) {
+                    cameraDetailsHorizontalAlignment = it
+                }
+                typedArray.getIntegerAndUse(R.styleable.FPVWidget_uxsdk_gridLineType) {
+                    gridLineView.type = GridLineView.GridLineType.find(it)
+                }
+                typedArray.getColorAndUse(R.styleable.FPVWidget_uxsdk_gridLineColor) {
+                    gridLineView.lineColor = it
+                }
+                typedArray.getFloatAndUse(R.styleable.FPVWidget_uxsdk_gridLineWidth) {
+                    gridLineView.lineWidth = it
+                }
+                typedArray.getIntegerAndUse(R.styleable.FPVWidget_uxsdk_gridLineNumber) {
+                    gridLineView.numberOfLines = it
+                }
+                typedArray.getIntegerAndUse(R.styleable.FPVWidget_uxsdk_centerPointType) {
+                    centerPointView.type = CenterPointView.CenterPointType.find(it)
+                }
+                typedArray.getColorAndUse(R.styleable.FPVWidget_uxsdk_centerPointColor) {
+                    centerPointView.color = it
+                }
+                typedArray.getResourceIdAndUse(R.styleable.FPVWidget_uxsdk_onStateChange) {
+                    fpvStateChangeResourceId = it
+                }
             }
         }
     }
@@ -775,4 +922,15 @@ open class FPVWidget @JvmOverloads constructor(
         }
     }
     //endregion
+    companion object {
+        lateinit var VideoSource: Any
+    }
+
+    override fun onChanged(cameraIndex: Int, lensIndex: Int) {
+
+    }
+}
+
+interface CameraIndexListener {
+    fun onChanged(cameraIndex: Int, lensIndex: Int)
 }

@@ -156,6 +156,19 @@ public class DJISDKModel {
      * @return The value associated with the key.
      */
     @Nullable
+    public void adjustIsSupportKey(@NonNull final DJIKey key, GetCallback getCallback) {
+        if (!isKeyManagerAvailable()) return;
+        getKeyManager().getValue(key,getCallback);
+    }
+
+    /**
+     * Returns the latest known value if available for the key. Does not pull it from
+     * the product if unavailable.
+     *
+     * @param key An instance of DJIKey.
+     * @return The value associated with the key.
+     */
+    @Nullable
     public Object getCacheValue(@NonNull final DJIKey key) {
         if (!isKeyManagerAvailable()) {
             return null;

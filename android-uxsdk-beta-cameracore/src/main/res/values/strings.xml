@@ -41,4 +41,31 @@
     <string name="uxsdk_camera_exposure_iso_title">ISO</string>
 
     <string name="uxsdk_camera_ei">EI</string>
+    <string name="uxsdk_ir">IR</string>
+    <string name="uxsdk_split">Split</string>
+    <string name="uxsdk_na">N/A</string>
+    <string name="uxsdk_ave">Ave</string>
+    <string name="uxsdk_max">Max</string>
+    <string name="uxsdk_min">Min</string>
+    <string name="uxsdk_entigrade">℃</string>
+    <string name="uxsdk_asl">ASL</string>
+    <string name="uxsdk_rng">RNG</string>
+    <string name="uxsdk_temperature">℃</string>
+    <string name="uxsdk_50">50</string>
+    <string name="uxsdk_palette_unselect">palette_unselect</string>
+    <string name="uxsdk_palette_select">palette_select</string>
+
+    <string name="uxsdk_low_temp">Low Temp</string>
+    <string name="uxsdk_high_temp">High Temp</string>
+    <string name="uxsdk_infrared1_text">WhiteHotIso</string>
+    <string name="uxsdk_infrared2_text">BlackHotIso</string>
+    <string name="uxsdk_infrared3_text">TintIso</string>
+    <string name="uxsdk_infrared4_text">MedicalIso</string>
+    <string name="uxsdk_infrared5_text">RainbowIso</string>
+    <string name="uxsdk_infrared6_text">IronRedIso</string>
+    <string name="uxsdk_infrared7_text">ArcticIso</string>
+    <string name="uxsdk_infrared8_text">FulguriteIso</string>
+    <string name="uxsdk_infrared9_text">HotIronIso</string>
+    <string name="uxsdk_infrared10_text">Rainbow2Iso</string>
+    <string name="uxsdk_calibrate_the_lens">Calibrate the lens</string>
 </resources>

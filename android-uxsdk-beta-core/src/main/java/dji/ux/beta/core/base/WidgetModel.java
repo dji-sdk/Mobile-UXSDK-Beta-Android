@@ -28,8 +28,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
+
+import dji.common.error.DJIError;
 import dji.keysdk.DJIKey;
 import dji.keysdk.ProductKey;
+import dji.keysdk.callback.GetCallback;
 import dji.log.DJILog;
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.communication.UXKey;
@@ -225,6 +228,29 @@ public abstract class WidgetModel {
                                      @NonNull DataProcessor<?> dataProcessor,
                                      @NonNull Consumer<Object> sideEffectConsumer) {
         registerKey(key, dataProcessor::onNext, sideEffectConsumer);
+    }
+
+    /**
+     * Bind the given DJIKey to the given data processor and attach the given consumer to it.
+     * The data processor and side effect consumer will be invoked with every update to the key.
+     * The side effect consumer will be called before the data processor is updated.
+     *
+     * @param key           DJIKey to be bound
+     * @param dataProcessor DataProcessor to be bound
+     */
+    protected void bindDataSupportKeyProcessor(@NonNull DJIKey key,
+                                               @NonNull DataProcessor<Boolean> dataProcessor) {
+        djiSdkModel.adjustIsSupportKey(key, new GetCallback() {
+            @Override
+            public void onSuccess(@NonNull Object o) {
+                dataProcessor.onNext(true);
+            }
+
+            @Override
+            public void onFailure(@NonNull DJIError djiError) {
+                dataProcessor.onNext(false);
+            }
+        });
     }
 
     /**

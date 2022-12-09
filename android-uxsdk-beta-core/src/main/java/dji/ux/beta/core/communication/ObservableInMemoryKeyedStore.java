@@ -57,6 +57,7 @@ public class ObservableInMemoryKeyedStore implements ObservableKeyedStore {
         UXKeys.addNewKeyClass(GlobalPreferenceKeys.class);
         UXKeys.addNewKeyClass(CameraKeys.class);
         UXKeys.addNewKeyClass(MessagingKeys.class);
+        UXKeys.addNewKeyClass(RangeLaserKey.class);
     }
 
     public static ObservableInMemoryKeyedStore getInstance() {

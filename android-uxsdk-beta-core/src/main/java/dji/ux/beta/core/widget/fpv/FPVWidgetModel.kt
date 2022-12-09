@@ -22,6 +22,7 @@
  */
 package dji.ux.beta.core.widget.fpv
 
+import android.text.TextUtils
 import dji.common.airlink.PhysicalSource
 import dji.common.camera.CameraVideoStreamSource
 import dji.common.camera.ResolutionAndFrameRate
@@ -51,8 +52,6 @@ import dji.ux.beta.core.util.*
 import dji.ux.beta.core.util.SettingDefinitions.CameraIndex
 import dji.ux.beta.core.util.SettingDefinitions.CameraSide
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.disposables.Disposable
-import java.util.*
 
 private const val TAG = "FPVWidgetModel"
 
@@ -70,8 +69,9 @@ class FPVWidgetModel(
     //region Fields
     private val modelNameDataProcessor: DataProcessor<Model> = DataProcessor.create(Model.UNKNOWN_AIRCRAFT)
     private val orientationProcessor: DataProcessor<SettingsDefinitions.Orientation> = DataProcessor.create(SettingsDefinitions.Orientation.UNKNOWN)
+    var cameraDisPlayModeProcessor = DataProcessor.create(SettingsDefinitions.DisplayMode.OTHER)
     private val photoAspectRatioProcessor: DataProcessor<PhotoAspectRatio> = DataProcessor.create(PhotoAspectRatio.UNKNOWN)
-    private val resolutionAndFrameRateProcessor: DataProcessor<ResolutionAndFrameRate> =
+    val resolutionAndFrameRateProcessor: DataProcessor<ResolutionAndFrameRate> =
         DataProcessor.create(
             ResolutionAndFrameRate(
                 SettingsDefinitions.VideoResolution.UNKNOWN,
@@ -82,12 +82,12 @@ class FPVWidgetModel(
     private val videoFeedSourceProcessor: DataProcessor<DJICodecManager.VideoSource> = DataProcessor.create(DJICodecManager.VideoSource.UNKNOWN)
     private val cameraNameProcessor: DataProcessor<String> = DataProcessor.create("")
     private val cameraSideProcessor: DataProcessor<CameraSide> = DataProcessor.create(CameraSide.UNKNOWN)
-    val cameraVideoStreamSourceProcessor: DataProcessor<CameraVideoStreamSource> = DataProcessor.create(CameraVideoStreamSource.ZOOM)
+    val cameraVideoStreamSourceProcessor: DataProcessor<CameraVideoStreamSource> = DataProcessor.create(CameraVideoStreamSource.UNKNOWN)
 
     private var currentVideoFeed: VideoFeed? = null
     private var currentModel: Model? = null
-    private val cameraKeyListener: Any = Any()
-    private var cameraKeyDispose: Disposable? = null
+    private var cameraVideoStreamSource: CameraVideoStreamSource = CameraVideoStreamSource.ZOOM
+
     //endregion
 
     //region Data
@@ -115,10 +115,18 @@ class FPVWidgetModel(
         get() = modelNameDataProcessor.toFlowable()
 
     /**
+     * Get the videoSoureStreamm
+     */
+    val videoStreamSource: Flowable<CameraVideoStreamSource> get() = cameraVideoStreamSourceProcessor.toFlowable()
+
+    /**
      * Get the orientation of the video feed
      */
     val orientation: Flowable<SettingsDefinitions.Orientation>
         get() = orientationProcessor.toFlowable()
+
+    val displayMode: Flowable<SettingsDefinitions.DisplayMode>
+        get() = cameraDisPlayModeProcessor.toFlowable()
 
     /**
      * Get the video feed source
@@ -140,6 +148,12 @@ class FPVWidgetModel(
         get() = cameraNameProcessor.toFlowable()
 
     /**
+     * Get the name of the current camera
+     */
+    val photoAspect: Flowable<PhotoAspectRatio>
+        get() = photoAspectRatioProcessor.toFlowable()
+
+    /**
      * Get the current camera's side
      */
     val cameraSide: Flowable<CameraSide>
@@ -153,19 +167,23 @@ class FPVWidgetModel(
     }
     //endregion
 
+    private val photoAspectRatio: CameraKey
+        get() {
+            return djiSdkModel.createLensKey(
+                CameraKey.PHOTO_ASPECT_RATIO,
+                currentCameraIndex.index,
+                CameraUtil.getLensIndex(cameraVideoStreamSource, cameraNameProcessor.value)
+            )
+        }
     //region Lifecycle
     override fun inSetup() {
         val modelNameKey = ProductKey.create(ProductKey.MODEL_NAME)
         val orientationKey = CameraKey.create(CameraKey.ORIENTATION)
-        val photoAspectRatioKey = djiSdkModel.createLensKey(
-            CameraKey.PHOTO_ASPECT_RATIO,
-            currentCameraIndex.index,
-            CameraUtil.getLensIndex(cameraVideoStreamSourceProcessor.value, cameraNameProcessor.value)
-        )
+        val photoAspectRatioKey = photoAspectRatio
         val videoResolutionAndFrameRateKey = djiSdkModel.createLensKey(
             CameraKey.RESOLUTION_FRAME_RATE,
             currentCameraIndex.index,
-            CameraUtil.getLensIndex(cameraVideoStreamSourceProcessor.value, cameraNameProcessor.value)
+            CameraUtil.getLensIndex(cameraVideoStreamSource, cameraNameProcessor.value)
         )
         bindDataProcessor(modelNameKey, modelNameDataProcessor) { model: Any? ->
             currentModel = model as Model?
@@ -176,6 +194,10 @@ class FPVWidgetModel(
                 updateCameraDisplay()
             }
         }
+        val cameraDisplayModeKey = djiSdkModel.createLensKey(
+            CameraKey.DISPLAY_MODE, currentCameraIndex.index,
+            CameraUtil.getLensIndex(cameraVideoStreamSource, cameraNameProcessor.value)
+        )
         val videoViewChangedConsumer = Consumer { _: Any? -> videoViewChangedProcessor.onNext(true) }
         bindDataProcessor(orientationKey, orientationProcessor, videoViewChangedConsumer)
         bindDataProcessor(photoAspectRatioKey, photoAspectRatioProcessor, videoViewChangedConsumer)
@@ -186,6 +208,25 @@ class FPVWidgetModel(
                 .subscribe(Consumer { }, RxUtil.logErrorConsumer(TAG, "camera mode: "))
         )
 
+        val primaryVideoFeedPhysicalSourceKey = AirLinkKey.createOcuSyncLinkKey(AirLinkKey.PRIMARY_VIDEO_FEED_PHYSICAL_SOURCE)
+        addDisposable(djiSdkModel.addListener(primaryVideoFeedPhysicalSourceKey, this)
+                .subscribe(Consumer {
+                        updateVideoFeed()
+                        updateCameraDisplay()
+                    },
+                    RxUtil.logErrorConsumer(TAG, "Error listening to primary video feed physical source key ")
+                )
+        )
+
+        val secondaryVideoFeedPhysicalSourceKey = AirLinkKey.createOcuSyncLinkKey(AirLinkKey.SECONDARY_VIDEO_FEED_PHYSICAL_SOURCE)
+        addDisposable(djiSdkModel.addListener(secondaryVideoFeedPhysicalSourceKey, this)
+            .subscribe(Consumer {
+                    updateVideoFeed()
+                    updateCameraDisplay()
+                },
+                RxUtil.logErrorConsumer(TAG, "Error listening to secondary video feed physical source key ")
+            )
+        )
         val rcModeKey = RemoteControllerKey.create(RemoteControllerKey.MODE)
         addDisposable(
             djiSdkModel.addListener(rcModeKey, this)
@@ -195,6 +236,7 @@ class FPVWidgetModel(
                     }
                 }, RxUtil.logErrorConsumer(TAG, "Error listening to RC Mode key "))
         )
+        bindDataProcessor(cameraDisplayModeKey, cameraDisPlayModeProcessor)
     }
 
     override fun inCleanup() {
@@ -204,24 +246,30 @@ class FPVWidgetModel(
             }
         }
     }
+    //endregion
 
+    //region Updates
     public override fun updateStates() {
-        //updateCameraDisplay()
+        updateCameraDisplay()
     }
+    //endregion
 
-    private fun updateCameraKey() {
-        val cameraVideoStreamSourceKey = CameraKey.create(CameraKey.CAMERA_VIDEO_STREAM_SOURCE, CameraUtil.getCameraIndex(cameraSideProcessor.value).index)
-        djiSdkModel.removeListener(cameraKeyListener)
-        cameraKeyDispose?.let {
-            removeDisposable(it)
+    //region User interaction
+    /**
+     * Set the [cameraVideoStreamSource] for multi-lens cameras.
+     *
+     * @return Completable representing the success/failure of set action
+     */
+    fun setCameraVideoStreamSource(cameraVideoStreamSource: CameraVideoStreamSource): Completable {
+        this.cameraVideoStreamSource = cameraVideoStreamSource
+        val cameraVideoStreamSourceKey: DJIKey =
+            CameraKey.create(CameraKey.CAMERA_VIDEO_STREAM_SOURCE, currentCameraIndex.index)
+        return djiSdkModel.setValue(cameraVideoStreamSourceKey, cameraVideoStreamSource).also {
+            cameraVideoStreamSourceProcessor.onNext(cameraVideoStreamSource)
+            restart()
         }
-        addDisposable(djiSdkModel.addListener(cameraVideoStreamSourceKey, cameraKeyListener)
-            .subscribe({
-                cameraVideoStreamSourceProcessor.onNext(it)
-            }, {
-                cameraVideoStreamSourceProcessor.onNext(CameraVideoStreamSource.UNKNOWN)
-            }))
     }
+    //endregion
 
     //region Helpers
     private fun updateSources() {
@@ -233,24 +281,26 @@ class FPVWidgetModel(
             val starboardCamera: Camera? = product.getCameraWithComponentIndex(1)
             val topCamera: Camera? = product.getCameraWithComponentIndex(4)
             if (portCamera != null && portCamera.isConnected) {
-                mainVideoStream = PhysicalSource.LEFT_CAM
-                secondaryVideoStream = if (starboardCamera != null && starboardCamera.isConnected) {
-                    PhysicalSource.RIGHT_CAM
-                } else if (topCamera != null && topCamera.isConnected) {
-                    PhysicalSource.TOP_CAM
-                } else {
-                    PhysicalSource.FPV_CAM
-                }
+                mainVideoStream = PhysicalSource.FPV_CAM
+                secondaryVideoStream =
+                    if (starboardCamera != null && starboardCamera.isConnected) {
+                        PhysicalSource.LEFT_CAM
+                    } else if (topCamera != null && topCamera.isConnected) {
+                        PhysicalSource.TOP_CAM
+                    } else {
+                        PhysicalSource.LEFT_CAM
+                    }
+
             } else if (starboardCamera != null && starboardCamera.isConnected) {
-                mainVideoStream = PhysicalSource.RIGHT_CAM
+                mainVideoStream = PhysicalSource.FPV_CAM
                 secondaryVideoStream = if (topCamera != null && topCamera.isConnected) {
                     PhysicalSource.TOP_CAM
                 } else {
-                    PhysicalSource.FPV_CAM
+                    PhysicalSource.RIGHT_CAM
                 }
             } else if (topCamera != null && topCamera.isConnected) {
-                mainVideoStream = PhysicalSource.TOP_CAM
-                secondaryVideoStream = PhysicalSource.FPV_CAM
+                mainVideoStream = PhysicalSource.FPV_CAM
+                secondaryVideoStream = PhysicalSource.TOP_CAM
             } else {
                 mainVideoStream = PhysicalSource.FPV_CAM
             }
@@ -258,7 +308,7 @@ class FPVWidgetModel(
 
         val assignSourceKey = AirLinkKey.createOcuSyncLinkKey(AirLinkKey.ASSIGN_SOURCE_TO_PRIMARY_CHANNEL)
         addDisposable(
-            djiSdkModel.performAction(assignSourceKey, mainVideoStream, secondaryVideoStream)
+            djiSdkModel.performAction(assignSourceKey, secondaryVideoStream, mainVideoStream)
                 .observeOn(SchedulerProvider.io())
                 .subscribe({
                     updateVideoFeed()
@@ -363,42 +413,59 @@ class FPVWidgetModel(
                 displayName = PhysicalSource.UNKNOWN.toString()
             } else {
                 if (isExtPortSupportedProduct()) {
-                    if (physicalVideoSource == PhysicalSource.MAIN_CAM) {
-                        displayName = displayName0
-                        currentCameraIndex = CameraIndex.CAMERA_INDEX_UNKNOWN
-                    } else if (physicalVideoSource == PhysicalSource.EXT) {
-                        displayName = PhysicalSource.EXT.toString()
-                        currentCameraIndex = CameraIndex.CAMERA_INDEX_2
-                    } else if (physicalVideoSource == PhysicalSource.HDMI) {
-                        displayName = PhysicalSource.HDMI.toString()
-                        currentCameraIndex = CameraIndex.CAMERA_INDEX_2
-                    } else if (physicalVideoSource == PhysicalSource.AV) {
-                        displayName = PhysicalSource.AV.toString()
-                        currentCameraIndex = CameraIndex.CAMERA_INDEX_2
+                    when (physicalVideoSource) {
+                        PhysicalSource.MAIN_CAM -> {
+                            displayName = displayName0
+                            currentCameraIndex = CameraIndex.CAMERA_INDEX_UNKNOWN
+                        }
+                        PhysicalSource.EXT -> {
+                            displayName = PhysicalSource.EXT.toString()
+                            currentCameraIndex = CameraIndex.CAMERA_INDEX_2
+                        }
+                        PhysicalSource.HDMI -> {
+                            displayName = PhysicalSource.HDMI.toString()
+                            currentCameraIndex = CameraIndex.CAMERA_INDEX_2
+                        }
+                        PhysicalSource.AV -> {
+                            displayName = PhysicalSource.AV.toString()
+                            currentCameraIndex = CameraIndex.CAMERA_INDEX_2
+                        }
+                        else -> {
+                        }
                     }
                 } else if (currentModel == Model.MATRICE_210_RTK
                     || currentModel == Model.MATRICE_210
                     || currentModel == Model.MATRICE_210_RTK_V2
                     || currentModel == Model.MATRICE_210_V2
-                    || currentModel == Model.MATRICE_300_RTK) {
-                    if (physicalVideoSource == PhysicalSource.LEFT_CAM) {
-                        displayName = displayName0
-                        displaySide = CameraSide.PORT
-                        currentCameraIndex = CameraIndex.CAMERA_INDEX_0
-                    } else if (physicalVideoSource == PhysicalSource.RIGHT_CAM) {
-                        displayName = displayName1
-                        displaySide = CameraSide.STARBOARD
-                        currentCameraIndex = CameraIndex.CAMERA_INDEX_2
-                    } else if (physicalVideoSource == PhysicalSource.TOP_CAM) {
-                        displayName = displayName4
-                        displaySide = CameraSide.TOP
-                        currentCameraIndex = CameraIndex.CAMERA_INDEX_4
-                    } else if (physicalVideoSource == PhysicalSource.FPV_CAM) {
-                        displayName = PhysicalSource.FPV_CAM.toString()
-                        currentCameraIndex = CameraIndex.CAMERA_INDEX_UNKNOWN //Index will be assigned as required
-                    } else if (physicalVideoSource == PhysicalSource.MAIN_CAM) {
-                        displayName = displayName0
-                        currentCameraIndex = CameraIndex.CAMERA_INDEX_0
+                    || currentModel == Model.MATRICE_300_RTK
+                ) {
+                    when (physicalVideoSource) {
+                        PhysicalSource.LEFT_CAM -> {
+                            displayName = displayName0
+                            displaySide = CameraSide.PORT
+                            currentCameraIndex = CameraIndex.CAMERA_INDEX_0
+                        }
+                        PhysicalSource.RIGHT_CAM -> {
+                            displayName = displayName1
+                            displaySide = CameraSide.STARBOARD
+                            currentCameraIndex = CameraIndex.CAMERA_INDEX_1
+                        }
+                        PhysicalSource.TOP_CAM -> {
+                            displayName = displayName4
+                            displaySide = CameraSide.TOP
+                            currentCameraIndex = CameraIndex.CAMERA_INDEX_4
+                        }
+                        PhysicalSource.FPV_CAM -> {
+                            displayName = PhysicalSource.FPV_CAM.toString()
+                            currentCameraIndex =
+                                CameraIndex.CAMERA_INDEX_UNKNOWN //Index will be assigned as required
+                        }
+                        PhysicalSource.MAIN_CAM -> {
+                            displayName = displayName0
+                            currentCameraIndex = CameraIndex.CAMERA_INDEX_0
+                        }
+                        else -> {
+                        }
                     }
                 } else if (currentModel == Model.INSPIRE_2
                     || currentModel == Model.MATRICE_200_V2) {
@@ -416,9 +483,10 @@ class FPVWidgetModel(
                 displayName = displayName.replace("-Visual", "")
             }
         }
-        cameraNameProcessor.onNext(displayName)
+        if (!TextUtils.isEmpty(displayName)) {
+            cameraNameProcessor.onNext(displayName)
+        }
         cameraSideProcessor.onNext(displaySide)
-        updateCameraKey()
     }
     //endregion
 

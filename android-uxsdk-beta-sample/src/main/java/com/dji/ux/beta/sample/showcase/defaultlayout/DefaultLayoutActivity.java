@@ -47,7 +47,10 @@ import dji.common.product.Model;
 import dji.ux.beta.accessory.widget.rtk.RTKWidget;
 import dji.ux.beta.cameracore.widget.autoexposurelock.AutoExposureLockWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.cameraswitch.CameraIRSwitchWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.lenscontrol.LensControlWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.ranging.RangingIndicatorWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.ranging.RangingWidget;
 import dji.ux.beta.cameracore.widget.focusexposureswitch.FocusExposureSwitchWidget;
 import dji.ux.beta.cameracore.widget.focusmode.FocusModeWidget;
 import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
@@ -135,6 +138,12 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     protected CameraSettingExposurePanelV4 exposureSettingsPanel;
     @BindView(R.id.panel_camera_setting_advanced)
     protected CameraSettingAdvancedPanel cameraSettingAdvancedPanel;
+    @BindView(R.id.rangingDistanceWidget)
+    protected RangingIndicatorWidget rangingIndicatorWidget;
+    @BindView(R.id.rangingWidget)
+    protected RangingWidget rangingWidget;
+    @BindView(R.id.irSwitchWidget)
+    protected CameraIRSwitchWidget cameraIRSwitchWidget;
 
     private boolean isMapMini = true;
     private int widgetHeight;
@@ -327,6 +336,9 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         cameraControlsWidget.updateCameraSource(cameraIndex, lensType);
         exposureSettingsPanel.updateKeyOnIndex(cameraIndex.getIndex(),lensType.value());
         cameraSettingAdvancedPanel.updateKeyOnIndex(cameraIndex.getIndex(),lensType.value());
+        rangingIndicatorWidget.updateCameraSource(cameraIndex, lensType);
+        rangingWidget.updateCameraSource(cameraIndex, lensType);
+        cameraIRSwitchWidget.updateCameraSource(cameraIndex, lensType);
     }
 
     private void setM200SeriesWarningLevelRanges() {

@@ -55,6 +55,24 @@ object DJIDeviceUtil {
     fun getDJIDeviceType(): DJIDeviceType {
         return DJIDeviceType.find(Build.PRODUCT)
     }
+
+    /**
+     * Whether the current device is M300
+     */
+    @JvmStatic
+    fun isM300Controller(): Boolean {
+        val deviceType = getDJIDeviceType()
+        return deviceType == DJIDeviceType.MATRICE_300_RTK
+    }
+
+    /**
+     * Whether the current device is RM500
+     */
+    @JvmStatic
+    fun isRM500Controller(): Boolean {
+        val deviceType = getDJIDeviceType()
+        return deviceType == DJIDeviceType.SMART_CONTROLLER
+    }
 }
 
 /**

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource,ResourceName">
+    <color name="uxsdk_yellow">#ffcc00</color>
+    <color name="white" tools:ignore="ResourceName">#ffffff</color>
+    <color name="uxsdk_black_transparent">#b2000000</color>
+    <color name="uxsdk_blue_highlight">#ff1fa3f6</color>
+    <color name="uxsdk_blue_1">#20A3F6</color>
+    <color name="colorTransparent">#00D7D7D7</color>
+    <color name="colorProgress">#ffffbb33</color>
+    <color name="colorRed">#F44336</color>
+    <color name="uxsdk_rsbColorThumbDefault">#FFFFFF</color>
+    <color name="uxsdk_rsbColorThumbBorder">#FFD7D7D7</color>
+    <color name="uxsdk_blue_40_percent">#6620A3F6</color>
+    <color name="uxsdk_viewLineColor">#D1D2D3</color>
+</resources>

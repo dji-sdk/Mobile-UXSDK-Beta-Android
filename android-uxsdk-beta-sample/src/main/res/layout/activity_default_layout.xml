@@ -336,6 +336,37 @@
         app:layout_constraintStart_toEndOf="@id/widget_take_off"
         app:layout_constraintTop_toBottomOf="@id/widget_remaining_flight_time" />
 
+    <dji.ux.beta.cameracore.widget.cameracontrols.ranging.RangingIndicatorWidget
+        android:id="@+id/rangingDistanceWidget"
+        android:layout_width="@dimen/uxsdk_40_dp"
+        android:layout_height="@dimen/uxsdk_30_dp"
+        android:layout_marginStart="@dimen/uxsdk_10_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_lens_control"
+        app:layout_constraintLeft_toRightOf="@+id/widget_lens_control"
+
+        app:layout_constraintTop_toTopOf="@+id/widget_lens_control"
+        tools:ignore="MissingConstraints" />
+
+
+    <dji.ux.beta.cameracore.widget.cameracontrols.ranging.RangingWidget
+        android:id="@+id/rangingWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@+id/widget_lens_control"
+        app:layout_constraintTop_toBottomOf="@+id/widget_lens_control" />
+
+
+    <dji.ux.beta.cameracore.widget.cameracontrols.cameraswitch.CameraIRSwitchWidget
+        android:id="@+id/irSwitchWidget"
+        android:layout_width="@dimen/uxsdk_40_dp"
+        android:layout_height="@dimen/uxsdk_25_dp"
+        android:background="@drawable/uxsdk_indicator_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_lens_control"
+        app:layout_constraintLeft_toRightOf="@+id/rangingDistanceWidget"
+        app:layout_constraintTop_toTopOf="@+id/widget_lens_control" />
+
+
     <dji.ux.beta.flight.widget.returnhome.ReturnHomeWidget
         android:id="@+id/widget_return_to_home"
         android:layout_width="0dp"
