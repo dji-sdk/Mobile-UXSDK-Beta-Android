@@ -33,7 +33,7 @@ open class LensControlWidget @JvmOverloads constructor(
 
     private var firstBtnSource = CameraVideoStreamSource.ZOOM
     private var secondBtnSource = CameraVideoStreamSource.WIDE
-
+    private var iCameraIndex: ICameraIndex? = null
     private var firstBtnDisplayMode = SettingsDefinitions.DisplayMode.VISUAL_ONLY
     private var secondBtnDisPlayMode = SettingsDefinitions.DisplayMode.THERMAL_ONLY
     private var associateView: View? = null
@@ -51,12 +51,16 @@ open class LensControlWidget @JvmOverloads constructor(
         addReaction(widgetModel.cameraTypeProcessor.toFlowable().observeOn(ui()).subscribe {
             showView(it)
         })
-        addReaction(widgetModel.cameraVideoStreamSourceRangeProcessor.toFlowable().observeOn(ui()).subscribe {
-            updateBtnView()
-        })
-        addDisposable(widgetModel.cameraVideoStreamSourceProcessor.toFlowable().observeOn(ui()).subscribe {
-            updateBtnView()
-        })
+        addReaction(widgetModel.cameraVideoStreamSourceRangeProcessor.toFlowable().observeOn(ui())
+            .subscribe {
+                updateBtnView()
+            })
+        addDisposable(widgetModel.cameraVideoStreamSourceProcessor.toFlowable().observeOn(ui())
+            .subscribe {
+                updateBtnView()
+                iCameraIndex?.updateCameraSource(SettingDefinitions.CameraIndex.CAMERA_INDEX_0,
+                    SettingsDefinitions.LensType.valueOf(it.name))
+            })
         addDisposable(widgetModel.getDisPlayMode().observeOn(ui()).subscribe {
             updateBtnViewDisPlayMode()
         })
@@ -66,6 +70,12 @@ open class LensControlWidget @JvmOverloads constructor(
         first_len_btn.setOnClickListener(this)
         second_len_btn.setOnClickListener(this)
     }
+
+
+    fun setICameraIndex(iCameraIndex: ICameraIndex) {
+        this.iCameraIndex = iCameraIndex
+    }
+
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -109,8 +119,11 @@ open class LensControlWidget @JvmOverloads constructor(
 
     override fun getLensType() = widgetModel.getLensType()
 
-    override fun updateCameraSource(cameraIndex: SettingDefinitions.CameraIndex, lensType: SettingsDefinitions.LensType) {
-        if (widgetModel.getCameraIndex() == cameraIndex){
+    override fun updateCameraSource(
+        cameraIndex: SettingDefinitions.CameraIndex,
+        lensType: SettingsDefinitions.LensType
+    ) {
+        if (widgetModel.getCameraIndex() == cameraIndex) {
             return
         }
         widgetModel.updateCameraSource(cameraIndex, lensType)
@@ -161,7 +174,8 @@ open class LensControlWidget @JvmOverloads constructor(
             if (cameraType == SettingsDefinitions.CameraType.OTHER) {
                 return
             }
-            val cameraVideoStreamSourceRange = widgetModel.cameraVideoStreamSourceRangeProcessor.value
+            val cameraVideoStreamSourceRange =
+                widgetModel.cameraVideoStreamSourceRangeProcessor.value
             if (cameraVideoStreamSourceRange.isEmpty() || cameraVideoStreamSourceRange.size <= 1) {
                 this.visibility = GONE
                 first_len_btn.visibility = INVISIBLE
@@ -180,7 +194,8 @@ open class LensControlWidget @JvmOverloads constructor(
                     1
                 )
                 val cameraVideoStreamSourceIndex = currentLensArray[0]
-                updateBtnText(first_len_btn, cameraVideoStreamSourceRange[cameraVideoStreamSourceIndex!!].also {
+                updateBtnText(first_len_btn,
+                    cameraVideoStreamSourceRange[cameraVideoStreamSourceIndex!!].also {
                         firstBtnSource = it
                     })
                 second_len_btn.visibility = INVISIBLE

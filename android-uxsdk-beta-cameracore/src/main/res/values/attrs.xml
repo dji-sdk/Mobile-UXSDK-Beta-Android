@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,7 +24,7 @@
 <resources>
 
     <attr name="uxsdk_cameraSettingBackgroundColor" format="color" />
-
+    <attr name="uxsdk_associate" format="reference" />
     <declare-styleable name="AutoExposureLockWidget">
         <attr name="uxsdk_cameraIndex" />
         <attr name="uxsdk_lensType" />
@@ -298,6 +297,9 @@
         <attr name="uxsdk_widgetTitleTextSize" />
         <attr name="uxsdk_widgetTitleBackground" />
         <attr name="uxsdk_associate" />
-
     </declare-styleable>
+    <declare-styleable name="PaletteWidget">
+        <attr name="uxsdk_associate" />
+    </declare-styleable>
+
 </resources>

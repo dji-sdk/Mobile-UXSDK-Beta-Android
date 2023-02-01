@@ -26,6 +26,7 @@ package com.dji.ux.beta.sample.showcase.defaultlayout;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -34,6 +35,7 @@ import com.dji.ux.beta.sample.R;
 
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -49,11 +51,13 @@ import dji.ux.beta.cameracore.widget.autoexposurelock.AutoExposureLockWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.CameraControlsWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.cameraswitch.CameraIRSwitchWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.lenscontrol.LensControlWidget;
+import dji.ux.beta.cameracore.widget.cameracontrols.palette.PaletteBackgroundWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.ranging.RangingIndicatorWidget;
 import dji.ux.beta.cameracore.widget.cameracontrols.ranging.RangingWidget;
 import dji.ux.beta.cameracore.widget.focusexposureswitch.FocusExposureSwitchWidget;
 import dji.ux.beta.cameracore.widget.focusmode.FocusModeWidget;
 import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
+import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.extension.ViewExtensions;
 import dji.ux.beta.core.panel.systemstatus.SystemStatusListPanelWidget;
 import dji.ux.beta.core.panel.topbar.TopBarPanelWidget;
@@ -85,7 +89,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 /**
  * Displays a sample layout of widgets similar to that of the various DJI apps.
  */
-public class DefaultLayoutActivity extends AppCompatActivity {
+public class DefaultLayoutActivity extends AppCompatActivity implements ICameraIndex {
 
     //region Fields
     private final static String TAG = "DefaultLayoutActivity";
@@ -144,7 +148,8 @@ public class DefaultLayoutActivity extends AppCompatActivity {
     protected RangingWidget rangingWidget;
     @BindView(R.id.irSwitchWidget)
     protected CameraIRSwitchWidget cameraIRSwitchWidget;
-
+    @BindView(R.id.palette_Background_Widget)
+    protected PaletteBackgroundWidget paletteBackgroundWidget;
     private boolean isMapMini = true;
     private int widgetHeight;
     private int widgetWidth;
@@ -230,7 +235,12 @@ public class DefaultLayoutActivity extends AppCompatActivity {
 
             }
         });
+
+        lensControlWidget.setICameraIndex(this);
+
+
     }
+
 
     @Override
     protected void onDestroy() {
@@ -334,11 +344,10 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         focusModeWidget.updateCameraSource(cameraIndex, lensType);
         focusExposureSwitchWidget.updateCameraSource(cameraIndex, lensType);
         cameraControlsWidget.updateCameraSource(cameraIndex, lensType);
-        exposureSettingsPanel.updateKeyOnIndex(cameraIndex.getIndex(),lensType.value());
-        cameraSettingAdvancedPanel.updateKeyOnIndex(cameraIndex.getIndex(),lensType.value());
-        rangingIndicatorWidget.updateCameraSource(cameraIndex, lensType);
-        rangingWidget.updateCameraSource(cameraIndex, lensType);
-        cameraIRSwitchWidget.updateCameraSource(cameraIndex, lensType);
+        exposureSettingsPanel.updateKeyOnIndex(cameraIndex.getIndex(), lensType.value());
+        cameraSettingAdvancedPanel.updateKeyOnIndex(cameraIndex.getIndex(), lensType.value());
+
+
     }
 
     private void setM200SeriesWarningLevelRanges() {
@@ -442,6 +451,27 @@ public class DefaultLayoutActivity extends AppCompatActivity {
         } else {
             secondaryFPVWidget.setVisibility(View.VISIBLE);
         }
+    }
+
+    @NonNull
+    @Override
+    public SettingDefinitions.CameraIndex getCameraIndex() {
+        return null;
+    }
+
+    @NonNull
+    @Override
+    public SettingsDefinitions.LensType getLensType() {
+        return null;
+    }
+
+    @Override
+    public void updateCameraSource(@NonNull SettingDefinitions.CameraIndex cameraIndex, @NonNull SettingsDefinitions.LensType lensType) {
+        rangingIndicatorWidget.updateCameraSource(cameraIndex, lensType);
+        rangingWidget.updateCameraSource(cameraIndex, lensType);
+        cameraIRSwitchWidget.updateCameraSource(cameraIndex, lensType);
+        paletteBackgroundWidget.updateCameraSource(cameraIndex, lensType);
+
     }
     //endregion
 
