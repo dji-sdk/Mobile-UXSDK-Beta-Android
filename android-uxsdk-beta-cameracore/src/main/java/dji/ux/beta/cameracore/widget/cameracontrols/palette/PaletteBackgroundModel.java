@@ -13,7 +13,6 @@ import io.reactivex.rxjava3.core.Flowable;
 
 public class PaletteBackgroundModel extends WidgetModel implements ICameraIndex {
     private final DataProcessor<SettingsDefinitions.ThermalPalette> paletteProcessor;
-    private final DataProcessor<SettingsDefinitions.GainModeTemperatureRange> gainModeTemperatureRangeProcessor;
     private final DataProcessor<SettingsDefinitions.ThermalGainMode> thermalGainModeDataProcessor;
     private final DataProcessor<Float[]> currentGainModeTemperatureRangeProcessor;
     private final DataProcessor<Integer> thermalIsoThermUpperValueProcessor;
@@ -22,7 +21,7 @@ public class PaletteBackgroundModel extends WidgetModel implements ICameraIndex 
     public final int defaultValue = -100000;
     private int cameraIndex = 0;
     private int lensIndex = 0;
-    private DJISDKModel djiSdkModel;
+    private final DJISDKModel djiSdkModel;
     private CameraKey cameraPaletteKey;
 
     private CameraKey gainModeTemperatureRangeKey;
@@ -60,7 +59,7 @@ public class PaletteBackgroundModel extends WidgetModel implements ICameraIndex 
         this.djiSdkModel = djiSdkModel;
         paletteProcessor = DataProcessor.create(SettingsDefinitions.ThermalPalette.UNKNOWN);
         thermalGainModeDataProcessor = DataProcessor.create(SettingsDefinitions.ThermalGainMode.UNKNOWN);
-        gainModeTemperatureRangeProcessor = DataProcessor.create(new SettingsDefinitions.GainModeTemperatureRange.Builder().build());
+        DataProcessor<SettingsDefinitions.GainModeTemperatureRange> gainModeTemperatureRangeProcessor = DataProcessor.create(new SettingsDefinitions.GainModeTemperatureRange.Builder().build());
         Float[] currentValue = new Float[0];
         currentGainModeTemperatureRangeProcessor = DataProcessor.create(currentValue);
         thermalIsoThermUpperValueProcessor = DataProcessor.create(defaultValue);

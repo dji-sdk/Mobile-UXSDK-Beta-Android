@@ -2,6 +2,7 @@ package dji.ux.beta.cameracore.widget.cameracontrols.palette;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,11 +18,9 @@ import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore;
 import dji.ux.beta.core.util.SettingDefinitions;
 
 public class PaletteWidget extends ConstraintLayoutWidget implements View.OnClickListener, ICameraIndex {
-    //region Fields
-    private static final String TAG = "FocusExpoSwitchWidget";
+
     private ImageView paletteView;
     private PaletteModel widgetModel;
-    private PaletteBackgroundWidget backgroundWidget;
     private int sourceResourceId;
     private View associateView;
 
@@ -47,6 +46,7 @@ public class PaletteWidget extends ConstraintLayoutWidget implements View.OnClic
                     ObservableInMemoryKeyedStore.getInstance());
         }
         initDefaults();
+        initAttributes(context, attrs);
         setOnClickListener(this);
     }
 
@@ -104,6 +104,13 @@ public class PaletteWidget extends ConstraintLayoutWidget implements View.OnClic
         super.onDetachedFromWindow();
     }
 
+    private void initAttributes(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.PaletteWidget);
+        if (!isInEditMode()) {
+            sourceResourceId = typedArray.getResourceId(R.styleable.PaletteWidget_uxsdk_associate, INVALID_RESOURCE);
+        }
+        typedArray.recycle();
+    }
 
     @NonNull
     @Override

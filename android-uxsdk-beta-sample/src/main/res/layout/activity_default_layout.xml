@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -62,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" >
+        app:layout_constraintEnd_toEndOf="parent">
 
         <dji.ux.beta.core.widget.fpv.FPVWidget
             android:id="@+id/widget_primary_fpv"
@@ -255,13 +254,13 @@
         android:id="@+id/panel_camera_setting_advanced"
         android:layout_width="180dp"
         android:layout_height="263dp"
+        android:gravity="center"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="@string/uxsdk_widget_camera_controls_ratio"
         app:layout_constraintEnd_toStartOf="@id/widget_camera_controls"
         app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center"
-        android:visibility="gone"
-        tools:ignore="RtlHardcoded"/>
+        tools:ignore="RtlHardcoded" />
 
     <!-- Everything below this line will appear on top of the full-screen map view -->
 
@@ -365,6 +364,32 @@
         app:layout_constraintBottom_toBottomOf="@+id/widget_lens_control"
         app:layout_constraintLeft_toRightOf="@+id/rangingDistanceWidget"
         app:layout_constraintTop_toTopOf="@+id/widget_lens_control" />
+
+
+    <dji.ux.beta.cameracore.widget.cameracontrols.palette.PaletteWidget
+        android:id="@+id/custom_palette_widget"
+        android:layout_width="@dimen/uxsdk_40_dp"
+        android:layout_height="@dimen/uxsdk_25_dp"
+        app:layout_constraintBottom_toBottomOf="@+id/widget_lens_control"
+        app:layout_constraintLeft_toRightOf="@+id/irSwitchWidget"
+        app:layout_constraintTop_toTopOf="@+id/widget_lens_control"
+        app:uxsdk_associate="@+id/palette_Background_Widget"
+
+        />
+
+
+    <dji.ux.beta.cameracore.widget.cameracontrols.palette.PaletteBackgroundWidget
+        android:id="@+id/palette_Background_Widget"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:uxsdk_associate="@+id/custom_palette_widget"
+
+        />
 
 
     <dji.ux.beta.flight.widget.returnhome.ReturnHomeWidget

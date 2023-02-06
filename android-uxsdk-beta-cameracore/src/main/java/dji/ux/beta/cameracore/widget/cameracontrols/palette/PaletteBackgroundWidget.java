@@ -59,6 +59,7 @@ public class PaletteBackgroundWidget extends ConstraintLayoutWidget implements V
     private HashMap<Object, Object> textViewHaspMap;
     private ImageView recordImageView;
     private TextView recordTextView;
+    private int resourceId;
     private PaletteWidget paletteWidget;
 
     public PaletteBackgroundWidget(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -120,6 +121,14 @@ public class PaletteBackgroundWidget extends ConstraintLayoutWidget implements V
             }
 
         });
+        initAttributes(context, attrs);
+    }
+
+    private void initAttributes(Context context, AttributeSet attrs) {
+        TypedArray obtainStyledAttributes =
+                context.obtainStyledAttributes(attrs, R.styleable.PaletteBackgroundWidget);
+        resourceId = obtainStyledAttributes.getResourceId(R.styleable.PaletteWidget_uxsdk_associate, INVALID_RESOURCE);
+        obtainStyledAttributes.recycle();
     }
 
     @Override
@@ -127,6 +136,9 @@ public class PaletteBackgroundWidget extends ConstraintLayoutWidget implements V
         super.onAttachedToWindow();
         if (!isInEditMode()) {
             paletteBackgroundModel.setup();
+        }
+        if (resourceId != INVALID_RESOURCE) {
+            paletteWidget = getRootView().findViewById(resourceId);
         }
 
     }
@@ -286,10 +298,10 @@ public class PaletteBackgroundWidget extends ConstraintLayoutWidget implements V
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private void setSelectImage(ImageView imageView, TextView textView) {
-        imageView.setBackground(getResources().getDrawable(R.drawable.uxsdk_image_rect));
+        imageView.setBackground(getResources().getDrawable(R.drawable.image_rect));
         textView.setTextColor(getResources().getColor(R.color.uxsdk_blue));
         if (recordImageView != null && !imageView.equals(recordImageView)) {
-            recordImageView.setBackground(getResources().getDrawable(R.drawable.uxsdk_image_rect_transparent));
+            recordImageView.setBackground(getResources().getDrawable(R.drawable.image_rect_transparent));
         }
         if (recordTextView != null && !recordTextView.equals(textView)) {
             recordTextView.setTextColor(getResources().getColor(R.color.uxsdk_white));
