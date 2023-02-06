@@ -26,7 +26,6 @@ package com.dji.ux.beta.sample.showcase.defaultlayout;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -57,6 +56,7 @@ import dji.ux.beta.cameracore.widget.cameracontrols.ranging.RangingWidget;
 import dji.ux.beta.cameracore.widget.focusexposureswitch.FocusExposureSwitchWidget;
 import dji.ux.beta.cameracore.widget.focusmode.FocusModeWidget;
 import dji.ux.beta.cameracore.widget.fpvinteraction.FPVInteractionWidget;
+import dji.ux.beta.cameracore.widget.resetgimbal.ResetGimbalWidget;
 import dji.ux.beta.core.base.ICameraIndex;
 import dji.ux.beta.core.extension.ViewExtensions;
 import dji.ux.beta.core.panel.systemstatus.SystemStatusListPanelWidget;
@@ -150,6 +150,9 @@ public class DefaultLayoutActivity extends AppCompatActivity implements ICameraI
     protected CameraIRSwitchWidget cameraIRSwitchWidget;
     @BindView(R.id.palette_Background_Widget)
     protected PaletteBackgroundWidget paletteBackgroundWidget;
+    @BindView(R.id.widget_reset_gimbal)
+    protected ResetGimbalWidget resetGimbalWidget;
+
     private boolean isMapMini = true;
     private int widgetHeight;
     private int widgetWidth;
@@ -235,12 +238,8 @@ public class DefaultLayoutActivity extends AppCompatActivity implements ICameraI
 
             }
         });
-
         lensControlWidget.setICameraIndex(this);
-
-
     }
-
 
     @Override
     protected void onDestroy() {
@@ -334,6 +333,7 @@ public class DefaultLayoutActivity extends AppCompatActivity implements ICameraI
         cameraConfigISOAndEIWidget.updateCameraSource(cameraIndex, lensType);
         fpvInteractionWidget.updateCameraSource(cameraIndex, lensType);
         fpvInteractionWidget.updateGimbalIndex(CommonUtils.getGimbalIndex(cameraSide));
+        resetGimbalWidget.updateGimbalIndex(CommonUtils.getGimbalIndex(cameraSide));
         lensControlWidget.updateCameraSource(cameraIndex, lensType);
         cameraConfigShutterWidget.updateCameraSource(cameraIndex, lensType);
         cameraConfigEVWidget.updateCameraSource(cameraIndex, lensType);
@@ -344,10 +344,11 @@ public class DefaultLayoutActivity extends AppCompatActivity implements ICameraI
         focusModeWidget.updateCameraSource(cameraIndex, lensType);
         focusExposureSwitchWidget.updateCameraSource(cameraIndex, lensType);
         cameraControlsWidget.updateCameraSource(cameraIndex, lensType);
-        exposureSettingsPanel.updateKeyOnIndex(cameraIndex.getIndex(), lensType.value());
-        cameraSettingAdvancedPanel.updateKeyOnIndex(cameraIndex.getIndex(), lensType.value());
-
-
+        exposureSettingsPanel.updateKeyOnIndex(cameraIndex.getIndex(),lensType.value());
+        cameraSettingAdvancedPanel.updateKeyOnIndex(cameraIndex.getIndex(),lensType.value());
+        rangingIndicatorWidget.updateCameraSource(cameraIndex, lensType);
+        rangingWidget.updateCameraSource(cameraIndex, lensType);
+        cameraIRSwitchWidget.updateCameraSource(cameraIndex, lensType);
     }
 
     private void setM200SeriesWarningLevelRanges() {

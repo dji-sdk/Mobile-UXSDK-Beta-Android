@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (c) 2018-2020 DJI
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -61,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent" >
 
         <dji.ux.beta.core.widget.fpv.FPVWidget
             android:id="@+id/widget_primary_fpv"
@@ -239,6 +240,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.45" />
 
+    <dji.ux.beta.cameracore.widget.resetgimbal.ResetGimbalWidget
+        android:id="@+id/widget_reset_gimbal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="@string/uxsdk_widget_default_ratio"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/widget_camera_controls"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
     <dji.ux.beta.core.v4.CameraSettingExposurePanelV4
         android:id="@+id/panel_camera_controls_exposure_settings"
         android:layout_width="180dp"
@@ -254,13 +266,13 @@
         android:id="@+id/panel_camera_setting_advanced"
         android:layout_width="180dp"
         android:layout_height="263dp"
-        android:gravity="center"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="@string/uxsdk_widget_camera_controls_ratio"
         app:layout_constraintEnd_toStartOf="@id/widget_camera_controls"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RtlHardcoded" />
+        android:gravity="center"
+        android:visibility="gone"
+        tools:ignore="RtlHardcoded"/>
 
     <!-- Everything below this line will appear on top of the full-screen map view -->
 
@@ -354,7 +366,6 @@
         android:visibility="gone"
         app:layout_constraintLeft_toLeftOf="@+id/widget_lens_control"
         app:layout_constraintTop_toBottomOf="@+id/widget_lens_control" />
-
 
     <dji.ux.beta.cameracore.widget.cameracontrols.cameraswitch.CameraIRSwitchWidget
         android:id="@+id/irSwitchWidget"

@@ -1,32 +1,25 @@
 package dji.ux.beta.cameracore.widget.resetgimbal
 
 import android.content.Context
-import dji.common.camera.SettingsDefinitions
 import dji.common.gimbal.Axis
 import dji.common.gimbal.ResetDirection
-import dji.keysdk.GimbalKey
 import dji.sdk.base.BaseProduct
 import dji.sdk.gimbal.Gimbal
 import dji.sdk.products.Aircraft
 import dji.sdk.sdkmanager.DJISDKManager
 import dji.ux.beta.core.base.DJISDKModel
-import dji.ux.beta.core.base.ICameraIndex
 import dji.ux.beta.core.base.WidgetModel
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
-import dji.ux.beta.core.util.SettingDefinitions
+import dji.ux.beta.core.util.SettingDefinitions.GimbalIndex
 
 
 class ResetGimbalModel constructor(
     private val context: Context,
     djiSdkModel: DJISDKModel,
     keyedStore: ObservableInMemoryKeyedStore
-) : WidgetModel(djiSdkModel, keyedStore), ICameraIndex {
-    private lateinit var resetGimbalYawKey: GimbalKey
-    private lateinit var resetGimbalKey: GimbalKey
-    private var cameraIndex: SettingDefinitions.CameraIndex =
-        SettingDefinitions.CameraIndex.CAMERA_INDEX_0
-    private var lensType: SettingsDefinitions.LensType = SettingsDefinitions.LensType.WIDE
+) : WidgetModel(djiSdkModel, keyedStore) {
 
+    private var index = 0
 
     override fun inSetup() {
 
@@ -59,7 +52,15 @@ class ResetGimbalModel constructor(
     @Synchronized
     fun getGimbal(): Gimbal? {
         val aircraftInstance = getAircraftInstance()
-        return aircraftInstance?.gimbal
+        val gimbals = aircraftInstance?.gimbals
+        if (gimbals != null) {
+            for (gimbal in gimbals) {
+                if (gimbal != null && gimbal.index == index) {
+                    return gimbal
+                }
+            }
+        }
+        return null
     }
 
     @Synchronized
@@ -81,21 +82,10 @@ class ResetGimbalModel constructor(
 
     }
 
-
-    override fun getCameraIndex(): SettingDefinitions.CameraIndex {
-        return cameraIndex
-    }
-
-    override fun getLensType(): SettingsDefinitions.LensType {
-        return lensType
-    }
-
-    override fun updateCameraSource(
-        cameraIndex: SettingDefinitions.CameraIndex,
-        lensType: SettingsDefinitions.LensType
-    ) {
-        this.cameraIndex = cameraIndex
-        this.lensType = lensType
-
+    fun setGimbalIndex(gimbalIndex: GimbalIndex?) {
+        if (gimbalIndex != null) {
+            index = gimbalIndex.index
+        }
+        restart()
     }
 }

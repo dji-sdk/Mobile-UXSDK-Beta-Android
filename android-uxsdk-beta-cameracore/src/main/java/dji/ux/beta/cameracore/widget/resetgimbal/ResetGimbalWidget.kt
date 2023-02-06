@@ -8,6 +8,7 @@ import dji.ux.beta.core.base.DJISDKModel
 import dji.ux.beta.core.base.widget.ConstraintLayoutWidget
 import dji.ux.beta.core.communication.ObservableInMemoryKeyedStore
 import dji.ux.beta.core.util.PopUtils
+import dji.ux.beta.core.util.SettingDefinitions.GimbalIndex
 
 class ResetGimbalWidget @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -15,9 +16,11 @@ class ResetGimbalWidget @JvmOverloads constructor(
 
 
     private val resetGimbalModel by lazy {
-        ResetGimbalModel(context,
+        ResetGimbalModel(
+            context,
             DJISDKModel.getInstance(),
-            ObservableInMemoryKeyedStore.getInstance())
+            ObservableInMemoryKeyedStore.getInstance()
+        )
     }
 
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
@@ -60,7 +63,11 @@ class ResetGimbalWidget @JvmOverloads constructor(
         }
     }
 
-
+    fun updateGimbalIndex(gimbalIndex: GimbalIndex?) {
+        if (!isInEditMode) {
+            resetGimbalModel.setGimbalIndex(gimbalIndex)
+        }
+    }
     override fun reactToModelChanges() {
 
     }
